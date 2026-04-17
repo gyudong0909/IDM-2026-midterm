@@ -19,6 +19,21 @@ __MACOSX/
 # 개인 Claude 메모리 (민감 정보 가능)
 .claude/
 
+# hw 폴더 — PDF 제외 나머지
+hw0/hw0.py
+hw0/pg100.txt
+hw0/test.txt
+
+hw1/202419212_hw1/
+hw1/202419212_hw1.zip
+hw1/HW1_한국어_해설.md
+hw1/articles.txt
+hw1/browsing.txt
+hw1/err_*.txt
+hw1/out_*.txt
+hw1/hw1_writeup.tex
+hw1/soc-LiveJournal1Adj.txt
+
 # 임시 파일
 *.tmp
 *.log
