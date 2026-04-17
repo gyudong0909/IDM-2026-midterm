@@ -51,7 +51,8 @@ const mmdsExamples = [
 - `renderInlineItems()`는 `pastExams` + `mmdsExamples` 전체를 사용하도록 A1c 버전 기준으로 통합
 
 #### 3. HTML body 섹션 병합 순서
-1. 사이드바 (A1c 버전 기준 — 전체 L1~L13 + 집계 섹션 링크 포함)
+1. 사이드바 — A1c의 형식·스타일을 기반으로 **새로 재구성**. L1~L13 전체 + 집계 섹션 링크 포함.
+   ※ A1c standalone 사이드바(L11~L13만)를 그대로 복붙하지 말 것 — L1~L10 링크가 누락됨.
 2. A1a의 body 섹션: 기출 메타 분석 + L1~L5
 3. A1b의 body 섹션: L6~L10
 4. A1c의 body 섹션: L11~L13 + T/F 지뢰밭 + 수식 마스터 + 알고리즘 레시피 + 기출 전체 + MMDS 예제 전체
@@ -59,11 +60,11 @@ const mmdsExamples = [
 
 #### 4. 중복 제거
 - A1b·A1c의 `<!DOCTYPE html>`, `<html>`, `<head>`, `<body>` 태그 제거 (이미 A1a에서 열림)
-- A1b·A1c의 닫는 `</script>`, `</body>`, `</html>` 제거 (A1c 것만 최종에 사용)
-- 사이드바 중복 제거 (A1c 것 하나만 사용)
+- **A1a·A1b·A1c의 `DOMContentLoaded` 초기화 블록을 전부 제거** — standalone용이므로 병합본에서는 불필요
+- 사이드바 중복 제거 (위에서 재구성한 것 하나만 사용)
 
-#### 5. 최종 닫기 + B 시리즈 앵커 삽입
-`</body>` 직전에 B 시리즈 삽입용 앵커 마커를 반드시 넣는다:
+#### 5. 최종 닫기 + 초기화 (한 번만) + B 시리즈 앵커 삽입
+초기화 코드는 여기 한 곳에만 둔다:
 ```javascript
   document.addEventListener('DOMContentLoaded', function() {
     renderInlineItems();
