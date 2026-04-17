@@ -59,7 +59,9 @@ sudo apt-get install poppler-utils
 이 파일은 L6~L10 범위만 다루는 독립 학습서다. A1a.html과 무관하게 단독 실행 가능해야 한다.
 
 ### 1. HTML 전체 헤더 + JS 데이터 레이어
-A1a.html과 동일한 CSS/구조 사용. script 태그 안에:
+`/mnt/d/SNU/26-1/DM/common_head.html` 을 읽어 그 내용을 그대로 헤더로 사용하라.
+(A1a 실행 시 생성된 공통 CSS/헤더 파일 — 내용을 수정하지 말 것)
+script 태그 안에:
 ```javascript
 const pastExams_mid = [
   // L6~L10 관련 기출문제만 필터링

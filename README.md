@@ -135,7 +135,7 @@ sudo apt-get install poppler-utils && pdftotext -v
 순서를 지켜야 하며, 각 단계는 반드시 **별도 대화창 + exit** 후 다음 진행.
 
 **A 시리즈 — study_guide.html 생성**
-- [ ] A1a: `prompt_A1a_L1to5.txt` → `A1a.html` 생성 → exit
+- [ ] A1a: `prompt_A1a_L1to5.txt` → `A1a.html` + `common_head.html` 생성 → exit
 - [ ] A1b: `prompt_A1b_L6to10.txt` → `A1b.html` 생성 → exit
 - [ ] A1c: `prompt_A1c_L11to13.txt` → `A1c.html` 생성 → exit
 - [ ] A1d: `prompt_A1d_merge.txt` → `study_guide.html` 생성 (JS 병합 + `<!-- B_SERIES_ANCHOR -->` 삽입) → exit
