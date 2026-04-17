@@ -95,11 +95,13 @@ sudo apt-get install poppler-utils && pdftotext -v
 ```
 ① 새 대화창 열기 (study_guide.html 존재 확인)
 ② prompt_B1_tf_trainer.txt 전체 붙여넣고 전송
-   → 기출 + 강의 자료 읽고 T/F 문제 목록(80~100개) 텍스트 출력 (STEP 1)
-      문제마다 [기출2024 / 기출2025 / 예상] 라벨 부여 → 카드 배지 + 필터 UI로 구분
+   → 기출 PDF + L1~L7 슬라이드/스크립트 읽고 문제 목록(40~50개) 출력 (STEP 1-1)
 ③ 문제 목록 검토 후, 같은 대화창에서:
+   "STEP 1-2 진행해줘"
+   → L8~L13 슬라이드/스크립트 읽고 문제 목록(40~50개) 추가 출력 (STEP 1-2)
+④ 검토 후, 같은 대화창에서:
    "STEP 2 진행해줘"
-   → study_guide.html에 T/F 트레이너 섹션 추가 + 저장 → exit
+   → STEP 1-1 + 1-2 문제 전체를 데이터로 사용해 T/F 트레이너 섹션 추가 + 저장 → exit
 ```
 
 ---

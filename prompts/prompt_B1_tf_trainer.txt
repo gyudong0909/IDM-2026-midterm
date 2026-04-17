@@ -27,21 +27,79 @@ sudo apt-get install poppler-utils
 
 ---
 
-## 작업 순서 — 반드시 2단계로 진행
+## 작업 순서 — 반드시 3단계로 진행
 
-### STEP 1: 문제 생성 (먼저 이것만 출력)
-아래 자료를 모두 읽은 뒤, T/F 문제 목록을 텍스트로 출력하라.
-HTML 코드는 아직 작성하지 말 것.
-
-출력 형식:
+출력 형식 (STEP 1-1, 1-2 공통):
   번호. [기출|예상] "문장" → TRUE/FALSE / 한 줄 해설
   - 기출: 기출 PDF에서 그대로 가져온 문항 (연도 표기: 2024/2025)
   - 예상: 기출 패턴 분석 후 새로 생성한 문항
 
-STEP 1 출력이 끝나면 멈추고 확인을 기다릴 것.
+### STEP 1-1: L1~L7 문제 생성 (먼저 이것만 출력)
+아래 자료를 읽고 L1~L7 범위 T/F 문제만 텍스트로 출력하라. HTML 코드 작성 금지.
+
+읽을 자료:
+  기출 PDF 2개 (함정 패턴 파악용):
+    /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
+    /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
+  강의 슬라이드 (L1~L7):
+    /mnt/d/SNU/26-1/DM/lecture notes/1-intro.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/2-mapreduce.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/3-spark.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/4-itemsets-1.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/5-itemsets-2.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/6-lsh-1.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/7-lsh-2.pdf
+  강의 스크립트 (L1~L7):
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 1 - Introduction.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 2 - MapReduce.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 3 - Spark.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 4 - Frequent Itemsets 1.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 5 - Frequent Itemsets 2.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 6 - Finding Similar Items 1.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 7 - Finding Similar Items 2.txt
+
+목표 문항 수 (L1~L7):
+| 범위 | 문항 수 |
+|------|---------|
+| L1 Introduction | 3~5개 |
+| L2 MapReduce + L3 Spark | 12~15개 |
+| L4~L5 빈발 아이템셋 | 12~15개 |
+| L6~L7 LSH | 12~15개 |
+
+STEP 1-1 출력이 끝나면 멈추고 확인을 기다릴 것.
+사용자가 "STEP 1-2 진행해줘"라고 하면 그때 다음 단계로 넘어간다.
+
+### STEP 1-2: L8~L13 문제 생성 (STEP 1-1 확인 후)
+아래 자료를 읽고 L8~L13 범위 T/F 문제만 텍스트로 출력하라. HTML 코드 작성 금지.
+
+읽을 자료:
+  강의 슬라이드 (L8~L13):
+    /mnt/d/SNU/26-1/DM/lecture notes/8-clustering-1.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/9-clustering-2.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/10-dimred-1.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/11-dimred-2.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/12-recsys-1.pdf
+    /mnt/d/SNU/26-1/DM/lecture notes/13-recsys-2.pdf
+  강의 스크립트 (L8~L13):
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 8 - Clustering 1.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 9 - Clustering 2.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 10 - Dimensionality Reduction 1.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 11 - Dimensionality Reduction 2.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 12 - Recommender Systems 1.txt
+    /mnt/d/SNU/26-1/DM/lecture script/Lecture 13 - Recommender Systems 2.txt
+  ※ 기출 PDF는 STEP 1-1에서 이미 읽었으므로 재독 불필요
+
+목표 문항 수 (L8~L13):
+| 범위 | 문항 수 |
+|------|---------|
+| L8~L9 클러스터링 | 15~18개 |
+| L10~L11 차원 축소 | 12~15개 |
+| L12~L13 추천 시스템 | 15~18개 |
+
+STEP 1-2 출력이 끝나면 멈추고 확인을 기다릴 것.
 사용자가 "STEP 2 진행해줘"라고 하면 그때 HTML 섹션을 작성한다.
 
-### STEP 2: study_guide.html에 T/F 트레이너 섹션 추가 (확인 후)
+### STEP 2: study_guide.html에 T/F 트레이너 섹션 추가 (STEP 1-1 + 1-2 확인 후)
 1. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
 2. STEP 1 문제 목록을 데이터로 사용해 T/F 트레이너 섹션을 구현한다
 3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
@@ -53,40 +111,18 @@ STEP 1 출력이 끝나면 멈추고 확인을 기다릴 것.
 
 ---
 
-## 읽어야 할 자료
+## 자료 읽기 지침 (STEP별 분리)
 
-### 기출문제 (문체·함정 패턴 분석용 — 최우선)
-  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
-  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
-
-  ← 기출 T/F 문항들을 꼼꼼히 읽고 다음을 파악하라:
-     - 교수님이 어떤 개념을 T/F로 묻는가
-     - 어떤 방식으로 함정을 만드는가 (always/never/only, 두 개념 혼동, 경계 조건 등)
-     - 문장 길이, 영어 표현 스타일
-
-### 강의 슬라이드 PDF (내용 출처 — 전부 읽을 것)
-  /mnt/d/SNU/26-1/DM/lecture notes/ 폴더의 1-intro.pdf ~ 13-recsys-2.pdf
-
-### 강의 스크립트 (교수 강조점 파악용)
-  /mnt/d/SNU/26-1/DM/lecture script/Lecture 1 ~ Lecture 13 .txt
-  ← 영어 줄이 실제 강의 내용. 한국어는 AI 번역(오역 가능).
+각 STEP에서 읽을 자료는 위 STEP 설명에 명시되어 있다.
+기출 PDF 2개는 STEP 1-1에서만 읽고, 이후 STEP에서는 재독하지 말 것.
+강의 스크립트의 영어 줄이 실제 강의 내용. 한국어는 AI 번역(오역 가능).
 
 ---
 
 ## T/F 문제 생성 기준
 
 ### 수량 및 배분
-총 80~100문항. 강의 비중에 비례하여 배분:
-
-| 범위 | 문항 수 |
-|------|---------|
-| L2 MapReduce + L3 Spark | 12~15개 |
-| L4~L5 빈발 아이템셋 | 12~15개 |
-| L6~L7 유사 아이템 탐색 (LSH) | 12~15개 |
-| L8~L9 클러스터링 | 15~18개 |
-| L10~L11 차원 축소 | 12~15개 |
-| L12~L13 추천 시스템 | 15~18개 |
-| L1 Introduction | 3~5개 |
+총 80~100문항 (STEP 1-1에서 약 40~50개, STEP 1-2에서 약 40~50개).
 
 ### 문제 품질 기준
 1. **기출 스타일 일치**: 실제 기출 T/F와 동일한 문체·난이도로 작성
