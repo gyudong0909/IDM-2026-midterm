@@ -73,7 +73,7 @@ pdftotext -v
    → 출력 전체 복사 저장 (Part_A.html)
 
 ② [새 대화창 #2] prompt_A1b_L6to10.txt 붙여넣고 전송
-   → 자료 읽음: L6~L10 PDF/스크립트 + MMDS ch3,7,11
+   → 자료 읽음: L6~L10 PDF/스크립트 + MMDS ch3,7,11 + 기출 전체
    → 출력: mmdsExamples_mid[] + L6~L10 섹션
    → <!-- PART A1c CONTINUES HERE --> 로 끝남
    → 출력 전체 복사 저장 (Part_B.html)

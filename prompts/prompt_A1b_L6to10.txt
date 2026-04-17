@@ -42,6 +42,10 @@ sudo apt-get install poppler-utils
   /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch7.pdf   ← Ch 7: Clustering (40p, L8~L9)
   /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch11.pdf  ← Ch 11: Dimensionality Reduction (34p, L10)
 
+### 기출문제 (L6~L10 관련 문제 파악용)
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
+
 ### ⚠️ 읽지 말 것
   /mnt/d/SNU/26-1/DM/lecture video/
 
