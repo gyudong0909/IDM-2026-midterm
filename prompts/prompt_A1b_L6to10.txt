@@ -72,6 +72,9 @@ const mmdsExamples_mid = [
 function renderInlineItems() { /* data-type="exam": pastExams_mid, data-type="mmds": mmdsExamples_mid */ }
 ```
 
+사이드바 링크: L6 | L7 | L8 | L9 | L10
+※ 사이드바는 이 파일(A1b.html)에 실제 존재하는 섹션만 포함. L1~L5, L11 이후·집계 섹션 링크 불포함.
+
 ### 2. L6 ~ L10 각 강의 섹션
 
 각 강의 섹션 필수 블록:
@@ -94,9 +97,14 @@ function renderInlineItems() { /* data-type="exam": pastExams_mid, data-type="mm
 - L8~L9 (Clustering): A-CURE처럼 shrinkage 변형 시 알고리즘 성질 변화
 - 각 알고리즘의 핵심 파라미터 역할 명시
 
-### 3. 파일 마무리
-A1b.html은 완결된 파일이므로 반드시 아래로 닫는다:
+### 3. 파일 마무리 + 초기화
+A1b.html은 완결된 standalone 파일이므로 반드시 자체 초기화 후 닫는다:
 ```html
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    renderInlineItems();
+    // 사이드바 스크롤 연동 초기화
+  });
 </script>
 </body>
 </html>

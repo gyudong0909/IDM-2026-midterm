@@ -54,7 +54,12 @@ sudo apt-get install poppler-utils
 이 파일은 L11~L13 범위 + 전체 집계 섹션을 다루는 독립 학습서다. A1a/A1b와 무관하게 단독 실행 가능해야 한다.
 
 ### 1. HTML 전체 헤더 + JS 데이터 레이어
-A1a.html과 동일한 CSS/구조 사용. script 태그 안에:
+A1a.html과 동일한 CSS/구조 사용.
+
+사이드바 링크: L11 | L12 | L13 | ⚡ T/F 지뢰밭 | 📐 수식 마스터 | 🔧 알고리즘 레시피 | 📝 기출 전체 | 📖 MMDS 예제
+※ 사이드바는 이 파일(A1c.html)에 실제 존재하는 섹션만 포함. L1~L10 링크 불포함.
+
+script 태그 안에:
 ```javascript
 // ※ 변수명 끝에 _c 접미사 필수 — A1d 병합 시 충돌 방지
 const pastExams_c = [

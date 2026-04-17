@@ -94,17 +94,17 @@ const mmdsExamples_early = [
 ];
 ```
 
-### 3. renderInlineItems 함수 + 초기화 코드 (A1c 끝에서 호출)
+### 3. renderInlineItems 함수 정의
 ```javascript
 function renderInlineItems() {
-  // data-type="exam": pastExams에서 data-lecture 필터링하여 렌더
-  // data-type="mmds": mmdsExamples에서 필터링하여 렌더
+  // data-type="exam": pastExams_a에서 data-lecture 필터링하여 렌더
+  // data-type="mmds": mmdsExamples_early에서 필터링하여 렌더
 }
-// ※ 실제 호출(renderInlineItems())은 A1c 마지막에
 ```
 
 ### 4. 사이드바 + 네비게이션
-링크: 기출 메타 분석 | L1~L13 | T/F 지뢰밭 | 수식 마스터 | 알고리즘 레시피 | 📝 기출 전체 | 📖 MMDS 예제 | 📋 과제 해설
+링크: 기출 메타 분석 | L1 | L2 | L3 | L4 | L5
+※ 사이드바는 이 파일(A1a.html)에 실제 존재하는 섹션만 포함. L6 이후·집계 섹션 링크 불포함.
 
 ### 5. 기출 메타 분석 섹션
 - 2024 vs 2025 출제 패턴 비교 테이블
@@ -128,9 +128,14 @@ function renderInlineItems() {
 - `.tag-exam` 블록: "⚠️ 빈칸 출제 유력" + 빈칸 유력 줄 명시
 - 확인된 코드 슬라이드: L5 5-itemsets-2.pdf p34 (SON MapReduce)
 
-### 7. 파일 마무리
-A1a.html은 완결된 파일이므로 반드시 아래로 닫는다:
+### 7. 파일 마무리 + 초기화
+A1a.html은 완결된 standalone 파일이므로 반드시 자체 초기화 후 닫는다:
 ```html
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    renderInlineItems();
+    // 사이드바 스크롤 연동 초기화
+  });
 </script>
 </body>
 </html>

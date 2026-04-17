@@ -14,9 +14,9 @@ DM/
 │   ├── prompt_A1b_L6to10.txt          ← standalone HTML: L6~L10         (→ A1b.html)
 │   ├── prompt_A1c_L11to13.txt         ← standalone HTML: L11~L13 + 집계 (→ A1c.html)
 │   ├── prompt_A1d_merge.txt           ← A1a+A1b+A1c 병합               (→ study_guide.html)
-│   ├── prompt_B1_react_tf_trainer.txt ← T/F 트레이너 섹션 추가
-│   ├── prompt_B2_react_code_blanks.txt← 코드 빈칸 섹션 추가
-│   └── prompt_B3_react_hw_solutions.txt← 과제 해설 섹션 추가
+│   ├── prompt_B1_tf_trainer.txt       ← T/F 트레이너 섹션 추가 (바닐라 JS)
+│   ├── prompt_B2_code_blanks.txt      ← 코드 빈칸 섹션 추가 (바닐라 JS)
+│   └── prompt_B3_hw_solutions.txt     ← 과제 해설 섹션 추가 (바닐라 JS)
 ├── lecture notes/                ← 강의 슬라이드 PDF (1~13강)
 ├── lecture script/               ← 강의 스크립트 (영한 교차)
 
@@ -90,7 +90,7 @@ sudo apt-get install poppler-utils && pdftotext -v
 
 ### B1: T/F 트레이너 추가 (A1d 완료 후)
 
-**사용할 파일:** `prompt_B1_react_tf_trainer.txt`
+**사용할 파일:** `prompt_B1_tf_trainer.txt`
 
 ```
 ① 새 대화창 열기 (study_guide.html 존재 확인)
@@ -106,7 +106,7 @@ sudo apt-get install poppler-utils && pdftotext -v
 
 ### B2: 코드 빈칸 추가 (B1 완료 후)
 
-**사용할 파일:** `prompt_B2_react_code_blanks.txt`
+**사용할 파일:** `prompt_B2_code_blanks.txt`
 
 ```
 ① 새 대화창 열기
@@ -118,7 +118,7 @@ sudo apt-get install poppler-utils && pdftotext -v
 
 ### B3: 과제 해설 추가 (B2 완료 후)
 
-**사용할 파일:** `prompt_B3_react_hw_solutions.txt`
+**사용할 파일:** `prompt_B3_hw_solutions.txt`
 
 ```
 ① 새 대화창 열기
@@ -139,9 +139,9 @@ sudo apt-get install poppler-utils && pdftotext -v
 - [ ] A1d: `prompt_A1d_merge.txt` → `study_guide.html` 생성 (JS 병합 + `<!-- B_SERIES_ANCHOR -->` 삽입) → exit
 
 **B 시리즈 — study_guide.html에 인터랙티브 섹션 추가**
-- [ ] B1: `prompt_B1_react_tf_trainer.txt` → STEP1 확인 후 "STEP 2 진행해줘" → T/F 트레이너 추가 → exit
-- [ ] B2: `prompt_B2_react_code_blanks.txt` → 코드 빈칸 섹션 추가 → exit
-- [ ] B3: `prompt_B3_react_hw_solutions.txt` → 과제 해설 섹션 추가 → exit
+- [ ] B1: `prompt_B1_tf_trainer.txt` → STEP1 확인 후 "STEP 2 진행해줘" → T/F 트레이너 추가 → exit
+- [ ] B2: `prompt_B2_code_blanks.txt` → 코드 빈칸 섹션 추가 → exit
+- [ ] B3: `prompt_B3_hw_solutions.txt` → 과제 해설 섹션 추가 → exit
 
 **완료 후**
 - [ ] 브라우저에서 `study_guide.html` 열기
