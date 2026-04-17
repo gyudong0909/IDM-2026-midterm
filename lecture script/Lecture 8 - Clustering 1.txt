@@ -1,0 +1,1336 @@
+Hey, good morning everyone. Let's begin today's class.
+
+So with that talk, we move on to a new topic, which is a little different from the previous
+
+finding similar items topic, which was relying on the locality sensor pattern. So I guess
+
+plus 3 is more easier and more intuitive topic to understand. And this is the first part.
+
+So before we go to the advanced versions, we now briefly discuss the basic things like
+
+the basic problem setup and basic methods for the cluster. So I guess today would be
+
+like not hard to follow compared to the previous class. So just a few announcements. There's
+
+word one out. Please keep in mind the deadline is later on and the word two will be posted
+
+on the same page from the deadline. And in terms of the languages, I guess you should
+
+use English for assignments. That's because for writing an assignment, you have some time.
+
+And in fact, recently, AI is really good for translating our Korean thing into English.
+
+So I don't think that would be a problem for you to write something in English as long
+
+as you can find it. And because our class is officially on English, I guess writing
+
+something in English does not matter to you. But for example, because we have a very limited
+
+time for doing the exam and since most of you are Korean, it is okay to use Korean for
+
+the exam. So please keep in mind the language restriction rule first. And we have created
+
+a new board called lectures on VDL. So you are free to ask any questions regarding lectures.
+
+For instance, you might find some typos on lecture slides or you think some things are
+
+wrong or you think some things are unclear. So please feel free to ask any questions on
+
+the lectures board. But of course, you are free to ask anything in classes at the same
+
+time. So you're just free to ask anything. And as I said, so we will still keeping the
+
+participation score, which is the 2% overall rate, overall score, which is not a big matter
+
+to you. And I don't think that would be something you really should take care of for
+
+upgrading your grade. But it's just there. So if you have something in mind, you don't have to feel
+
+like, I mean, you are okay to ask anything on ETL.
+
+All right. So let's just do a little bit of recap of what we have just learned. So we have learned
+
+some basic understanding on locality-sensitive hygiene for finding similar documentaries.
+
+So instead of focusing on the technique, we cover some theoretical background on LSH, like how to
+
+understand the bending technique in a more general way, like the combined V-and and
+
+O-re constructions, or how can we define this locality-sensitive family, and how can we
+
+extend our technique to other distance measures, like the angular distance, which is using the
+
+random type of plane technique instead of the mean hashing for creating your signatures.
+
+And in terms of understanding these things, we also saw ESPR, which determines how good
+
+our function is compared to the discrete unit step function. And you even also learned that
+
+these two regions, like here and here, define different types of errors, like the false
+
+negative errors and false positive errors. So I guess you quite understood the things discussed
+
+in the last time. So any questions? No? Great. So as I said, I don't think today will be hard.
+
+Very basic introduction of what clustering is and what would be the simple ways to do clustering.
+
+So what is clustering? I guess you have heard the name clustering from some documents.
+
+Clustering is basically a process of grouping a collection of points into clusters. It's basically
+
+grouping. So let's say we have some student information. Let's say I want to cluster
+
+your information in this classroom. Then probably I can say some students are, like for instance,
+
+from some high schools, some students are from some departments, there will be some rules or
+
+there will be some strategies to make a great group of yours. Right? The clustering is basically
+
+to make a good group that can separate different types of points in the space. So our basic
+
+expectation for clustering is the members of the same cluster should be close to each other or
+
+similar to each other. But at the same time, members from different clusters should be
+
+dissimilar from each other, which is the major assumption of grouping that we think of. And we
+
+put this on cases when data is very large, bi-dimensional, non-equal, and can be defined
+
+to any user. Because as I say multiple times, if the data is very small and if the space is
+
+low dimensional, then the clustering task is very easy to do. But if we grow the size of the data or
+
+the size of the number of dimensionality to like the many thousands or even millions, then the
+
+problem becomes very not straightforward to solve. So that's the basic goal of our whole course,
+
+right? Data mining. So let's first think about the distance measure. Because this is like, sorry,
+
+let me go back to the previous slide. So when we solve some problems, the most important thing is
+
+to define the problem. So here we use a term like close, similar, or dissimilar. Then if we want to
+
+solve that problem, then we should need to define what a closeness is, what the similarity is, right?
+
+Because that's a basic thing we need to do before designing an algorithm. So I guess we should first
+
+think about the distance measure. Because the distance measure gives some notion of the
+
+similarity between points in the space. So I guess we can recall the four requirements for
+
+a distance measure that was covered in the previous time, like the triangle,
+
+the property, and the non-neutrality like that, I guess you remember. So first of all,
+
+you can think about the equilibrium space. The popular distance measures include the equilibrium
+
+distance, Manhattan distance, L0 distance, or L infinity distance. You don't have to memorize
+
+these things. I just want to cover there can be various ways to find distances between points.
+
+Although in many cases, we often use only equilibrium distance, which is a basic distance
+
+measure. But based on the characteristic of data or based on our specific goal, we can
+
+use our distance measures without worrying about whether they are correct or not.
+
+So let's think of an example. I mean, it's always good to look at an example. So let's see that we
+
+have a two-dimensional space. We don't know what the dimensions would represent, but we still have
+
+two dimensions. And let's say we have some points. And I guess it's natural to think of this three
+
+clusters based on how they are distributed in the space. And we also find some outliers, like this
+
+one or that one. So we can create clusters to include these outliers as well. So for instance,
+
+we can increase the size of the circle in this way. But I don't think that would be a good cluster
+
+because it's certainly an outlier which is separated from all other points. So when we want to do a good
+
+clustering, then we sometimes care about this outlier. Because if you try to create clusters
+
+that include all the points in the space, then the quality of these clusters might be worse than
+
+this person. So in data mining, we call the test to find such outliers as outlier detection
+
+or unvalid detection, which is basically a different problem from clustering. So clustering
+
+itself does not care about these outliers in many cases because finding outliers is itself a difficult
+
+problem. So these clustering and outlier detection are sometimes interchangeable. Sometimes they're
+
+just created with the same thing, but sometimes they are not the same. So in most cases,
+
+outliers focus on clustering, not outlier detection. But depending on algorithms, some algorithms
+
+naturally can detect an outlier. So you should keep in mind that.
+
+So then let's think about another example. Let's think about documents.
+
+We have some ways to represent the document as a vector, as I introduced. We can basically apply
+
+a case shingles and represent the document as a binary vector or set. Or we can apply a tf-idea
+
+thing to represent the vector as a real-world vector. Or we can even apply an LLM or advanced
+
+machine learning or deep learning to represent each document. But anyway, here we simply represent
+
+a document as a binary vector where each element is one if and only if the I word appears in the
+
+document. So in this case, I have one of the simplest ways to define a document vector.
+
+Then our idea is our idea of clustering, our motivation to do clustering is documents with
+
+similar words are about the same topic. So our task is to define clustered development,
+
+okay, if the document is a point. So this whole thing looks similar to our previous topic about
+
+finding similar documents. But if you think about it, our similar topic was about finding document
+
+pairs, similar document pairs. And because we care about similar document pairs, we more think about
+
+how to reduce the quadratic complexity to almost linear complexity and how to define the similarity
+
+between two documents. But here our goal is more broad. We care more about making clusters, so it
+
+is okay for us to make it wrong or right for some individual document pairs. We care about more
+
+broad and more coarse-grained clustering in terms of the document. So even though these two tasks
+
+look similar, but how we approach these problems and how we design our algorithms is a little bit
+
+different from LSH and this quality. Okay. And as I said, it is important for us to do,
+
+like it is important when we approach the clustering to define a distance vector,
+
+because a different distance vector leads us to a different clustering, of course,
+
+a more different result of clustering. So let's think about the document example.
+
+So even though we have many ways to represent the document, not even though, like because of that,
+
+we have many ways to define this. For instance, let's say our document is a set, then you can
+
+understand the document which is represented as a set as a vector. So if we understand this
+
+document as a vector, then probably we can measure similarity by cosine distance, which is the vector
+
+distance vector, or angular distance as we call it. Or if you understand documents as sets, then
+
+probably you can measure similarity by the draw-par distance, which is good. Or if we understand the
+
+document as points, then probably we can measure the distance between the equilibrium distance.
+
+So what I want to say is, based on how we understand the data, based on what properties of data we
+
+should really focus on, we can choose a decent proper distance vector. And you might understand
+
+that there is no answer in that. It's just our design choice. So let's look at another example
+
+of the two-dimensional space. Let's say we want to cluster some dogs into some species. I don't know
+
+if these are real species or not, but let's say some height, like Jindo, Umsan, Chaksar.
+
+So if you want to, here let's assume that the x-axis is the weight of a dog and the y-axis is
+
+the height. Then in the two-dimensional space, even everyone in this room, even a human,
+
+even though he is not a programmer, we can easily cluster these points just by looking at this point.
+
+So in fact, clustering is a very intuitive task even for humans, and it seems like we don't need
+
+a sophisticated algorithm to do clustering. We can look at how they are distributed.
+
+But the main problem is, as long as the dimensionality is small, as long as it's
+
+a two-dimensional space, I guess it is okay to have many points. Because even though we have
+
+hundreds of points or thousands of points still, just by looking at the two-dimensional space,
+
+we can understand how they are distributed. So then we can easily draw a decision boundary
+
+between these clusters, and we can also determine the number of clusters to be introduced to the
+
+space. But the problem is the curse of dimensionality. The problem is, if the data becomes a
+
+high-dimensional point or high-dimensional vector, then it is really, really hard for us to create
+
+meaningful clusters. Let's just think about these three examples. If the points are on the
+
+one-dimensional line, then it's either easier for us compared to the dimensional space. But if it
+
+goes to the dimensional space, four-dimensional, or even a hundred-dimensional space, it becomes
+
+nearly impossible for humans to do clustering ourselves. And a more theoretical or more
+
+mathematical limitation that comes from the high-dimensional space is the curse of dimensionality,
+
+which I will say in the following slide. So what this curse of dimensionality means is,
+
+it's like a phenomenon that happens in the high-dimensional space, which says that
+
+almost all pairs of points are equally far away from one another. What does that mean? It means,
+
+for instance, if you look at the one-dimensional space, and let's say, so okay, if you look at this
+
+example, there are 11 points, and these 11 points create, where is that white line?
+
+These 11 points create like 11 times 10 divided by two possible distances between each other.
+
+Then we can probably create a distribution of distances like this normal distribution.
+
+Probably it will follow some kind of normal distribution. So let's say we can point all
+
+these possible distances between pairs of points, and then it will create some density distribution
+
+of the distances. And here we look at the variance of these distances. So if the variance is large,
+
+that means probably there are some pairs that are close to each other, there are some pairs that are
+
+far from each other. Then this variance of the distances between possible pairs of points
+
+lets us understand the quality of clustering, because if the SIC item variance is large,
+
+probably it means there are more easy clusters to be defined. So what this first of dimension
+
+limit means is this variance is decreasing fast if the dimension limit increases.
+
+So let me show you the next slide for your understanding.
+
+Okay, so let's consider the two random points in the nth dimensional unit hypercube. You know
+
+what a hypercube is? A hypercube is a cube, basically a cube, where its line is from zero to
+
+one. So it's like the, you know, right there, right? So the size of the unit hypercube is the same,
+
+even though we created the dimension limit, but it's just a simple definition of the space.
+
+And one thing important to note is the variance of the distances, as I showed here,
+
+the variance of the distances between period of points goes to a constant when the dimension
+
+will be goes to infinity. It does not follow the dimensionality, it goes to a constant,
+
+which is a severe problem. So if you look at this distribution, as the n increases,
+
+as the dimensionality increases, the variance decreases sharply. So that means almost all the
+
+points in the unit hypercube are close to each other by a similar amount. It means it is almost
+
+impossible to create a good cluster from a bad cluster. Let's suppose that n is 2,500. So that
+
+means in our data set, every sample or every document is represented as a vector of size 2,500.
+
+Then if we really compute the distance between any pair in the 2,500 dimensional hypercube,
+
+the distance can be anything between 0 and 50, 50 is maximum possible distance in the unit hypercube
+
+in that high dimensional space. But if you really draw possible distances between random points,
+
+then we see that most distances are just in the 20 and 21. That means, as I said, if you look at
+
+the distribution, all the points look like they are gathered into a very small circular shape,
+
+even though the space is large. So the dimensionality makes it hard to visually look at the space,
+
+at the same time makes it hard to design a good distance measure or a good photorecord rhythm,
+
+because the distances are almost similar between each other. Any questions? Great.
+
+So, okay, so this graph is not hard to understand. So xx is the distance. So you can,
+
+this figure is almost the same as this figure. If we pick two random points in that unit hypercube,
+
+then this distribution is like a pdf of the distance between two points, or the density of
+
+the distance between two points. So, or we can think that we create a lot of points and you can
+
+actually compute the distance between points and create this empirical density estimation from the
+
+distances. So it goes to right, because the space becomes larger as we increase the
+
+dimensionality. Okay, because the maximum possible distance decreases as we increase the
+
+dimensionality. But the variance becomes smaller and smaller and smaller as we, as this plot goes
+
+to the right side. So what this figure means is the same as the claim showed in this slide.
+
+As we increase the dimensionality, the possible range of distances increases,
+
+but the variance of actual expected distances decreases. Okay. More questions?
+
+Okay, so this first of dimensionality is our main topic for this course. This is just to introduce
+
+that clustering is not that easy in the high dimensional space. Okay, so until the previous
+
+slide, we covered most of the basic introduction of clustering. So let's think about some basic
+
+strategies to do clustering, because clustering, unlike LSH, doing clustering itself is not hard.
+
+I mean, doing good clustering is hard, but doing clustering itself is not that hard. For instance,
+
+we think about two basic categories of clustering strategies. The first is the
+
+hierarchical and another is point assignment. Hierarchical clustering means we list all the
+
+points in our space A, B, C, D, like any other here, this is a point. And you can create some
+
+tree, like a tree that combines similar points or close points in the space in one spot. So that is
+
+basically a hierarchical approach. So if you think about the Atom Bomb approach or
+
+in a hardware, the home rocket approach, initially we start with every point. And let's say we compare
+
+the distances between all parallel points and we gather two close points in one step. And then
+
+after one step, we say these points are in the same cluster. And we do that again and again
+
+until there is one cluster remaining in the space. Then we can simply create a threshold to stop.
+
+For instance, if we stop at that point, then we get two clusters where the first cluster is A, B,
+
+the second cluster is A, C, D, D, F. So this is a simple approach. It makes sense. And at the same
+
+time, you can also do it top down. We start from a single cluster and we can divide the points
+
+so that they are far from each other as much as they can from the top to the bottom. So they are
+
+basically two ways to do hierarchical clustering. And another strategy is to point assignment. It does not
+
+create a tree like that. It just creates clusters directly from the space. So I will explain
+
+specifically how to operate them. Let me compare these two big strategies they have called the
+
+clumps. So point assignment, because it doesn't create a complicated tree, it doesn't follow a
+
+complicated iterations. In many cases, it's fast and efficient. And it's good when the clusters
+
+have nice shapes. For instance, if the clusters look like the left one, we know that the centers
+
+of the clusters are very far from each other. So probably almost all point assignment operations
+
+will work well on the point on the space shown on the left-hand side of this line. But the problem is
+
+if the clusters look weird, like on the right side. For instance, here we have two clusters. We,
+
+like humans, know that there are two clusters, but their centers are basically the same. So we
+
+feel like some point assignment operations, although we didn't cover about algorithms are there
+
+and in the community, it's hard to find the three clusters because they look like similar to point
+
+assignment operations. But if you apply a hierarchical method like the bottom-up approach, which works by
+
+comparing the pair of points from the bottom to the top, then probably it will be able to detect
+
+these two different clusters. Because the hierarchical approach does not care about the shape of the
+
+cluster. It just cares about the distance between points. But it is okay, right? Sometimes it's a
+
+weird shape cluster for hierarchical approaches. Okay.
+
+Okay. So, and we also care about space. So every space, I can say, can be divided into basically
+
+a Euclidean space and a non-Euclidean space. So in most cases, we care about only the Euclidean space,
+
+but if we really don't do the cluster well, then we also need to think about the non-Euclidean space.
+
+So this is not a math class. So I am not that interested in the mathematical property of the
+
+Euclidean or non-Euclidean space. I want to just give you some intuition. So in the Euclidean space,
+
+points are basically vectors of real numbers, or we can say they are four.
+
+So in the Euclidean space, there is no problem at all to summarize the set of points as a centroid.
+
+If we are given like a 10 points or 100 points, we can always create a center that summarizes
+
+all these points in the center. But here, there is no matter to be anything defined on the Euclidean
+
+space like L2, L1, Euclidean, and anything else. Okay. But the problem is, if we go to a non-Euclidean
+
+space, we can say there is no notion of location or centroid. Because in a non-Euclidean space,
+
+it is really hard to define a good center point. I mean, there the typical distance,
+
+the concept of distances in our mind does not work in a non-Euclidean space. Because here,
+
+we can say there are points in the space, but it's really hard to do some arithmetic operations
+
+between these clusters in the non-Euclidean space. So in the non-Euclidean space, we should
+
+summarize the collection of points differently than the Euclidean space. And this makes the
+
+problem a little bit harder. And many examples, like let's think about the JAPA algorithms.
+
+Basically, sets are, well, if you think about sets as binary vector in the Euclidean space,
+
+then it's okay. But if you understand the sets themselves, like if we don't want to map these
+
+representations of documents into Euclidean space, then you should think more about
+
+what this has measured and how to define, how to summarize the collection of points in different
+
+matters. So why is that? As I said, this is not a mathematical state, mathematical class, so I will
+
+just show you this here. So finding the center points is difficult in the Euclidean space,
+
+because how the space is organized or how the points are distributed in a space
+
+is really not consistent in the non-Euclidean space. So if you're not good at math, you can
+
+simply think that creating a summary of points, creating a center of the points is basically very
+
+hard for a non-Euclidean space. That makes a difference. Because, let me go to this side,
+
+comparing clusters is easier when we can define their centers. For instance, if we want to compute
+
+the distance between two clusters, then if you can pick one center here, one center here, then the
+
+comparison becomes a little straightforward. But if we are hard to define the centers of clusters in
+
+the non-Euclidean space, then as I said, it's a little bit harder to define the distance between
+
+the two clusters. And this is the last one. So among the algorithms that we're going to cover,
+
+like probably for the next part, the second part of the cluster, there are two basic
+
+algorithms. One is on memory cluster, which is easy because all the data can be in memory. But
+
+if the data are not able to be fitted in memory, then you should store data on this. And here,
+
+the problem is the disk passes, which is the same as the finite-free finite instance. If the data is
+
+on data, on disk, then you should design a different algorithm that does not require the
+
+full data loaded at once in memory. So we will cover some algorithms on the second part, which
+
+does not require the data fully loaded in memory, like the VCR, VFR, and fewer algorithms are
+
+popular by large data cluster methods. Okay, so today we will cover only the in-memory cluster.
+
+There is not a big challenge for studying the memory cluster methods, which are simple.
+
+So that's the reason why I say that they would not be that difficult to understand.
+
+Any questions? No? Great. Okay, then let's learn two basic ways to do cluster entry.
+
+Hierarchical clustering and K-means clustering, both of which are really simple.
+
+So let's look at the hierarchical clustering. So as its name implies, the key operation is to create
+
+such a tree of points by repeatedly merging two nearest points or questions. So then let's say
+
+that you are a engineer. You are an engineer that needs to design your own hierarchical clustering
+
+and bulletin as a worker at some company, like Samsung, for instance. Then there are some design
+
+questions that are in virtual dress, like how to represent the cluster, how to determine the
+
+nearness, how to define the nearness of clusters, or when to stop merging clusters. So let's
+
+answer these questions together. Okay, so in the Euclidean case, if the space is Euclidean, then
+
+our answers are straightforward in most cases. So the first question is how to represent a cluster
+
+of many points. So as we are on the Euclidean space, we can probably merge clusters and we
+
+represent the location of each cluster by its center. Like the simple algorithm state of
+
+what is just okay to do in the Euclidean space. Then if you represent every cluster as its
+
+centroid, the following question is how can we determine the nearness of clusters? Then I mean
+
+it is also an easy question, right? Because we have the centroid of clusters, we can measure
+
+cluster distances by the distances between their centers. And probably we can merge two clusters
+
+with the shortest distance, which is good, right? But as you can say, so this thing, if we represent
+
+a cluster as a centroid, let me go back to a previous slide, then it's hard for us to
+
+create such different clusters. So a design choice is related to what clusters that can be captured
+
+or what clusters that cannot be captured. So even though we do hierarchical cluster, as long as we
+
+present this cluster as its center, probably our algorithm would not be able to detect it to different
+
+clusters. Anyway, I just wanted to make sure. So at least in the Euclidean space, if we
+
+represent the cluster as its centroid and if we define the distance between clusters as
+
+centroid distances, then everything becomes really easy and straightforward. So let's look at an
+
+example. We are on the dimensional space and we have six different points. And here is the
+
+dendrogram of like the three clusters of six points. And okay, let's follow the slide one by one.
+
+First, we, so what is the first thing we need to do? We need to compare every pair of
+
+points in the space. So here are six points, so we should do like six times five divided by two
+
+comparisons, and we need to find the closest pair of points. And here are the two closest pairs of
+
+points. And then it creates two different clusters, the blue one and the green one. And they create two
+
+different centriques which become new representatives of these clusters. So here is our dendrogram and
+
+at this point we have four different clusters where two of them are singleton clusters.
+
+Then we do it again by combining the blue cluster with the red one and the green cluster with the
+
+yellow one to be the cluster. And it changes the locations of their centriques because, obviously
+
+because these new clusters contain a different point. Then we create the final single cluster
+
+that summarizes all these clusters. So it depends on us when to stop. If we stop here,
+
+then here's the cluster. If we stop here, then we get four clusters. So the our main question is to
+
+determine when to stop. But before we move on, let's think about these efficiencies.
+
+So if you are a good computer scientist, then at this point just by hearing how this algorithm
+
+works, you might think about efficiency of this algorithm. Because at each step, we should compute
+
+distances between all possible pairs of clusters, which creates very inefficient running time. Because
+
+every all-pair comparison is basically n-squared. And it goes to m-1-squared, m-2-squared. So
+
+it creates a cubic complexity, which is a problem. Our whole bucket for finding singleton items was
+
+about reducing this quadratic complexity to linear. But here the complexity is cubic, which
+
+is really a big problem if the number of data points is large. But the problem is, at least we
+
+want to do this hierarchical clustering, there is no way to avoid this high complexity. No natural
+
+way to avoid this high complexity. So we can make it better by using a priority queue. So if you
+
+learn, if you take the class of data structure, then you know what the priority queue is. There
+
+are many ways to implement the priority queue, like as a tree or as a set. But this is a great
+
+data structure for prior typing elements. So if we had a priority queue, we define a score
+
+for every element. And we can dequeue from this priority queue, which has the largest or the
+
+highest score based on how we define the score. So you know this priority queue, it doesn't support
+
+like the random access of the points, but it allows us to get the highest score point in a very
+
+efficient time, like almost in a constant time or for a low linear time, low time. So if we implement
+
+this priority queue, we can at least make the complexity n squared times log n, which is better
+
+than cubic of n, but still the complexity is not satisfactory. So why is it better? I mean, because
+
+the priority queue is better than correct. So that's just it. But the problem is, what I wanted to
+
+say is, as long as we combine pairs of points, we cannot avoid this high complexity. And that's the
+
+reason why almost all algorithms in practice are implemented based on point assignment methods,
+
+which are directly finding clusters from the points distributed in space. The hierarchical
+
+clustering, although it's simple, it is not that efficient to implement in practice.
+
+Any questions so far? Yeah.
+
+And entry of queue becomes from the pair of points?
+
+Yeah, pair of points or like the distance between points.
+
+And for already obligated points, we can
+
+store some sets that are...
+
+Yeah, I mean, you're correct. So as we merge points in the space, we replace the point,
+
+like the point distance is the priority queue with the cluster distances. So I guess it was a
+
+good point. The priority queue, we don't store elements, that's all. We store distances between
+
+a pair of elements or a pair of clusters. Is that your question?
+
+Yes. Okay. Yeah. Okay. So I mean, I introduced this priority queue thing, but honestly,
+
+this is not the main focus of this class because I mean, even with the priority queue, the algorithm
+
+is still slow. So that's the reason why I cannot talk much about the priority queue in our class,
+
+because as I said, our class is not a data structure class. I will just assume that
+
+you know a little bit about priority queue. Work that sense? Great. Great.
+
+Okay. Then let's go to the world of a non-nuclear space. In a non-nuclear space, as I said,
+
+the only locations we can talk about are the points themselves. Basically, it is not allowed
+
+to create a new synthetic point that summarizes a cluster. So the questions are the same, basically,
+
+as before. How to represent a cluster and how to determine the nearest cluster. And you can
+
+consider that any algorithm designed for a non-equal space can also be used in the equilibrium space
+
+because non-equal space, you can say a non-equal space has more restrictions designed on it.
+
+So we can always apply something studied in the non-equal space to an equilibrium space.
+
+I mean, it would be not all, but at least most of the cases, it is okay.
+
+So in a non-equal space, the question is how to represent the cluster. So here,
+
+because we've not created a new centroid, we can probably pick a close rate. What is a close rate?
+
+Close rate is basically an existing point, which is the closest to all the other points. So it is
+
+basically different from centroid because it's not a synthetic. It is just a point that we pick
+
+because it's the best point existing in the cluster to represent the cluster.
+
+And for doing that, we should define the meaning of inclusives in the statement. For instance,
+
+the inclusives can mean the smallest maximum distance or the average distance to all other points.
+
+For instance, probably we can create any points in the added cluster. Let's say we have
+
+six points. So because in the non-equal space, it is hard to collectively compare the
+
+vocations of these points. So what we want to do is, let's say we, from our visual understanding,
+
+probably this would be a close rate. And based on how we define the close rate,
+
+let's say we compute the average distance to all other points. Then this point creates
+
+five distances with others. And the one, two, three, four, five, the average distances that we create
+
+the, for instance, the i. And for this one, we can also create all the possible distances
+
+between other points and this will create the dj. So if di is smaller than dj, then we pick di as
+
+a close rate. So it is a representative point that shows the best shape of the cluster. And if you
+
+pick the smallest maximum distance as the meaning of the close rate, then it becomes a little
+
+different because we only care about the maximum distance. But here, for this point, the maximum
+
+distance would be between this and that. For this one, the maximum distance would be between
+
+this and that. So we compare these two distances and take one as a close rate.
+
+And if we pick the close rate, then the following question is the same as
+
+the central. We can consider close rate as a representative of the cluster. So we can
+
+determine the distances between the close rates. So I mean, it's intuitive to compare the
+
+centuries and close rates. So I guess centuries is better than close rate in most cases,
+
+at least in the Euclidean space, because centuries is a better center of the cluster.
+
+But the close rate, for the close rate, we have one more restriction for defining it because close
+
+rates should be on the existing data. So if we draw a cluster as shown here, then the
+
+center rate will be the center of the distance, but the close rate can be a little bit far from
+
+the center, real center, because it should be an existing point. But because of that, the close
+
+rate is more interpretable, we can say, because centuries basically are artificial data points.
+
+If you think about this doggy sample, then if you create a century of each cluster, then the century
+
+means basically a synthetic dog, which does not exist. But if we take one close rate from each
+
+cluster, then that cluster is an existing dog. So probably a user or an engineer might think it's
+
+easier to understand if the center of the cluster is an existing dog compared to the non-existing
+
+synthetic dog. Then if we do a close rate wait, and you can even get the dog, mark right then,
+
+and look at the dog, how this dog looks like, which is better than imagining the synthetic dog.
+
+But yeah, but there are pros and cons, but at least in terms of the computations, I can say
+
+cluster rate creates more restrictions in design operations. But is it the only way?
+
+So let's think about not using the cluster rate, because we assume the cluster rate is not good.
+
+Then one way is not to summarize the cluster at all. So we represent the cluster as the collection
+
+of points themselves, not doing, not creating a century or a cluster rate. In that case,
+
+I need to consider what is okay, but the problem is determining the nearness of clusters becomes a
+
+harder problem, because we don't have a summarized point anymore. So probably we can define inter
+
+cluster distance in any, for instance, if we combine this, if we compare these two clusters,
+
+probably we can consider the minimum of the distances between any two points one from each
+
+other, or we can compute the average distance of all pairs of points one from each other. So
+
+I mean, it will obviously take more time than comparing centuries or clustering, but it is still
+
+a design choice. And the problem with this approach is as long as the cluster size increases,
+
+it also creates a quadratic complexity. It's not good, but it's still one choice that we can make.
+
+How about another one? So let's think of the third one. Here we represent the cluster as a collection,
+
+the same as before, but we will do a different way to define the nearness of the clusters. So
+
+here we define the nearness as we merge clusters, the union is more cohesive. So
+
+let me show you this here, because that is a little bit different from the previous one.
+
+So when you want to compare these two
+
+clusters, the previous approach was about comparing all periods of points between the two clusters,
+
+cluster one and cluster two, right? But this one, this approach is like we create the single
+
+B cluster by containing all the points from the two clusters, and then we look at how good this
+
+cluster is. If the resulting cluster is good, that means it is okay for us to merge into clusters.
+
+If the resulting cluster is bad, we say that the merge was a bad idea. So the approach two and
+
+approach three are similar, very similar to each other, but they have different ways of thinking
+
+to qualify the quality. So here are possible notions of cohesion. So here we need to define
+
+the quality of cohesion, like how good this cluster is given this big merge cluster. So there can be
+
+many possible ways. For instance, we measure the diameter of the merge cluster, which is the maximum
+
+distance between any two points, or we can compute the average distance between 12 to 20,
+
+or we can compute the diameter divided by the number of points. So this is almost like a
+
+density of the cluster. I mean, they're slow. They're slow again, but it is at least a different way to do it.
+
+So, I mean, we covered various possible techniques. There are not a thing that is
+
+better than the other in most cases. It is just they have just different pros and cons.
+
+So they are just design successes. Important thing is you should understand in what cases
+
+one is better than the other and one is good and one is bad. So the final question for this
+
+hierarchical clustering is when do we stop merging clusters? And there are again many possible ways
+
+to determine when to stop versus if the diameter of the merge cluster exists some threshold,
+
+or if the density defined in the previous slide of the merge cluster is a little critical,
+
+or if there is some evidence that the merge cluster yields a bad clustering. Anything is okay.
+
+Then we have a pop quiz. I think it is a really straightforward pop quiz, but let me do it together
+
+with you. I mean, I think I should give you some time to do it because it's really easy.
+
+Here we have some problem definition. Here the definition is the distance between two clusters is
+
+the maximum of the distances between any two points. So that is our definition of the distance.
+
+And because of that, probably we don't have to create any accentuates or cluster rates because
+
+based on that definition of the distance between. So 1, 4, 9, 16, 25,
+
+30+. That would be the first merge, probably these two, right? Because they are obviously close.
+
+And probably the next one is since the definition is the maximum of the distance,
+
+I guess these two, right? Because the distance between 9 and 16 is 7. And then I guess,
+
+I'm not that good at probably these two probably because their distance is 11.
+
+And next thing would be these two because the distance between these two is 15. And
+
+I think it would be in this way. It might be wrong. I'm not good at calculation in my mind,
+
+but at least you understand how it works. Any questions?
+
+Please, Ryan. I know that, but let me proceed. Okay. It was the hierarchical clustering,
+
+which is obvious. Then let me go to one popular point assignment algorithm, K-MIS clustering.
+
+So for almost all machine learning engineers, they know what K-MIS is. K-MIS is like, I can say,
+
+the most popular clustering algorithm, like overall possible implementations in the world.
+
+So it is good to know.
+
+Okay. As I said, K-MIS is the best known family of clustering algorithms for point assignment
+
+because it's simple, easy, and great in theory. So we are given Euclidean space.
+
+Okay. So assumption here is we should work on the Euclidean spacing. And we also care about the
+
+Euclidean distance. So this algorithm is specific to Euclidean space and Euclidean distance at the
+
+same time. And we should take the K, the number of clusters as an input. So unlike in hierarchical
+
+clustering, where we could determine the value of K, the number of clusters dynamically during the
+
+algorithm, here K is an input. And we can obviously try multiple K and compare the resulting cluster
+
+quality by trial and error, but it doesn't provide a way to determine K dynamically during the algorithm.
+
+So our goal is find cluster centers that minimize the sum of square distances from
+
+each point to each cluster center. So this algorithm contains a definition of the good
+
+cluster itself. Our goal is to find cluster centers that minimize the sum of square distances between
+
+each point to this cluster center. So this is it. This algorithm is like a whole package.
+
+The algorithm is simple. We initialize clusters by picking K centers because we know
+
+K in advance. Let's say K equals three. Then we just initialize the random clusters, like three random
+
+clusters across the points. It is okay to do it anyway. And until convergence,
+
+we just repeat these two steps until convergence. Very simple. The first step is for each point,
+
+we assign that point to the clusters whose center is the closest. So which means we look at every
+
+point and we assign that point to the cluster that is the closest to that point. And then after all
+
+points are assigned, we update the center rates of the K clusters as the average of data points
+
+within each cluster. So we update the points and we update the cluster, update the points, update
+
+the clusters until there is a convergence. Then here the convergence means that points don't move
+
+between clusters. So let me move on to an example. Okay. Let's say we set K equal two and we have two
+
+clusters of points. So if you look at this figure, probably a better cluster assignment would be this
+
+much and this much probably because there is a gap between these two points. But at this point,
+
+we don't know the information yet because we just initialized the cluster centers. So let's say we
+
+pick the leftmost example as the center of the right cluster and this one as the center of the
+
+blue cluster, at the initial assignment. Then all the points that are closest to this cluster
+
+are mapped to this blue cluster and these two points, because they are closer to the right
+
+center compared to the blue center, they are on the right cluster. So this is the initial starting
+
+point. And then, so in fact the real initial starting point is to pick the cluster centers
+
+and then we assign the points to the cluster centers. Then obviously the current centers are
+
+not aligned with the actual center of the cluster, right? Then we update the centers.
+
+We update the centers to the right, so the blue center from here to here, the red center from here
+
+to there. And based on the updated centers, we reassign the points because the points have different
+
+closest cluster centers because of the updated centers. We do it again, again and again,
+
+resulting these two clusters. So if we reach a steady state, then the points or the clusters
+
+will not be updated anymore because it's a steady state. So at this point, if a center is here
+
+and a center is here, we have no points or no clusters to be updated. That is done
+
+by a simple tree iteration. So here a great thing is it doesn't require quadratic complexity.
+
+Why is that? Because we don't compare points and points. We compare only points and cluster centers.
+
+This is much better than hierarchical clustering. And here we don't have to think about a complicated
+
+tree or dendrogram, something like that. We just keep iterating. But two simple operations, point
+
+assignment and cluster assignment until there is a concrete. So I mean, in practice,
+
+I mean, it is good to have the theoretical guarantee, but in practice, it is better to
+
+implement a simpler, predictable breakdown. So this is, I mean, you understand why this is the
+
+most popular breakdown because it was really simple, but it works really well. But still,
+
+it is not a bulletproof. It has many limitations. And the first one of the things is initial center.
+
+So the quality of this operation is really affected by the initial center. Because it does not
+
+guarantee binding this global optimum. It can be reached to a local optimum based on the initial
+
+center. For instance, let's look at this kind of thing. So here we have six points in the space,
+
+and there is no clear center here. There is no clear notion of the cluster. So let's say we say
+
+K equals two. Then at this point, it is not predictable how this operation will work,
+
+starting from the two initial centers. So the center can go to the left or can go to the right,
+
+and we are not even sure whether this operator will converge or not in some cases. So like the
+
+quality of K means because it is simple, sometimes it can take many iterations until it's
+
+convergent, and sometimes it can be very unstable. So there is another algorithm,
+
+advanced version of K means, which is called K means plus plus. So the idea is we just pick points
+
+that are likely to lie in different clusters as initial starting points. How this works is the same,
+
+but we just care about finding a good initial point. Because as I said, finding good initial
+
+points determines the number of iterations until it converges. So the basic idea is we pick a small
+
+sample of points S, like let's say 10 points, and we cluster these points very fast. We can even use
+
+the hierarchical cluster if the number of points is small. Then we use their center. We use the
+
+center of the resulting clusters as initial points, as the starting point of the K. So because we have
+
+a very small sample of points, we can apply a more advanced and theoretically great algorithm for
+
+cluster these points, and then it gives the result for all beta. So the root of this, we can set the
+
+sample size for personal to K times log N, K is the number of clusters, and log N is the number of
+
+data. I mean there's not a specific rule to follow, but it's a general rule of thumb. Because the
+
+sample size should be proportional to the data, but doesn't have to be linearly proportional.
+
+And how to pick sample points is also, it depends a lot. It is also a design choice, like pick a
+
+sample point to do the function. So we can say that we visit points in random order. We
+
+create random multiplication of all points and visit them in a random order, and we add point
+
+to the sample with a probability proportional to D of the X-Sphere, where D is the distance between
+
+B and the nearest already visible. So as I said, why do we do it? Because if we fail in selecting
+
+the great sample points, then the whole algorithm will also fail. So we want the sample points that
+
+are far from each other, that can cover a more broad region in the space, so that our sample
+
+clustering can work well. So if we sample points based on the probability proportional to its
+
+distance from existing already picked points, then probably we would be able to cover more broadly
+
+with the trees as a sampling thing. But what I want to say is, how to pick the sample points,
+
+like determine the sample size, they are all design choices. Basically, they are all design
+
+choices based on the, for instance, in some cases, we can increase the sample size or decrease the
+
+sample size, or in some cases, we can make it proportional to the distance or the square distance
+
+or the cubic distance based on how we want to do it. But you know the reason why this is not picking
+
+the maximum distance point, because that is too deterministic and too extreme. So we just want
+
+the points to be distributed more broadly, but we don't want to pick the extreme points. For instance,
+
+you know, if the cluster points look like that one, if you just pick the maximum distance points,
+
+then probably we would pick this tree, which is too extreme, right? So we don't want that to happen.
+
+So for preventing that from happening, we use mostly a probabilistic sampling,
+
+not that deterministic, like a complicated sampling. So this scaling plus plus is about
+
+selecting the initial points better. And this the following slides are showing how this algorithm
+
+actually works, as you know. Any questions so far?
+
+Is it guaranteed that K-means method converge and if it converges, then it is hidden?
+
+Not unique. And so I should probably check it again, because I almost forgot how it works. But as far as
+
+I know, it is guaranteed to converge, but the converge state would not also be unique. So as
+
+far as I know, given the initial starting point, the convergence is guaranteed and the solution is
+
+unique. But the solution is unique with respect to the initial assignment. So if the initial
+
+assignments are changed, the solution can also change. Am I correct? Anyone who knows? Okay,
+
+probably it's correct. But I mean, I try my best to explain anything in the slides, but since all
+
+these algorithms are very traditional and I don't use them anymore, so I might be wrong in some cases.
+
+Please let me know if I'm wrong. I'm okay to be corrected. But anyway, that's how I understood K-means.
+
+Good? More questions?
+
+Great. So let's look at the remaining. Okay, let's look at the remaining questions. Everything so far
+
+is good. K-means is a simple, efficient algorithm, and we also covered how to select the initial
+
+centroid data. But the problem is K. I mean, it's a big problem because even before looking at the
+
+data, even before doing clustering, how do we know the number of clusters? I mean, it's a little
+
+weird to set K in advance of doing this K-means clustering. But the problem is we don't have a way
+
+to select K, a good K, before doing an actual clustering. So one good thing is we just try
+
+this K-means with different values of K. Probably we can try K-means on a sample data, it's up to us,
+
+but what I say is it really depends on the trial of the data. Let's say we increase the K and we do
+
+this K-means clustering again and again depending on K. So this is a plot for doing this K-means
+
+multiple times. And let's say the y-axis is average distance to the centroid. So if we increase K,
+
+the average distance to the centroid, like average distance between points and their corresponding
+
+centroid decreases all the time. So we can say at least if we measure the quality of clustering
+
+as the average distance to the centroid, then the quality increases as well as K increases. So there's
+
+no optimal K at least in that way. But the problem is we don't want to create the 100 clusters.
+
+Like let's say in this figure, if we increase the number of clusters to 4, 4, 6, 4th man, we can say
+
+the quality of clustering is better because the points are more closer to the centroid. But that's
+
+not what we really want. We want to minimize the number of clusters while minimizing the distances.
+
+So in many cases, we say that we want to find some kind of a knee point, a way of K value that
+
+creates sufficiently low distances and when increasing K further does not decrease the
+
+distance anymore. So optimal K means that average distances fall rapidly until the right K
+
+and then it changes a little. So that's the basic concept of finding optimal K. But if you ask,
+
+is there any concrete theoretical way to determine the optimal K, then I'll say no. There's no such
+
+thing. It just depends on us. Probably. And I mean we can design a measure for that. For instance,
+
+let's say the quality of K. Let's say we can define a function in our own good.
+
+Okay, I'll just do anything.
+
+Right. How do you say it?
+
+Let's say we create a measure something like that. So we can say the quality of K is the change of
+
+distances from K and K minus 1 over K and K plus 1. Let's say. Then I mean that might be some measure
+
+to tell us the quality of K, right? Because in that way, if the K decreases the distance from
+
+the previous K is large and if the marginal distance from K to K plus 1 is small, then the
+
+quality will be increased. But this is just what I created at this moment. So it really depends on
+
+engineers and the actual property of the data.
+
+Okay. So we know the optimal K is important. I mean I guess it's more important than by initial
+
+good cluster. Because obviously we have three clusters here. But in case two, and the cluster
+
+quality is bad obviously, but in case two, in case three, well it looks optimal. In case four,
+
+I mean it's not bad. Some people say that these points and these points are in different clusters.
+
+Some people might say that. But obviously, well the previous one might be better than the four
+
+clusters I can say. So K is important. So another thing is K does not allow us to find out layers.
+
+Because as a nature of the point assignment method, because of its simplicity, it is very weak to
+
+out layers. For instance, here N, and that out layer, that out layer, the K means trying to include
+
+them in the existing cluster. It doesn't provide a way to exclude them. So if we can safely
+
+remove these out layers, then the three clusters will look like optimal. But because of this
+
+existence of these out layers, probably this might look not that bad. Because this purple
+
+cluster completes an out layer, and because of that, it essentially shifts to the bottom a little bit,
+
+and it becomes a cluster point that does not include any out layers. Or if we increase the
+
+number of clusters more and more, probably in some case, a new cluster will be assigned to a
+
+distinct cluster. And the other cluster will be covered only at this point. So if K means,
+
+if it works in an ideal way, then we can expect the out layers are containing only single-term
+
+clusters. That's the ideal expectation that we can have from K means. But the problem is they
+
+decide directly. So these out layers can decrease the quality, the overall quality of K means a lot.
+
+So that's the reason why these out layer detection and clustering are very related on base study.
+
+All right. That's basically all that I wanted to discuss today.
+
+So any questions before we finish?
+
+14. Okay. 14. Yeah.
+
+So everything we learned today heavily focuses on the distances between the union nodes.
+
+And I get that just logically thinking and just looking at the graph that yellow and green are
+
+great. They are grouped. But green is heavily grouped, and they have short distances. But
+
+yellow, I'm not sure if we can call that cluster a cluster with minimum distances, and their average
+
+distance would be low. So I guess my set of clusters just have the same topic, but I'm not
+
+sure if our algorithm will give us that kind of cluster, because I don't think yellow is going to
+
+have a low average from the clusters. And also I'm not sure if data-wise that cluster would be
+
+having any meaning, because if we just think of the data without the green, I'm not sure if the
+
+yellow data have wishes, similar concepts like what we would like to need.
+
+Yeah. Great question. So let me rephrase the question, because I guess the question itself
+
+will not be recorded. So basically, I can say the question is whether this green and yellow
+
+clustering is meaningful, or is it good, or is it something that people can agree on, or is it
+
+something that our brain can actually detect? Something like that. So first thing is, I can say,
+
+at least for me, this cluster looks good, but it depends on how we understand this cluster.
+
+So for instance, you can say, as a tension in black, this green one is obviously a great cluster,
+
+because they are gathered, and they are dense, and they create some meaningful distribution.
+
+But the yellow one, I mean, there is no specific rule that might summarize the points of the yellow
+
+cluster, because they are basically more confirmed. They create very broad and more like a coarse-grained
+
+cluster. So for some people, they might not agree that the yellow thing creates a close-grained one.
+
+But I guess, first of all, that will depend on the perspective of the engineer. That will depend on
+
+one cluster that you want to detect or not. That's the first thing. And the second thing is,
+
+if you want to detect such a cluster, if you believe that the yellow cluster is meaningful to detect,
+
+then you can design an algorithm that is able to detect some kind of thing. So then, let's do the
+
+reverse engineering. Let's think about the algorithm that can detect this yellow cluster.
+
+Then probably one thing is, as long as we apply the hierarchical clustering, where is that?
+
+Okay, so if we implement this non-equilibrium hierarchical clustering, which does not create
+
+centrates or clustered, but which defines the distances between two clusters as the
+
+minimum of the distances between the two points, then I can say this algorithm will be able to
+
+detect such a cluster. Because based on that algorithm, it is probably these points will be
+
+connected to each other before they are connected to this green one. Because at least you can say
+
+the distance between this pair of adjacent pairs of yellow points is smaller than the distance between
+
+green and yellow ones. So what I can say is, the design of the algorithm or our goal of doing
+
+clustering or our understanding of the data, all of that defines what cluster they want to find
+
+or what clusters are good to find. So what I want to really emphasize today is clustering does not
+
+have an answer. Clustering is just a way to understand how this data is distributed and what
+
+insights or observations that we want to get from this data. So everything is basically a design
+
+choice. And I can surely say that your point is valid, but I can say some people can say that
+
+this yellow cluster is good. Some people might say that it's not good, but it's just up to how
+
+do you understand the data. Great.
+
+Can I understand your answer as something if the points are on the sphere and the yellow ones
+
+are on the equator and the green ones are on the pole, and if you look at the flat sphere with two
+
+big plates, it seems like it's like that, but it's really stating might have some relation to
+
+that kind of thing. The height is zero or something. Can I understand the answer like that?
+
+So I'm not sure I understood your question correctly. So is it your question that
+
+there might be underlying hidden relationship between these points in the
+
+height of metal space?
+
+Okay, so I will give my best answer that I can create. So here assumption is every data is
+
+like basically a two-dimensional space. So let me rephrase the question in this way. So
+
+every data is not a fixed dimensional point in fact. Every data is more like a complicated
+
+mixture of information like variables, and the representation is some kind of illustration of
+
+such information. For instance, if you think about a document, document is more semantic,
+
+more complicated thing, but as we determine to represent the document as a fixed
+
+dimensional space, at least in the perspective of clustering, we do not care about the higher
+
+dimension. We just assume that every point is a fixed dimensional point existing on this
+
+line. So what I say when I say that the general clusters make sense, I will not imply that there
+
+might be some relationship on the higher dimensional space. The reason is because basically, as I said,
+
+their distances are close to each other. So some clusters can look weird. Let's say in a dimension
+
+space, we can consider that let's say, let's think about these two clusters for instance, similar to
+
+this one. So it's obvious that they create a cluster, but some people say that it's like
+
+an L-shaped cluster. Some people say that this is a belly cluster. Some people say that this is not a
+
+belly cluster because they are too far from each other. So some people say that we should create
+
+these two clusters which might be better than the L-shaped. So what I just want to say is we don't have
+
+to think complicated. It just depends on us whether people look at these clusters and agree on
+
+or not. It's just basically a design choice, what cluster that we want to detect. So I can say my
+
+answer is this way. Good. Okay, great. More questions? Yeah.
+
+I have a question. Hello, I'm Chris, that's my 32.
+
+Am I wrong?
+
+I'm thinking after we merge number one and four, we can merge a pretty closer in number nine.
+
+Yeah. So then the one and four clusters, because the distance is the maximum of the
+
+possible distances, so I can figure out the distance between one four cluster and nine would be eight.
+
+Because if the maximum distance is between 0.1 and nine.
+
+Yeah. I understand.
+
+Yeah, right. Okay, it's good that I was not wrong. Yeah. I mean, this is just a simple example,
+
+so yeah, it doesn't matter much, but okay, great. More questions?
+
+Okay, then let's conclude. So we covered some very, very basic things about clustering. And as I said,
+
+clustering is a very practical topic. When we analyze data, probably the first thing we do is
+
+a clustering, because clustering is a thing that you can try without having a very great understanding
+
+for data. But the algorithms that we covered today are really simple and in memory algorithms.
+
+So as I do, in most cases, we will move on to more advanced algorithms like next week, more like
+
+database algorithms or like non-nuclear algorithms, more algorithms to learn more interestingly.
+
+So that's it for today and see you next week.
+

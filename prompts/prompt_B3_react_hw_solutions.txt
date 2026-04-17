@@ -1,0 +1,266 @@
+# PROMPT B-3: React Artifact — 과제 해설 앱
+# 대상: Claude MAX (claude.ai) — Artifact 기능 사용
+# 목적: IDM HW1·HW2 문제·풀이 인터랙티브 뷰어
+# =============================================================
+
+## ⚠️ 교수 출제 철학
+> "I personally don't like memorizing. I want to ask your understanding skills —
+>  how you understood the content and how well you can use the knowledge
+>  to solve other problems."
+
+과제 문제는 시험 문제의 예고편이다.
+풀이는 단순 정답이 아니라 "왜 이 방법인가"를 설명해야 한다.
+
+---
+
+## ⚙️ 사전 준비 (작업 전 확인)
+
+이 프롬프트는 로컬 PDF 파일을 읽는다.
+Claude Code에서 PDF 읽기가 가능하려면 `poppler-utils`가 설치되어 있어야 한다.
+
+```bash
+sudo apt-get install poppler-utils
+```
+
+---
+
+## 읽어야 할 자료
+
+### 과제 PDF (전부 읽을 것)
+  /mnt/d/SNU/26-1/DM/hw1/IDM2026-HW1.pdf
+  /mnt/d/SNU/26-1/DM/hw2/IDM26_Spring_HW2.pdf
+
+### 강의 슬라이드 PDF (풀이 근거 확인용)
+  /mnt/d/SNU/26-1/DM/lecture notes/ 폴더의 관련 강의만:
+  - HW1 Q2 (Frequent Itemsets): 4-itemsets-1.pdf, 5-itemsets-2.pdf
+  - HW1 Q3 (LSH): 6-lsh-1.pdf, 7-lsh-2.pdf
+  - HW2 Q1 (Clustering): 8-clustering-1.pdf, 9-clustering-2.pdf
+  - HW2 Q2 (Dim. Reduction): 10-dimred-1.pdf, 11-dimred-2.pdf
+  - HW2 Q3 (Rec. Systems): 12-recsys-1.pdf, 13-recsys-2.pdf
+
+### 기출문제 (유사 문제 패턴 확인용)
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
+
+### ⚠️ 읽지 말 것
+  /mnt/d/SNU/26-1/DM/lecture video/
+
+---
+
+## 요청
+
+IDM 과제 해설 React Artifact를 만들어라.
+순수 React + inline CSS + KaTeX로 만든다.
+
+KaTeX 로드 방법:
+```js
+useEffect(() => {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
+  document.head.appendChild(link);
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
+  script.onload = () => setKatexLoaded(true);
+  document.head.appendChild(script);
+}, []);
+```
+
+---
+
+## 앱 구조
+
+### 최상단 탭: [HW1] [HW2]
+
+각 탭 안에 문제별 카드 목록.
+
+---
+
+## HW1 탭 구성
+
+### Q1: MapReduce & Spark (30pts)
+- 소셜 네트워크 공통 친구 알고리즘
+- 시험 관련성: 🟡 간접 관련 (MapReduce 설계 원리)
+- 풀이: Map 단계 (친구 쌍 생성) → Reduce 단계 (공통 친구 카운트) 흐름 설명
+- 핵심: wide dependency 발생 지점, combiner 적용 가능 여부
+
+### Q2: Frequent Itemsets (30pts)
+- (a) MMDS Exercise 6.2.7: A-Priori 메모리 계산
+  - 시험 관련성: 🔴 시험 직결
+  - 풀이: triangular-matrix vs hash table 메모리 비교, N·M 함수로 표현
+- (b) PCY 알고리즘 실습 (browsing.txt 데이터)
+  - 시험 관련성: 🟡 간접 관련
+
+### Q3: LSH 관련 (PDF에서 정확한 문제 확인 후 작성)
+  - 시험 관련성: 🔴 시험 직결
+  - 풀이: 단계별 중간 과정 포함
+
+---
+
+## HW2 탭 구성
+
+### Q1: Clustering (30pts)
+- (a) 총 분산 분해 증명 (Total Variance = Between-cluster + Within-cluster)
+  - 시험 관련성: 🔴 시험 직결
+  - 풀이: Σ||x_i - μ||² = Σ_k n_k||μ_k - μ||² + Σ_k Σ_{x∈C_k}||x - μ_k||² 수식 전개
+- (b) k-means Spark 구현 — 뼈대 코드 TODO 블록 해설 포함
+  - 시험 관련성: 🟡 간접 관련 (Spark 파이프라인 + broadcast 패턴)
+  - 아래 뼈대 코드의 각 TODO를 풀이하라:
+
+```python
+# hw2_q1_kmeans.py — 뼈대 코드 (TODO 7개)
+
+def parse_point(line: str) -> Vector:
+    ######### TODO #########  ← 공백/탭 구분 문자열 → float 리스트
+    return ...
+
+def squared_distance(x, y) -> float:
+    ######### TODO #########  ← Σ(x_i - y_i)²
+    return ...
+
+def closest_centroid_index(point, centroids) -> int:
+    ######### TODO #########  ← argmin squared_distance(point, c) for c in centroids
+    return ...
+
+def merge_cluster_values(a, b):
+    # a = ([sum_vector], count), b = ([sum_vector], count)
+    ######### TODO #########  ← (vector_add(a[0], b[0]), a[1] + b[1])
+    return ...
+
+def compute_wcss(points_rdd, centroids) -> float:
+    ######### TODO #########
+    bc_centroids = ...      # ← sc.broadcast(centroids)
+    wcss = ...              # ← points_rdd.map(λ p: squared_distance(p, bc_centroids.value[closest_centroid_index(p, bc_centroids.value)])).sum()
+    ########################
+    bc_centroids.unpersist()
+    return float(wcss)
+
+def run_kmeans(points_rdd, k, max_iter):
+    ######### TODO #########
+    sc = ...                # ← points_rdd.context
+    centroids = ...         # ← points_rdd.take(k)
+    ########################
+    for _ in range(max_iter):
+        ######### TODO #########
+        bc_centroids = ...  # ← sc.broadcast(centroids)
+        assigned = ...      # ← points_rdd.map(λ p: assign_point(p, bc_centroids.value))
+        aggregated = ...    # ← assigned.reduceByKey(merge_cluster_values)
+        cluster_stats = ... # ← aggregated.collect()
+        ########################
+        # new_centroids: cluster_stats에서 sum/count로 centroid 계산
+        ...
+    return centroids, compute_wcss(points_rdd, centroids)
+
+# main():
+######### TODO #########
+points = ...  # ← sc.textFile(data_path).map(parse_point)
+########################
+```
+
+### Q2: Dimensionality Reduction (20pts)
+  - PDF에서 정확한 문제 확인 후 작성
+  - 시험 관련성: 🔴 시험 직결
+  - SVD/PCA/CUR 관련이면 중간 계산 단계 전부 포함
+
+### Q3: Recommendation Systems (50pts)
+- (a) User-User CF + Item-Item CF 구현 — 뼈대 코드 TODO 블록 해설 포함
+  - 시험 관련성: 🔴 시험 직결 (Pearson, 예측 공식 = 시험 직결)
+  - 아래 뼈대 코드의 각 TODO를 풀이하라:
+
+```python
+# hw2_q3_cf.py — 뼈대 코드 (TODO 5개)
+
+def cosine_similarity_from_dicts(vec_a, vec_b):
+    ######### TODO #########
+    # dot(a,b) / (||a|| * ||b||)
+    # 공통 key만 사용, ||v|| = sqrt(Σ v[k]²)
+    return ...
+
+def load_ratings(ratings_path):
+    # user_ratings, item_ratings 로드는 제공됨
+    user_means = {}
+    ######### TODO #########  ← {u: mean(user_ratings[u].values())}
+    item_means = {}
+    ######### TODO #########  ← {i: mean(item_ratings[i].values())}
+    return user_ratings, item_ratings, user_means, item_means
+
+def mean_center_by_user(user_ratings, user_means):
+    centered_user_ratings = {}
+    ######### TODO #########
+    # centered[u][i] = user_ratings[u][i] - user_means[u]
+    return centered_user_ratings
+
+def predict_user_based(target_user_id, candidate_movie_id, ...):
+    ######### TODO #########
+    # 1. 후보 neighbor: candidate_movie를 평가했고, target과 공통 평가 ≥ min_overlap
+    # 2. sim(u, v) = cosine(centered_user_ratings[u], centered_user_ratings[v])
+    # 3. top-k neighbor 선택 (|sim| 기준)
+    # 4. r̂(u,i) = mean_u + Σ sim(u,v)*(r(v,i)-mean_v) / Σ|sim(u,v)|
+    # 5. clip to [0.5, 5.0]
+    return ...
+
+def predict_item_based(target_user_id, candidate_movie_id, ...):
+    ######### TODO #########
+    # 1. 후보 neighbor item j: target이 j를 평가했고, overlap(i,j) ≥ min_overlap
+    # 2. sim(i,j) = cosine(centered_item_ratings[i], centered_item_ratings[j])
+    # 3. top-k neighbor 선택
+    # 4. r̂(u,i) = mean_i + Σ sim(i,j)*(r(u,j)-mean_j) / Σ|sim(i,j)|
+    # 5. clip to [0.5, 5.0]
+    return ...
+```
+
+- Challenge: ROC-AUC 최적화 (BPR/implicit feedback)
+  - 시험 관련성: 🟡 간접 관련
+
+---
+
+## 각 문제 카드 구성
+
+```
+[문제 번호] [배점] [시험관련성 태그] [강의 태그]
+
+▼ 문제 원문 (영어, 접기/펼치기)
+
+▼ 풀이 (기본 펼쳐져 있음)
+  - 단계별 설명
+  - 수식은 KaTeX
+  - 계산 문제: 중간 단계 테이블
+
+[핵심 개념] 한 줄 요약
+[기출 연결] 유사 기출 문제 번호 (있는 경우)
+```
+
+---
+
+## 시험 관련성 태그 기준
+
+코딩 과제 여부와 무관하게 **개념 내용** 기준으로 판단하라:
+- 🔴 시험 직결: 개념·계산이 기출 패턴과 일치하거나 그대로 출제 가능한 것
+- 🟡 간접 관련: 원리 이해에 도움, 변형 출제 가능한 것
+- ⚪ 시험 무관: 환경 설정·제출 형식 등 행정적 내용만
+
+예시:
+- HW2 Q3 CF 구현 코드 → 🔴 (Pearson 공식, 예측 수식이 시험 직결)
+- HW1 Q1 MapReduce 공통 친구 구현 → 🟡 (wide dependency, combiner 원리)
+- HW2 Q1 k-means Spark 구현 → 🟡, 단 (a) 분산 분해 증명 → 🔴
+
+---
+
+## 추가 기능
+
+### 시험 관련성 필터
+상단에 필터 버튼:
+[전체] [🔴 시험 직결만] [🟡 간접 관련]
+
+### 진행 체크박스
+각 카드에 "이해 완료" 체크박스 → localStorage 저장
+상단에 "HW1: X/Y 완료 | HW2: X/Y 완료" 진행률 표시
+
+---
+
+## 스타일
+- 배경: #0d1117 (GitHub 다크)
+- 카드: #161b22, 테두리 #30363d
+- 🔴 태그: #da3633, 🟡 태그: #d29922, ⚪ 태그: #6e7681
+- 상단: "IDM 과제 해설 | HW1·HW2 | 중간고사 2026-04-23" 워터마크
+- 모바일 반응형

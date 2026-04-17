@@ -1,0 +1,111 @@
+# PROMPT A1b: study_guide.html — Part B (L6~L10)
+# 대상: Claude MAX (claude.ai) — 새 대화창 (A1a와 별개 세션)
+# 목적: IDM 중간고사 학습서 Part B 생성 (3개 세션 중 두 번째)
+# 어셈블리: A1a 출력 + [이 출력] + A1c 출력 → study_guide.html
+# =============================================================
+
+## ⚠️ 교수 출제 철학
+> "I personally don't like memorizing. I want to ask your understanding skills —
+>  how you understood the content and how well you can use the knowledge
+>  to solve other problems."
+
+**2026은 Closed-book.** 공식·알고리즘 단계를 시험장에서 아무것도 없이 재현 가능한 수준으로 작성하라.
+
+---
+
+## ⚙️ 사전 준비
+
+```bash
+sudo apt-get install poppler-utils
+```
+
+---
+
+## 읽어야 할 자료
+
+### 강의 슬라이드 PDF (L6~L10만)
+  /mnt/d/SNU/26-1/DM/lecture notes/6-lsh-1.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/7-lsh-2.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/8-clustering-1.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/9-clustering-2.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/10-dimred-1.pdf
+
+### 강의 스크립트 TXT (L6~L10만)
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 6 - Finding Similar Items 1.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 7 - Finding Similar Items 2.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 8 - Clustering 1.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 9 - Clustering 2.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 10 - Dimensionality Reduction 1.txt
+
+### MMDS 교재 (L6~L10 대응 챕터)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch3.pdf   ← Ch 3: Finding Similar Items (58p, L6~L7)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch7.pdf   ← Ch 7: Clustering (40p, L8~L9)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch11.pdf  ← Ch 11: Dimensionality Reduction (34p, L10)
+
+### ⚠️ 읽지 말 것
+  /mnt/d/SNU/26-1/DM/lecture video/
+
+---
+
+## 출력 내용
+
+이 파일은 A1a 출력의 `<!-- PART A1b CONTINUES HERE -->` 이후에 붙여넣는 내용이다.
+HTML body가 이미 열려있고 script 태그도 열려있는 상태다.
+
+### 1. mmdsExamples_mid 배열 정의
+```javascript
+const mmdsExamples_mid = [
+  // Ch 3, Ch 7, Ch 11 예제·연습문제 전부
+  { id, chapter, exNum, lectures, title, problem, solution, concept }
+];
+```
+
+### 2. L6 ~ L10 각 강의 섹션
+
+각 강의 섹션 필수 블록:
+1. **직관적 이해** (.tag-intuition) — 교수 발언 인용
+2. **핵심 개념 + 공식** (.tag-theory) — 정확한 수식(MathJax), 의사코드
+3. **수치 예제** (.tag-example) — 중간 단계 전부
+4. **시험 포인트** (.tag-exam) — 암기 필수 공식, T/F 함정, Novel Variant 포인트
+5. **이 강의 기출문제** — `<div class="inline-items" data-lecture="lecXX" data-type="exam">`
+6. **MMDS 관련 예제** — `<div class="inline-items" data-lecture="lecXX" data-type="mmds">`
+
+#### 코드/슈도코드 슬라이드 특별 처리
+슬라이드에서 코드·슈도코드 발견 시:
+- 코드 원문 수록 (들여쓰기 유지)
+- 각 줄 한국어 주석
+- `.tag-exam` 블록: "⚠️ 빈칸 출제 유력" + 빈칸 유력 줄 명시
+- 확인된 코드 슬라이드: L6 6-lsh-1.pdf p30 (MinHash 슈도코드), L9 9-clustering-2.pdf p23 (BFR 알고리즘)
+
+#### Novel Variant 출제 포인트 (각 섹션 .tag-exam에 포함)
+- L6~L7 (LSH): Dω 커스텀 거리 메트릭처럼 새 metric 정의 시 hash family 설계 원리
+- L8~L9 (Clustering): A-CURE처럼 shrinkage 변형 시 알고리즘 성질 변화
+- 각 알고리즘의 핵심 파라미터 역할 명시
+
+### 3. 출력 마무리
+마지막 줄:
+```html
+<!-- PART A1c CONTINUES HERE -->
+```
+※ </body></html> 없이 열어둘 것. script 태그도 닫지 말 것.
+
+---
+
+## 자료 충돌 시 우선순위
+강의 스크립트 > 강의 슬라이드 > MMDS 교재
+
+---
+
+## 금지 사항
+- lecture video/ 접근 금지
+- 수식 유니코드 표현 금지 (MathJax만)
+- 중간 계산 과정 생략 금지
+- placeholder / TODO 금지
+
+---
+
+## 완료 후 체크
+- [ ] mmdsExamples_mid[] — Ch 3,7,11 예제 채워짐
+- [ ] L6~L10 각 섹션에 data-lecture div 삽입됨
+- [ ] MinHash 슈도코드, BFR 알고리즘 코드 수록됨
+- [ ] <!-- PART A1c CONTINUES HERE --> 로 끝남

@@ -1,0 +1,154 @@
+# PROMPT A1a: study_guide.html — Part A (L1~L5)
+# 대상: Claude MAX (claude.ai) — 새 대화창
+# 목적: IDM 중간고사 학습서 Part A 생성 (3개 세션 중 첫 번째)
+# 어셈블리: A1a 출력 + A1b 출력 + A1c 출력 → study_guide.html 저장
+# =============================================================
+
+## ⚠️ 교수 출제 철학
+> "I personally don't like memorizing. I want to ask your understanding skills —
+>  how you understood the content and how well you can use the knowledge
+>  to solve other problems."
+
+**2026은 Closed-book.** 공식·알고리즘 단계를 시험장에서 아무것도 없이 재현할 수 있는 수준으로 작성하라.
+
+---
+
+## ⚙️ 사전 준비
+
+PDF 읽기에 `poppler-utils` 필요:
+```bash
+sudo apt-get install poppler-utils
+```
+
+---
+
+## 읽어야 할 자료
+
+### 강의 슬라이드 PDF (L1~L5만)
+  /mnt/d/SNU/26-1/DM/lecture notes/1-intro.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/2-mapreduce.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/3-spark.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/4-itemsets-1.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/5-itemsets-2.pdf
+
+### 강의 스크립트 TXT (L1~L5만, 교수 강조점 파악용)
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 1 - Introduction.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 2 - MapReduce.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 3 - Spark.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 4 - Frequent Itemsets 1.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 5 - Frequent Itemsets 2.txt
+
+### 기출문제 (전체 — pastExams[] 완성용)
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
+
+### MMDS 교재 (L1~L5 대응 챕터)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch1.pdf   ← Ch 1: Data Mining (20p, L1)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch2.pdf   ← Ch 2: MapReduce (52p, L2~L3)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch6.pdf   ← Ch 6: Frequent Itemsets (40p, L4~L5)
+  ※ Ch 2 첫 부분을 먼저 훑어 예제 형식(Example X.X, Exercise 등) 파악 후 발췌
+
+### ⚠️ 읽지 말 것
+  /mnt/d/SNU/26-1/DM/lecture video/
+
+---
+
+## 출력 내용 (이 프롬프트 한 번에)
+
+### 1. HTML 전체 헤더
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDM 중간고사 완전정복 | 2026-04-23</title>
+  <!-- MathJax CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    /* 전체 CSS — 외부 파일 없음, 단일 HTML */
+    /* .tag-intuition(노랑), .tag-theory(파랑), .tag-example(초록), .tag-exam(빨강) */
+    /* 좌측 고정 사이드바, 스크롤 연동 active */
+  </style>
+</head>
+<body>
+```
+
+### 2. JavaScript 데이터 레이어 (script 태그 열기)
+```javascript
+// ── 데이터 레이어 ──────────────────────────────
+const pastExams = [
+  // 2024·2025 전체 문제 모두 포함 (T/F, 계산, 증명 전부)
+  { id, year, qnum, type, lectures, question, answer, solution, concept }
+];
+
+const mmdsExamples_early = [
+  // Ch 1, Ch 2, Ch 6 예제·연습문제 전부
+  { id, chapter, exNum, lectures, title, problem, solution, concept }
+];
+// ※ mmdsExamples_mid, mmdsExamples_late는 A1b·A1c에서 정의됨
+// ※ 최종 병합: const mmdsExamples = [...] 은 A1c에서 정의됨
+```
+
+### 3. renderInlineItems 함수 + 초기화 코드 (A1c 끝에서 호출)
+```javascript
+function renderInlineItems() {
+  // data-type="exam": pastExams에서 data-lecture 필터링하여 렌더
+  // data-type="mmds": mmdsExamples에서 필터링하여 렌더
+}
+// ※ 실제 호출(renderInlineItems())은 A1c 마지막에
+```
+
+### 4. 사이드바 + 네비게이션
+링크: 기출 메타 분석 | L1~L13 | T/F 지뢰밭 | 수식 마스터 | 알고리즘 레시피 | 📝 기출 전체 | 📖 MMDS 예제 | 📋 과제 해설
+
+### 5. 기출 메타 분석 섹션
+- 2024 vs 2025 출제 패턴 비교 테이블
+- 2026 예상 포인트 (Closed-book 변경 반영)
+- Novel Variant 출제 이력 (A-CURE, Dω)
+
+### 6. L1 ~ L5 각 강의 섹션
+
+각 강의 섹션 필수 블록:
+1. **직관적 이해** (.tag-intuition) — 교수 발언 인용. 왜 이 알고리즘인가.
+2. **핵심 개념 + 공식** (.tag-theory) — 정확한 수식(MathJax), 의사코드
+3. **수치 예제** (.tag-example) — 중간 단계 전부
+4. **시험 포인트** (.tag-exam) — 암기 필수 공식, T/F 함정, Novel Variant 포인트
+5. **이 강의 기출문제** — `<div class="inline-items" data-lecture="lecXX" data-type="exam">`
+6. **MMDS 관련 예제** — `<div class="inline-items" data-lecture="lecXX" data-type="mmds">`
+
+#### 코드/슈도코드 슬라이드 특별 처리
+슬라이드에서 코드·슈도코드 발견 시:
+- 코드 원문 수록 (들여쓰기 유지)
+- 각 줄 한국어 주석
+- `.tag-exam` 블록: "⚠️ 빈칸 출제 유력" + 빈칸 유력 줄 명시
+- 확인된 코드 슬라이드: L5 5-itemsets-2.pdf p34 (SON MapReduce)
+
+### 7. 출력 마무리
+마지막 줄:
+```html
+<!-- PART A1b CONTINUES HERE -->
+```
+※ </body></html> 없이 열어둘 것. script 태그도 닫지 말 것.
+
+---
+
+## 자료 충돌 시 우선순위
+강의 스크립트 > 강의 슬라이드 > MMDS 교재
+
+---
+
+## 금지 사항
+- lecture video/ 접근 금지
+- 수식 유니코드 표현 금지 (MathJax만)
+- 중간 계산 과정 생략 금지
+- placeholder / TODO 금지 — 모든 항목 실제 내용으로 완성
+
+---
+
+## 완료 후 체크
+- [ ] pastExams[] — 2024·2025 전체 채워짐
+- [ ] mmdsExamples_early[] — Ch 1,2,6 예제 채워짐
+- [ ] L1~L5 각 섹션에 data-lecture div 삽입됨
+- [ ] <!-- PART A1b CONTINUES HERE --> 로 끝남
+- [ ] HTML/script 태그 열려있음 (닫지 않음)

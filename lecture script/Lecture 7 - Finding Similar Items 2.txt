@@ -1,0 +1,1207 @@
+Hi everyone, let's begin today's class.
+
+So today is about the second part of finding similar items where we study the locality
+
+sensitive hashing functions for finding edges, namesets, similar documents or similar items
+
+for a large purpose of items or documents.
+
+So let's begin, there's nothing special.
+
+So homework one is there, you can check homework one from ETL and I found some questions on
+
+ETL, so you're agreed to ask any questions on ETL and we will do our best to answer to
+
+your questions as early as possible.
+
+And you can check the other questions before asking a question because normally students
+
+have similar curiosity about the assignment, so nothing special there.
+
+So we will make an announcement if something important thing is there, like for instance,
+
+if some questions revealed some ambiguity or limitations or like something unclear from
+
+our instruction, then we will make another announcement.
+
+But other than that, for most typical questions, we will not modify the instruction file.
+
+For those cases, you can check the other questions for any ambiguity or unclearly for yourself
+
+for doing your assignment.
+
+So deadline is early April and at that deadline, the exact same date or one or two days later
+
+than that, we will post another assignment somewhere too.
+
+And then I guess the deadline of homework two will be after the midterm and then there
+
+will be homework three and four during the semester and of course there will be midterm
+
+and final four hours.
+
+So I guess there are no questions on the assignments or the course in overall.
+
+Yeah.
+
+Yeah.
+
+So midterm date.
+
+So we didn't fix the midterm date, but I guess here in SNU, we don't have a specific midterm
+
+week or midterm date, right?
+
+So probably it will be some day of our course like this exact time either on Tuesday or
+
+Thursday.
+
+So we will make an announcement soon.
+
+So if you are unable to attend the midterm or the final because of some important reasons,
+
+then please let us know and we'll think about how to proceed.
+
+And I guess because of that, because we have no more designated time for the midterm, probably
+
+the at least the time for the midterm would be the same as this class hour.
+
+It would be at maximum 90 minutes, I guess, because we don't have more time.
+
+All right.
+
+So let's do some recap.
+
+I'm not sure like since it's a little week later, so I'm not sure how much you remember
+
+the last one, but we covered some techniques for finding similar document sets.
+
+So the problem is we have too many documents in our pile.
+
+So it takes a lot of time to do all pair comparison between these documents.
+
+It takes a quadratic complexity.
+
+So before moving on to reducing the complexity of our search algorithm, we covered some prior
+
+techniques that are needed to reduce the time of saving our documents or implementing our
+
+further techniques.
+
+So the first one was a shingling.
+
+Shingling is not even a complicated technique.
+
+It is a simple way to represent the document as a set of k shingles where k represents
+
+the number of characters as shown in the first label.
+
+So each row represents a k shingle, which is a core element that represents the document.
+
+So we gather these k shingles across all the documents in the set.
+
+And as a result of that, we create that characteristic matrix that summarizes the information of
+
+all documents in our set.
+
+So with that characteristic matrix, every document is represented as a binary vector
+
+set and each column is a document.
+
+So from that characteristic matrix, we define the similarity between documents as a Zocker
+
+similarity in terms of the set.
+
+As I said, that similarity measure is not unique.
+
+We may introduce a different way to represent documents and a different way to define the
+
+similarity.
+
+But at least today, at least in our for at least in class, we assume the Zocker similarity
+
+for that shingles.
+
+And then we learn mean hashing because this characteristic matrix is a huge sparse matrix,
+
+which is really not good for creating an effective implementation for the search algorithm.
+
+So we cover a technical mean hashing, which is basically to pick a random permutation
+
+of rows and to define the mean hash value to be the first row that has one.
+
+So for instance, here based on this permutation, which is a random permutation, we define the
+
+signature of this document for that permutation as the first position of one in that column.
+
+So if we introduce more permutations and if we gather multiple signatures with these random
+
+permutations, we have found that this resulting mean hashing signatures has a great property
+
+where the mean the signatures in a variety in terms of the number of matches overall
+
+over the number of all elements is the same as the Zocker similarity.
+
+In fact, the expected similarity of the signature equals the actual Zocker similarity.
+
+I mean, that was the theoretical foundation for this mean hashing.
+
+And then we covered how to compute this mean hashing signatures without creating an expensive
+
+permutation operator based on a random hash function.
+
+So in fact, we needed, although the main of our topic is finding similar items, but I didn't cover LSH
+
+like locally-assisted hashing yet. These were just the prior techniques before we move on to mean
+
+like the actual locally-assisted hashing.
+
+So this is the big picture, as I said.
+
+In the document, we apply shingling and we apply mean hashing with the implementation
+
+technique that I just introduced. And today we'll cover this locality-assisted hashing,
+
+which is the core component of this whole framework.
+
+So based on this locality-assisted hashing, we could achieve like the sub-quadratic complexity
+
+search of similar documents model pile.
+
+Any questions?
+
+Good.
+
+So let's move on. LSH, Locality-Sensitive Hashing.
+
+So as I just said, the number of document pairs is still large after mean hashing because it does not
+
+change the number of document pairs to compute.
+
+It just reduces the overall complexity to the previous document.
+
+So even if we apply mean hashing, if we have a million documents or a million documents,
+
+then all pair comparison takes a lot of time.
+
+So LSH, Locality-Sensitive Hashing, is a specific technique to reduce the number of candidate pairs.
+
+And specifically, if we state its mean for motivation as one sentence, the main advantages,
+
+it allows us to focus on pairs that are likely to be similar.
+
+So as the word likely implies, it is not an exact technique.
+
+It is more like an approximate probabilistic technique that allows us to remove some very different
+
+document pairs to be computed.
+
+So here comes the general.
+
+We have a mean hash signatures and we have signature matrix.
+
+And we know that similar documents are likely to have more shared signature because of our
+
+theoretical bonding.
+
+So because we know that similar documents will have more similar signature or shared signatures,
+
+here comes our idea.
+
+We will apply a hash function, a random hash function, or only a subset of the signatures for each hash function.
+
+So what it means is, let's say we introduce a 10 different hash functions, and each hash function uses only 10% of all the signatures.
+
+That's the idea.
+
+So if you think about it a little bit, let's say the two documents share 70% of similar signatures.
+
+There are 100 signatures, and let's say these two documents are very similar, so they share 3 signatures over 4.
+
+And let's say they are darker in color, it's 9% of them.
+
+Then if you apply a hash function that uses only 2 signatures, then in most cases,
+
+this hash function will produce the same value for this document here if it uses 2 of them.
+
+Because let's say here, if this hash function selects the first 2 signatures because their similarities are 73%,
+
+then this hash function will produce the same value for this document here.
+
+If this hash function chooses the last two elements like 93 and 40 and 93 and 20, so 111,
+
+then the hash values will be different for each other.
+
+So if you apply a hash function that uses only a subset of the signatures,
+
+then some portion of these hash functions will produce the same value.
+
+Some portion of these hash functions will produce different values.
+
+And based on this output of the hash function, we want to reduce the candidate document pair.
+
+So let me move on to the actual implementation, which would make it easier to understand what is happening here.
+
+The core technique to do is partitioning or banding.
+
+We first divide the signature matrix M into V bands of R rows where the number of rows in M equals V times R.
+
+Let me show you the figure first.
+
+We have a signature matrix M and let's say we have N rows where these rows correspond to the signature.
+
+You remember the formula, right?
+
+Each column represents a document and row represents a signature.
+
+Then we divide the whole signature into V bands where each band contains R rows.
+
+And here V times R equals the number of rows in the matrix, which is the number of signatures.
+
+So this is how we divide the signature matrix into bands, partitioning.
+
+Let me move on to the previous slide.
+
+For each band which contains R rows, we apply a hash function to each column to a hash table with K buckets.
+
+Which means we create a hash table for each band and we apply a hash function to that band.
+
+Here the K, which is the number of buckets in the hash table, is said to be the largest possible to reduce collisions.
+
+We will safely assume that there are no collisions if we have sufficient memory, but there can be collisions.
+
+The K is a number which is basically irrelevant to V, R, or the number of signatures.
+
+That's just the number of buckets in the hash tables.
+
+And we use a different hash table for each band with a different hash function.
+
+So what's happening here is two documents become a candidate there to be compared later if they are hashed to the same bucket at least for one band or more.
+
+And we shouldn't be in R to catch most similar pairs but few non-similar pairs.
+
+I still think some of you don't get the idea, so let me show you this idea, this illustration.
+
+We divided this whole signature matrix into V bands and we created a hash table for every band.
+
+So here we create five hash tables with different hash functions and each hash table contains K buckets where, as I said, K is an arbitrary number which is said to be as large as possible.
+
+So let's say two documents are similar.
+
+Let's say two documents are similar.
+
+Then most of their signatures will be the same, but some of their signatures will still not be the same because their similarity is not 100%.
+
+Then if we divide these signatures into V bands, randomly into V bands, then we can create a safe assumption that if two documents are similar to each other, then at least in one band all the signatures will be the same between these two documents.
+
+That's our idea.
+
+Okay, so I mean it's a single band. Let's say you have two documents, V1 and V2, and let's say their similarity is 80%.
+
+Then almost 80% of their signatures will be the same.
+
+Then if we divide these 100 signatures into V bands, then probably at least in one band all the signatures will be the same between these two documents.
+
+Or it might not be the case. It depends on how the signatures are created or how our hash functions are created.
+
+But let's say if their probability is 90% or 95%, then probably at least in one band they will share all the signatures.
+
+But what if their similarity is very low? Let's say 50%.
+
+I mean similarity of 50% is good. So they will share at least 50% of all signatures between two documents.
+
+But if we create five bands where each band contains 20 rows, then if the document similarity is 50%, then it is highly likely that these two documents share 20 same signatures for a single band because their similarity is 80%.
+
+So here you need to understand that this is kind of a function. A function that maps their similarity, like original similarity, into some kind of hash values.
+
+So let me show you this illustration. At least in the second band, if you look at the second band, then each band will contain R rows, and we apply a hash function to map these signatures in the band to the hash table.
+
+So if the two documents, let's say here column 6 and column 7, column 2 and column 6 are mapped to the same bucket, that means either there is a collision in the hash table, or if there is no collision, it means these documents 2 and 6 share all the signatures in that band.
+
+That means we don't know the other bands yet, but at least if you look at that band, it means that these two documents, column 6 and column 2, are likely to be similar to each other because it is unlikely to have Rs, the same signature in that band if the documents are not similar.
+
+So regardless of whether there is collision or not, here column 6 and 7 are mapped to different buckets. Then it surely means their signatures are different in that band.
+
+So what do we do? What we do here is for all the documents, we apply a hash function to those documents, and we look at what types of documents are mapped to the same bucket or not.
+
+So if a pair of documents is mapped to at least the same bucket, at least in one band, we say that these are our candidates here to be computing later for an exact search.
+
+So this whole process is kind of approximate technique to filter out what documents are likely to be similar or not likely to be similar.
+
+Okay? Questions?
+
+Yeah.
+
+I wanted to double. So the column here is just like a bucket. So we're screening the document into the email.
+
+So here our assumption is, it's documents are already represented as kind of M signatures, and we divide this M into bit times R events.
+
+So it will be more clear if I give you some examples. Okay?
+
+Okay. Suppose that our signature matrix is of size 100 times 100,000.
+
+That means we have 100 min-test signatures and 100,000 documents to come here.
+
+Let's say our goal is to find all 80% similar here. So 80% is our similarity threshold to solve the problem.
+
+Then if we do not apply this whole technique, probably we should compute like 5 billion pairs of signatures. It can take a while to compute.
+
+So let's apply this technique, and let's say with many bands with five rows. Okay?
+
+So here the values of b and r always change based on our intention, but here let's assume b equals 20, r equals 5.
+
+Okay. So let me give you some examples. Suppose that these documents, c1 and c2, are 40% similar.
+
+So they are below the similarity threshold, so they are a magnitude.
+
+So let's calculate the actual probability that we choose this document here as a candidate later. Okay?
+
+So what is the probability that they have the identical signatures in at least one particular band?
+
+That is simply 0.4 to the power of 5, because their similarity is 40%, and their signatures should be the same for five independent rows of repeat factors.
+
+And this one particular band. So the probability that these two documents share all the signatures the same in one band is like 1%, 0.01.
+
+The signatures are identical in at least one of the 20 bands is surely higher than this one percent, right?
+
+So the probability is, if you know a little bit about probability theory, it should be 1-1, 0.01 to the power of 20 subtracted from all the others.
+
+So the probability that these two documents are selected as a potential candidate is simply a little lower than 0.2.
+
+What this means is, in a different perspective, we can remove more than 80% of pairs of all 40% similar pairs.
+
+So simply put, that means we reduce our time and effort to compare 40% similar pairs by five times.
+
+So what it means is, when we do, the number that we compute is a good function which can work as a kind of discrete filter.
+
+It's not an actual discrete function, but it works like a filter that filters out the non-similar pairs while it preserves the similar pairs.
+
+So let's look at the other example. Let's look at the positive side.
+
+To put that, we have two documents, two of which are 80% similar.
+
+So since our ratio is 80%, surely this pair is a positive pair. We should choose this pair as a candidate for later.
+
+So let's compute the same probability here. The probability that they are identical in at least any one particular band is 0.8 to the power of 5, which is almost like 30%, which is higher than before, but not as high as we expect because we need to choose this pair.
+
+But the probability is not similar in all 20 bands is 0.00035.
+
+So what it means is for all, for 2,999 pairs among 3,000 pairs will be selected as a candidate because the probability of not choosing this pair is super low, like that, more than 0.1%.
+
+So that means we can find almost all positive pairs, even with LSH.
+
+So here you need to understand that these values will change based on M and R.
+
+So some values of, sorry, not M and R, it's B and R.
+
+So some values of B and R are good for preserving the positive pairs or reducing the false negative errors.
+
+Or some values of B and R will be beneficial for reducing filtering out more data computers or reducing false positive errors.
+
+So what I want to say is basically this whole process is a kind of a function, which is better than just comparing the signatures.
+
+So before moving on to the actual or pair comparisons, we really want to reduce the candidate.
+
+And this is a technique for doing that.
+
+So I will analyze this technique more later.
+
+But at this point, you really need to understand the core idea.
+
+Any questions? Yeah.
+
+Is there a good way to choose the B?
+
+N, R. Yeah. Yes, there is. And I will show you later. Very soon.
+
+Okay. More questions? No? Got it?
+
+Yeah. I mean, I'm just trying to spend some time here because from my understanding, the complexity or difficulty of algorithm has increased partly from our previous lecture.
+
+So, okay, let me move on to the second part.
+
+So I guess you understand why we do it and what advantages it gives us.
+
+But at this point, something's unclear.
+
+I mean, there is an overhead of doing all these things, but we're just not sure whether the advantages really outweigh the overhead of doing this.
+
+So we want to analyze this LSA technique more deeply.
+
+So let S be a similarity, the actual similarity between two documents, and T be a similarity threshold for the part.
+
+Then the ideal figure would look like this one.
+
+So let's say the X axis is a similarity and the Y axis is the probability of sharing bucket.
+
+Or we can say the probability of being selected as a candidate.
+
+Okay. So our ideal curve will look like this discrete function.
+
+So if the similarity of the two sets is below the threshold, then the probability for them to be selected should be zero.
+
+If there is a similarity exceeds threshold, the probability should be one.
+
+So this discrete S curve is our ideal curve.
+
+So if you look at this ideal curve, you might understand that this LSA technique does not give us this ideal curve.
+
+It gives us an S curve, which is an approximation of this discrete curve.
+
+So that's the thing that I'll discuss in this part.
+
+Okay, you get the point.
+
+So let's say we do not apply this LSA technique.
+
+Or let's say we assume R equals one and B equals one, which means we have a single signature, which means technically we do not do anything.
+
+It's just like we apply a single signature for all the process.
+
+Then our curve is a line curve.
+
+Okay. The curve that we have is a line curve.
+
+Why do we have a line curve? Because we have a single signature.
+
+The similarity between these two documents is the same as the probability of them to share a single signature.
+
+So since the X axis and the Y axis is basically the same, the actual curve that we get from R equals one and B equals one is a line curve.
+
+So let's compare this line curve with the ideal discrete curve.
+
+Then because there is an overlap, we have errors.
+
+Okay, so the portion below this line curve is a false positive error.
+
+Why is that? Because for this region, the actual similarity is below the threshold, while the probability for them to be selected is greater than zero.
+
+So this portion is a false positive error.
+
+On the other hand, that portion is the actual similarity is greater than the threshold, but the probability is lower than the ideal recurrence.
+
+So that creates a false negative error.
+
+So you need to... At this point, we can expect that by applying our LSH technique or by adjusting the values of R and B,
+
+this line curve would be similar to our ideal curve more and more if we increase the values of R, values of B, and adjust the great deloads between these two.
+
+In that case, as a result of the region, the error regions will be shrinked, and false positive and false negative errors will be reduced as a result.
+
+So as I said, LSH creates an S-HER for a document pair with similarity S.
+
+And a good thing for us is this S-HER can be computed as a great equation, single equation.
+
+Because of a simple probability theory.
+
+So the probability that the signatures between a document pair agree in all rows on one band is the n to the power of R,
+
+whereas is there actual similarity and R is the number of rows in a single band.
+
+And then the signatures... The probability for signatures do not agree in at least one row of the band is one minus, that's the power of R, of course.
+
+And the probability for the signatures do not agree in at least one row of each band is the one minus, that's the power of R, to the power of B.
+
+So the final probability, which is we are interested in, the probability for signatures agree in all rows of at least one band is, as I showed you before, one minus, one minus, that's the power of R, and to the power of B.
+
+So this is the actual equation that shows the S-HER for a specific value of S and R.
+
+Sorry, B and R, where S is just an input. So this is the function that looks like that S-HER.
+
+So here, if R, B is one, and R is one, then this would be a Liner, as I showed you.
+
+But since B and R would be greater than one, then they will create the S-HER.
+
+So for instance, if we apply B to the 20 and R to the 5, which is the example that I showed you before, then the curve will look like this, which is much better than the Liner, and which is much closer to the ideal discrete curve.
+
+And if we compute these values, like what if S is 0.2, 0.4, 0.6, and 0.8, then this curve is much better than the Liner curve, because the values are very small, and the similarities are small, but these values greatly increase and the similarities pass the threshold.
+
+When we calculate these probabilities, we just assume that each mode is independent of others. But how valid is this assumption?
+
+For example, in the previous example, if R and B are all one, then it's literally just a Line. All zero are one, meaning for the identical case.
+
+So if I understood your question correctly, the question is basically, how can we safely assume the independence between the signatures? Because all these probability equations are based on the assumption that the signatures are independent of each other.
+
+But I think it's okay to assume that, because if you think about our mean hashing process, let me go back to the previous slide.
+
+So if you remember the mean hashing technique, our basic assumption is to create the random permutation, which is independent of the other permutation.
+
+Or if you implement this mean hashing with the random hash function, then we can create pay functions that are independent of each other.
+
+I think that is not a big problem for us because we can simply create these hash functions independently of each other.
+
+So I think at least in this case, your independence assumption is sometimes hard to make or sometimes easy to make.
+
+But at least in our case of this topic, I think the independence assumption is safe to assume because it is not that hard to guarantee that.
+
+And if we are sure of the independence assumption, then I guess the later part would be very straightforward to do it.
+
+Great. More questions? Great. Great.
+
+So at this point, I think you have a better understanding on why we should do this LSH.
+
+So the remaining question is, OK, we understand why this works and how this works, and we now understand how to draw an S curve.
+
+Then the following question is, how can we actually choose the values of R and B, which is a kind of tricky question, right?
+
+Because they will determine the shape of the S curve.
+
+So here one constraint is R times B equals the number of signatures.
+
+So in fact, we should also choose M because basically an engineer can choose how many signatures to create.
+
+And we know that more signatures will give us a more accurate prediction, but it will also create more overhead.
+
+So one thing is higher M will make the curve closer to the center.
+
+So higher M is always better, although it creates more overhead.
+
+So we understand that, but since we have a big base M, then the balance between R and B decides the center of the curve.
+
+So let me show you an example. OK, suppose that we consider point A to have a similarity threshold, point A and similar threshold.
+
+Then in most cases, it's good for us to align our center of the curve with the threshold.
+
+I mean, it's also up to us whether what error we want to agree with, but I'll show you later.
+
+But let's say here we align the center of the three curves. But here red, green, purple.
+
+So if we go to purple from red, the curve becomes better and better as it gets closer to the step function.
+
+But here the values are fully different. So for red, for instance, the number of signatures is 120.
+
+But for green, the number of signatures is 1,200. And the purple one, the number of signatures is much better.
+
+So at least we can show that here the higher M makes a higher accuracy as long as we have time and memory for creating this many signatures.
+
+What if we have a fixed M and we choose the values of R and B?
+
+So here the number of signatures is the same as 100 for these three cases, but the values of R and B change where their multiplication is fixed to 100.
+
+So I mean, the first thing we see is their center is fixed, right? Because R and B basically determine the center.
+
+But what is the best? I mean, since we know that...
+
+Here, okay, let me draw something.
+
+Okay, so I will just try to make the similar figure with that.
+
+But I guess the purple one would look like kind of this one and the green one will look like this one.
+
+Okay, let's just compare the green one and the purple one. So what is better? It depends.
+
+Because if I go back, this is important. So if you look at this purple one, the false positive error is this much.
+
+Okay, false negative error is this much.
+
+Okay, so in general, false positive error is okay, because we will do the later computation, later actual comparison.
+
+So the amount of false positive error will determine how many redundant computations that we need to do later.
+
+So this false negative error, as I said, for finding frequent items, we have no way to eliminate this false negative error.
+
+They are just the pairs that we lose because of that.
+
+So if we prefer a faster computation while we allow more error, then the purple one is good.
+
+But what if we don't want to allow error? Then if we choose this green one, then false positive error increases a lot.
+
+Which means we have more redundant candidates for a final computation, but we have a much smaller false negative error.
+
+Okay, so what I want to say here is there is no fixed good value between B and R.
+
+It's just a matter of a tradeoff between the false positive error and the false negative error.
+
+So for instance, if you look at this red curve, and let's say our point A is a gradient,
+
+then for the red one, because we really, really want to minimize the false negative error, we introduce a lot of false positive error.
+
+So there is a tradeoff. But I don't think red is good, red is too extreme.
+
+Probably we will consider between the green and the curve something like that.
+
+Got it? Not that far, right?
+
+So let's think more about it.
+
+So this one is our exact equation, right?
+
+So for every value of B, for every value of R, probably we can draw a figure and draw an equation like that.
+
+But here comes some weakness as a computer scientist. Do we have to create this equation for every possible value of B and R?
+
+I mean, there will be enormous combinations of B and R, but we don't want to compute the specific values of B and R every time for a computing indicator, right?
+
+So we want to find a more approximate but faster solution.
+
+So we want to approximate the center of the curve. Because the center determines the shape, right?
+
+I mean, if you know where the center is, then it's almost like we know the curve of the center, like how the curve looks like.
+
+So let's approximate this equation. So we know how the natural number is defined, right?
+
+So since we have that equation, assuming that S is smaller than 1 and greater than 0, and assuming that R is sufficiently large, then as we know the equation, that equation can be simplified as the following one with the natural number.
+
+So because we have a more concise, more efficient way of the equation, then we can simply find where the center is, which is when S equals to 1 over B to the power of 1 over R.
+
+So that is the position of the center based on our approximate equation.
+
+So a good thing for us is if we know the threshold, if we know the value of B and value of R, then we can instantly compute how this curve will look like.
+
+Or, given the threshold, we can instantly compute what value would be an R over B optimum for that specific threshold, which is good for us.
+
+Although it will cause an approximation error, but that will not be much if we introduce a larger R and larger B.
+
+So based on the approximate equation, we know that the curve always passes that steepest center.
+
+So here the center is defined as the position where the gradient is maximum.
+
+So the point is the curve will always pass the 1 over B to the power of 1 over R, comma, 0.63, regardless of the values of R and B.
+
+So we can use that value to approximate the center position of the curve, no matter what values that we are going to find, which is good.
+
+So here comes the end of our overall feature.
+
+It took more than one class, but I guess now you understand the concept.
+
+So we first pick K for a K shingle and construct a set of K shingles from its document.
+
+And we pick length of the border mean hash signatures and compute the signatures.
+
+So the first one is a singling, second one is a mean hashing.
+
+Then we pick the similar threshold T and then the number of bands B and the number of bands rows R.
+
+So if our center location is greater than threshold, then because the curve is more biased to the right, then there will be fewer false quadrants.
+
+If the center is below threshold, then the curve is biased to the left.
+
+That means there will be fewer false nettings.
+
+And we can construct the candidate pairs and compute their signatures using T.
+
+And later, after we do these all techniques, then we have a final set of candidate pairs.
+
+Then we compute their candidate pairs, expecting that the number of candidate pairs is not that high.
+
+So here the theoretical complexity of the whole algorithm is still in fact quadratic, because this cannot guarantee us to have a linear complexity or a linear complexity, something like that.
+
+But in practice, this greatly preserves the time, it reduces the time for doing this all pair comparison.
+
+So probably some algorithm researchers would not like this technique probably because they care about the more complexity.
+
+But for practitioners like me, we care more about the actual running time.
+
+So it greatly saves the running time.
+
+One thing is, this equation, like this whole equation or theoretical foundations are based on the assumption that there is no collision in the hash table.
+
+So if the collisions are severe in this hash table, then everything becomes really messy because we don't want the collisions to happen.
+
+Because if there are collisions, then you can understand that there will be more false positives.
+
+So it is okay for us to do this thing even though there are collisions, but collisions always create more false positives.
+
+And collisions give a new bias to our curve, like the shape of the curve.
+
+Because if it creates more false positives, it will probably give a bias to the curve to the left position.
+
+So our whole theory is based on that there is no collision, which is the fact that we can set the size of the hash table to be large as possible so that there is no important collisions to happen.
+
+Alright, that's it.
+
+More questions? Great.
+
+Great, great. So in fact, today is a little bit theoretical class because we are not going to stop here.
+
+Okay, we learned all the mean-hashing technique and LSH technique for our specific job-tour similarity, but we want more.
+
+We want to generalize our findings to other distance measures later or other family of functions.
+
+So here comes a little theory.
+
+So let's generalize this LSH to a different distance measure.
+
+Then this generalized LSH is based on the distance between weights.
+
+So our job-tour similarity is not a distance, but it's a similarity.
+
+But if you compute the one-liners' job-tour similarity, then we can say that as a distance.
+
+A good thing is this LSH technique can be generalized to other distance measures.
+
+And before moving on, I think I have to define a distance measure.
+
+Although I guess some of you already know what this means.
+
+So if a function takes two points in the space and returns a real number satisfying these conditions,
+
+then we can say that function is a distance measure where the conditions are.
+
+The output should be non-negative and the distances are positive except for the i.e. qualities.
+
+And the distance function should be symmetric and it also needs to satisfy the triangle inequality.
+
+So I will not talk much about it, but these are just conditions for a function to be defined as a distance measure.
+
+So here comes a new word, LSH family.
+
+Let b1, let's say we have two distance numbers b1 and b2.
+
+According to a distance function b, so these are just arbitrary numbers like 0.3, 0.5 where b1 is smaller than b2.
+
+Then we can say that a family of functions, so capital F, it's not a single function but it's more like a family of functions.
+
+Family of functions is said to be b1, b2, p1, p2 sensitive if for every small f, function f, in fact capital F, and points x and y,
+
+If their distance is smaller than d1, then the probability that their output, their function output to be the same is at least p1.
+
+And if their distance is greater than d2, which is greater than d1, then the probability that their values should be the same is at most p2.
+
+So the values of d1, d2, p1, p2 are related to the shape of the curve. So let me show you this one.
+
+So you remember the S curve, right? We want to create an S curve that looks like the discrete step function.
+
+So here we define a family of functions, an LSH family, if it is related to four values, d1, d2, mp1, and p2.
+
+So if the distance is smaller than d1, their probability of being selected as a candidate, or probability of carrying the signature or anything, should be higher than d1.
+
+If their distance is greater than d2, then their similarities, their probability should be lower than p2.
+
+So that is basically an S curve, but in the opposite way, because here we care more about distance and similarity metric.
+
+So if the x-axis is in similarity, then the S curve will look like this one. But since our x-axis is now at distance, it is reflected across the y-axis.
+
+So what does that really mean? Why do we have these four values?
+
+So let's say I'm going to draw that again, like the left one. So let's say we have an S curve here because the x-axis is now at distance.
+
+So if we want to generalize our LSH technique, then our S curve might be different from a typical S curve.
+
+So we cannot guarantee how this curve will look like.
+
+So instead of saying that this is a curve, we just want to focus on the important part, which is we are not going to think about the center position.
+
+Because in the center, there will always be an error. We know that there is an error.
+
+But instead of focusing on the center, we ignore the center and we focus on the more important part, this S part.
+
+So as long as we have a great S part here on the upper left and here on the bottom right, then it is good.
+
+We can ignore the second evidence part because that's not our goal.
+
+So then what's important here is the two points, this one and this one.
+
+So as long as these two points are good, then we can say this S curve is good.
+
+So this point is basically d1, p1, and this point is d2, p2.
+
+Because S axis is a distance, y-axis is a probability.
+
+Then what curve is good? What curve is better?
+
+So if d1 is larger and d2 is smaller, then the curve is good.
+
+Because it reduces the error of the region.
+
+And if p1 is higher and p2 is lower, then it's good.
+
+Why is that? Because it pushes the function to upper and pushes the curve to lower.
+
+Okay, you mean if let's say if d1 is 0.4, like this one.
+
+Let's say if d1 and d2 are almost 0.5 and...
+
+Sorry, I don't have enough space here.
+
+But okay, d1 is probably 9, p2 is...
+
+Let's just pick an arbitrary number.
+
+If these four numbers look like that, then the curve will be...
+
+Almost like it, right?
+
+Then that is an ideal curve.
+
+In that case, we have almost no error in this region in the center because our four values are great.
+
+So why do we do this? Because for doing an LSH family, for doing an LSH, we really need this S curve to look like a great, greatly like the step function.
+
+So here we define the quality of the S curve using these four values, which is better than understanding individual functions.
+
+Okay, so that's the reason why we have these four different values for defining on LSH family.
+
+Questions?
+
+Okay, so let's understand the Jocker similarity.
+
+Before applying the bending technique, mean hashing gives us d1, d2, and 1-d1, and 1-d2 sensitive bend.
+
+So if you understood this very well, then you will understand that the four numbers give us a line curve.
+
+For every any value, d1 and d2.
+
+So I mean the proof is really simple.
+
+So if b is a Jocker distance, 1-singularity between x and y, then it gets to simply derive sorry from their distance to the probability.
+
+Because if we use a single signature with r equals 1 and b equals 1, then we know that the similarity is the same as the probability of being selected.
+
+So the proof is straightforward.
+
+But the core thing is that d1, d2, 1-d1, 1-d2, as I said, create the line curve that we just saw.
+
+This one.
+
+Why is that? I mean, I guess you understand the reason why.
+
+Because the line curve, so here, basically the y-axis value is a linearity proportional to the x-axis value.
+
+But that doesn't create a great s-value, it just creates a line curve.
+
+So what we really want to understand here is we want to look at how these four values change if you apply your bending technique to that original min hashing signature.
+
+So we want to see how the bending technique affects these four numbers.
+
+So our bending technique carries over to this general LSH family set.
+
+So here, I will formally define the bending technique as an operation to create a new family f prime from f.
+
+That's that every member, like every function in f prime will consist of n members of original function f.
+
+Because in the bending technique, we're not going to introduce a new function from outside.
+
+We just create a new function from existing functions.
+
+So every member of f prime always consists of existing members of f.
+
+And we construct this new member in f prime either by n construction, like rows in a band or construct them like many bands.
+
+So here n and or correspond to the rows and bands in the bending technique.
+
+And we're going to combine this n and or techniques to improve this S curve.
+
+So our goal is to improve f by making P1 increased, P2 decreased, P1 decreased, and P2 decreased.
+
+Let's think about the n construct. Let's think about that we have a single band, but we have multiple rows.
+
+We have a single band, multiple rows.
+
+And as we have more rows, they are connected by an n construction because their signatures should be the same for all the signatures in that band as r increases.
+
+So this is more formal description of that.
+
+Let's say f prime in the new family is constructed from r existing members.
+
+You know why I use the family r because r represents number of rows, right?
+
+In the new function f prime, the two values give us the same output if and only if their original functions give us the same output with all i from 1 to r.
+
+So if the original signatures are the same for all of our signatures, then we can say our new function gives us a new value.
+
+So in that way, they are combined as an end way.
+
+So what this n construction does is it reduces the two probabilities because the probability for a pair to be selected decreases overall because they are combined following an n construction.
+
+So if you look at the value of P1, P2, and P1 and P2, P1 and P2 don't change because they are just not affected.
+
+But the P1 and P2 are changed because they are combined in the n construction and how they change is they are computed in the power of some.
+
+So for instance, if the original P1 was 0.8, then the new P1 would be 0.8 to the power of all.
+
+So if you look at this n construction alone, it's not necessarily making our curve better because it just decreases both values P1 and P2.
+
+What if we apply an or construction?
+
+In a similar way, we define a new function and it consists of the existing function.
+
+And we can say that our new function gives us a new output if the original values are the same for at least one of these b output.
+
+That creates a function where we have multiple bands, but each band contains only a single row.
+
+So they are combined into an or band.
+
+So I will skip their representation.
+
+It increases the P1 and P2, both of them.
+
+Because let's say their original probabilities are 0.8 and 0.4, then they are increased because the document pair is easier to be selected there as they are combined in an or way.
+
+So this does not necessarily make this curve better.
+
+But what if we combine them?
+
+What if we apply for an or construction together as we did in the landing technique?
+
+Then this curve becomes really better.
+
+Because if we choose the values of b and r currently, then this equation will give us a higher P1 and lower P2 at the same time.
+
+So that's basically the reason why we apply this bending technique.
+
+And it is a different way to look at this bending technique, just other than the S-curve, but in a more generalized manner in terms of the form of it.
+
+So in fact, if d1 and d2 are not fixed, we can say that d1, we can increase P1 and we can decrease P2.
+
+But as we adjust these values of d1 and d2, P1 and P2 will also change.
+
+So it's just a choice we can make for our written-means function.
+
+So in this point, you can say we can combine and and or, but we can do the opposite in fact.
+
+We can combine the and and or in an opposite way where we do the or first and we do the and next.
+
+In fact, if you look at the bending technique, it seems that there is no concept of the order between and and or.
+
+But in a mathematical way, there is an order.
+
+We can do the or first and then do the and first.
+
+But we shouldn't do this because the result is really bad.
+
+So you can try yourself. You can try to do this or first and then do the and next and the result will be really bad.
+
+So you can. It is almost like the opposite of this. It increases P2 and decreases P1.
+
+So you probably should do it yourself to understand it better.
+
+Any questions?
+
+Clear?
+
+I just think it's not super easy to follow, but I have no other way to explain better.
+
+So I just try my best. But you can just spend a little bit of your time if you are not following.
+
+But I guess all of you are OK.
+
+OK, then let's move on to the other distance measures, which probably is our ultimate goal of studying this.
+
+So as I said, we are studying FH, not a specific technique for document peers or a genre similarity, but more than a general technique.
+
+So in fact, there are many distance measures like Euclidean distance, Manhattan distance, Chevy shark distance, a lot of them.
+
+So let's study angular distance as an example between two real value vectors.
+
+For instance, if you create signatures not by win-tashing, but using the TF-IDF technique, for instance, then we can probably apply this angular distance for defining the distance between item pairs.
+
+So if you look at the textbook, there are descriptions about other distance measures like Euclidean, Hanning, and so on.
+
+So what is this angular distance? Let's think of a point as a vector from the origin to its location, because there is always the origin in the space.
+
+Then two points, vectors, create an angle theta for every pair of points X and Y.
+
+And then theta itself, that angle itself defines the angular distance between the vectors, because if the two vectors are closer to each other, similar to each other, then this theta will decrease.
+
+But if the two vectors will point to different directions, then the theta will increase.
+
+So basically, we can consider theta as one kind of distance between two points, and we specifically divide the theta by pi to make it a real number to define the angular distance.
+
+But in fact, this angular distance is hard to compute.
+
+So in many cases, we use the cosine similarity between these two vectors, which is the cosine of theta, because this cosine theta can be much easier to compute, because it is just an up product of these two vectors divided by their normal line, divided by their norms.
+
+So in fact, cosine similarity or cosine distance is much more popular than the angular distance, but at least today we care more about angular distance, which is basically the angle itself, the theta itself.
+
+So here, you understand our problem setup has been a little modified. We have documents, but there are real-value vectors, and we assume that the distance between this real-value document representation is defined as the angular distance.
+
+Then our goal is we want to find document pairs that show a small angular distance in a fast manner.
+
+So here comes the technique. At this point, I will assume that most of you know how this LSH works, so I'll directly go to the techniques.
+
+So the technique for angular distance is called a random hyperplane, which is a technique analogous to mean hashing. Basically, they are the same, but the random hyperplane is for this angular distance.
+
+So here comes the idea. Two vectors x and y, that kind of angle theta, defined by the plane. So we can think of a plane that passes through the origin.
+
+So all hyperplanes through the origin can be categorized into red hyperplanes, where x and y are on the same side, relatively to that hyperplane, or the blue hyperplane, where x and y are on different sides.
+
+So all these hyperplanes, all these possible hyperplanes that pass this origin are categorized into either red or blue, whether x and y are on the same side or x and y are on different sides.
+
+So let's think about the blue hyperplane case. Let's consider a vector that is normal to a blue type hyperplane.
+
+So here we know that every hyperplane has a corresponding vector that defines itself.
+
+So if the case is blue, if the hyperplane is inside x and y, like between x and y, then we know that the normal vector of blue, if it's in color blue, is v times x, like their dot product, and v times y, their dot product.
+
+So vx and vy will have different signs if the hyperplane is blue.
+
+It is okay whether we look at the upper side or the down side, it's always the case.
+
+So what I want to say is, all hyperplanes are either red or blue. If the hyperplane is blue, then based on the normal vector v, their dot product vx and vy will have different signs.
+
+What if we go to the red case?
+
+Because in the red case, x and y are on the same side of the hyperplane, then the vx and vy will have the same sign.
+
+So what I want to say is, if we create a random hyperplane, any hyperplane, and if we color it either red or blue, then we can say whether the color is red or blue based on the dot products between vx and vy.
+
+So if you draw a better figure, the result will look like this one.
+
+Let's say this is a whole plane. We create a random hyperplane.
+
+Let's think about the probability whether this hyperplane is red or not.
+
+So the probability for the hyperplane to be red is this much.
+
+The probability for the hyperplane to be blue will be this much.
+
+That means if the theta is small, if the x and y are closer to each other, then the red portion will increase. The blue portion will decrease.
+
+If the theta is large, then the red portion will decrease, the blue portion will decrease.
+
+So here comes our super important observation.
+
+The theta, the angular distance between this x and y is related to the probability that a hyperplane is a red time, which is a great observation.
+
+So in fact, for doing this LSH, we always need to find the connection between probability and similarity, or probability and the distance.
+
+Here, the probability that a hyperplane will be a red time is exactly proportional to the angular distance.
+
+Not like the opposite of angular distance, but anyway.
+
+So then what we do here is, so here we create a hyperplane.
+
+Each hyperplane corresponds to a signature of the LSH.
+
+So we can compare the hyperplanes, we can create multiple hyperplanes, and we can apply the bending technique as we did before.
+
+Because every signature before is corresponding to a random hyperplane here.
+
+And we can also say the expected probability, expected similarity between these two points in terms of their random hyperplanes is the same as their actual angular distance.
+
+So in fact, I can formally say that this random hyperplane approach creates an LSH family, where P1 and P2 are defined based on their angular distances.
+
+Okay? So here we define this family in this way.
+
+We create a hash function app from a randomly chosen vector V, which defines the hyperplane.
+
+And given vectors X and Y, which are the inputs of the extension, their hash values are the same, in fact only at their random products have the same sign, basically the red time hyperplane.
+
+If we define this function family in that way, then the following, then the final family is, as I said, P1, P2, O9, P1 over pi, and O9, P2 over pi sensitive.
+
+Because of that, we do not care whether this curve will actually look like.
+
+As we know that this is an LSH family, we can apply bending technique, like the end construction or the order construction to amplify this LSH family.
+
+Any questions?
+
+Yeah.
+
+When we think about the problem of the hyperplane, I think the figure is only for 2D connections, so will it work for higher dimensions?
+
+Yeah, great question. The answer is yes, it works.
+
+And if you think about it, let's say, okay, let's imagine a three-dimensional space.
+
+X is a three-dimensional vector and Y is a three-dimensional vector.
+
+But first, their theta is still well defined, right?
+
+Because regardless of the dimensionality, two vectors always create the theta, like the angular.
+
+Then if you create a hyperplane, like it would be three dimensional hyperplane, right?
+
+But anyway, three dimensional hyperplane will still have a single vector, norm vector, that defines the hyperplane.
+
+And even in three dimensional space, this norm vector and the dot product between X and V and Y and V are also well defined.
+
+And it goes to fourth dimension and the fifth dimension because everything is not in fact about a hyperplane. Everything is about vector.
+
+V, X, and Y.
+V, X, Y.
+
+So this hyperplane thing is more about introducing its idea, but this actual computation is done only by three vectors, X and V and Y.
+
+So this is the form of definition. So if you look at this definition, you will see that it is not a function of dimensionality.
+
+It is well generalizable to more dimensions.
+
+Okay? Yeah.
+
+So this hyperplane technique can replace the computation of signature or the mean hashing technique?
+
+So, okay, great question. So, I mean, even me, I'm a lecturer of this one, but I'm still confused like the exact usage of terms.
+
+Because like mean hashing, characteristic matrix, signature matrix, they are very related to each other.
+
+So I can say that signature is abstract representation of an item that preserves the, let's say preserves the original similarity.
+
+Let's put it this way. Then signature, like in our previous example, signatures are created through mean hashing.
+
+And the resulting signatures are integers between, let's say, zero or some like number of rows from the characteristic matrix.
+
+And in this case, we can say its signature is an output of the hash function, that function F, which is created from a vector V, whether their signs are the same or not.
+
+So I think our signatures can be real value numbers or integers. It can be anything.
+
+Because here what we assume is whether they are the same or not.
+
+So we just care about whether when the signatures are the same, when the signatures are different.
+
+So signatures themselves can be anything. It can be string, it can be a bloody point number, it can be integer, anything.
+
+But we just create the rule for that to be the same based on the sign between VX and VY.
+
+So I can say the result of X or Y is a signature created by a technique that we call the mean random hyperplane.
+
+So mean hashing is corresponding to the random hyperplane, I can say, but the role of the signatures is the same between the signatures.
+
+But the only thing is here the signatures by the random hyperplane creates an L6 family that looks like that one.
+
+But in the mean hashing, it creates a family that looks like that one.
+
+So the only difference is you want to have P2, the characteristic of the signatures that they create.
+
+I guess that would be the best answer that I can give you.
+
+So for instance, in the exam, I will never ask you about this term in all my speech because it's confusing.
+
+But as long as you have the idea, then I guess everything is okay.
+
+So hyperplane here means that in the infinite dimension, it's not always the case that it's always the same.
+
+But you don't have to think about that.
+
+As I said, our course is more about the practical implementation of these things.
+
+And these things are, I can say these are things are important because these things give us a full more theoretical understanding on whether they will succeed or fail in the real world cases.
+
+But I guess the infinite dimension is more like the theoretical, like curiosity about this thing.
+
+So I can say you don't have to think about that, at least in our course.
+
+Okay. And honestly, I don't have all these theoretical understandings of these things other than the scope that I discussed because they are, as I said, the practical techniques that have been proposed like more like than a decade ago.
+
+So there may be some details that are being updated or that are probably only in the original paper.
+
+So I don't have knowledge of such details.
+
+So please share any information that you have for making this class better.
+
+But I will probably not give much attention for these details because as I said, I don't know these details and I just focus on giving you the best intuition on these operatives.
+
+Okay, workations.
+
+Workations.
+
+Great. So I can say some contents are on the textbook and some are not.
+
+But at least this random hyperplane and all these LSH are well described in the textbook.
+
+So you can just reverse the textbook if you're interested in it.
+
+Okay. All right. So that's it for today.
+
+So we covered the remaining part of the big picture like LSH and S-curve and more like a theoretical understanding on YE words and how it works and how it is generalized to other distance measures.
+
+So as I always do, this is the end of this topic.
+
+So even though whether you are very confident in this topic or not confident in this topic, but we will anyway proceed to the different topic later like on this Thursday.
+
+So, okay.
+
+Workations.
+
+Yeah, and that's it for today and see you on this Thursday.
+

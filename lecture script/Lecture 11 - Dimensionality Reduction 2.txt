@@ -1,0 +1,1320 @@
+Hey everyone, let's begin X plus.
+
+So we'll talk about the second part of dimensional linear rotation.
+
+And as before, it was a little bit of mathematical class, but I guess today would be easier than
+
+our last time because our last time was, I mean, for some of you, the last time was not
+
+that easy probably if you're familiar with linear algebra.
+
+But for me, I thought I needed to explain all these concepts, probably new concepts
+
+like rank, eigenvalues, and eigenpairs, like diagonal matrices, like that.
+
+So today, if you are comfortable with all these previous concepts on linear algebra,
+
+then you can probably follow easier for this.
+
+Okay, yeah, I have nothing to say here, everything is the same.
+
+This is the homework point that I did recently, so please keep in mind that you should submit online.
+
+And you also remember we give you some days for submitting homework, like a few days delayed.
+
+And there are overall counts of, I guess the late days would be three or four.
+
+I don't know, I don't remember correctly, but you should revise it wisely overall.
+
+And the midterm, the details are the same.
+
+So I guess there are notations on the course, right?
+
+So recap, what we do, what we learn from this topic is dimensionality.
+
+It assumes that our data is represented as a matrix of size m by n, where m is the number of points
+
+and n is the number of attributes, or number of features, or number of information that are very impressive.
+
+And if I said that the latent vectors, or what can I say, the manifold, or the real independent information in this data matrix
+
+is mostly smaller than the actual dimensionality.
+
+So if we draw our data points on a space, like an environmental space, then we can in many cases be observed as a momentum, like a jump in a spot on the sphere.
+
+So in such cases, we know that we can safely reduce the dimensionality of the data matrix that we have without losing almost all any information.
+
+So in this case, we can say the mathematical rank of the matrix is smaller than its dimensionality.
+
+And even though the rank itself is not really small in many cases, although there can be a little error in the last most figure,
+
+we can still reduce the dimensionality because if we believe the error is negligible.
+
+So that's what we do. And for doing that, we cover two important concepts, like the eigenvectors,
+
+and power equation uses an important algorithm for binding the dominant eigenvector.
+
+And based on this knowledge, we learned the principal component analysis, PCA, which is a widely known technique.
+
+I can say it's a go-to technique when we want to do the management of non-reduction because of its great mathematical property.
+
+So if you run PCA on a data matrix, we find new accesses that represent the data as a sphere.
+
+So assume that this data is mean-centered. The first new direction, the first new access is the direction that shows the greatest variance of all data.
+
+And the second one is proportional to the first one while it shows the second greatest variance.
+
+So if we find R such new directions, that means if we use only R, it would be smaller than that.
+
+It can steadily reduce the dimensionality of the data, minimizing the loss of information.
+
+But still, there will be a loss of information if R, or privative immunology, is smaller than N, but it is okay in many cases.
+
+In fact, the real output of PCA was this matrix T, which is a transformation matrix, which changes the access,
+
+which changes the space from the old one to a new one.
+
+And the size of T, like each column of T, corresponds to each new direction in the N-sleep.
+
+So the number of columns, like R, can be written in the hyperparameter based on our target dimensionality.
+
+So that was all for our previous slides. Any questions? No? Okay.
+
+Okay. Lesson one. So today we will learn a singular value composition.
+
+And again, this is really important. If you do a scenario in a traditional way,
+
+then singular value decomposition is, I can say, one of the most important algorithms that we need to learn for analyzing a data matrix.
+
+I believe it can be more important than PCA because PCA mainly is implemented with SPD.
+
+So what is SPD? As its name implies, it's a decomposition, singular value decomposition.
+
+So it's basically a factorization of a data matrix sized N by N, of course it's a real matrix, not a complex matrix,
+
+into the product of three matrices, N, which is our given data matrix, into the product of U, sigma, and B,
+
+whose sizes are respectively N by R, where N is the number of rows in the data matrix.
+
+R is the same as R is the state. R is just the dimensionality that we looked at.
+
+And sigma is R by R, which is the diagonal matrix. And B is N by R matrix. Over here is the weight transfer.
+
+So if you look at that formula, you will see that it's a similar decomposition as the eigen decomposition.
+
+I mean, they're not in fact similar, but both of them are a decomposition of a data matrix.
+
+So here, although R is basically a hyperparameter between one, like the smallest value, to N or N.
+
+So the close of decomposition is determined by value one.
+
+But it doesn't tell you anything. It just tells you what this decomposition is and how the resulting matrixes look like.
+
+It doesn't tell us why it's useful and why it's possible like that.
+
+But it just is SBD.
+
+So what we expect from SBD, I mean the basic goal, why do we care about SBD, is because we believe R corresponds to the Lagrange factor.
+
+So here R determines the number of Lagrange factors to capture from the data matrix.
+
+And based on the value of R, this decomposition has an error.
+
+So for instance, if R is one, let's say R is one, then the decomposed matrixes are simply vectors.
+
+Like N by one vector, N by one vector, and just a single scalar here.
+
+So you might think that even though you know the detail, the value of R is the error of the vector addition.
+
+I mean smaller than R is more like an error that we will expect from vector addition.
+
+So let's define the error, reconstruction error between our decomposition and the original matrix.
+
+So if we just multiply using the new matrix, we subtract it from the original matrix and complete the previous form,
+
+which is a simple measure of the size of the matrix.
+
+We just compute it as the squared sum of the elements, squared root of it.
+
+So that is just an addition of the previous norm, which is almost the same as the vector norm.
+
+And we can say that is the matrix versus the vector norm.
+
+So if we measure the previous norm of the difference between the two matrices, then we can easily see that this is an error.
+
+If the error is large, that means our vector addition is the most constant.
+
+If the error is zero, that means our vector addition is awkward.
+
+So here is one we can assume, or we can expect from vector addition.
+
+When R is greater than or equal to the rank of the matrix N, the error becomes zero.
+
+And even though I did not explain why, but I guess you can expect why.
+
+Because rank is the number of the actual latent vectors, the actual information dimensions of the original matrix.
+
+So if the rank is small, then we can still make this decomposition accurate if R is small.
+
+But if R is smaller than the actual rank of the matrix, then there will be an error.
+
+So this is just a thing.
+
+Then let's think about the roles of this matrix.
+
+I mean, we create three matrices, but one they even mean.
+
+So here we strictly can say that UMB, like the two matrices on the left, on the right hand side of this decomposition, are column-alternable matrices of singular vectors.
+
+So what is the singularity basis of me?
+
+We call UMB, the column of UMB, as singular vectors which are created from singular value decomposition.
+
+It's not an existing concept, it's a new concept that we introduced for this algorithm.
+
+So U is called, each column of this U is called a left singular vector because it's on the left.
+
+And it's columnically, although we should re-transpose, it's columnically called a right singular vector of this decomposition.
+
+It's just a mean.
+
+And they are column-automable, which means if we compute U transpose U, then the result is identity matrix.
+
+Which means every column of U is automerall feature and that's applied to the GLE as well.
+
+So this does not tell why they are automerall, it's just the definition of the singular value decomposition.
+
+And here the middle matrix, sigma, is called a diagonal matrix of singular values.
+
+So every value in this diagonal and true matrix is called a singular value.
+
+And this singular value responds to a pair of singular vectors.
+
+One singular vector, one left singular vector, and one right singular vector.
+
+So you can basically think this decomposition as a two-fold of R, like triples of left singular vector, singular value, and right singular vector.
+
+Then how it works.
+
+And another constraint is this singular value should be non-native and should, in most cases, be sorted in a decreasing order.
+
+The sorting is not like a real restriction for dividing the singular value of the composition, but in most cases, we assume the singular values are sorted in a decreasing order.
+
+And they are all or non-negatives.
+
+So in other words, we can say that this decomposition is safely a singular value decomposition if U and V are column-automable and sigma is diagonal and satisfies this property.
+
+So this slide is how we define a singular value decomposition.
+
+So how to compute this U, sigma, and V will be described later, because that is about a reason to compute it.
+
+But let me first describe what this means, like why this video is important.
+
+I guess that is more important than understanding how to compute this video.
+
+So any questions so far?
+
+Yeah, I guess some of you came here late, but I guess I don't have time to really explain this whole again.
+
+But just ask me questions if you cannot follow.
+
+But this slide is, again, mostly a definition of SPD.
+
+So let's understand SPD, what is the further information on SPD.
+
+So a great property is it is possible to apply it freely to any matrix.
+
+It doesn't have to be a diagonalizable matrix in any decomposition.
+
+It can be applied to any real matrix of n by n. It doesn't have to be square.
+
+And the second property is U, sigma, and V are unique for each matrix.
+
+So they don't have to worry about reducing and defining this unit.
+
+And the third one is sigma I denotes the strength of the latent vector.
+
+So when I say the concept latent vector, we can go back.
+
+So we can say every triple, every singular vector, singular value, left singular vector, singular value, right singular vector,
+
+the triple corresponds to one latent vector.
+
+So we can simply understand this whole thing as a set of R latent vectors.
+
+So I will let you see some examples later.
+
+But because of that, we can expect this sigma I, like a singular value of the I latent vector as its strength.
+
+So if sigma I is strong, like if its value is large, then we can say this latent vector,
+
+responded by sigma, is stronger than the other.
+
+And we assume these latent vectors are solidified by their strength because we assume that the singular values are sorted in the decreasing order.
+
+And that's probably because these latent vectors are not stably confirmed between each other.
+
+Some are more important than the others.
+
+So this different view gives us, like, supports this understanding of this SPD.
+
+So this M, which is composed by SPD into a new sigma V transpose, can be rewritten in the summation as a summation of the other products of the vectors.
+
+Why is that? Mainly because the sigma is a diagonal matrix.
+
+So, I mean, that intuition is related to how this linear algebra.
+
+So we have a U here, we have a sigma here, and let's say we have a V here, probably transpose.
+
+Then, so this sigma is basically a diagonal matrix.
+
+Then we can say its column of V multiplied with its singular value and multiplied with its column of V, originally V, creates a single matrix, a single view of the matrix, which is this one.
+
+So if we just compute the sum of all these other products of these different latent vectors, then we can still say that the result is the same as the matrix version position.
+
+So this is just a different way to look at how this decomposition works.
+
+So in a different way, if we represent this SPD this way, we can, I can say it is more explicit that this decomposition is a summation of these latent vectors, where these latent vectors create a few matrix.
+
+And if we add all these V, then we can create heterogeneous, informative matrix, created from this V.
+
+So I just think this gives us a good understanding, like good intuition on how to rank for this.
+
+So for instance, if the rank of this matrix is 3, for instance, we can say that if the matrix is 3, we can exactly reconstruct the original matrix as the sum of these three views.
+
+That is the meaning of the rank.
+
+So that means the rank is higher, and we need more views, more latent vectors to exactly reconstruct the original matrix, which corresponds to the amount of information that is made.
+
+So the meaning of being good in linear algebra or having great intuition on these matrices or vectors means you can really move on from one perspective to another perspective, having a diverse, deeper understanding on the data matrices.
+
+So at this point, I think some of you might be a little confused.
+
+Okay, now I know what SVD is, but it doesn't feel like I know it.
+
+So let me give you an example, which would be really great for you to understand what it is.
+
+Let's say our data matrix looks like this one.
+
+I mean, our next topic, probably next topic would be a recommender system, so you will see a lot of matrices like that.
+
+But let's assume we have seen this first.
+
+So this is a matrix of size, probably 7 by 5, and each row represents a person.
+
+Each column represents a movie, and its element means a person watches a movie and reads a movie, like between 1 and 5.
+
+So that means probably the third person there watches these three movies, Matrix, Alien, and Serenity, and reads these three movies as 4.
+
+Which probably means this person likes a sideline.
+
+And for instance, if you look at the fifth person, he or she watches these three movies, but reads the Casablanca and Emily with 4 and 2,
+
+or probably that person likes Romance more than he or she likes a sideline.
+
+So the data matrix is actually common in real-life e-commerces, or even tactics.
+
+That is like a common data matrix.
+
+And if you look at it, let's say you don't know a thing like Skype by or Romance.
+
+We just know that each row represents a person, and column represents a movie.
+
+Then just by looking at these matrix, we know that there is some kind of...
+
+Let's say we don't know their genres at all.
+
+But still, we know that these three movies have something in common, and these two movies have something in common,
+
+and we know that these four users have something in common, and these three users have something in common.
+
+We can get some insights just by looking at how these matrix looks like.
+
+So let's apply SB to this matrix, where R is 2.
+
+That means we create three matrices U, sigma, and V, where if R is 2, U would be 7 by 2, sigma would be 2 by 2, diagonal, V should be 5 by 2.
+
+So if the random matrix is 3, then there will be an error. If the matrix is 2, then there won't be an error.
+
+So because I just said that every dimension, every column of U or every element of sigma represents a latent vector,
+
+then if we set R equal to, that means we want to create a plane from a three-dimensional space,
+
+although we don't know whether there will be an error or not.
+
+So if we apply SBD in real, we get this painting. This is a pre-computed region.
+
+And here, the rank is 3, R is 3. So we have all four degrees.
+
+So let me look at this middle matrix, which is the most important one.
+
+If you look at this middle matrix, it's a 3 by 3 diagonal matrix, as I just said,
+
+and these three values are non-negative and they are stored in the decreasing order, from 12, like 12, 4, to 1.3.
+
+So if you look at this matrix, we find something. What do we find?
+
+So let's first look at this matrix. So this matrix is 7 by 3 matrix, and you can say that every user is represented as a 3 latent vector.
+
+If you look at this matrix, its size is 5 by 3 because of the transpose.
+
+We can say every movie is represented as three latent vectors.
+
+And if you look at this one, it tells how strong its latent vector is.
+
+So if you look at the first one, it has the largest single value, 12.4, and if you look at the user side,
+
+we know that this latent vector would correspond to the first element of the latent vector.
+
+And if you compare this huge data matrix and this U matrix, you can say that the first element corresponds to the sci-fi constant.
+
+If you look at this matrix, if you look at the second column, then you can say,
+
+this user has a large value on these three parts, and these users like the Roman
+
+a genre, which is not directly inferable from the matrix.
+
+So what I want to say is, even though I, a user, don't know which movies belong to which genre, just by looking at this matrix and just by running SBE,
+
+it tells us what latent vectors there are, what genres there are based on how its matrix is structured.
+
+And it also tells us that the sci-fi, so just by running this SBE, we don't know which is sci-fi and which is not.
+
+We just have to look at the matrix. And if we just look at this matrix, we know that the first singular value is the largest,
+
+and probably by comparing this result with the original matrix, we know that this corresponds to the sci-fi.
+
+So we know that our data matrix has the strongest pattern on the sci-fi.
+
+And while it is also important that it also shows a pattern along the rows.
+
+But the second element, if you look at the second element, it's not zero, which means the rank of the matrix is not two,
+
+because if the rank is two, then this becomes zero, allowing us to not really run with any information if you set R to the bottom.
+
+This is not zero, so that means the rank is three, but its strength is much smaller than the first and the second one,
+
+which means this whole data matrix is mostly guided by the genres, sci-fi and romance, and there is a little noise, which we can probably ignore because it's small.
+
+So I mean, it's kind of magic that just by looking at this data matrix and just by running some algorithm,
+
+it gives us new information that we couldn't have imagined by just looking at the original matrix, which is good.
+
+As I said, U, if you look at this data matrix, U matrix, because its size is 7 by 3, it is a matrix that we call user to concept.
+
+It transforms, like it converts its user in the original data space into a new latent vector space.
+
+And here, just by looking at the three columns, we can say how strong the interest of each user is.
+
+First, let's look at this. Let's compare these four users. In all four users, the first element is larger than the other two elements, at least in their absolute value.
+
+That means we know that these four users like sci-fi movies, or we just say they have more strong pattern on sci-fi movies.
+
+But if you compare the first element between these four users, the first user is the largest one, while the first one is the smallest one.
+
+So we know that the value in this new latent vector matrix is proportional to their original radius.
+
+So we can say this matrix shows how much each person likes a specific genre, or we can say how much pattern that its user shows from the original matrix.
+
+So this U cell gives us some intuition, gives us an understanding on how these users view.
+
+On the other hand, in a very similar manner, it's really called a movie-to-concept similarity.
+
+So this matrix was originally 5 by 3, and it's now transposed. So its column of this matrix just directly responds to each movie.
+
+So if you look at these three, its column here represents its movie, and if you look at the first three movies, for instance, they show the largest values on the first element compared to the next two.
+
+That means there is basically a sci-fi movie. These two are probably a romance movie. We know that.
+
+If you look at it, we have some noise here. The second movie seems like it's not a sci-fi movie because it shows a large value on the third element.
+
+And we don't know what the third element means in fact. But if you look at the data matrix, it makes sense because of this noise.
+
+Because these two users have watched Alien, probably because Alien was so popular. They're like a romance movie before, but they watched Alien probably because someone suggested Alien,
+
+or because this movie was so popular. And these two values date this column Alien. So that's the reason why the second column shows a large value on the third element.
+
+Okay? I mean, everything is connected.
+
+So this is just, again, what I was telling you. But from the data matrix, it's not sure whether the third element means.
+
+I mean, it doesn't mean that although I use the word noise for representing this one, but we don't know whether it's noise or whether it's some information that we need to look at.
+
+We just don't know what it means by looking at this data matrix. But probably the third one might be an indicator of another thing that we probably want to focus on.
+
+So the third one can be an indicator of popularity, an indicator of the director, of actors, or how many years the movie has held. We don't know it.
+
+But still, this would mean something as a rating factor. But the only problem is this value is too small. So that's the reason why we probably don't know it.
+
+Summary. SPD is well defined. It can work for almost all data matrices, like real data matrices, whether it's diagonalized or not, whether it's square or not, it can work anytime.
+
+And it provides us interpretable decomposition, which is great. You can interpret it as a user or enroll the matrix to concept matrix.
+
+And V is called a movie to concept matrix. Sigma is a matrix of diagonal elements, which means the strength of this concept.
+
+So the result of SPD is directly interpretable, giving us new insights for data.
+
+So any questions?
+
+I'm curious about SPD. In the end, it's a kind of genre of movie.
+
+I can't compare two things with one, but in terms of data, there are a lot of elements.
+
+So, as I understand the question, the question is, what if there may be more rating factors than two or three or let's say there are ten rating factors?
+
+How can we interpret these rating factors and how can you probably say which is which?
+
+My answer could be, first of all, if the number of rating factors is said to be larger than the dimensionality of the data matrix, we cannot find that.
+
+Because in that case, we can say these rating factors are mingled, like combined in the distance.
+
+So the original data matrix is 7 by 5.
+
+So, yeah, in fact, I just found one misunderstanding.
+
+So, I mean, since the original matrix is 7 by 5, its rank can be large as 5.
+
+So it might be it has more single vectors here.
+
+So here I just assume that its rank is altered three, but in fact, it is not safe to assume such a thing because we don't know whether the coming values are zero.
+
+But here we just assume the rank is.
+
+So since the original design knowledge is born, the rank of this matrix can be altered five.
+
+So that means if you run SBE, just by looking at the singular values, we can find five latent vectors from the matrix.
+
+And for instance, if these all values are all large, for instance, then you can say all these different latent vectors work by a similar strength to create data matrix.
+
+But if there is a like the imbalance, which is values here, that means some latent vectors are more important than the other.
+
+Then the thing that we want to do is to find out what each latent vector means from the matrix.
+
+So this video long doesn't tell us which latent vector means which we just have to find out what that means.
+
+For instance, so the right-hand side, the names like Psi Phi, Roman, as I said, they are not provided by from the matrix.
+
+So the natural order is we're given that matrix and we run SBE.
+
+And by looking at this U and B, we just find out what this latent vector means as a post-processing, not as a result of SBE.
+
+So if there are more latent vectors, like there are 10 latent vectors like Rector, Actors, Genre, like that, a lot of things, then some of them would be more important than the other.
+
+Then these important ones would be appearing in the singular vectors and we just have to find out what that means.
+
+Okay, workations? Great. I mean, this is not technical. It just is what SBD means.
+
+Okay, so great, great. So we know what SBD means. It's good, it's well defined, it gives an integrable decomposition, everything is good.
+
+But one remaining thing is how to compute it. I mean, computation takes forever than SBD does mean anything.
+
+So the question is, how can we actually find U sigma n? Let's say we start by assuming m equals U sigma v, because that can be achieved by setting this R.
+
+So I guess it states a string-sons and names. And let me compute m transpose, like the transpose of the original data matrix, which gives us V sigma transpose U transpose, which is simply a transpose of the original matrix.
+
+And let me multiply this m transpose with m. That will give us the first one, V sigma transpose U transpose U sigma v transpose.
+
+But by definition, U is a column-multi-normal matrix, so we can simply remove U transpose U, which is an identity matrix.
+
+And this sigma transpose sigma can be related as sigma squared, because sigma is a diagonal matrix. Its transpose is the same as its original one.
+
+So m transpose m is equivalent to V sigma squared V transpose, by definition.
+
+Let me compute the product of this m transpose m with V. Then the V will be multiplied on the right-hand side.
+
+And V transpose V should be an identity matrix, because V by definition is a column-multi-normal matrix. And the result is V sigma squared.
+
+At this point, you will not understand why I do this, but as a result of doing this thing, our final equation is having m transpose m being on the left-hand side and V sigma squared on the right-hand side.
+
+So if you're good in your intuition, you will find something from the final equation. You will find the connection from our previous class.
+
+Which means, just by looking at the final equation, we know that V represents something, which is V i, which is in fact a eigenvector of m transpose n.
+
+Why is that? Because sigma is a diagonal matrix and its square is also a diagonal matrix.
+
+So since the sigma square is a diagonal matrix, we can swap the order between V and sigma squared.
+
+I mean, I literally swapped the matrices, but if you look at the column-wise manner, then it's said to say that the 42-column m transpose V i, which is the i-column of V, equals sigma squared V i.
+
+Which means V i is an eigenvalue of m transpose m, having sigma squared as its square on the right-hand side.
+
+Okay, then what does it mean? It means V i, the i-column of V, can be found by finding eigenpairs of m transpose n.
+
+And sigma can also be found because we know that the eigenvalues of this m transpose n are the square of the singular variable.
+
+So there is a direct relationship between eigenpairs of m transpose n and the singular variables in the right-hand singular vector.
+
+So we know how to compute the eigenpairs of m transpose n because m transpose n is a symmetric matrix.
+
+So it should be diagonalizable, and that means we can apply power equation.
+
+So by running a power equation to m transpose n, we can find V and sigma, which could be directly applied to our SVD.
+
+And similarly, although I will not talk in the class, m transpose n equals V, not V.
+
+So in fact, this PCA, or the power equation, is also really important for having us SVD because they are connected.
+
+So in fact, that's probably the reason why PCA and SVD is important.
+
+And for SVD, I say a similar thing to PCA. Both of them are demand-inhalent reductions.
+
+It's just a matter of where we look at and how we compute it.
+
+So let's connect SVD with PCA.
+
+Right-singular vectors in SVD is equivalent to principal components of PCA.
+
+Why principal components? Well, obviously they are.
+
+But the one thing is PCA needs column centering, but SVD doesn't care whether a matrix is column centered or not.
+
+But it would be better for us to have a column centering because we know that they are related.
+
+So if we really want to focus on the variance of data, then we probably should do column centering to have a better thing.
+
+So in fact, it would be better for us if this data matrix is column centered.
+
+That would give us a more nicer decomposition compared to this one because currently it's not column centered.
+
+So probably the noise is larger than we expected.
+
+But in reality, PCA and SVD are the same.
+
+And in fact, in the previous slide, I just explained that SVD can be computed as in PCA, can be computed by power iteration.
+
+But in fact, the reality is the opposite.
+
+The full computation in PCA is slower than SVD.
+
+And one reason is because computing M transpose M is slow.
+
+I mean, while I was talking about power iteration, I just said power iteration is faster than the QR decomposition because it doesn't require us to do complete the pseudo-imperse or the inverse operation.
+
+But the problem is creating M transpose M is self-slowed.
+
+I mean, it is not about power iteration. It's just M transpose M is slow because in reality, M is large.
+
+Let's say we are working at Netflix. Then there will be literally billions of users there.
+
+So creating M transpose M is creating billions by billions by this, which is impossible.
+
+And I mean, I think voice-in-results is slow.
+
+So in fact, the practice is opposite. SVD is a standard way of computing this data.
+
+We do not run PCA to get SVD, but we run SVD to get this data in practice.
+
+The reason is because there are many efficient operations for computing SVD without creating M transpose.
+
+In fact, I will not talk about these implementations, but SVD has many great implementations that are really fast.
+
+So in fact, we run SVD and based on our singular values and singular vectors, we compute PCA.
+
+In fact, there are same. I mean, although I say that we compute PCA based on SVD, but I mean,
+
+basically they are identical. They have just different purposes of doing it.
+
+All right. That's it. Any questions? No? Good.
+
+Then we just covered what a singular value decomposition is.
+
+Let's go to an actual dimensional order reduction when using SVD.
+
+I mean, it's almost the same as before because SVD is good and it's a very general algorithm for decomposition.
+
+We can use fewer coordinates to describe point-pointing as just like in PCA.
+
+So here, let me create a figure of user and movie matrix where we have those two movies.
+
+And we have like probably more than 10 users here.
+
+And let's say there is a single concept and this movie can be represented safely by the strength in that concept.
+
+For instance, we can say that we have these two movies and these two movies are all side-right.
+
+Then if we use like the, we can say our first right singular vector in an order of the gradient order of the singular values will represent this fraction.
+
+And in fact, this is the same as in PCA, which shows a gradient version.
+
+Because again, because SVD is the same as PCA.
+
+Our first singular vector is the direction, which shows a gradient version of theta.
+
+But you always need to care about the column centering, I think.
+
+But here the column centering doesn't matter because this plot is beautiful.
+
+So we can just safely move this whole distribution into the center by doing this column centering.
+
+So here the column centering doesn't matter.
+
+But again, if you want to connect SVD and PCA, it should be column centered.
+
+So let's go back to SVD.
+
+U is about the list and V is about users and V is about them.
+
+So when we represent each user in a new space, then we can say this column of V creates a new axis.
+
+Again, because the right singular vector is the same as the principal component of this space.
+
+So we can say this column of V creates a new space that corresponds to a new direction that shows a great experience in a big, great one.
+
+Again, first column of V, the large variance.
+
+And I can say SVD is at least better than PCA in the sense that our singular value now shows how strong the variance is.
+
+In fact, the singular value directly corresponds to the variance of the points in that direction.
+
+So it's at least better than PCA because it gives a new insight on how spread the points are along that axis.
+
+And here we know that our V is a transformation matrix from our original coordinates to a new coordinate.
+
+Then what about this other two? If we multiply U and sigma, which will be multiplied with V as a decomposition,
+
+the product of U and sigma lets us know the projection of users on the side finance.
+
+So U alone lets us know the direction of its user.
+
+But if you multiply U and sigma, that tells us not the direction itself, but also the magnitude along that axis.
+
+So if we compute the U and sigma, we literally know that this user has different interest on the first dimension, like the side number V, and it's increasing.
+
+So this increasing pattern is also shown from the U because of the V.
+
+But it's better for us to multiply it with this element because in that case, it also shows the strength of the vector, not just direction.
+
+So it's not just U is interpretable, but U and sigma is also interpretable as a projection.
+
+I guess there are no questions at this point.
+
+So the question is, I just say a lot of good things about ISV.
+
+So the first question might be, how exactly is dimensional reduction done in ISV?
+
+I mean, how safe is it? How much error has it been introduced by so far?
+
+And the first of all things is, how can we reduce the dimensionality by ISV?
+
+Just by setting the only single value to 0.
+
+So there are basically two ways. The first one is we set R to small, like to 2 or 1, and we also apply SBD with that small r.
+
+Or we compute the full SBD and we can make the smallest item of singular value to 0.
+
+That is the same as running SBD with the small r.
+
+And that is again a great property of SBD because running SBD with r equals 5 and removing these three single vectors is the same as running SBD with r equals 2, which is a great property.
+
+Because we can just run the full SBD and look at the single values and determine what singular values or what the equal vectors are safe through.
+
+So here we look at this matrix and remove the third one because the singular value is very small in this case.
+
+And as again, this reconstruction error is quantified by the pervinius law of the indifference.
+
+So this is in fact a reconstructed matrix with only two layers.
+
+If you look at it, I mean it's almost correct. It's almost working well and the error is very small, which is good.
+
+And if you look at these block-idle entries like this one, and this one, they're building on all the space.
+
+And if you look at this block-part also, this is correct.
+
+The only problem is here, there are weak system errors in this region. Why is that?
+
+Because this region, the lower left corner is guided by these two noises like the alien watches.
+
+So as we remove the third error factor, it will probably remove the information on the left side, like the left bottom corner.
+
+So that increases some errors.
+
+I mean it makes sense to increase some errors on that corner.
+
+And this is important. In terms of the dimension-only reduction, this is an important unit of that.
+
+Given that r is smaller than the actual rank of m, there will be an error, we know that.
+
+But what is important is SPD gives us the best accesses to project 1.
+
+Which means, let's say we want to approximate a data matrix with r, like a value of r.
+
+And there can be infinite many ways to approximate the original matrix.
+
+That alone can be thought of as an optimization problem.
+
+We want to find a decomposition that minimizes error.
+
+Then our SPD is guaranteed to give us the best rank r approximation of the matrix.
+
+Which is, there is no better way to do that than SPD.
+
+In terms of minimizing the reference version.
+
+But here comes the intuitive reason.
+
+I mean, you can prove it yourself, but I'll just give you the intuitive reason.
+
+We know that the sigma i, the singular value represents almost any of the matrix has no one value.
+
+Or we can say that it's a variance.
+
+So if we keep this top r singular values, or top r latent factors,
+
+that means our truncation, our dimensionality reduction, keeps the top r orthogonal energy direction.
+
+So in a way of saying that, this minimizes the loss of energy while having this r remain latent matrix in the matrix.
+
+So that is the intuitive reason, and that is a great mathematical property of SPD.
+
+We don't have to worry about whether there might be a better solution.
+
+SPD is the best possible solution that we can have for reducing the dimensionality.
+
+And again, this SPD is also well defined for any real matrix.
+
+That makes us SPD a really great technique to do.
+
+Then the following natural question is what is a good value one?
+
+I guess there was a similar question in our previous lecture.
+
+But in that case, we can choose our original because TCA doesn't provide us with anything.
+
+But if we run the full SPD and look at the singular values, we have a better intuition on how to choose r.
+
+Because we know that singular values give us the energy of the latent matrix, the strength of the latent matrix.
+
+So a typical rule of thumb is we have to pick r to have at least 90% or 95% or 80% of the total energy where the value itself is.
+
+So let's go back to our example.
+
+We have three singular values, and if we compute the square sum, like sum of squares, then we can say the total energy is 245.7, which is the sum of the square values.
+
+If we draw 1.3 whose square is 1.7, the remaining energy is 244, which is almost 99% of the total energy.
+
+So based on this reasoning, we can say it is safe to remove the last one.
+
+Because our reason is it doesn't harm the overall energy, which means...
+
+So I think you understand this energy is really related to the error of the previous norm of the difference.
+
+I mean, you might ask why do we have to draw the square sum of that for computing energy.
+
+It's really because our previous norm is based on the square of the thing. So I mean, they're connected.
+
+So this total energy or the energy loss is, on the other hand, we can say that energy loss is proportional to this error that we can create by this approximation.
+
+So any questions so far? No? Great.
+
+So let's do one more thing. One more thing for SVD.
+
+SVD is a number of rules, and UNV are not just matrices, but they are mostly a transformation matrix.
+
+You transform users to conforms. We transform movies to conforms.
+
+And if you consider this matrix as a transformation matrix, then we can answer to some queries given the result of SVD.
+
+For instance, the query is we have a new user. What movie will the new user like?
+
+This is the same as the recommendation problem for the new user.
+
+So let's assume that this new user is represented as that vector 500002.
+
+That means this user has one matrix and this user likes the new matrix because E or G gave the rating of 5 to them.
+
+And because we already know that by the result of SVD, the first three movies share their genres, probably we should be able to recommend these others to this user as well if we have the right thing signed.
+
+But instead of doing it manually, we can do it automatically by applying the SVD.
+
+The first, that QMate vector is user movie matrix.
+
+So we multiply that vector with V because V is a movie to concept transformation matrix.
+
+So if you multiply Q and V, then the resulting vector is user concept vector.
+
+And it shows the result of how much this user likes this genre.
+
+So because the first element is larger than the second one, we know that this user likes that one.
+
+Okay, then what do we do? We multiply that again with V transpose because V is a movie to concept matrix.
+
+So we transpose this concept to movie matrix because it's transposed.
+
+So you multiply Q, V with V transpose and the resulting vector is again user movie vector.
+
+But it's different from the original Q because this original Q was as far as data like data representing the original matrix of this user.
+
+But if you transform it to the concept space and then to the movie space, then the resulting vector is mostly an abstraction.
+
+An abstraction of this interest of this Facebook user with the result of our SVD.
+
+So it lets us know that because this user likes Sci-Fi, this user will also like the others to know this as well.
+
+So we can use this vector directly for a recommendation problem.
+
+Okay, this is great. Great.
+
+Or we can do it a little differently because SVD is really platform.
+
+So the alternative way to do this recommendation is, let's say we want to find users who are similar to the party user.
+
+And in fact, this is quite common in a recommendation system.
+
+Let's say when you want to select a movie to watch, then if you know some friends of yours who have similar taste with you, then you might ask them, like, hey, did you recommend a movie to me?
+
+Something like that.
+
+Similar to that in the recommendation system, we can also find similar users to recommend a movie.
+
+But if you look at this, if you consider just two users, for instance, we know that they share some interest, but if you look at their row vectors, they don't have anything in common.
+
+So by comparing these two vectors, we don't know whether the two users are similar or not because the data matrix is far from many cases.
+
+But if we map these vectors into a concept space, then they show us similarly.
+
+Because concept space is more like a dense latent vector space, which allows us to easily compare the users in space.
+
+So if you look at this space, we can say that, OK, they are similar.
+
+One of them likes that movie.
+
+So we go to the similar user and say to cue that, OK, me, a user who is similar to you has watched Aliens in Serenity and he likes it.
+
+So please, you should watch these two movies as well.
+
+So what I really want to tell you about this as a video or PCA is, data gives us insights.
+
+If you just look at the data and by getting some insights from the data, we can do many useful things.
+
+And I think that's the beauty of data science or data mining.
+
+Any questions?
+
+So then let's go to the last part, a little variant of SPD.
+
+So SPD is down here.
+
+SPD is important and PCA is important down here.
+
+So let me look at another view of doing dimension learning production.
+
+And it would be, I can say it would be easier than SPD in some sense.
+
+So as I said, a data matrix is in many cases sparse.
+
+It's hard to look at a dense matrix from real world data matrix.
+
+And for instance, if you look at Netflix and we look at a user, we may create the matrices highly sparse.
+
+However, if you run SPD, everything was good.
+
+But the single problem is UMV void-indence.
+
+SPD does not create dense view, sparse view and sparse view.
+
+It always creates dense view and density.
+
+Although sigma is a diagonal sparse matrix, but it doesn't matter that much because UMV are very large and then the same.
+
+So the full rank SPD is in fact almost impossible to run for a real sparse matrix.
+
+It increases the side of it.
+
+So, I mean, if you look at the simply the side of this matrix is this is really creating a smaller matrix than before.
+
+But in terms of the number of entries, if you apply a sparse matrix documentation, it actually creates the size of the data to be stored on this.
+
+So the question is, we want to do some decomposition, probably with the high rank or a sparse matrix.
+
+That is our motivation.
+
+So there comes our newly computational algorithm CUR, which is almost the same as SPD.
+
+It decomposes a matrix M with a product of three matrices CUR.
+
+It looks almost the same.
+
+And it also tries to minimize this prometheus norm of the difference.
+
+But the difference in the algorithm is CUR decomposition leverages the sparsity of M by using the rows and columns of M for creating C and R.
+
+It doesn't create new column-potential matrices like UMV.
+
+It just samples existing rows and columns for creating C and R.
+
+So by the result of that, it preserves the sparsity because it doesn't change the rows or columns.
+
+It just takes them to create C and R.
+
+And here, differently from SPD, the matrix view in the middle is a dense matrix.
+
+Like the wall of this view is not about expressing the strength of its latent vector.
+
+It's mostly about minimizing this error, given that the sample matrix is C and R.
+
+So we can say the rule is opposite.
+
+In SPD, UMV are dense, but sigma is a well-defined sparse matrix.
+
+Here, C and R are sparse, well-defined matrices, while U works as a non-revisible vector.
+
+It works to compensate for the error caused by C and R.
+
+Another thing is CUR is always an approximation.
+
+It's not mathematically beauty.
+
+Like methodical beauty like SPD.
+
+No matter how large R is.
+
+Because if you think about it, it has a really strong restriction because it can always sample C and R.
+
+It cannot create UMV as in SPD.
+
+So it is basically an approximation, but still there is a theory that C and R converges to M as M and R gets larger.
+
+Because basically it's a probabilistic algorithm. It's not deterministic.
+
+So every time you run it, it runs differently.
+
+But as R increases, you mostly get your problem.
+
+So let me define this CUR.
+
+A CUR composition of an M by N data matrix M is M by R matrix C, R by N matrix R, and R by R matrix U.
+
+So the sizes of these three matrices are the same in SPD.
+
+But the problem, the differences are like that.
+
+C is created by sampling columns.
+
+So here the second column is sample and the fourth column is sample.
+
+And R is created by sampling rows.
+
+The sixth row is sample first and then the fifth row is sample.
+
+So the order can be different.
+
+And U is determined somehow.
+
+I will explain it later.
+
+And one thing is the values are different from the original matrix because it applies scalars like rescaling of the rows and rows and columns.
+
+So when I say it doesn't change the rows and columns, it is not about scaling.
+
+It changes the scale.
+
+But it doesn't change whether each element is 0 or not.
+
+So first thing, first thing.
+
+Okay, we know how to run a CUR.
+
+So then how can we sample this rows and columns?
+
+You remember that the goal of this CUR decomposition is to minimize this error, pervenus norm.
+
+So uniform sampling of rows and columns is not working because some rows and columns are more important than the other rows and columns in terms of minimizing this reconstruction error.
+
+So we measure the importance of each row and a column by the pervenus norm.
+
+So for instance, row i is selected for sampling with a probability P i which is proportional to its norm.
+
+The squared norm of it over the sum of all the overnour.
+
+Or the column k is selected with probability Q k which is proportional to the squared overnour divided by the sum of all the overnour.
+
+Which means if a row has large values in it, so a row shows large pervenus norm in it, that is sampled more often.
+
+Why is that?
+
+Mainly because rows with larger elements inside, columns with larger elements inside contribute more to this pervenus norm, contribute more to this error term.
+
+So we need to sample them more often because our goal is minimizing error.
+
+Okay, that's it.
+
+But that's not enough because it is important for us to sample important rows and important columns more.
+
+But you know, there is a contradiction here.
+
+We sample rows with larger elements more than the rows with smaller elements.
+
+But then it means our sample matrix consists of large rows and large columns all over it.
+
+That means our scale, the scale of our sample matrix can be larger than the original matrix because we sample large rows and columns more than the small rows and columns.
+
+So we need to rescale the sample rows and columns by the spirit of R Q k, where the spirit of R is to unify the scale across different choices of R.
+
+Because if R is large, that means we sample more and that even increases the scale of our sample matrix more.
+
+And the spirit of Q k is to unify the scale between differently important columns and columns.
+
+Then you might ask why the spirit of this here is up to you.
+
+You can study yourself why this form is the optimal for minimizing this error.
+
+But I just think that's a detailed result.
+
+The important thing is we need to rescale.
+
+And we do it for a column and we do it for a row.
+
+Another subtlety is same rows and columns can be selected more than one.
+
+I mean, it's not a big deal.
+
+You know, sampling with out-replacements, forcing this algorithm to sample rows and columns ultimately once causes overhead.
+
+That is not what a computer scientist want to do because that takes overhead.
+
+So for us, we do not want to force them.
+
+It is totally okay for us to sample the same rows and columns based on their strength.
+
+Yeah.
+
+But why do we normalize first each column and not the entire matrix samples?
+
+Because if one column is much bigger than any other sample one, we lose such information after unifying the scale.
+
+Why do we unify for each column?
+
+So, you mean not each element or...
+
+So the question is why do we have to normalize this column but against what?
+
+So when we divide by a group R with K, if the scale is right to...
+
+Yeah, columnize, yeah.
+
+In the sample case, if one column is much greater, the scale is much greater than the other ones,
+
+then after normalizing each column, we lose such information.
+
+Yeah, okay. I get it.
+
+So that makes sense. I mean, it's unintuitive to do this scale.
+
+But let me show you in this way, okay?
+
+Let's say we have a matrix, data matrix, and let's say we have a 100 important columns,
+
+and let's say we have one unimportant column, one.
+
+And let's say that all of the other columns are zero, okay?
+
+So let's say we have just two columns, like let's say five columns where the first column is important,
+
+the second column is not important, and the other three columns are not important.
+
+So let's say we have just one, one, and the first element and all zero aside.
+
+So the remaining three columns are really negligible in their scale.
+
+If we sample this matrix as we do there, because we believe that the first column is more important than the other,
+
+then if we set, let's say we set R equals three, it might be the case that the first column is sent for three times, right?
+
+Because there's a fourth.
+
+Then it distorts the scale because the sample matrix becomes too large compared to the reasonable matrix.
+
+So it feels like we need to do scale this matrix by some amount.
+
+Or if you have, let's say as a third column, if we have this one, one, then we also need to rescale the matrix anyway,
+
+because CO, even with the third column, the matrix is too large.
+
+But another concern is then why, why don't we scale this matrix as a whole, not for each column?
+
+Because if the scale is really a matter, then we can probably divide the whole matrix by like 100, for instance.
+
+But that doesn't solve the problem because we can say its column is kind of a direction of the matrix.
+
+So the dividing its column by itself is kind of we regularize the amount of information that this direction contributes to our reconstructing matrix.
+
+So in fact, this thing is not only about the problem of the whole scale.
+
+It's about this column might be contributing too much to our resulting matrix.
+
+So in this case, we scale, rescale each column independently.
+
+And in fact, it's rolled independently based on how they are sampled.
+
+Although, I mean, this is a column matrix, so the row sampling should be done for R.
+
+But anyway, this is for C.
+
+So, but I just think I can not find a better explanation than this because the value of this R cube is determined mostly by mathematically, but not by intuitively.
+
+But I guess at least you can understand why the scaling should be done.
+
+And if you ask why the R is there, I guess R is easier to understand because R is applied to matrix wise, like to the whole matrix.
+
+Because if the matrix gets larger, then it is also a matter of scaling.
+
+So R should be there, and Q is here.
+
+Okay, thank you. More questions?
+
+All right, great. So we have only a few slides. I think it will be okay.
+
+So let's look at this example.
+
+We have that matrix, original data matrix, and the sphere for the whole matrix is 243.
+
+So the probability to choose that is 75.
+
+I mean, it's the most important row divided by 100, 43.
+
+So it's probably almost like 30.
+
+And if we select this row, then we divide the row by that square root of 2 times 0, 3, 0, 9, which will give us that row.
+
+I mean, the selected row is similar to this original scale, but it's a little larger than this because probably because R is small.
+
+If R becomes large, then this row will be smaller.
+
+So the only remaining thing is constructing the middle matrix.
+
+So we select C, we select R.
+
+And this middle matrix, what was the name of it?
+
+You could work as a composite together.
+
+So let's say we define this matrix W.
+
+W V of R times R matrix.
+
+That is the intersection of C and R.
+
+So if you look at this matrix, if you sample these two columns, then if you sample these two rows, then this formula, 5, 0, 0, 5 should be the W matrix for creating U.
+
+But the order is different.
+
+So if you look at this R, we sample J before 0.
+
+So that order affects how this W is created.
+
+So we have this W intersection matrix.
+
+Then we compute the SVD of this W, the X, sigma, Y transpose SVD, which we learned before.
+
+And we compute the more general pseudo inverse of sigma.
+
+Its name is wrong, but it is simply a pseudo inverse for a non-inverting matrix.
+
+So because this sigma is a diagonal matrix, it becomes a result of SVD.
+
+If the I diagonal element is not 0, then we replace that element by one lower space.
+
+Otherwise, we'll leave it as 0.
+
+So it is identical to the inverse operation if the sigma matrix is invertible, if it's full width.
+
+But if not, we just leave 0 as 0.
+
+That's just all we did.
+
+Then we create U matrix from the result of SVD to W as Y times sigma inverse square X transpose.
+
+So again, why is that for? I will leave it to you.
+
+It is carefully constructed so that the CUR is approximately the same.
+
+So intuitively, I can say that we select CNR, but the composition of the CNR should be combined into a single reconstructed matrix so there is no glue.
+
+Like this works as a kind of glue.
+
+It gets the intersection matrix and it does the inverse of the intersection matrix.
+
+So that works as a glue for combining CNR.
+
+That's the best explanation that I can have is U.
+
+So we have everything.
+
+So here as an example, we construct this intersection matrix W as follows, where the columns and rows are selected in that way.
+
+And the order of X intersection, so W looks like that, 0, 5, 5, 0.
+
+And we construct U from W as follows.
+
+We compute SVD for this small W matrix.
+
+And we have the sigma transpose by sigma inverse, like pseudo inverse.
+
+And we do the opposite for the SVD matrix, which gives us this resulting U.
+
+So we need to run SVD, but the matrix is small, like W is small, so I think it is okay in terms of scale.
+
+Now we have a full method to select C, U, and R.
+
+So here you note that this is a probabilistic algorithm.
+
+We sample CNR from the original matrix. It's not deterministic.
+
+And then U is created deterministically from the sample CNR.
+
+I mean CNR is probabilistic, but U is deterministic.
+
+If you look at these matrix, this is that compared to SVD.
+
+I mean, there is a lot better compared to SVD.
+
+But still, it is meaningful because it somehow preserves the scale of their needs.
+
+And it's not a complete bad. It is useful, but it just relies on how this Rosen column is our example.
+
+So in this case, you might think like CUR is bad, because it lies in the set.
+
+But CUR is not just that it uses the sparsity of the matrix, which is good, but it gives us a different interpretation.
+
+So if you look at SVD, SVD finds the axis that shows the largest variance, greatest variance, we know it.
+
+So if you think about SVD in terms of the clustering way, then we can say SVD is creating a centering, which is the center of all the data.
+
+But CUR is most likely a clustering.
+
+It samples points only from existing points, which gives it a lot of restriction for constructing a new axis.
+
+So for example, if we have a single vector that describes the range of all the points, then CUR and SVD are similar to each other.
+
+Why is that? Because a singular vector will be aligned with the XOR column.
+
+And you know that the red one corresponds to the R matrix, right? R matrix, not the C, because R matrix is kind of a transformation matrix for the CUR equation.
+
+So on the left hand side, it is okay. But if you look at the right hand side, let's say you have two directions, this one and this one. These are not portable.
+
+If you run SVD for a certain cluster, then the first dimension of SVD will be aligned with the standard position, with this two points.
+
+Because this is the largest, the direction that shows the greatest variance.
+
+The second one seems to be 11 from the first one, because this is the older one from the first one.
+
+But if you run SGR, it will sample one from each cluster, hopefully.
+
+I mean, we hope that because it's a problem, this is all present, but hopefully you can select one point from each cluster, which might be better than SVD in terms of interpretability.
+
+Because, as I said, a grid row for every column is an existing point.
+
+So it's not that CUR is always bad compared to SVD. It gives us some kind of interpretable decomposition, which is in a pretty different way from SVD.
+
+So, basic. So today I covered singular value decomposition, singular vector decomposition, and dimensional reduction in SVD.
+
+It should be singular value decomposition, okay. It's not a big deal.
+
+And we learned how to apply dimensional reduction with SVD and CUR decomposition.
+
+So today, in our last class, we're mathematical, I know it, but important.
+
+So I hope it gives you another new perspective on how to look at these data matrix and how to understand how this data matrix is distributed.
+
+Okay, so that's all for today and see you on the first day.
+

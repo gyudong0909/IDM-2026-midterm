@@ -1,0 +1,166 @@
+# PROMPT A1c: study_guide.html — Part C (L11~L13 + 집계 섹션)
+# 대상: Claude MAX (claude.ai) — 새 대화창 (A1a·A1b와 별개 세션)
+# 목적: IDM 중간고사 학습서 Part C 생성 (3개 세션 중 마지막)
+# 어셈블리: A1a 출력 + A1b 출력 + [이 출력] → study_guide.html 저장
+# =============================================================
+
+## ⚠️ 교수 출제 철학
+> "I personally don't like memorizing. I want to ask your understanding skills —
+>  how you understood the content and how well you can use the knowledge
+>  to solve other problems."
+
+**2026은 Closed-book.** 공식·알고리즘 단계를 시험장에서 아무것도 없이 재현 가능한 수준으로 작성하라.
+
+---
+
+## ⚙️ 사전 준비
+
+```bash
+sudo apt-get install poppler-utils
+```
+
+---
+
+## 읽어야 할 자료
+
+### 강의 슬라이드 PDF (L11~L13만)
+  /mnt/d/SNU/26-1/DM/lecture notes/11-dimred-2.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/12-recsys-1.pdf
+  /mnt/d/SNU/26-1/DM/lecture notes/13-recsys-2.pdf
+
+### 강의 스크립트 TXT (L11~L13만)
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 11 - Dimensionality Reduction 2.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 12 - Recommender Systems 1.txt
+  /mnt/d/SNU/26-1/DM/lecture script/Lecture 13 - Recommender Systems 2.txt
+
+### MMDS 교재 (L11~L13 대응 챕터)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch9.pdf   ← Ch 9: Recommendation Systems (36p, L12~L13)
+  /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch11.pdf  ← Ch 11: Dimensionality Reduction (34p, L11)
+
+### 기출문제 (집계 섹션 렌더용)
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
+  /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
+
+### 과제 PDF
+  /mnt/d/SNU/26-1/DM/hw1/IDM2026-HW1.pdf
+  /mnt/d/SNU/26-1/DM/hw2/IDM26_Spring_HW2.pdf
+
+### ⚠️ 읽지 말 것
+  /mnt/d/SNU/26-1/DM/lecture video/
+
+---
+
+## 출력 내용
+
+이 파일은 A1b 출력의 `<!-- PART A1c CONTINUES HERE -->` 이후에 붙여넣는 내용이다.
+HTML body와 script 태그가 이미 열려있는 상태다.
+**이 파일의 출력으로 HTML이 완성된다.**
+
+### 1. mmdsExamples_late 배열 + 최종 병합
+
+```javascript
+const mmdsExamples_late = [
+  // Ch 9, Ch 11 (DimRed 2) 예제·연습문제 전부
+  { id, chapter, exNum, lectures, title, problem, solution, concept }
+];
+
+// 전체 병합 — A1a·A1b·A1c 데이터 통합
+const mmdsExamples = [
+  ...mmdsExamples_early,   // A1a에서 정의 (Ch 1,2,6)
+  ...mmdsExamples_mid,     // A1b에서 정의 (Ch 3,7,11)
+  ...mmdsExamples_late     // 이 파일 (Ch 9,11)
+];
+```
+
+### 2. L11 ~ L13 각 강의 섹션
+
+각 강의 섹션 필수 블록:
+1. **직관적 이해** (.tag-intuition)
+2. **핵심 개념 + 공식** (.tag-theory) — MathJax 수식
+3. **수치 예제** (.tag-example) — 중간 단계 전부
+4. **시험 포인트** (.tag-exam) — 암기 필수 공식
+5. **이 강의 기출문제** — `<div class="inline-items" data-lecture="lecXX" data-type="exam">`
+6. **MMDS 관련 예제** — `<div class="inline-items" data-lecture="lecXX" data-type="mmds">`
+
+#### L12 필수 항목 (신규 범위)
+- Jaccard / Cosine(blank=0 문제) / Pearson correlation / Normalized cosine 비교
+- User-User CF 예측 공식 + 수치 예제 (utility matrix)
+- Item-Item CF + User-User 비교 (item-item이 더 안정적인 이유)
+- CF 장단점: cold start(user/item 구분), sparsity, popularity bias
+
+#### L13 필수 항목 (신규 범위)
+- SGD 정확한 업데이트 수식 (ε_xi, u_x/v_i with 정규화)
+- Regularization 목적함수 (λ₁/λ₂)
+- GD vs SGD vs Mini-batch 비교
+- Model with biases: r̂_xi = μ + b_x + b_i + u_x^T v_i
+- Train/Validation/Test split + k 선택 곡선
+- Implicit feedback: Sigmoid, BCE, BPR 공식
+- GD 수렴 예제 (3~4 iteration, SSE 추적 테이블)
+
+#### 코드/슈도코드 슬라이드 특별 처리
+- L13 13-recsys-2.pdf p26: SGD for UV 슈도코드 반드시 포함
+- 각 줄 한국어 주석 + "⚠️ 빈칸 출제 유력" 표시
+
+### 3. ⚡ T/F 지뢰밭 섹션
+전 범위 T/F 함정 패턴 정리. always/never/only/guaranteed 키워드, 유사 개념 혼동 포인트.
+
+### 4. 📐 수식 마스터 섹션
+시험 직결 공식 전체 목록. Closed-book이므로 암기 필수 표시.
+
+### 5. 🔧 알고리즘 레시피 섹션
+각 알고리즘 단계 순서 암기용 카드.
+
+### 6. 📝 기출문제 전체 섹션 (id="past-exams")
+- 필터 UI: 연도(전체/2024/2025) × 강의(전체/L2~L13) × 유형(전체/T·F/계산/증명)
+- pastExams[] 데이터로 JS 렌더링
+- 각 카드: 연도·번호·유형 태그 + 문제 원문 + [풀이 보기] 토글
+
+### 7. 📖 MMDS 예제 전체 섹션 (id="mmds-examples")
+- 필터 UI: 챕터(전체/Ch1~Ch11) × 강의(전체/L1~L13)
+- mmdsExamples[] 데이터로 JS 렌더링
+
+### 8. 📋 과제 해설 섹션 (id="hw-solutions")
+HW1·HW2 전체 문제·풀이. 탭 2개: [HW1] [HW2]
+
+각 문제 카드:
+- 문제 번호 + 배점 + 강의 태그
+- 문제 원문 (영어)
+- 단계별 풀이 (MathJax 수식, 중간 과정 포함)
+- 시험 관련성: 🔴직결 / 🟡간접 / ⚪무관 (코딩 여부 아닌 개념 기준)
+
+### 9. HTML 닫기 + JS 초기화
+
+```javascript
+  // script 태그 닫기 전 초기화
+  document.addEventListener('DOMContentLoaded', function() {
+    renderInlineItems();
+    // 사이드바 스크롤 연동 초기화
+  });
+</script>
+</body>
+</html>
+```
+
+---
+
+## 자료 충돌 시 우선순위
+강의 스크립트 > 강의 슬라이드 > MMDS 교재
+
+---
+
+## 금지 사항
+- lecture video/ 접근 금지
+- 수식 유니코드 표현 금지 (MathJax만)
+- 중간 계산 과정 생략 금지
+- placeholder / TODO 금지 — 모든 항목 실제 내용으로 완성
+
+---
+
+## 완료 후 체크
+- [ ] mmdsExamples_late[] — Ch 9,11 예제 채워짐
+- [ ] const mmdsExamples = [...early, ...mid, ...late] 병합 완료
+- [ ] L11~L13 섹션 완성 (SGD 슈도코드 포함)
+- [ ] T/F 지뢰밭, 수식 마스터, 알고리즘 레시피 완성
+- [ ] 기출 전체, MMDS 예제 전체, 과제 해설 섹션 완성
+- [ ] </body></html> 로 닫힘
+- [ ] renderInlineItems() 호출됨

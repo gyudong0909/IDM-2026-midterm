@@ -1,0 +1,1609 @@
+Good morning everyone.
+
+Let's begin a new class.
+
+So yeah, the name of the new topic that we're going to learn today is demand-internal reductant.
+
+And the problem today is a little bit of MEN class.
+
+So I guess our previous topics were mostly about implementation or how to expand an existing
+
+algorithm to large-scale data.
+
+But today it's mostly for getting a mathematical insight on how the data is represented and
+
+how to understand data.
+
+So the number of slides is not much today.
+
+Like I guess we have only 34 slides.
+
+But since it's a little bit mathematical, I'm not sure like how easy for you to understand.
+
+But I'm going to try my best.
+
+And if you know linear algebra very well, or if you have very good mathematical intuition,
+
+then I guess this class would be easy to follow.
+
+But if you did not take any linear algebra class, or if you're not familiar with dealing
+
+with matrices or vectors, then you might need some time to review today's conference later.
+
+Announcements.
+
+The point is there.
+
+So the deadline is only one week.
+
+In one week, so basically combined, you need to take the deadline and the number two will
+
+be announced at the same date as the deadline.
+
+So the somewhere you choose that line would be April 30th.
+
+And here is the information for the weekend, which is from you.
+
+So the May, April, May, March, like the regular class time, like from 9.30 to 10.45.
+
+I want you to make it a little longer, but some of you might need to go to the other
+
+class like at 11.
+
+So I just try to get the original by the way.
+
+Because I might give you more time for the exam, because I want to get in the regular
+
+time, you really need to get in the time by 9.30.
+
+So where is the I?
+
+We have two different classrooms because the number of students is too many to get you
+
+in this classroom.
+
+It will be a good product.
+
+So we will announce a basic rule to separate you to these two classrooms.
+
+Probably use your student ID or you need to use the good programs.
+
+And I personally thought a lot of how I'm going to proceed with the exam.
+
+In fact, when I was doing this lecture on ice, I gave you like two hours and 30 minutes
+
+for the exam and I did a lot of them.
+
+But since we did not have such a long time, I was trying to change the rule for the first
+
+time in my life for there.
+
+So it's very, very simple.
+
+Most of the time leaders were painting.
+
+Not a lot of it.
+
+But I assure you that I personally don't like memorizing.
+
+I don't want to pass your memorization skill because that's not what I really want you
+
+to have.
+
+So I later want to ask your understanding skills like how did you understand the content
+
+and how well you can like use the knowledge that you learned to solve other problems.
+
+So that's what I really want to test.
+
+So I attempted to do this whole loop test or evaluate such a thing.
+
+But since as I said, we don't have like most time for exam, I just think it would be harder
+
+for us to get you to solve a too difficult problem because of the limited time.
+
+So this time I will do it in a closed loop scheme.
+
+So just please keep in mind that like I mean, you won't have any
+
+what was made that in the English like any previous exam for you to study.
+
+So I can.
+
+Okay.
+
+I will share you some of the exams that I did.
+
+I created it more times.
+
+So when I was so you can refer to these exam questions for your own like study.
+
+But I assure you that these previous exams were like for the open book test.
+
+So the difficulty is higher for these exams.
+
+On the other hand, since I'm going to do it close to this time, I guess the general questions
+
+will be easier than before.
+
+So just please don't think about the exam style too much because it can change as I
+
+move to a new school.
+
+But you just use this the materials that I'm going to share as just a supplementary
+
+parallel for your own study.
+
+So more questions?
+
+Any questions on the exam or course or anything?
+
+No.
+
+No.
+
+Recap.
+
+So our previous topic was flustering.
+
+Flustering was in fact a very intuitive topic, I guess.
+
+And we learned three different algorithms, the FMR, TUR, and GR.
+
+All of which focus on large disk residents.
+
+So all of them are based on simple ideas on flustering, whether it's a hierarchical
+
+or teams or any style they're based on, or how to represent a cluster, how to
+
+summarize a cluster, how to merge a cluster.
+
+So there were various tricks for designing a clustering algorithm.
+
+And these three algorithms introduce different choices, different design choices for various
+
+components of the clustering algorithm.
+
+And the choices make each of these algorithms unique.
+
+So for instance, if you think of a pure algorithm, it's super simple and it's based on
+
+a hierarchical clustering, while if you go to GR to be able to represent it, it uses
+
+the concept of rosum to represent a cluster.
+
+Or if you go to VMware, although it's a great algorithm, it looks good.
+
+It relies on the function that the given things are in convenient.
+
+So these design choices are related to the functions that they create or the efficiency
+
+that you can provide to the user.
+
+So that's just the thing.
+
+Clustering locations of the clustering.
+
+Right.
+
+Great.
+
+So let's move on to our new topic.
+
+More, I personally like this topic more than the previous one, like the clustering or even
+
+the frequent items and mining, because this dimensional reduction is really important
+
+even for modern machine learning.
+
+If you want to become a machine learning engineer, or if you want to get a great mathematical
+
+insight on data, I guess dimensional reduction and all the things that we learned today
+
+is really important.
+
+So let's think about the dimensionality reduction.
+
+So what it means.
+
+So I try to make you understand that data can be represented in various ways.
+
+Some data are like, as you remember, are like market basket data.
+
+Some data can be a time series data, sequential data, or some data can be some points in the
+
+space that we did in the core clustering.
+
+So there is no single way to represent data.
+
+But if I have to pick the most popular way or the most common way to represent data,
+
+then I will say I will represent the data as a matrix.
+
+By n by n matrix where n is a number of data points or samples or instances.
+
+These are just different terms.
+
+And n is number of features or attributes or the number of information that we have
+
+to represent each sample or data.
+
+So in really, really many cases, when we like work in a company or when we gather data,
+
+almost all the data that we think of can be represented as a matrix.
+
+For instance, when we think about the health data set, let's represent each person as a
+
+tool of height, weight, BMI, blood pressure, age, and all or such information to represent
+
+a person.
+
+So one thing is these features are flexible.
+
+So there is no, as I said, fixed way to represent a person.
+
+Like these types of features or number of features are just lots of designer, engineer
+
+design.
+
+For instance, if our goal is to understand this guy's health condition in terms of weight
+
+and height, probably I'm going to add this BMI because it is useful for others and because
+
+it guides the health function.
+
+But for instance, if I want to specify whether this person has cancer or not, for instance,
+
+then I will probably need some more features like very important methods or some x-ray
+
+images like that.
+
+So these features are flexible.
+
+They can be created or discarded based on our goal or based on what we want.
+
+But there's one thing which does not change is regardless of the number of features, the
+
+types of features, it will be a matrix.
+
+So let's think about the many goal.
+
+Then we can say that if we have an n by n data matrix or data, then we can say every data
+
+point lies on an n dimensional space, whether the space is Euclidean or not.
+
+We're not sure of that, but still it will be an n dimensional space.
+
+But since the features are arbitrary, since the features can be created or discarded,
+
+we can say the many goal of data, like the true space, the true dimensional data can
+
+be different from n.
+
+Why is that?
+
+Because...
+
+Let me show you one example.
+
+Where is it?
+
+Okay, let's go back to this slide.
+
+So, you know, this D&I innovation can be computed from Python Minecraft.
+
+So some features will be able to compute it from the other features.
+
+So then let's say I'm an engineer, so I want to keep adding the features and features based
+
+on the existing features.
+
+Then they will add some representational ability of this person, but they do not give
+
+uniformity to this person because these new features are computed based on existing
+
+features.
+
+So we can say that even in that case, if we add features from the existing features, that
+
+will increase the number of dimensionality, but that does not increase the dimensionality
+
+of this many goal.
+
+So that's the meaning of the many goal.
+
+Or we can say the number of latent features, which really determine the characteristic
+
+of this person.
+
+So this is an example that I just said.
+
+Like if you represent some person with their weight, height, and VMI, then you can say
+
+the many goal is probably 2, because I mean there are two unique information matrices.
+
+So the management of the many goal is basically to find such a many goal or to find these
+
+latent vectors from a large data bank.
+
+Because in that way, you can compress data, or we can really focus on more important things
+
+rather than by discarding unnecessary information that represent the person.
+
+For instance, if you look at the first figure, this is basically a two-dimensional point.
+
+But if we look at this figure, almost all points are diverged, distributed along a single
+
+line.
+
+Then we can say this data may be almost one-dimensional.
+
+Why almost?
+
+Because there is still a little bit of distance from this line.
+
+So they are not exactly on a one-dimensional many goal, but almost.
+
+Because we can safely discard the distance from the line, if you really are saying that,
+
+one single line.
+
+Or if you look at the second figure, although all these points are lying on the three-dimensional
+
+space, most of them are like a two-dimensional plane.
+
+Then you can say that many goal is in fact a two-dimensional space.
+
+So what I want to say is representation is not unique.
+
+It's up to us how to manage this representation and how to create a new one which is more
+
+effective to deal with.
+
+So that's the goal of dimensionality reduction.
+
+So if you think about it, as I repeatedly say over matrix, this whole kind of dimension
+
+order reduction is closely related to linear algebra.
+
+Because this whole thing is about the characteristic of a matrix, which is a mathematical term.
+
+So let's think about the rank.
+
+How many of you know the rank of a matrix?
+
+Let's see, raise your hand.
+
+Almost all?
+
+Great.
+
+Great.
+
+Okay.
+
+But let me just explain it again for those who are not familiar with linear algebra.
+
+The rank of a matrix is the number of layers of matrix.
+
+So, I mean, if we know the rank of a matrix, then it means we know the number of dimensionality
+
+for the big name.
+
+So the rank is represented by the number of layers of matrix for representing this manifold.
+
+And in that rank, the rank is the number of linearly independent rows or columns of a
+
+matrix.
+
+And here, linear independence means there is no non-zero linear sum of rows that is
+
+one.
+
+So I will make it fast.
+
+So let's think about the three points in a three-dimensional space.
+
+If you look at this matrix, this is three by three.
+
+So we have three points which are on three-dimensional space.
+
+But we know that the rank of this matrix is two.
+
+Because there is an equation to represent the third row C as a linear combination of
+
+A and D.
+
+Or we have the data that represents the third column as a linear combination of the first
+
+and the second column.
+
+That means the third information is redundant or unnecessary to store in our matrix.
+
+Because it can be created for these six matrices.
+
+So based on this relationship, we know that the actual rank is two.
+
+Which means if we reduce the dimensionality of that matrix into two, we do not lose any
+
+information because the actual rank is two.
+
+Okay.
+
+So in that case, if we know that the rank is two, then we can rewrite the coordinates
+
+efficiently reducing the dimensionality from three to one.
+
+Let's consider the A vector.
+
+Like the A was a single row of the matrix, remember?
+
+So you know that like in the previous slide, A, B, and C are referring to three different
+
+samples or three different points.
+
+Let's consider A. The first row.
+
+Our old basis vectors, like the basis of the space or the axis are like 1, 0, 0, 0, 1,
+
+0, 0, 0, 1, which are very trivial three dimensional basis vectors.
+
+So with that basis vector, we represent A as a linear combination of these three basis
+
+vectors where 1, 2, 1 represent the weights of these basis vectors.
+
+But as we know that our rank is really two, we can create a better basis vector.
+
+Like these two.
+
+Then with these two basis vectors, we can represent each sample with the two numbers
+
+based on the linear combination of the two basis vectors, like A, 1, 0, B, 0, 1, 3, C,
+
+1, minus 1, which means we have successfully reduced the number of dimensions.
+
+Although probably we should store the information of these basis vectors probably somewhere
+
+in our family.
+
+But with these new basis vectors, we can successfully represent any point with two
+
+numbers without losing any information.
+
+So in the real world case, this is not common because the data is noisy.
+
+In the real world, it is rare to observe that a matrix has a really small rank.
+
+So it has in fact a high rank, but the error is not that much.
+
+For instance, as I said, a case like this or a case like that, we know that the actual
+
+manifold is small in the medical space, but the error can be system because of the curve.
+
+And in this case, the actual rank of the matrix is not 1 and 2, but it's mostly 2 and 3.
+
+I just wanted to say there is a little bit of difference between the mathematical rank
+
+and the actual manifold.
+
+But you know what I'm saying, right?
+
+Anyway, this is the meaning of the rank.
+
+So as I said, this dimension-only reduction is reducing the representation of each sample
+
+based on the rank.
+
+Or we can say we want to discover the actual accesses of data following the manifold.
+
+For instance, here, then we can say our goal of dimension-only reduction is to find this
+
+red line, which is the manifold of the data.
+
+And then with that red line, which is our new coordinate, we can present each point
+
+with a single coordinate following this red line.
+
+So by doing this, we incur a little bit of error.
+
+Since the points in this figure do not exactly lie on the line, there will be no error if
+
+the rank is really low.
+
+But even though there is a little bit of error there, I can say the one-dimensional reduction
+
+is still useful because I mean it's a two-line reduction, right?
+
+So that's it.
+
+Any questions?
+
+Yeah.
+
+We consider linear relationships between data.
+
+First of all, the dimension of manifold doesn't have to be something like linear combination.
+
+Yeah, great question.
+
+So in fact, at least in today's course, we will consider only the linear relationships.
+
+The problem is if we extend our scope into nonlinear relationships, and if we
+
+think that, for instance, if we consider this matrix to be ramped to be just because the
+
+third column can be created by a nonlinear relationship between all the first two columns,
+
+then I think the whole thing becomes really complicated.
+
+Because I mean, first of all, if you extend our scope to nonlinear relationships, then there
+
+can be a lot of nonlinear functions there.
+
+Probably there can be even the most complicated neural network.
+
+Then let's say even though the third column can be represented by a fancy neural network
+
+that takes the first or the second column as an input, it's hard to say if the column
+
+is redundant because there will be an overhead of creating such a neural network for creating
+
+third column.
+
+So at least in the mathematical view, or at least for the ease of the learning, I can
+
+say that mostly the domain-internet reduction focuses on the linear relationship.
+
+But if we go into the field and if you are familiar with all these machine learning
+
+techniques, then I can say we can extend this knowledge to nonlinear things.
+
+I mean, was it a good answer to your question?
+
+In the field, we consider about the nonlinear relationship between the guy and the answer.
+
+Okay, so in fact, in the field, we're not interested in the ranking.
+
+Because the ranking is mostly like mathematical term.
+
+So in fact, in the real life, let's say, okay, I'm going to spend a few minutes in the practice.
+
+So in the industry, its data is represented as an n by n matrix.
+
+In the industry, m is millions and n is like thousands or tens of thousands.
+
+And even the computing the actual rank of this matrix takes a lot of time.
+
+So in this case, we just forcefully reduce the dimensionality into like, for instance,
+
+10 or 5 or 2.
+10, 5, 2.
+
+Because humans can only see up to like three-dimensional space, right?
+
+Like from the paper.
+
+So the actual dimensionality reduction is not based on this fundamental understanding of data.
+
+It just takes, we just take the original dimensionality like 10 or 100 or 1000,
+
+and we just reduce it to two for visualization purposes like that.
+
+So I can say that things are more like messy or coarse in the field.
+
+But before we go into this messy field, we want to have more fundamental understanding of the thing.
+
+Okay?
+
+More questions?
+
+Great.
+
+No questions?
+
+No?
+
+Great.
+
+Great.
+
+Okay.
+
+So I mean, when I prepare the slide for space,
+
+if I just skip all these linear algebra things, probably I'd have included much more things in this.
+
+So I want this class to be open even for the students who are not that dumb leader with linear algebra.
+
+I'm going to just talk about some basics of linear algebra before talking about very complicated things.
+
+So probably for some students, they might be some easy to follow if you are, as I said, familiar with linear algebra.
+
+So let's first talk about linear eigenvalues and eigenpairs,
+
+which are the very fundamental concepts for understanding matrices.
+
+So let me first define some terms.
+
+A vector, V, is a unique vector.
+
+If it's L2 more than one, or we can say the square sum of its elements,
+
+the relative version of that is one, then we can say that vector is a unique vector,
+
+or we can say the length is one in the linear space.
+
+And two vectors, Vn, V1 and V2 are orthogonal if their dot plus of zero,
+
+which means their angle is 90 degrees by inner space.
+
+And the two vectors are orthogonal if these two vectors are what you need vectors and orthogonal vectors,
+
+which is a more restriction compared to orthogonal vectors.
+
+And the matrix A is said to be orthogonal if its rows and columns are orthogonal with each other.
+
+So either its rows are orthogonal or its columns are orthogonal.
+
+Either in each case, the matrix can be said to be orthogonal.
+
+And if the matrix is orthogonal, then we can say
+
+the A transpose is the same as A inverse because if the matrix is orthogonal,
+
+A transpose should be an identity matrix because if the matrix is orthogonal,
+
+the dot product between different rows would be only zero.
+
+But the dot product between the same rows will be always one.
+
+So A transpose equals identity matrix and A transpose A equals identity.
+
+So because we have this identity between A transpose and A transpose A,
+
+we can say A transpose is A inverse.
+
+And because they are the same as identity matrix.
+
+So very basic terms.
+
+So let's talk about eigenvalues and eigenvectors.
+
+So I mean, this is not linear algebra.
+
+So I'm just focused on the very simple functions or concepts.
+
+So let M be an n by n square matrix, lambda be a scalar, and E be a vector.
+
+Lambda is defined like it's called an eigenvalue of M,
+
+and E is called the corresponding eigenvector corresponding to this lambda f,
+
+and times E, like matrix vector multiplication, equals lambda E.
+
+That means we have a direction that is represented as a vector E.
+
+But if we transform this vector with this matrix M, it doesn't change direction.
+
+It only changes the scale of the vector.
+
+If there is such a vector E with the corresponding value lambda,
+
+we can say E to be an eigenvector of M and lambda to be an eigenvector of M.
+
+And this pair, like the pair of lambda and E, is called an eigenpair because it creates a pair.
+
+And the eigenvector with the largest lambda, or more specifically,
+
+the largest value of the absolute lambda, is called the principal eigenvector.
+
+So this eigenvector and eigenvalue are really important for understanding the characteristic
+
+of the matrix. We can say, although it is not that obvious from this equation,
+
+but understanding these eigenpairs or telling these eigenpairs of this matrix gives us a very
+
+good intuition on how this matrix transforms the matrix in the space, or how this matrix performs
+
+in the space. So if you're curious, I really want you to think of a different class, but here
+
+is just some concept. But there is an ambiguity, as it's obvious from proofs, right?
+
+Because if E is an eigenvector, then always C times E, where C is a constant, is also an eigenvector.
+
+Why is that? Because if we consider, like let's say E is an eigenvector, then we compute M, C,
+
+like the matrix scalar vector, then we can exactly solve this border between C and M.
+
+And we know that M, E equals lambda E because E is an eigenvector. Then lambda is a scalar,
+
+sigma is a scalar, so we can change their order. That means if E is an eigenvector,
+
+always this constant multiplications are always eigenvectors, which means there can be intuitively
+
+many eigenvectors corresponding to the same eigenvalue, which is not good for us,
+
+which creates an ambiguity. So in our course, we require every eigenvector to be a unit vector.
+
+So it's like a rule that we just create, or we reduce it such an ambiguity. And we also
+
+force that the first non-zero component of an eigenvector to be positive, because there
+
+also is an ambiguity of sign. We can compute, we can consider C to be a minus one, and that will
+
+convert the sign to eigenvector, creating another ambiguity. So by enforcing these two conditions,
+
+we can say there would be one distinct eigenvector for a single eigenvalue, at least reducing this
+
+ambiguity. I mean, there can be multiple eigenvectors for a single eigenvalue, but that will be because
+
+of the matrix property, but not because of this ambiguity. So this is just properties that we're
+
+going to assume. So here is a pretty simple example of the eigenvector. So there is an n.
+
+I'm not sure if it's ranked better or not, but there is an eigenvector E here and a lambda here.
+
+So E transported by m is still E multiplied by lambda 7. So here we say that this is an eigenvalue
+
+because it's normed and one is an eigenvector, and the first element is positive, and seven is an
+
+eigenvalue responding to that eigenvector. Then, I just said, eigenpairs are important.
+
+Eigenpairs give us many information on the matrix. Then, what would be a way to get such an
+
+eigenpair, or what would be a way to know that there are eigenpairs? So one of the ways is
+
+So this is not an algorithm. This is more like a definition of a thing or decomposition of a thing.
+
+So let's say we are given a square matrix M, then the eigendecomposition of this matrix is defined
+
+as this decomposition of this matrix into three matrices multiplied. So here Q and lambda. Q is an
+
+n-value matrix whose size is the same as m, whose i column is the eigenvector of m,
+
+and lambda is the diagonal matrix whose diagonal elements are the eigenvalues. So if
+
+m can be decomposed into this way, then it can say m has its eigendecomposition. And by making this
+
+and by decomposing m into this form, we just instantly know it's all eigenvectors inside Q
+
+and all eigenvalues in lambda which are responding to these eigenmetries. So this
+
+eigen decomposition is not existing for all matrices. This is existing for some matrices,
+
+and I'm going to talk later, but this is just that information, eigeninclusion. And in fact,
+
+all the things that I talk in this part are needed for later understanding the later algorithm. So
+
+I'm just giving you the preliminary knowledge to understand the base concepts in linear algebra.
+
+Okay, any questions so far? No? Nothing hard, right? Okay. Then let's think about the condition
+
+for a matrix to have an eigen decomposition. Because I just said not all matrices have their own
+
+eigenvectors. So let's think of a diagonalizable matrix. A sphere matrix D is diagonal if its
+
+elements are 1, its diagonal entries are 0. I mean, it's obvious. How do you think of diagonal matrix?
+
+Maybe I don't have to say this condition. But anyway, we know that these are diagonal matrix.
+
+So here there is one general concept. A square matrix that is diagonalizable, so it's not
+
+diagonal, but it's diagonalizable if it is almost, it is close to a diagonal matrix. It's almost
+
+diagonal matrix in an informal way, which seems really strange to say, right? So in a formal way,
+
+a matrix M is diagonalizable if there is, if there exists an invertible matrix P and the diagonal
+
+matrix P, which that would satisfy this equation. That means we know a square matrix M. If we have
+
+an invertible matrix P multiplied here and there with the numbers, then there is a diagonal matrix,
+
+which means we can say this matrix M is diagonalizable to be based on an invertible matrix P.
+
+So only if there is such a condition, then we can say that M is diagonalizable. So there is a reason
+
+why I can say informally it is almost a diagonal matrix, because we know that invertible matrix is
+
+not that common in the world. Invertible matrix, in fact, invertibility is a hard, like a condition
+
+that is hard to satisfy. So if there is such a P, then you can say, okay, M is, although it's not
+
+readily diagonal matrix, but it can be diagonalizable. So we can say M is diagonalizable matrix.
+
+Then why do we think about the diagonalizable matrix? I mean, why is it important? So the thing
+
+is any diagonalizable matrix has diagonalizable matrix. So in fact, identical position is defined
+
+for diagonalizable matrixes, not all. So let's think about why. Why, like, I mean, why this,
+
+in the previous slide, why this diagonalizability is related to this identical position, because they
+
+seem to be relevant to each other. Why is that? Because the main reason is because this
+
+any diagonalizable matrix of M always has N linearly independent eigenvectors. We always can
+
+ensure that every matrix M has N linearly independent eigenvectors, which is a great
+
+condition. So let's think about it. Here is a little proof. So I will let you know some proofs,
+
+and I will skip some proofs based on the difficulty of that. But here is a simple proof, because
+
+M, because of that, all the matrix is you. So because M is a diagonalizable matrix, we know that
+
+there are some matrices P and D that satisfy the deviation. So if we multiply P on the left side
+
+of the left side of the deviation, then we have M P equals M D. So here we know that D is a diagonal
+
+matrix. So if you look at this M P equals P D, you know that D is a diagonal matrix.
+
+So we can represent D as some kind of this form. Then because of, because this is a diagonal
+
+matrix, if you think really about this, like, relationship between these three matrices,
+
+like, let's say this is M, this is P, and this is P. So if you compute this whole
+
+matrix M with the column here, right, then it always corresponds to the column here
+
+multiplied with this element. So because this is diagonal, we can decompose this whole equation
+
+into the column-wise manner of this matrix P. Because this is diagonal, this column does not
+
+interact with each other. Each column works on its own. So that means we can rewrite this whole
+
+thing as a column-wise way, where M times V i, where V i is the i column of P equals P times
+
+lambda i times E i, where lambda i is the i element of this diagonal matrix, and E i is the i
+
+column of the identity matrix. So just lambda i E i doesn't mean anything. It just means the i element
+
+of this i diagonal matrix, where its position is fixed by this i column of the identity matrix E i.
+
+So, I mean, I'm not sure how difficult it looks, this equation, but in fact it's really simple,
+
+because the, this one, like, into M P i equals P times lambda i E i, E is a column-wise understanding
+
+of the previous equation, M P equals P. So this i can be any column inside P. So if we write this
+
+equation in this way, based on the understanding that this is a diagonal matrix, then we have a
+
+great intuition of, yeah, intuition of, because P, okay, let's think about P in this matrix form,
+
+okay, like, sorry for the limited space P. Then, because this is the identity, like,
+
+column of the identity matrix, we can rewrite the right-hand side as lambda i, just simply V i.
+
+V i is the i column of P, lambda i, again, is the i element of this i diagonal matrix. So it might be
+
+a little fast, but you can understand it if you take some time. So if you write in this way the
+
+right-hand side term and the left-hand side term, and we look at both of them, then we know that,
+
+in fact, V i is an eigenvector of N, always, because this is the definition of the eigenvalue here,
+
+and lambda i is an eigenvalue of N. So what I really want to say is, by definition,
+
+if a matrix M is diagonalizing, if a matrix M is diagonalizing, then it always has this matrix
+
+that's changed. And just by rewriting this agent, I will look at P on the left side, then we can
+
+understand that this column of P, V i, represented by i, this column of P works as an eigenvector of N,
+
+just by definition of diagonalizability. And because of that, this element of P works as an eigenvalue of P.
+
+In other words, that means if we just knew that some matrix is diagonalizable, if you know its
+
+diagonalized form, we don't have to find this eigenpiped, we just know that these
+
+eigenvectors are inside P. So in fact, this diagonalizability and eigendecomposability,
+
+or any word that I can say, are very related to each other. In fact, they are obviously equivalent,
+
+but I'm not going to dig into the relationship between the two. So therefore, the columns of P
+
+are eigenvectors of N, and on top of that, we know that P is invariable by definition.
+
+So if P contains eigenvectors of N, and if P is invariable at the same time, then we know that
+
+all these eigenvectors are related to each other. So that's the simple proof.
+
+So why is it important? Why is it important? Because if you go back to this eigendecomposition,
+
+for a matrix to have this eigendecomposition, it should be able to... Sorry, this is the
+
+diagonalization. So if a matrix, for a matrix to have this eigendecomposition, it should be able
+
+to be decomposed into this form, where Q is an eigenvector of N, and here Q has an inverse form,
+
+which is a pipe-tree condition. But since we know that if N is diagonalizable, it will contain N
+
+linearly independent eigenvectors, we know that this Q is invariable for every diagonalizable
+
+matrix. So for every diagonalizable matrix, it has its eigendecomposition, and we can say it has all
+
+these eigenvectors and eigenvalues that we're interested in. So in fact, today, we mostly cover
+
+only diagonalizable matrix, because if you go beyond that, if you just go into more arbitrary
+
+matrix, then we don't know whether there are good eigenpairs for two matrices or not. So this is like
+
+making our scope into a small diagonal matrix, which is diagonalizable.
+
+Any questions? No? Straightforward? I'm not that fast, right? Okay. So this is just the last slide
+
+of what is pre-learned. So we just learned eigendecomposition and diagonalizable, and let's
+
+think about a little bit of different matrix. So let's ask the N by N real matrix matrix,
+
+where S equals the terms, and overall, we are not going to consider complex matrices. So all
+
+matrices are real. So if S is a real matrix matrix, then we have the very great properties that limit
+
+like the condition of this. For instance, first, S has N order normal eigenvectors,
+
+which is a stronger condition. I mean, we know that every diagonalizable matrix M has
+
+N linearly independent eigenvectors, but we are not sure whether they are more
+
+normal to each other or not. We just know that they are linearly independent. But if M is a
+
+symmetric, then these linearly independent eigenvectors are even more normal, which is a
+
+stronger condition. So I will not prove the first property. You can find one if you're interested
+
+in, but this is the best simple statistics explanation that I can give you. So this
+
+symmetry of S lets us act independently along all the model trees. So because symmetry is a
+
+quite strong condition for a matrix of all, because of that, we can say, I'm just not sure
+
+how to represent this, but this symmetry makes this matrix has very unique property of having
+
+N order normal eigenvectors. And because of that, because N has N order normal eigenvectors, obviously
+
+S has N linearly independent eigenvectors. And in fact, here I said, if a matrix is diagonalizable,
+
+it has N linearly independent eigenvectors, right? That's what I said. But in fact, the converse is
+
+also true. If a matrix has N linearly independent eigenvectors, then the matrix is always
+
+diagonalizable. So I didn't say this slide, but it is in fact the truth, and the proof is quite simple.
+
+So I encourage you to do your own proof for that. But it's a case. So because this symmetric matrix
+
+has N order normal eigenvectors, this matrix is always diagonalizable, which means it always has
+
+an identity conclusion. So the symmetry matrix always has an identity conclusion. And if we
+
+apply the identity conclusion to this matrix S, then Q is always order normal. Not just invariable,
+
+but normal. This is right. So at this point, you will understand why I spent this much time
+
+to this symmetric matrix, because for later equations, we are mostly interested in
+
+diagonalizable matrix and symmetric matrices, whose properties are shown to be right.
+
+Okay. So that was a little linear algebra lecture in data mining. Any questions?
+
+No? Great. In fact, if I have to pick one mathematical area for being an expert in
+
+machine learning or AI, I would say linear algebra. Linear algebra is really important,
+
+because as I said, almost all data can be represented as matrices or high-dimensional
+
+matrices called tensors. And linear algebra allows us to have a very great understanding on
+
+how this data is represented and how this data is transformed. Okay. So here is the real topic
+
+that I want to discuss. Power iteration and principal component analysis, which are different
+
+algorithms. So our main question is, how can we actually perform identity conclusion? I mean,
+
+we just learned it's good. It gives us some knowledge of the front matrix, but how can we
+
+do it? So there are two fundamental questions, which are Q-org algorithm and power equation.
+
+I will not talk about Q-org algorithm, which is more of a standard way, but Q-org algorithm
+
+is really slow for right-wingers. And as I said, our approach is for large data, so we will focus
+
+only on the power iteration. Power iteration is fast, but its main goal is to find the largest
+
+identity value and its corresponding principal identity. Power iteration is not for giving us
+
+all these identity errors. It's mostly for the principal identity. Because of that, we focus
+
+on the power iteration, and we have some large matrix. So what is a power iteration? In fact,
+
+it's a really simple algorithm that allows us to find the principal eigenvector of n, n
+
+efficiently. Again, here our assumption is n should be a diagonalizable matrix. If it's not,
+
+we're not even sure how many eigenvectors are there, so let's skip it. Power iteration is
+
+defined only for diagonalizable matrix. Here's a three-line super simple algorithm. First,
+
+we start with any non-zero vector, like zero of length n, where n is the number of
+
+diagonalizable matrix. Then we construct another x, like the next iteration x, by multiplying
+
+the previous x with n and dividing its length by its length, so that the result becomes a uniform.
+
+That's it. We just update this initial x, no matter what it is, by multiplying x n,
+
+okay, in a way, like hundreds of times over tens of times. And then when there is no update,
+
+when there is a convergence, then we start. That's it. I mean, that's it. We start from a random
+
+vector, we multiply n until it converges. So let's see what really is n and how it works.
+
+So let's think about this simple matrix n, 2 by 2, and that probably is diagonalizable,
+
+and our initial vector would be x zero. If we multiply x zero with n and divide by this more,
+
+then we get this new vector. I mean, 3 and 5 is the result of multiplying n and x zero,
+
+I don't have to do it 3 and 5, and we divide the norm of this multiplication in square root of 34,
+
+so we divide it by square root of 34, and we get a new vector, which is quite different from our
+
+original vector. So we do it again. We multiply n and x one again to have this new vector,
+
+and we divide it by x one. We have another vector x two. Well, all those two are almost
+
+equivalent, right? I mean, we didn't even show that this upgrade that really converges, but
+
+it is almost converging. So if you do it, I guess, for two or three more times, it will almost
+
+converge to the state of state. Then we stop. That's it. That's the end of the power equation.
+
+Here is the surprise. The converged x is approximately a nice vector of n. Why is that?
+
+Because how we proceed with this iteration is to compute mx from x. So let's say there isn't
+
+convergence. That means our new mx is almost the same as our previous x. So if we reach a steady
+
+state, if we just convert it, then you can say our current x, although the x subscript can be any
+
+number, like based on the number of iterations, our current x is almost an eigenvector because
+
+it is almost like x equals mx. So here you see that there is no scalar there. There is no
+
+eigenvector value there because of our division that we do. So here we only care about the
+
+eigenvector, not eigenvalue. So that's the reason why we can divide this vector by its norm so that
+
+we can force it to be a leading vector. So this algorithm is not for binding on eigenvalue. It's
+
+mostly binding on eigenvector. So if we converge, then we can say our final x is almost an eigenvector
+
+of the matrix. Then because how we treat it alone doesn't give us an eigenvalue, we have to find an
+
+eigenvalue from the computatives which can be computed easily by including x transpose mx.
+
+What is that? Because, okay, I'll just follow it. So let's say lambda is an eigenvector, because
+
+x is an eigenvector, mx becomes a lambda x, and lambda can be there, like to the front,
+
+and x transpose x is 1, so there is one. So if we start from x transpose mx, we always have an
+
+eigenvalue because our x is a unique vector. So with our equation, we can, by just a simple few
+
+iterations of multiplication, we can find the eigenvector, and we can find its corresponding
+
+eigenvalue with that simple addition. So if we have an x like converged x,
+
+looking like that, we can compute its eigenvalue in this way, 4.25.
+
+All right, good. So at least we know that this power recreation gives me some eigenvector,
+
+which is good. More surprises, the converged x is approximately the principal eigenvector,
+
+not any random eigenvector, but it should be a principal eigenvector. Let's see what.
+
+We need but one important function. Our assumption is, so I mean, you know, the eigenvalues doesn't
+
+have to be unique, right? So we suppose that these eigenvalues are always in this way. The first
+
+eigenvalue is greater than all other eigenvalues. If we sort that in the decreasing order, that is
+
+the only assumption that we know. If that assumption is violated, then this power equation can go wrong.
+
+That is a very unique case that I will not study. So if our assumption is true, let the
+
+corresponding eigenvectors that are corresponding to these eigenvalues to be b1, b2, bn, then we can
+
+represent our initial random vector. It can be anything. It can be a random initial vector
+
+as this way, as a linear combination of these all eigenvectors. Why is it possible? Because we know
+
+that any diagonal by diagonal matrix contains n linearly independent eigenvectors. So we can
+
+fill the whole space with these eigenvectors, and that's the reason why you can represent any
+
+vector b1. If we multiply n like multiple times with power equation, then what we have is,
+
+if we compute m x0, for instance, because we can represent x0 as that linear combination,
+
+it will be n times probably c1, b1 plus etc. And that will be m c1, b1, etc. Which will be c1,
+
+lambda 1, v1. So as we multiply m one time, that is the same as multiplying the corresponding
+
+eigenvalue to that eigenvector. Lambda 1 to the first one, lambda 2 to the second one, and so on.
+
+So if you multiply m k times, then that is the same as multiplying the corresponding eigenvalues
+
+for each pair, which will give us this equation. So one thing that we know that lambda 1 is greater
+
+than all the other eigenvalues. So if we put the lambda 1 out from this equation, then we have
+
+this thing. So if you look at this equation, we have lambda 1 to the power k up front, and we have
+
+the c1, v1 there, and all the other eigenvalues, they are divided by lambda 1, because the k is
+
+the same. But we know that lambda 1 is greater than all these eigenvalues. So as k increases,
+
+as k increases, all these terms will go to zero, will be discarded. The first one will be removed,
+
+which gives us the fact that our v1, our v, like our corresponding final vector x k,
+
+has the same direction as v1. So here, again, we do not consider the constants because we
+
+normalize these vectors. So this simple proof allows us to know that our power iteration gives
+
+us the principal eigenvector in a very simple and efficient way. The only thing that we need for
+
+running this power iteration is matrix multiplication. And if you remember the memory
+
+use thing, or the smart thing, matrix multiplication is one of the one of these algorithms that are
+
+really suitable for distributed computing. So this power iteration is bad, it's really scalable,
+
+and really bad, and you can compute it in memory use. So it doesn't like, and can be really bad,
+
+because it can be scalable. But anyway, we just learned that the result of power iteration is a
+
+principal eigenvector, which is good. Then how can we find more eigenvectors, more eigenvalues,
+
+because we are more interested in other eigenvectors as well, but just the principal one.
+
+So that can be done by removing the principal eigenvector from the weak. Then you might ask,
+
+how can we remove an eigenvector from a weak? That can be done in this way. We have M,
+
+and we subtract from M lambda times X, X transpose. So I'll not talk much about it,
+
+but you can intuitively consider that, that is eliminating the effect of the first,
+
+like the eigenvector X from the weak. That is like reducing the rank of the matrix by one,
+
+by removing one exit of the eigenspace. So given the result, M star, we can apply the power
+
+iteration again to this M star to find the second principal eigenvector of the original matrix M.
+
+And then it gives us really, it really gives us a new eigenvector. So if we divide the principal
+
+eigenvector, subtract the principal eigenvector from the matrix, and the resulting matrix M star
+
+looks like more, how do you say that, more not that big compared to the original matrix, because
+
+it has a smaller effect in the space. But if you apply power iteration again to this matrix,
+
+then it gives us the principal eigenvector of this matrix, which is the second principal
+
+eigenvector of the original matrix. So if we apply this power iteration five times or ten times,
+
+then it gives us five largest eigenvectors corresponding to the five largest eigenvalues.
+
+Yeah.
+
+Oh, in power iteration, if you're very unlucky and the initial vector is almost no
+
+performance, or the crystalline and the convergence can be very slow, how likely is such
+
+unlucky thing to happen?
+
+So you mean unlucky thing is mostly relying on the initial vector or?
+
+The initial vector. The C1 is almost zero thing.
+
+Yeah, it is a correct observation. So I can say, I, so I'm not sure whether there would be a
+
+theoretical like study on the relationship between the initial vector and the convergence speed.
+
+There should be some papers, but I didn't check these papers. But what I can say is in practice,
+
+power iteration converges really fast. So I just, I'm not that interested in the mathematical study
+
+of power iteration, but I did run this power iteration a lot, like during my study, and it is
+
+really good in practice. And I can say it's, the case that you said is quite rare in practice.
+
+As long as we do not initialize X to be really ill-defined vector, as long as it's, for instance,
+
+random uniform vector, then I guess it's good. Yeah. And another thing is probably I can say,
+
+later we'll learn PageRank. PageRank is a magic algorithm that, as I said, that built the empire
+
+of Google. And in fact, this power iteration is a core engine for the PageRank. So you will understand.
+
+So in terms of the PageRank, this, like this power iteration is not for arbitrary matrices
+
+and arbitrary vectors. It has more strict use cases for running this power iteration. So
+
+that's the reason why probably I didn't face any rare unlucky cases you mentioned. So you will be
+
+understanding this whole thing better later. Right? Yeah. Locations? Great. So in fact,
+
+power iteration is a useful algorithm, but again, it doesn't seem to relate to the
+
+dimensionality result. So in fact, this PCA is the real goal of today's course. So like the
+
+private 2 and private 3 are more like a preliminary knowledge for understanding PCA. And PCA is really
+
+popular for them. I mean, it is used a lot. So what is PCA? Principal component analysis.
+
+Given an dimensional data, it finds a new n-axis such that the first dimension shows the greatest
+
+variance and the second dimension shows the next greatest variance over the world, the first
+
+direction. So this input and output definitions of PCA themselves are almost the same as dimension
+
+only reduction, because we want to find meaningful access from the data to create a new data manifold
+
+in reduced dimension. Right? But what this PCA does is almost the same as the goal of the
+
+It finds the first principal component that shows the great variance of the data. And visually,
+
+the first principal component is the axis that we want to find from the data. And the second one,
+
+on the first one, is again the next one to understand the data. So if you find, for instance,
+
+10 principal components by running PCA, that means we have successfully found the 10 most important
+
+dimensions as a result of dimension only reduction. So in fact, when we say we're going to learn
+
+dimension only reduction, it almost assumes it's PCA, because they are really related to each other.
+
+The problem is how does PCA work, right? So we understood the goal of PCA, but how it actually
+
+works is we are given an n-by and data matrix. So again, we move from the mathematical world to a real
+
+world. So again, here, we don't know whether it's a diagonalizable or square or not. We have just a
+
+data matrix, n, and by n, assuming it's a column-wise zero. So this column-wise zero means you can
+
+consider that as a standardization. For instance, if you represent patients by their weight, height,
+
+and DMI, then this height, weight, and DMI will have different distributions. For example, height
+
+is different from weight in their distribution. So we compute the column mean, and we
+
+shift each column based on this column mean so that for every column is zero. Then it's a very
+
+simple data standardization technique that we can apply for any data matrix, and in fact, then
+
+doesn't violate any assumption that we have. So it's okay to assume that our matrix is column-centered.
+
+And if the data matrix is column-centered, then we can do the data in this way. Because of the
+
+column-centering, all the data points will be gathered around the center. Okay, then the goal
+
+of PCA is to create an n-by and transformation matrix T, which is applied here, to make a new
+
+data matrix, n prime, from n. So the matrix, this T is not that big because it depends on n,
+
+that n, because it is applied as n. So the i column of T, if we multiply n and T, the i column of T
+
+creates the i principal component, because the first column of T will create the first column of
+
+n prime, which will be the first column of first axis in the principal component. So each column of
+
+T represents its axis or its principal component. So although the goal of PCA is to create a full
+
+matrix T, we can reduce the dimensionality if we use one of the first r columns of T. Because
+
+I think it's not shown in the slide, but this T is specifically created so that the first
+
+principal component is on the left and the last principal component is on the right. So if you
+
+use one of the r complements here, r columns of T, then you can say we take the most important
+
+r columns of the matrix and if it represents, we reduce the dimension as well. Okay, so that's the
+
+goal, goal T, finding T, transformation matrix. Okay, zero B. Why do we have to assume that the
+
+given data matrix is zero B or zero centric? What will happen if the matrix is not zero centric?
+
+Because the data, if we assume the data is not zero centric, the data will look like this one.
+
+But in that case, if we compute the variance based on the definition of PCA, then the first
+
+principal component is likely to point the mean of data, because it's where the variance is
+
+great, great. So I mean the variance is basically a distance from the center, so the data mean should
+
+work as a first principal component, which we don't want. We just want the variance inside the
+
+data, not in terms of the relationship between the sensor and the data distribution. So this means
+
+entering is essential for this state. We really need to do means and training for applying PCA.
+
+I mean if you are not going to assume the means and training, then probably we should change the
+
+definition of PCA to work with such a thing.
+
+Okay, so here comes another man, because for the remaining slides, I'll talk about how
+
+can we exactly find the transformation matrix. In fact, let's talk only about the first column,
+
+E1 of T. How can we efficiently find the first column of E? Okay, so let's first define the
+
+variance of data for any column T, because our goal is to maximize the variance. Our goal of
+
+finding principal components is to maximize variance. So let me first define the variance,
+
+and the variance of T, like for a column T is defined this way. We have a matrix M, and I is
+
+a rowing matrix. So then I is a row or I instance of matrix. If we compute M, I with B, that means
+
+we transform that person or that instance based on our first column of T, so some kind of principal
+
+component. So we need a resulting scalar there. So we, because of the general centering, the mean
+
+of the resulting scalar is always zero. So when we compute the variance, we can consider the mean
+
+as zero. So if we compute the scalar for the I-point I-th row, and we compute if we subtract
+
+a mean from it, and we experiment and we solve for both points, then that is the definition of
+
+the data variance. Then because of the mean centering, this becomes a simple more, a square
+
+term more of M times T, which is Mt transpose Mt, because M is a matrix, P is a vector,
+
+which becomes P transpose M transpose Mt. What it means is, if we define the variance,
+
+if you compute the variance for a single column T, then that variance is the same as this form,
+
+P transpose M transpose Mt, where M is a data matrix. Then our goal is to maximize the column T
+
+that maximizes this variance. So in another view, our goal of optimization is to find the T
+
+such that it maximizes this form, where M is an input, M is a constant. Given M,
+
+which T will maximize this value. That is the question that we have.
+
+Here come all the reasons why we studied all these linear algebra things, because to find a
+
+solution to that optimization problem is related to the concepts that we learned, just from the
+
+previous marks. Let's find some alternatives to have a better understanding of the thing.
+
+First of all, this variance of T is between lambda mean and lambda max, where lambda mean
+
+is the smallest identity value of M transpose M, and lambda max is the largest identity value of
+
+M transpose M. So this is one of the reasons, or we can say it's a theorem. And we can easily prove it.
+
+So first, we are given T transpose M transpose Mt, which is the definition of the variance,
+
+with the correct expression. But M transpose T, M transpose M, can be identity composed,
+
+because M transpose M is a symmetric matrix. So because of that, it is a diagonalizable,
+
+so we can apply identity composition to M transpose M, which gives us Q lambda Q transpose,
+
+where Q contains the eigenvectors of M transpose M. That is the least I didn't notice. Then,
+
+because of how it looks, we can rewrite it a little bit. So then there is lambda in the center,
+
+Q transpose T is at the right side and on the left side. Then let's call this Q transpose T as Y.
+
+Let's define that as Y for simplicity. Then we know that Y should always be a beauty factor.
+
+Why? Because if you compute the square root of Y, that means it equals to Q transpose T,
+
+that will give us Y transpose Y, which gives us Q transpose T transpose Q transpose T,
+
+which gives us the square root of Q transpose T. But here we know that Q is ordinal. Why is that?
+
+Because we have a great property here. Q of this symmetric matrix is always ordinal. We know that
+
+because of the great property of the symmetry matrix. So if we go back, we go back, sorry, here.
+
+Because of that, this QQ transpose is always an identity, because Q is ordinal, which gives us
+
+T transpose T. And T is always a unique vector by definition, because we consider T only to be a
+
+beauty factor by our condition. So it's always one. So what we know is if we write the original
+
+variance form in this way, this Q transpose T is always a unique vector. Then what we have is,
+
+if we rewrite SQ transpose T as Y, then we have the variance in this form, Y transpose lambda Y.
+
+So lambda is a diagonal matrix, right? Diagonal matrix.
+
+We have a lambda matrix here, and Y transpose here, Y transpose here. And there are item values,
+
+lambda 1 to lambda n, all n transpose n. Since it's diagonal, we can decompose this whole
+
+equation into this multiple item values, which gives us this new form of this equation.
+
+So this, the original variance is written in this way, which is written that way, and it becomes
+
+this one. The summation of lambda i times the square of yi. It's just a, so what I really want
+
+to say is the result is a simple weighted average of this item numbers, because yi comes from a
+
+unique vector. So y is a unique vector whose norm is one. So if we divide y into multiple elements,
+
+then what we really want to do here by multiplying y with item value is, based on how this y is
+
+formulated, this always is the weighted combination of lambda i, which is the item value. So based on
+
+yi, based on how we determine this yi, the maximum of this thing is lambda n. If we give it all the
+
+ways to the lambda n, or it can become lambda mean if we determine y to be so that it becomes the
+
+minimum. So this last sentence is what brings our alteration, because our variance is rewritten
+
+as the weighted average of the item values. We know that the maximum is the largest value,
+
+and the minimum is the smallest value. We cannot go beyond this code because of how it's written.
+
+Any questions so far? No? Okay. Okay. So let's go to the second operation. I mean, we don't have
+
+many more slides, so I don't mean this anymore. So the second operation is the variance. So we
+
+know that the scope of this variance is between lambda mean and the bounds. We know that it becomes
+
+lambda max only when our team, our column of the transformation matrix is the principal item
+
+vector. So it is really a thing that we want to prove. Why is that? Because our variance is,
+
+as again, is basically a weighted average of the item values of the matrix M transpose M.
+
+And obviously, the maximum is achieved when y1 is 1 and all the other elements in y are 0,
+
+because we have assumed that these lambdas are sorted in a decreasing way. So lambda 1 is always
+
+the principal item value. So obviously, the lambda 1 would be chosen if y1 is 1 and all the other
+
+elements are x4. So since y1 is 1, the first element of this y is 1, that means the first
+
+element of Q transpose T is 1. That means T is corresponding to the item vector, the principal
+
+item vector. Because if you write it in this way, that since we only care about the first
+
+element of this matrix, that means we only care about the first column,
+
+Q, right? Because there is a transpose. So this can be rewritten as V1 transpose T.
+
+And we know that V1 transpose T becomes 1 for the unit vector T only when T is V1,
+
+only when they are the same. So basically, this is a way that we show that only when T equals V1,
+
+we can say the variance is maximized as the lambdas. Since we want to know the unit vector,
+
+we conclude that T equals V1. So it was a long way. It was a long way. But the conclusion is
+
+simple. I mean, as a person who just want to apply TCA, we don't have to know all these things, but
+
+we are still a friend. So let me go back to the question. How can we efficiently find the first
+
+column T? The answer is we know that our G1, our solution, our first column transformation matrix
+
+is the principal item vector of M transpose M, which gives us the corresponding item value M
+
+around lambdas based on our previous observations 1 and 2. Then what do we have for that observation?
+
+M transpose M is the matrix matrix. It's diagonal. And we're interested in the principal
+
+item vector for doing PCA. So we can run power regression. We run power regression to the matrix
+
+M transpose M to find the first transformation vector. And then we can apply power regression
+
+again and again to find more transformation vectors from M transpose M. Because T2, the second
+
+column of the transformation matrix, is the second principal item vector of M transpose M.
+
+So in fact, M transpose M is often called the covariance matrix of center data, because it
+
+almost represents the covariance of data. I mean, the real definition of the covariance
+
+matrix is mostly in a statistical way, but informally we can say M transpose M is a covariance
+
+matrix. So when you say to a person that, hey, PCA is just finding the principal item vectors
+
+of the covariance matrix of data, that claim is almost correct. People will say that you
+
+know something about PCA, because that's how people actually call PCA. Final slide. A real summary.
+
+PCA is widely used for dimensional order reduction because of its three mathematical properties.
+
+By keeping the first four columns of M prime, that all N columns. I mean, if we had to run PCA to
+
+define all the columns of T, then it's slow. We do not want to do that. But at least for a few
+
+columns which he was most meaningful accesses in the new phase, then PCA and the power iteration
+
+are greatest. Because we know that the column has two of the greatest variance. So M prime can
+
+represent the same information even with a smaller R, assuming that the true, I mean the empirical
+
+rank of the matrix is smaller than M. So that's all. Any questions?
+
+No? Yeah.
+
+Yeah.
+
+Well, okay. I'm not an expert in neural network compression. So Torbocon is mostly a compression
+
+method. And so there are many ways to compress the method, like a neural network. One way is,
+
+for instance, quantization, which gives us a way to represent, for instance, an 8-bit integer into
+
+a 3-bit integer or even 2 or 4-bit integer. That quantization is one of the most popular ways to
+
+quantize a neural network. And if you learn a transformer, then there is a concept called
+
+KBK. The transformer computes the whole pair attention between the input tokens. But for the,
+
+okay, I'll explain it later. But I can say the Torbocon is too difficult to cover in our course,
+
+because it requires a lot of knowledge on the transformer, deep learning, or such a thing.
+
+So probably I can't see when I will be able to talk about it, but I think it would be a little
+
+hard to do it. But we're going to deal with some knowledge on deep learning later. It's course,
+
+like some knowledge of machine learning. So probably at the end of the course,
+
+if we have some time, probably we can do it. Okay. What I can say is Torbocon is not that amazing.
+
+It's not super cool technique. I guess it's more about the broadcasting. Okay. More questions?
+
+That R value is also just empirical value, just threshold.
+
+Yeah, empirical value. But the good thing is R is not like K in things. Because,
+
+so one important property for running algorithm is incrementality.
+
+Good thing is we don't have to pre-specify R before running it, because we can incrementally
+
+find new R, like new column, new column over time. So we can stop when the new axis does not give us
+
+sufficient information. So it's better than fixing R before we run all these power operators.
+
+So that was too, we can decide to set to how sufficient XR is.
+
+It's hard to answer. So like in K-means, first of all, I can think there can be some empirical
+
+ways. Because for instance, in K-means you remember for like meat plot, right? When the
+
+variance decreases sharply, then we can stop at that R problem that is possible for an
+
+algorithm that is colored. Or we can probably understand and transpose them. And if we can,
+
+like for instance, efficiently estimate the rank of the matrix and transpose them,
+
+then we can use the information of that rank to find, for instance, a suitable R.
+
+But yeah, it's mostly an empirical in many cases. And in fact, R is mostly completed by the constraint
+
+that we have rather than the property of the data. For instance, if I want to visualize the
+
+data into two-dimensional space, then R equals two, because we want two-dimensional space. Or if we
+
+want 10-dimensional view data because of the constraint in our memory, then R equals 10.
+
+So it's mostly likely a failure that is chosen by an engineer.
+
+Okay, so because it's time, let me quickly finish our class of eight. So we learned the
+
+introduction and today was a little bit of mathematical class. We learned some very
+
+notions of linear algebra and we learned a super cool important operator PCA, which is
+
+used for a lot of purposes in base-pointing learning. So that's it for today and see you next week.
+

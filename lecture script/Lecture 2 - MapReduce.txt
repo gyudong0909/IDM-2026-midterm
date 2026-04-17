@@ -1,0 +1,1349 @@
+Okay, hi everyone. Let's start today's lecture. So today is the start of our actual class.
+
+So we'll start with the distributed computing, which is memory dose, and we'll move on to
+
+other topics in five weeks. So each topic will be taught in two separate classes. So
+
+for instance, today is the first part of distributed computing, and the next lecture on next Tuesday
+
+will be about the second part of distributed computing. And for each topic, the first part
+
+will be generally easy to understand because it introduces a general concept about the topic,
+
+while the second part is mostly about the advanced algorithms for solving the problem.
+
+So please keep in mind. And just before we start, do you have any questions on the general,
+
+like this course or how I manage the course like that? Any questions? No? Right. And I just think I
+
+succeeded in recording our previous lecture. So I'm probably sure that today's lecture will
+
+be recorded well as well, but I just don't know how to upload the video to ETL. So I'm just talking
+
+to the department, but I guess I will be able to upload the videos very soon. Yeah. And as I said,
+
+rule for managing this course will be the same as I talked like last time. And I'm just trying to
+
+figure out the other details of the course. So I will let you know as soon as everything is fixed.
+
+And there was one question last time. So I will finish the class before 10 45. So although I just
+
+wrote it as 11 as our plus time, but I will give you at least 15 minutes to move to the second
+
+class. So this is an outline of today's lecture. I will basically introduce what the distributed
+
+computing is, and then I will introduce what the met reduces, which is the main topic that we'll
+
+learn today. So as I said, data mining is meaningful when we deal with large data. If the data is small,
+
+then I guess just every programmer can program easily an algorithm for solving some useful
+
+problems with a small data, which can be loaded in memory. So why do we need to deal with large
+
+data? What are the potential applications of dealing with large data? For instance, let's say
+
+Google, let's think about a Google, you know, when we search something, Google returns a list of pages
+
+to us based on our query, right? Then did you think about like how many pages are there that
+
+Google manages? It should be like a billion, at least billions of pages, because there are a lot
+
+of pages in the web. So when we want to compute a result for a query, like let's say we search for
+
+like what is the website of SNU, then Google has to find all the pages related to our query and return
+
+as a result, as a list. So that requires dealing with a large amount of web pages. And in fact,
+
+it is mainly done by iterated matrix vector multiplication. So I will let you know more
+
+details in the upcoming lectures, but this is what we do. Or let's say we want to find search
+
+random social network, but like Facebook, for instance, is a huge application and there are
+
+billions of users on Facebook. Then when you want to find someone, when you want to be recommended,
+
+potential friends that I want to be connected to, then the Facebook application also needs to deal
+
+with hundreds of millions of those mid-racks, because those networks give a clear graph structure
+
+in a very fast, like small amount of time. So these real-world applications, although we don't
+
+know their specific implementation details, a lot of popular applications are already dealing with
+
+a lot of data. So the problem is to deal with this large amount of data, the first problem is how to
+
+store this data. I mean, we didn't even go to managing this data because the size is huge and
+
+we cannot use a single computer to store all this data. So this topic is related to large-scale
+
+computing. And if you think about the decades ago, people were obsessed about creating a
+
+supercomputer that is good at dealing with this large data and because computational speed is very
+
+good. But the problem is supercomputers cannot be scaled infinitely because there is a physical
+
+limit in creating a good supercomputer. So these days nobody uses supercomputers for dealing with
+
+large-scale computing. Instead, people use a large collection of commodity hardware, which means we
+
+just gather hundreds or thousands of simple computers and create a large network or large
+
+computing system. And that is cheaper and much easier to manage compared to a supercomputer.
+
+And these chip computers are connected by either cables or switches. So if you visit a data center
+
+or a computing center, then you will see a lot of computers that are working in parallel.
+
+So let's think about their organization. So this architecture, although there can be more advanced
+
+versions of this architecture, but in general they look like this one. So we have switch, we have a
+
+master switch that connects all the racks and each step is for the rack. I mean, rack is a general
+
+word and if you go to a computer center, then you will see a lot of racks. And it's because racks
+
+contain multiple compute nodes, like we can say nodes, and perhaps there are like 8 to 64 nodes
+
+on a rack, but the number can change. And the nodes on a single rack are typically connected by a gigabit
+
+internet. So the internet speed between the nodes in a single rack is supermatched. And there can be
+
+many racks connected by a switch. So there is a simple hierarchy that connects all these different
+
+nodes in a computing center. So far everything seems like good. I mean, it seems like distributed
+
+computing with a large amount of compute nodes is a great way to deal with large data. But the problem
+
+is, as we have more and more computers like machines, the problem is their failure. Let's say
+
+one server may take up to three years, which means, I mean, every one of you will have a laptop,
+
+then we can easily consider that this laptop will be fine at least for three years. But I mean,
+
+this machine can fail like once for three years, even though we manage it so well. So the problem
+
+is, it's okay if we have a single laptop. But the problem is, if you have a thousand machines in a
+
+server, then we expect to lose one server per day, one computer per day, which is a big problem.
+
+Because we want to scale the number of machines even to a million. Then that means a thousand
+
+machines will fail every day. So if we want to manage this large system, we really need a
+
+systematic solution for this failure. So that's the reason why we develop all these distributed
+
+computing frameworks. The physical organization is not all we need to do it. So the natural
+
+following question is, if nodes fail, how to store data persistently? If a node fails, then we
+
+are not able to set all the data stored in them. So there can be a loss of a single node, or there
+
+can be a loss of an entire, which is a bigger problem. So before we move on to the computing
+
+system, we just care about the storage system, because file loss is what we really want to avoid.
+
+So distributed file system is the basis of this distributed computing. And as it's main
+
+implies, it's a file system. And there are many implementations of this DFS, such as distributed
+
+file system or Google files. There are like tens of different versions of this distributed file system.
+
+And the typical usage pattern for this DFS is that we assume two files, and we can read and append
+
+to this file. Which means we can read these files, and we can add more samples to each file. That is
+
+okay. But the problem is, it is not good that this data is updated frequently, which means,
+
+I mean, I will let you know very soon, but this distributed file system, the basic idea of this
+
+file system is to replicate every sample, like three times or five times, and store this data in
+
+different, hopefully different racks. So in that case, if a file, like if a node fails, then we can
+
+recover the file from other nodes, because we replicate all the files, like at least two or
+
+three times. But if this data is updated very frequently in place, that means we need to update
+
+all the replica of a single file, which is a problem, because that takes a lot of time.
+
+So when we implement this DFS, when we store files in this DFS, we have this usage pattern.
+
+So if the data is frequently updated, that means that data is not suitable for being stored in DFS.
+
+So let me give you more detail about the distributed file system. So you need to
+
+understand that this is a system like the virtual system, which runs on this physical
+
+distributed computing center. So it is always separated, but physical organization is different
+
+from virtual system that we manage. So you need to think, I mean, as a computer scientist, we
+
+always need to care about this separation or abstraction, right? So this is a system like DFS.
+
+So in a distributed file system, basically all nodes can be separated into separations.
+
+So here, when I say a node, that is a physical computer. And when I say a process, that is a
+
+virtual process. That's a separation. So in a distributed file system, there are chunk nodes
+
+or data nodes, which are computers that compose most of the system. So this chunk nodes store data
+
+divided into chunks with architecturally like 16 to 64 meta-links. As I said, the number can change.
+
+The number does matter, but that is a typical usage case. And the chunks, which are a small subset of
+
+the data, are replicated usually two times or three times at different nodes. And we try to keep
+
+replicas in different ranks. So I mean, that is a super simple solution to manage the failure of
+
+nodes for storing data, because if you replicate them, it is okay to lose one node. And we also
+
+have a master node, because we need some controller. We need some head of the older nodes that
+
+lose all the information. So that is called a master node or a head node or a main node. And this
+
+master node, which is a computer, runs a master process that manages the entire file system, right?
+
+The master node runs a master process that knows all the information. And this master node also has
+
+a metadata about where files are stored. So the metadata is a file that is stored on a master node,
+
+right? And this master process will use this metadata to manage all the distribution of the
+
+files across the nodes. And we also need a backup for this master node, because this master node can
+
+also fail. So we also replicate the data, but we also replicate the master node. But for instance,
+
+if you think about the Trump nodes, these replicas are the same. Basically, there is no order between
+
+these replicas because they are the same data. But in terms of the master node, we have a main
+
+master node and we have a backup master node. So there is a hierarchy between the master nodes,
+
+because we know that there cannot be two sons at a time, right? There is a one master node,
+
+and there is a backup that replaces the main master if that fails. So I mean, this is not
+
+hard at all, but this is the basic concept of a distributed policies, which looks to.
+
+So I mean, the file storage is like a relatively simple question for doing this distributed
+
+computing. A more difficult question is, how can we distribute computation? I mean,
+
+let's say we want to compute the simple thing for our large data. Let's say we just want to
+
+do a query, like a search of a single keyword for all our data. But the problem is our data is
+
+stored across different machines, like thousands of machines. So if you want to copy all this data
+
+into a single laptop, and if you want to compute something, that is impossible. Because copying
+
+this data takes forever, and we cannot even store this whole data in our single machine.
+
+So what we really need to do is, we need to bring computation to data, which means these chunk
+
+servers or chunk nodes will store the data, right? Then we need to distribute our algorithm, our
+
+computation method to all these chunk servers, so that we don't exchange data. We just exchange
+
+the algorithm, and its chunk node will run an algorithm on itself, and it will return only the
+
+results to us. That is okay, because in many cases, the result is much smaller than the role data.
+
+So this is important. Data exchange between machines takes a lot of time. That is really a
+
+thing that we want to avoid. We want to parallelize all the computations, and we want to make every
+
+chunk node do its own computation, and we just want to get the result of it. That is what we want
+
+to do. So there are two popular frameworks that allow us to do it, which are MapReduce and Spark.
+
+We'll learn MapReduce today, and we'll learn Spark next time. And many of our programming
+
+assignments will be based on Spark. So our first homework, like homework zero, which is not evaluated,
+
+will be a tutorial about Spark. So it's totally okay that you don't know anything about Spark,
+
+because I will let you know. And then after you learn it, I encourage you to do this tutorial to
+
+make yourself comfortable with Spark, which is important for the upcoming homeworks.
+
+Okay, so at this point, I guess all of you have something, like some understanding on this
+
+related computing. So let me give you a more detailed overview of this related computing.
+
+So let's say I am a new engineer, and at a company I want to create a new computing cluster. Then
+
+this is how it works. Let's say every one of you will have a flagged machine like your laptop,
+
+because we don't want to go to the server every day, right? We have a machine, and we send me the
+
+data through message. And it goes to a head node, or master node, and there is a head node,
+
+there is a compute node, and there is a data source. So in many clusters and many computers,
+
+data storage is also separated from the distributed computing framework. Because, I mean,
+
+let's think about Google. Google has so many data, so much data, that even cannot store it in this
+
+computer. So we have large data storage, which is basically related to a hard disk, a slow chip,
+
+like this Friday. And if we submit a job, this head node will load the data from this data storage
+
+into this computing cluster. So it will replicate the data samples, and it will create the chunks,
+
+which are some simple data, and it will store the chunks in different computers. So that is when we
+
+are ready. Then this head node will run the job by bringing the computation to this compute node
+
+based on Navigors on Spark, and everything will be done very well. After the job is done, the results
+
+from the compute nodes will be gathered into the head node, and then this head node will return
+
+the results to us. That is basically how it's done. And note that each node, when we say the word
+
+node, it's node has its own CPU, memory, and disk. So each node is itself a computer. It's not just
+
+a disk drive, or it's not just a single chip computer. And when I say a node, that is a computer
+
+which runs workers. Workers are virtual processes which do jobs. So the number of workers
+
+can be different from the number of nodes. And we can safely assume that the number of workers
+
+is larger than the number of nodes, because the number of processes, I mean, we learn the
+
+operating system and how it runs the different processes in parallel. So workers are different
+
+from the computers. So this is how a cluster looks like.
+
+Okay, so that was the first part, like the introduction of the whole thing. Any questions?
+
+Okay, good question. So the main question is about, I will say it, how exactly do we know the file failure?
+
+Like do we know instantly when we get the data, or do we have to compare it with its replicas like that?
+
+So I'll say that that is a detail. Detail that is controlled by the distributed file system.
+
+So in our course, I will not once talk about the detail, because these detailed
+
+implementations can be different for different versions of the software. So I will not much
+
+talk about it. But let's say the failure can happen every time. So the whole system needs to
+
+think about the failure like the safety guard for every possible failure. And let's say, for instance,
+
+let's think about the failure can happen when we load the data. Like let's say the network failure
+
+happens. Then probably I think the head node will know that the failure happened because when you say
+
+that each compute node, when it gets all the data that it needs, then probably it will send the ping
+
+to the head node that, okay, I'm done. So if at least one of the head compute nodes says that, hey,
+
+I failed to get the data that I need, then the head node loses that because it doesn't get the ping
+
+that it needed. And probably this head node will send another request to the data server to get
+
+another data. Or let's say there is a failure after we load all the data into this compute, then
+
+this all the data are synced, basically synced. So if a compute, so then every computer sends a
+
+periodic ping to the head node. So let's say the ping is done every 10 seconds. Then let's say this
+
+head node fails to get a ping from this computer for this 10 seconds. Probably it will wait for
+
+another 10 seconds. But if it fails to get another ping from this computer, then it concludes that,
+
+okay, there's no time spent. Then it just assumes that there is no such a node, and it determines
+
+how to do the rest of the job. For instance, you can just use the other replicas in other computers
+
+as is, or you can copy this data again to the other computers to better safety. So these kinds
+
+of decisions for exact ways to how to cope with this failure is, as I said, is an implementation
+
+detail. So the basic idea is we need a safe part. So is that a sufficient answer for you?
+
+All right. All right. More questions?
+
+Great. And again, I will not ask you these details. Like you don't have to
+
+memorize or understand all the details. But what I believe is if you understand the core idea,
+
+then you will be able to think about the details on your own. So the exam can ask you some details,
+
+but that will not be the things that I teach in a class. It will be more like you have to figure out
+
+how to do it on yourself. Okay. All right. Let's go to the actual basics of mavericks.
+
+So at this point, what is the remaining part is how can we exactly distribute computation
+
+to the machines? Like what possible way there is. So memory juice is basically a style of programming.
+
+So we have different styles of programming, like object-oriented programming or like the
+
+I mean, you know, there are many types of programming, but memory juice is another
+
+strict style of programming designed for easy parallel programming and invisible management
+
+of hardware and software failures and easy management of large scale data. So that is
+
+easy style programming, which is good for assuming this distributed computing cluster. So because
+
+how we program is related to how we run it. And this mavericks has several implementations,
+
+including a dupling. You will know this keyword, like you can search these keywords,
+
+but the original Google implementation of this style of programming is called
+
+mavericks. So some people use it mavericks to refer to the Google implementation,
+
+or some people use this word to refer to the style of programming. So today,
+
+at least in our course, I will use this word for a style program, not that specific implementation.
+
+So I'll start with an example, which is good for learning something. Suppose that we have a huge
+
+text document, which is stored in different machines. Our goal is to count the number of
+
+times its distinct word appears. Let's say the ball appears 30 times, the basket appears 10 times,
+
+grape appears 5 times, and so on. So if you remember the TF-IDF score that we learned last time,
+
+probably these word counts are required to compute the TF-IDFs first. So this word counting example,
+
+although it's super simple, it has many applications like when we analyze the
+
+web server log to find popular URLs, or when we want to analyze market data to find popular types.
+
+I mean, so if you do this job in Python, you will just need like, I guess, 20 lines of code.
+
+But the problem is we are dealing with distributed computing. So mavericks has three
+
+components. Map, group by key, and reading. Map is a stage where we apply a user reading map function
+
+to its input element. Here the input element is, okay, I'll say later, but okay, that is a map.
+
+And the output of the map function is a set of key. So, okay, I'll just pass this slide because I
+
+it's easier to show you the overview. Okay, so this is the actual overview. You know that
+
+we have data divided into chunks, and each chunk will be probably stored in a different machine.
+
+So when we visualize these three chunks, probably we can assume that there are three machines that
+
+store these chunks separately, although it might not be a case by mental stability.
+
+So what we do is map. Map is basically a test that is parallelizable. And this map
+
+test applies a user reading map function to every element in the chunk. So you're doing this map test
+
+can be done in every machine without exchanging any data. So that can be fully parallelizable
+
+operation. And then after the map is done at each machine, the group by key step gathers all the data
+
+and mixes all the data. That's because the output of every map test is given as a pair
+
+key value pair. That is like a rule for mapping. So because many machines, like as a result of
+
+map test, can create different outputs with different keys, this group by key step gathers
+
+all the data with the same key, because the same key can appear in different machines. And here
+
+there is a big change of data, which we call a shuffling. Shuffling takes time. So we don't
+
+shuffle the raw data, but we shuffle the results of the map test, expecting that the results of
+
+map will be much smaller than the raw data. And then we distribute these results like the well
+
+gathered key value pairs. We create a key value list pair, which means we gather all the values
+
+with the same key and create a long list, having the same key. That will create the key value list
+
+pairs. And we distribute these pairs to reduce workers so that there is a reduced down. And
+
+each reduced down is done for the list of values. And it does some kind of user-written reduce
+
+function to map a list of values to a single value. And then the results of reduced values
+
+are gathered again as a result, and it will be returned to a user. That is like an overview,
+
+which should be still confusing, right? So I will get you more detail. Okay, so let me go back
+
+to the previous slide. And this is exactly what I explained. The map function applies a user-written
+
+map function. Like, okay, the web page applies a user-written map function to each input element.
+
+And the output of the map function is a set of key value pairs. And then the system, the map
+
+value system, organizes all the key value pairs by key. And it returns the key value list pairs.
+
+And then in the reduce map, it applies a user-written reduce function to its key
+
+value list pairs. And the output of the reduce function is a key value pair because it aggregates
+
+all the values inside the list. So I will get you more detail.
+
+Okay, so there are some slides describing each task in detail, but I will show you the example
+
+first, which should be easier. This is an example of word counting. And in word counting, we have a
+
+huge text document, which is divided into chunks. And each chunk will contain different lines of
+
+strings. Like, you know, every document is basically a series of lines, right? So here,
+
+each element is a line of documents. It's like, hey, I'm doing a class something, right?
+
+So the map function takes a key value pair, but key doesn't matter in our key because value is a
+
+line of documents. It's a line. And key doesn't mean anything. So basically, we have a single line,
+
+like, hey, I ate an apple, something like that. And we create a user-defined map function. So
+
+this map function does for each word, w in value, like the long line document, we give it or return
+
+w comma one. So what does it mean? It means we count the word, but we do it in a very parallel
+
+way. For every word in a line, we just return that word comma one, like, echo comma one, like,
+
+the hey comma one, like that. So here, because this is super parallelizable job, this can be done for
+
+every, like, web worker, web machine without exchanging any data. So if you look at the example,
+
+this is how it's done. Right. So we have a document, and the one, like, block in the
+
+left hemisphere is a chunk. And chunk will contain multiple lines of documents. And for each chunk,
+
+we create two comma one, B comma one, as they appear in the document. That is what the map
+
+function does. Then let's go to the group by key state. So because two comma one can appear
+
+multiple times in each worker and across the system. So this one, the group by key state,
+
+gathers all the pairs with the same key. So all the persons, all the pairs with the two key
+
+goes to this one, goes to this worker probably, or the other, like, B minus or goes to here,
+
+then goes to here. But here comes the hash function. We apply a hash function to every key
+
+so that the same key can be gathered into the same, same block. All right. This is the group
+
+by key state. And then in the reduce that, so this group by key state returns a key to, and the list
+
+of values, one, one, one, so all the values are one in this case. But it creates a list of ones
+
+when responding to the key, too. And when it passes the results, the reduce that, and the reduce that,
+
+it gathers all the ones to create set, which is basically a simple addition of the value.
+
+So this is a simplest example of maverickness, but it shows that the basic concept of maverickness
+
+All right. So you might think, why do we need this complicated three-step for this easy problem?
+
+But the good thing is, this maverickness problem, this maverickness implementation or
+
+style programming can be a light to more complicated problems than just this work.
+
+So that is the overview. And so let's go back to its test.
+
+So why do we assume pairs? Because the result, so this maverickness test can be stacked multiple
+
+times. For instance, a maverickness test can be, the output of maverickness can be an input of
+
+another maverickness, which can be an input of another maverickness. So this is the input of
+
+the maverickness test. And the output of the maverickness test is the input of the maverickness
+
+input of another maverickness, which can be an input of another maverickness. So because the
+
+maverickness' output is always a key value pair, we also assume that every maverickness' input
+
+could be a key value pair. So make it like a stackable. All right. And in many cases, in some
+
+cases, keys of the input, like the first elements can be ignored if you do not edit. And the output
+
+of the maverickness test is zero or more key value pair. The number of the returning pairs is
+
+dynamic. It can be a zero or it can be three or it can be five. Because if you look at this figure,
+
+the number of words in its chunk is variable. Like it can change across different chunks. So
+
+the number of pairs that it's maverickness returns is dynamical.
+
+Then we go to this group by key step. The input of this group by key is the key value pairs from
+
+the test. The output is there is a master controller of the whole like the history
+
+computing framework. It knows the number of reduced mass. Let's say it knows the number of reduced
+
+mass. Then it applies the hash function to the keys, producing bucket numbers zero to R minus one.
+
+Then because of the property of the hash function, the key value pairs with the same key will always
+
+go to the same bucket. And overall, the number of periods across different buckets will be very
+
+similar if this hash function is desirable. And the key value pairs from each map task are moved into
+
+our local files.
+
+The thing is this blackboard will not probably record it. So this blackboard is the only can be
+
+seen by the physical students, I think. So here is a map worker. It gets like two lines, like
+
+lines of documents and it applies a map task and it will create another a lot of key value pairs like
+
+2 comma 1, like k comma 1, i comma 1, like that. So this map worker wants to distribute this
+
+key value pair to the later stages. So what it does is it applies a hash function to every key
+
+and it creates our local files inside its disk so that the 2 comma 1 or a similar kid will be
+
+gathered into a single file and each hash value will create a distinct local file inside the map
+
+task. Then it is transferred to the reduced task based on its designation. Because its bucket
+
+corresponds to each reduced machine. So after the map task is done, after these local files are
+
+created, this map worker pushes all the results to different reduced workers. That's what it
+
+explains. And then let's say there is some kind of group-like key step. Then it gathers like from
+
+here there is another map worker that creates a local file with probably the same keys as this
+
+file. And it will go to here, the same worker, like reduced worker. Then this group-like key
+
+that gathers all the different local files from different web burgers and does this group-like key
+
+step by making the 1, 1, 1 from different machines to create a single 2 comma 1, 1, 1, 1, 1, 1,
+
+key-value list pair. This is a group-like key step.
+
+And then we go to the reduced task. The input of the reduced task is one or more keys and their
+
+associated value list. And one reducer can take several keys of course. And the output is the
+
+reduced function is applied to each key-value list pair as shown here. And the output from all the
+
+reduced tasks are merged into a single file. So as again, this is the picture that I wanted to
+
+draw in the blackboard. Basically the same. The files, the key values, the map, the group-like key,
+
+and the results. So the amount of like the size of the file, like this one, is much smaller than
+
+compared to the size of the raw data. So we can easily transfer this result to the user even though
+
+the raw data is large. Then at this point, we need to understand which are done by the framework and
+
+which should be done by a programmer. That is like a super important distinction. So in the old
+
+process, what we need to code is two functions, the map function and reduced function. So as long
+
+as we code this, we program these two functions as they are intended, then the rest of the things
+
+will be covered by the lab-registered framework. So the map function, as I said, is a simple key-value
+
+pair returning function that counts the word from the document. And the reduced function is,
+
+I mean, it's much simpler. So it takes a key and value list, values, and it just adds all the
+
+values in the value list to return the result. And this is a simple addition because every value
+
+will be one in our case. So you have the key and the result here. So this is a good thing of having
+
+a very strict, strong framework because we don't have to care about machine failures or the shuffling
+
+or any other things, or the group-like keys type, any other. All the things are cared by the system
+
+and we have to just care about these two functions. So this is good.
+
+All right. So any questions so far? You get the point? Okay. I mean, it's important
+
+for you to understand the core, like assumption core idea of what intuition we are based on.
+
+Okay. Yeah.
+
+It speaks never did not. Okay.
+
+Yeah, great question. So the question was basically, is this map readers like good for
+
+every possible algorithm or is it good for a new subset of algorithms like that? The answer is,
+
+as he said, that reduce is good for only some problems that do not require frequent exchange
+
+of data between machines. That is almost the same as the requirement for DFS, like distributed
+
+fault system. For instance, if you want to do a machine learning, we need to update the parameters
+
+of the model very frequently, like for every epoch or probably every batch. Then this is not good
+
+because I mean, this map reduce assumes that we have a distributed fault system, which does not
+
+like the frequent data updates or frequent data exchange between machines. So if you try to
+
+implement a machine learning algorithm based on map readers, you will suffer a lot because this
+
+very strict map and reduce definitions do not easily allow to write a machine learning algorithm
+
+in these two functions, only in this two function. Right? So if we do a lot of things, let's say we
+
+can put almost all the machine learning code into a single reduce function or a single map function
+
+we want, but that is not a good practice for map readers because in that case, I mean, the reason
+
+why we have these strict definitions of average reduces is to help with machine failure. But if
+
+you put too much algorithms inside each reduce function, then that violates the assumption.
+
+Right? So the basic answer is, yeah, that reduce is very strict. It is not good for some applications
+
+and that's why we will learn a spark because spark is more flexible framework compared to
+
+map readers while spark has more almost has the same advantages as map readers. Okay. So yeah.
+
+Thank you.
+
+Yeah, yeah.
+
+Yeah, great question. So I will not repeat the question. I'll just answer.
+
+The question is basically, as I understand the question is, is the order or the framework is very strict or not strict?
+
+So the answer is basically the framework is self-destrict. It always follows the three steps.
+
+For instance, we cannot have two reduced for one map or we cannot have two maps for one reduced.
+
+It's like three, a sequence of three things.
+
+So if you want to create a design a more complicated algorithm, then we just need to stack two map reduced chunks. Map reduced, map reduced.
+
+Like we cannot do a more flexible design. But as he said, group by key can be optimized better.
+
+For instance, let's say, let's look at this. If you look at each chunk like each machine, then the two, like the key two, can appear multiple times in a single chunk, right?
+
+Then we don't have to create two comma one as a separate file for this machine because we already know that there are multiple instances of the same key two.
+
+So before transmitting the result to the next step, we can do some optimization inside the map or inside the reduced map.
+
+So I can say this optimization techniques are done in an implementation like map reduced, TADOO or PLAID.
+
+So based on the large concept of map reduced, like there are various optimization techniques to improve the speed.
+
+And one of such optimization is the combiner. I will explain very soon in this slide.
+
+More questions? Great.
+
+So combiner is just what I was saying. It is an optimization technique based on the assumption that the reduced function is commutative and associative.
+
+So reduced function is basically a function that reduces a list, right? You know the point, right?
+
+So a reduced function is...
+
+So in fact, the reduced function takes a value list, let's say one, two, three, two, four into a single value, right?
+
+But for implementing the reduced task, the input is in fact not a list. The input is only a two elements, like x1 and x2, and it goes to y.
+
+Why? Because if our reduced function takes two elements and gives us one output, then this reduced function can be applied recursively to the whole list.
+
+So we don't need to design a reduced function for a whole list.
+
+For instance, if you want to design a reduced function into, if we input x1 and x2 and it returns x1 plus x2, then the system will apply this reduced function for this element, this pair, this pair, and for this pair, this pair to result in a single element.
+
+So we will assume that the reduced function will take two elements to ultimately reduce a single list of values.
+
+Then if our reduced function is commutative and associative, which means a plus b equals b plus c, which means the order of the two elements doesn't matter.
+
+And if the order of computations, like a plus b first or b plus c first doesn't matter in our reduced function, such as in our word-planing example, then we can safely say that the values can be combined in any order.
+
+Then we can do this optimization. Then the reducer's word can be pushed to the math test by producing w comma n instead of producing w comma 1 here.
+
+This is exactly what I want to say.
+
+So if you know the reduced function, if you know that the reduced function is a simple addition and we know that this addition is safe to manipulate this order, then we will do this combining in the math test, which is creating the result of 2 comma 3 or b comma 2 as a result of math.
+
+So that is not anymore a clear separation of the math and reduced. They are a kind of mix because some of the reduced function is done locally in its function.
+
+But it is much easier, much better to reduce the shuffling amount for the group by key. But still, this 2 comma 3 or 2 comma 2 will be stored in different motions.
+
+So they still need to be transferred into the same chunk in the group by key stack because we need it.
+
+So, I mean, let's say you are a bad reduced engineer, then you can come up with this various optimization techniques if you want to really improve the system.
+
+So that's up to you. But the general idea is like that.
+
+Okay. Yeah. Okay. And another thing is, do we have... Sorry.
+
+Okay. Another thing is... Sorry for going back and forth.
+
+Yeah, let's just skip it. I will explain later.
+
+So the combiner is what I wanted to explain. And there is a pop quiz. I'm not sure we will have enough time to do this pop quiz or not, but I will at least show you this pop quiz.
+
+So at this point, if you understand how the matrix works, and if you are comfortable in writing that reduced function, then you will be able to do this pop quiz.
+
+The question is, let's find common friends or friends on a short portion of the library. For instance, A is a friend of B and C at the same time.
+
+So we want to find friends or mutual friends from the data. Then the question is, what are the map and reduce functions?
+
+So in this example, the input looks like that. A is a key, B, C, and D are nodes.
+
+Then we want to apply a web test, provide keys, and reduce tests. And our output should look like this one.
+
+Because here, how can you read this thing?
+
+So the mutual friends of A and B is C and D, right? The mutual friend of A and C is just B.
+
+So it seems like this can be implemented in Mavericks. But the pop quiz is, how can we do it by writing the maverick reduced function?
+
+So I will just show you this pop quiz, and I will refer to this slide if I have time for this lecture.
+
+But this is kind of the thing that you will be required to do in our exam. You will be familiar in writing the things in mavericks.
+
+Alright, that was part two, the basics of mavericks. Any more questions? No?
+
+Great. I will go to the details of the mavericks.
+
+So I assure that most of you will now understand how this maverick is works, like the basic idea.
+
+Then we want to go to the details.
+
+So there is a user program, which is our, like, it's a cheat job submission, like, version.
+
+And there is a master controller and a worker processor.
+
+So it's okay. When I say a controller or a processor, they are virtual things, not actual nodes.
+
+This is more like a maverick operating system, not a physical organization.
+
+So there is a master controller, and let's say there are five workers.
+
+Then it divides the workers into math workers and reduced workers.
+
+Their roles are determined in the math.
+
+And there is a reason why we divide these workers into these two different roles.
+
+That's because we need to deal with failure.
+
+If a worker does the math and reduced at the same time, like sequentially or any other way, that is that worker's fails, things become much complicated.
+
+So an easier way is to separate these workers into math ones and reduced ones.
+
+So this master controller assigns math tests to this one and reduced tests to this one.
+
+So there is input data, and this input data will be separated into intermediate files by these math workers.
+
+And these reduced workers will combine these things into an output file.
+
+So one thing that I want to say in the previous part, but I didn't is in fact the group by key is a virtual set.
+
+So group by key is like a conceptual thing that happens in maverick, but it does not actually happen in the maverick system.
+
+Because if we apply a hash function to each math worker and create these local files,
+
+by shuffling these local files and sending these local files into these reduced workers, this is what the group by keys does.
+
+So there is no explicit state of group by key. There is no group by key worker in the system.
+
+It is just done by the organization of the virtual processes as shown in this slide.
+
+So it is more conceptual. It's important to do.
+
+Right. And so even though I frequently ask, are there questions, but you are free to ask questions at any time.
+
+So you are free to ask. Yeah.
+
+And I personally think it is impossible that you understand everything that I teach.
+
+And sometimes I do mistakes and sometimes you have no input like sufficient knowledge.
+
+Then just you are free to ask.
+
+Right. So let's go to the master controller, which is the master, which is the key.
+
+The master controller schedules math and reduced tests and assigns them to workers.
+
+One math test per chunk is reasonable.
+
+So we can control, we can determine the number of workers basically based on the number of nodes or based on the number of chunks.
+
+So there is no reason why we need more math tests over the number of chunks, because I mean, it is not good that multiple math workers are working on the same chunk.
+
+It doesn't make sense. Right.
+
+So one math test per chunk is reasonable and reduced tests should be fewer than math tests.
+
+There are many reasons. First is otherwise too many intermediate files per math test will be created.
+
+Why? Because the number of local files.
+
+Sorry. Sorry.
+
+Okay.
+
+The number of local files, as I show in this blackboard, is the same as the number of reduced tests, because the number of reduced tests are determines the bucket size of this hash function.
+
+So if there are too many reduced tests, there will be too many local files and there will be too many data exchange.
+
+So this number of reduced tests should be determined very carefully.
+
+Okay. And there will be more detail later.
+
+And this master controller keep track of test status, whether its worker is idle, whether its worker is executing or is company.
+
+And worker processes reports to master when it finishes the test.
+
+So it is like the manager of the work of all the workers.
+
+And there are tests.
+
+Okay. So math test is done in a math worker and that test creates a file for its reduced test on the math worker's local disk.
+
+So it can be complicated, but test worker loop like hierarchy.
+
+You get the point, right?
+
+The master is in four of the files in the destination reduced disk.
+
+And then when the math test is done, these local files are sent to the reduced worker's reduced nodes and the reduced test begins.
+
+So when the reduced test is assigned to a worker, it's given all the files that form its input.
+
+And this reduced test executes the written by the user and writes its input to a file.
+
+So this is the pipeline.
+
+Okay.
+
+So we have a user program here and the user program runs the math test on.
+
+Then the master controller takes it out and it determines the whole forecast ratio of all the workers.
+
+And okay, let's say here we have three math tests, two reduced tests, and two math workers and two reduced workers.
+
+Okay. So because there are three math tests and two math workers, it assigns math one and math two, two tests to these two workers at the same time.
+
+And this worker does its assigned job.
+
+And here math one is done, faster than math two.
+
+Then it starts to do math test three because math test worker is idle.
+
+Okay. There's one more test.
+
+Then since the math test is done here, all the results of this math test will be stored as local files in the first worker.
+
+Then at that time, these reduced workers get the data from the math worker because their input is done.
+
+Okay. So because it runs a read operation, which is to read the data from the math worker or math mode.
+
+So which 1.1 is it gets the data required for reduce one from math test one.
+
+That is the reason why we put it 1.1.
+
+And it is 2.1 because it's the data required for reduce test two from math test one.
+
+Okay. So at this point, which 1.1 is done.
+
+But there's no one thing that this worker can do because math test two, three are running.
+
+At this point, math test three is done.
+
+Then okay, this worker gets data from this math test.
+
+And from this point, this worker has nothing to do.
+
+We just leave it as it is.
+
+And it goes on and math test two is done.
+
+Then we do read 1.2 from this math test.
+
+And here every read operations are done.
+
+This reduce one has all this data information that it needs from math test one, two, and three.
+
+So here the reduce one starts and here this one finishes.
+
+But for the worker four, the read 2.1 takes a lot of time.
+
+That is normal because the results of math tests are not uniform.
+
+Some tests can generate more data compared to the others.
+
+So this read 2.1 takes more time.
+
+But here as soon as it finishes, it runs the read 2.2, which is 0.3.
+
+So it runs the reduce two.
+
+And here is the end of everything.
+
+The reduce of the one, reduce of the two will be transferred to the user program, to the master or user program.
+
+So this is the pipeline.
+
+So as you see, there is no group by key, as I said.
+
+Group by key is just done by this reading, by hash-based reading operation from the reduce class.
+
+OK.
+
+All right.
+
+So now we know how it works, how it looks, and how it operates.
+
+So one thing I didn't mention at all is the coping with node filters.
+
+This bad reader system should be robust enough to deal with every node filter.
+
+So if the master controller fits, if the node that contains the master controller fits, then we have nothing to do.
+
+The entire job should be restarting.
+
+Because unlike the master node for storing data, it is really hard to replicate this master controller.
+
+Because, I mean, we cannot just replicate a controller all the time because its status changes all the time.
+
+So it's a much more expensive thing to replicate the master.
+
+But still, there can be some versions of that reduce that try to replicate this master controller.
+
+I don't know all the implementation based on that reduce, but I think it's much more expensive to replicate the master controller.
+
+Because of that, if the master controller fails, we have nothing to do.
+
+But if the map worker fails, we have something to do.
+
+The map worker failure is detected by the master controller because this worker periodically peens worker processes.
+
+So it should send the peens to master that I'm running, I'm running, I'm running.
+
+But if the ping is done, then the master knows that the worker failed.
+
+So the problem is if the map worker fails, all map tests assigned to this worker have to be redone even if completed.
+
+This is important because all the outputs of the map test are stored on the local disk of the map node.
+
+So if the map node fails, for instance, let's go back to the pipeline.
+
+Let's assume that the map worker fails at this point.
+
+So map worker 1 fails at this point.
+
+Then as we look at this pipeline, the map tests 1 and 3 are done here.
+
+So we can think that, okay, because these tests are done, we don't have to redo this pattern.
+
+But we have to do it because at this point, the outputs of map 1 and 3 are still on the local disk of worker 1.
+
+And we don't know whether the read operations are done or not.
+
+Because these local files are not accessible as soon as the worker dies, we need to rerun this map 1 and 3.
+
+That is the basic rule.
+
+Or if we want to implement a more optimized version, we can actually see whether the read operations are done or not.
+
+So if the read operations are done, then you can probably test that method.
+
+That is kind of the optimizable decision by the match controller.
+
+But basically, the important thing is if the data is stored in local disk, then that is a weight to the failure.
+
+But then at this point, you can ask, then why don't we store the results of map tests inside DFS so that the files themselves are robust to the failure?
+
+But if you think about the DFS a little bit, DFS has a lot of overhead because we need to replicate the data.
+
+So storing data in DFS itself creates shuffling.
+
+So as a result of optimization, the map reduce framework decides not to store the results of map tests on DFS, which takes more time.
+
+And because if the map worker fails, then all the reduced tests should go on different locations to get the data from.
+
+So the match controller informs every reduced test that the input location has changed.
+
+That is the failure of map worker.
+
+If the reduced worker fails, things are much more simple.
+
+Only in-progress tests are reset to idle and reduced test gets restarted.
+
+Because the output of that reduced worker is stored in DFS at a local disk.
+
+Why? Because we assume the result of reduced test is smaller than the result of map test.
+
+So we can say it is okay to store the results of reduced test in DFS because there is not much to do.
+
+So you see the point of every design decision of map reduce.
+
+It is a highly optimized framework and it's a result of thinking of what would be the best way to make distributed computing possible.
+
+Any questions so far? Good? Good.
+
+And this is about the number of reduced tests.
+
+In terms of the pipeline, we can maximize the optimization of the pipeline by using one reduced test per key.
+
+That is theoretically the maximum amount of parallelization.
+
+But that doesn't make sense because the number of keys can be a lot in a data.
+
+It can be millions or even a billion based on the size of the data.
+
+As I said, the number of reduced tests determines the number of local faults inside each map.
+
+So it doesn't make sense at all.
+
+There is a significant variation in the number of values for different keys.
+
+Some keys can have a lot of values, some keys can have a lower number of values.
+
+The rule of thumb is the number of reduced tests is between the number of reduced nodes and the number of reduced keys.
+
+Sorry, the number of keys in the data.
+
+So there is no single theoretical or final number of tests, but it should be tuned very well based on the data and based on the algorithm that we run.
+
+Okay.
+
+Okay, so until the previous slide was introducing MapReduce, here I will show you a super popular example that is implemented on that.
+
+So as I said, as the student asked, MapReduce is not a solution to every problem because the effects make sense only when files are large and rarely updated in place.
+
+And MapReduce is not suitable for frequent data changes like the managing online retail sales or machine learning.
+
+So, you know, MapReduce was first invented by Google. MapReduce was not invented as a general framework.
+
+It was invented for a single purpose by Google, which is matrix vector mostly.
+
+So we will learn this page rank in throughout our course, like if I will add for the return.
+
+Page rank is the core algorithm that made Google empire.
+
+The page rank is an algorithm that ranks all the pages inside the web and returns important pages first to the user in a very short amount of time.
+
+And this page rank, which is like, I guess, is one of the most important inventions in the decade, is implemented based on the large matrix vector mostly.
+
+So MapReduce is first designed to support this matrix vector calculation.
+
+So in another word, this matrix vector multiplication is nicely fitted to MapReduce.
+
+So I will show you why this matrix vector multiplication is good for MapReduce.
+
+All right, I guess you at least know what a matrix is.
+
+Suppose that we have an n by n matrix m and the vector of size n.
+
+So the matrix vector product between this matrix and the vector is a vector of length 10.
+
+So I element this defined in this way. I don't have to explain to you, right?
+
+And it's 100. You don't need the FF for vector.
+
+But the problem is if n is a billion, like 10 to the billion, then as I said, all the problems are solved.
+
+We can store the data in a single machine and it takes forever to do it.
+
+So here is how we implement this matrix vector multiplication in MapReduce.
+
+Assume that our vector B fits in MapReduce. This is also a chance.
+
+But that doesn't mean our matrix fits in MapReduce.
+
+So the matrix, the dump should be stored in the FF because the matrix should be huge.
+
+So our map function is we take the i, j as an input, which is the position of each element.
+
+And m i, j is element of the matrix as a value.
+
+So that is a single key value pair. And the output is i, m i, j times v j.
+
+Since we can be embedded in memory, we can access any element in B for every map worker.
+
+So a map worker for every key value pair, i, j, and value pair, it creates i, the root index, and m i, j times v j.
+
+So you know this map function is very simple.
+
+We don't have to care about the parallel algorithm or optimization when we write the map function because the system will care about it.
+
+Then as a result of a map function, in this simple 2x2 case, it will create four different values.
+
+And they will be gathered by the conceptual group by key into this two, like the row number and the number of values.
+
+And then what we need to do is just to add all the values in the value list, which is almost the same as the word count.
+
+Then these two are the vector values. One vector index element one, five element two, seven.
+
+So that's just it. Super simple to do.
+
+And you know, because the reduced function is addition here, it is associative and commutative.
+
+So we can use the combiner also in this case.
+
+This is a simpler case because here we assume the vector v can fit in memory.
+
+So we can basically replicate this v to every map worker and the map worker has this old v inside its memory.
+
+But what if v cannot fit in memory?
+
+What if the number of pages is too large and the v cannot even fit in the memory for every map task?
+
+That's a harder case.
+
+In this case, we divide m into vertical stripes as shown in the figure.
+
+And we divide v into horizontal stripes.
+
+And the width of the vertical stripe should be the same as the height of the horizontal stripe.
+
+So that it's like the stripe matches to the stripe of v.
+
+And how do we determine the number of stripes?
+
+We use enough stripes so that one stripe of v fits in memory.
+
+So if v is too large, then we can divide it into 4, 10, 100 so that at least each stripe can fit in memory.
+
+Then our map task is not taking everything.
+
+Each map task takes only a single stripe of m and a single stripe of v.
+
+So the difference from the previous slide is it doesn't take all of v.
+
+It takes only a part of v and the map task is more like a separate, more like an individual compared to the previous case.
+
+So I don't want to give you all the map functions and reduce functions here.
+
+But how we define a function is almost the same as before.
+
+The only thing is how we distribute the v vector.
+
+So this is it.
+
+And if you understand the map reduce very well, then you will understand what tests can be done in map reduce, but tests cannot be done in map reduce.
+
+And as again, even though a task itself can be done in map reduce, that doesn't mean that we can do it in one single map reduce pair.
+
+So if we create a map reduce algorithm, a complicated algorithm, it works like a series of map reduce functions.
+
+Like map reduce map reduce like series of map reduce.
+
+And it does not support a more complicated stacking of this map reduce jobs because map reduce is basically a linear like sequence of every stuff.
+
+And if you go to a spark, which you will learn next time, it supports a more diverse implementation of this parallel programming.
+
+But here we only have map and reduce map reduce.
+
+And because this matrix vector multiplication is a super simple example, we can do it just by a single pair of map reduce.
+
+So that's all.
+
+Let me, okay, since we have a few minutes before we finish, let's just go to the pop piece and I'll just give you at least two or three minutes to think about it before we finish the structure.
+
+And before that, do you have any questions? No?
+
+All right.
+
+So I'll just give you two minutes to think about this solution.
+
+You just have to think about how you write the map function and how you write the reduce function.
+
+Okay.
+
+Okay.
+
+Right.
+
+Right. It's nice.
+
+In fact, this is a little bit silly example if we look at the result in that band reduce function.
+
+So anyone who has come up with a solution raise your hand.
+
+No? Yeah. Some of you. Okay. Great.
+
+So, I mean, this is really an easy example if you understand how the map reduce works.
+
+But since this is like the first time you will encounter this really computing at all, I couldn't understand if you had come up with the answer in two minutes.
+
+So the answer is, I mean, there might be more answers than one, but the answer is the per delete.
+
+So the map test, I will say, okay, the map test F will take a key value here.
+
+Right. And since the key is A and the value is B, C, D for the first example, I will, I want to create a two forward for W and V, let's say, for W and V.
+
+I mean, this is a very silly set of that will return, you know.
+
+What do we do? A, B, K.
+
+I mean, that's just it. Right.
+
+For I mean, we need to compare A and B and we need to do this if A and B are not set up.
+
+Well, let's keep it in.
+
+So for example, if we have a two forward, we need to do this.
+
+So for every pair of friends for the friend A, a pair will become a new key.
+
+Because if you compare the left and the right side of the slide, because we want to return that A is a mutual friend of B and C.
+
+So this B and C will become a new key and our original key should be a value here.
+
+Then what do we need for a reduced function? In fact, nothing.
+
+We don't reduce the result in this case because we just gather all the values in the list and output.
+
+We try to release as an output in our case.
+
+So we can say the reduced function is basically an identity function that doesn't do anything.
+
+We just need this math test as here.
+
+So I mean, Maths test is more flexible than you might think, but it's not as flexible as you expect.
+
+So we just have to understand how it really works.
+
+You get the point, right? You have more some questions on this?
+
+Yeah.
+
+So, someone friends with you are a really good one.
+
+So,
+
+So,
+
+That's all.
+
+A?
+
+I got it. So you mean whether the friendship is asymmetrical or symmetric, right?
+
+Yeah.
+
+So here the assumption is the friendship is symmetric.
+
+So that means if B and C appears in the first row as a friend of A, then we just say that B is a friend of A and A is a friend of B.
+
+So we just assume that it's symmetric relationship in this example.
+
+So because of that, we can simply put B and C to A as a result.
+
+But as you said, if the thing is asymmetric, if we say that, okay, I think I'm a friend of yours, but maybe he doesn't think I'm a friend of yours.
+
+That kind of answer, right? In that case, the answer should be a little more complicated because we need to compare the two directions at the same time.
+
+Yeah, that was a good question. More questions?
+
+No, it should be different. I didn't put the if statement here.
+
+So if A and B are the same, then that doesn't make sense, I think.
+
+So since it's time, I guess it's time to wrap up.
+
+So today we learned about distributed computing. What distributed computing is, what the network exists, its basics, and the help.
+
+So we will learn a more fancy advanced framework which is called Spartnik time, but we can consider today as a starter of our entire course.
+
+So that's it for today, and let's see it in a bit.

@@ -1,0 +1,1358 @@
+Okay, shall we start? So good afternoon everyone. Today we talk about the second part of recommender
+
+systems and today will be the official last class that will be included to the midterm.
+
+So you will have one more like over a week to study everything that we covered for the
+
+first half of the semester and then we have even many classes before the midterm, right?
+
+For the first, like one of them, I will probably do a review. It will be not much, but I will
+
+just briefly review what we have learned for the first half and probably I can give you some hints
+
+for the midterm, but I'm not sure. But like you don't expect too much from the review.
+
+And then for the one remaining class before the midterm, I'll just talk about the second topic,
+
+which will be mostly for the final. So you don't have to worry about having like the
+
+new topic before the midterm. So you will just have to study until the recommendation day.
+
+And announcements are the same, I mean exactly the same. So there is a homework too. And I saw
+
+most of you have submitted homework one. I saw like 80 of you have submitted and almost all the
+
+other students had dropped from the class, which is okay. And there is homework two. And homework
+
+three includes, as I said, a math challenge, which is a small challenge that you can try to
+
+do your best for yourself to achieve the best score possible for unseen test data that we have.
+
+So it's not much for like for the overall grade. So if you are busy or if you don't want to push
+
+yourself too much because like having stress, you can feel free to do this homework question.
+
+If you have some time, if you have some energy, and if you really want to do some little project
+
+for yourself or preparing your future career, then you can put your time into that question.
+
+That will be fun. And of course we have the midterm and the official announcement is uploaded to ETL.
+
+So it's like that the time is the one on the class time. I guess it will be the next Thursday.
+
+And it will everything is just as is. And we have uploaded our previous exams from KAIST. I'm not
+
+sure it's allowed to share like exams from KAIST because that actually belongs to my previous school.
+
+But anyway, so I shared like the last two years exams from the same class of KAIST. And if you
+
+look at it, it would be difficult. But it's more difficult than I would probably do in
+
+as a new because the exam time was longer there than in KAIST. And it was an open book while we
+
+will have a closed book exam. So it will not be as difficult as in the previous exam, but we can
+
+actually see what type of questions are like for the exam. So that's mostly all announcement that
+
+I want to have. So if you have any questions regarding the course or the midterm or like good.
+
+So I just say our first part of recommender system was not difficult to follow. I mean,
+
+I just introduced the basic concept of recommender system, like what it is, why we have to do it,
+
+and why it's important. And I just covered two very basic recommender system of great stuff,
+
+like content-based recommendation and collaborative filtering. In fact, they were based on very simple
+
+rules that are designed by engineers, like content-based recommendations was about
+
+recommending a similar content item based on the profiles that we have for the contents like the
+
+genres of the movies, like actors of the movies, like that. And the collaborative filtering,
+
+on the other hand, focuses on the interactions between users' items. It explicitly avoids using
+
+external data like titles or all the other information of items in your list, but it just
+
+focuses on the interactions. It uses the rows of the interaction utility matrix and columns of the
+
+utility matrix as kind of representations of users' items respectively. And it compares different
+
+rows and compares different columns of the utility matrix to estimate the similarity between users
+
+and that between items. So designing a good similarity measure was one of the important
+
+design choices for collaborative filtering. But we have seen that as long as we have a proper way
+
+of measuring the similarity, the result recommendation makes sense for the user side or the item side.
+
+And you remember that this collaborative filtering has two variants, like user-user,
+
+they almost are the same except what axis they focus on from the utility matrix, either the row
+
+or the column. And I just covered the Netflix challenge, which was one of the biggest events
+
+in this whole community, although it was a little old. So we have seen some actual cases of
+
+recommendations and what we need to think about when we design our actual recommender system.
+
+But although, as I said, recent modern recommender systems are far more advanced compared to those
+
+submitted to Netflix challenge. But as I said, our class is not about learning modern ML deep
+
+learning techniques, but we are mostly about learning how to fundamentally approach these
+
+different models. So we're not covering this modern fancy recommendation.
+
+Okay, you don't have questions for the recap, right? So today is the second part of recommender
+
+system. And probably today will be the first that I actually mentioned machine learning in our class.
+
+And our second half is a lot more about machine learning, because as I said, many data mining
+
+algorithms recently are designed based on machine learning techniques, because machine learning is
+
+super powerful. So although our first half is not much of a machine learning, it's a lot more
+
+about machine learning. But as we proceed more and more, I will talk more about ML and CL.
+
+But in the perspective of data mining, in perspective of machine learning, because you will
+
+have different machine learning forces. So the first algorithm, and I think the most important
+
+algorithm, if I have to choose one important algorithm in the whole community of recommender
+
+system, then I choose this one, the one that we call UV decomposition, or one we call
+
+relation vector model, which are the same. So let's think about the goal of recommendation.
+
+Recommendation is basically like, I mean, the definition of recommendation
+
+depends on what data structure that we assume from the system. But if you assume a utility
+
+matrix, a simple utility matrix between users and items with ratings inside, then the recommendation
+
+task is defined as filling in the blank utility. And if we are able to fill in the blank very well
+
+with awkward numbers, then sorting these items and actually recommending some of the items to users
+
+with trivial things. So the core information, the core operation that we need to do to fill
+
+in these missing elements is to get user and item representations. So you can think about it,
+
+and content-based upon creates user-item profiles from external data, and you compare these profiles to do
+
+with recommendation. So we can consider these profiles with representations,
+
+and culinary filtering uses the rows and columns of the utility matrix as their representation.
+
+So representation is more abstract way to tell what information they want to use for recommendation.
+
+So today we'll learn latent factor model, which assume that there are some latent factors that
+
+represent users and items well, and such latent factors can be extracted from the utility matrix.
+
+And these latent factor models are basically collaborating to change because it focuses on
+
+user-item interactions with all the external data. So what it means is, it's the same with
+
+the culinary filtering that uses the utility matrix as the core information. It does not use any external data,
+
+so it is different from content-based reports in that sense. But what is more important thing is,
+
+it does not use the rows or columns of the utility matrix without changing that. It changes the utility matrix
+
+so that it can extract some latent factors from the utility matrix, which are better to explain the behaviors of users.
+
+That is the reason why it is called the latent factor model. So let's look at the behavior of the utility matrix.
+
+It's the reason why it is called the latent factor model because it extracts latent factors.
+
+So because its philosophy, how it works is the same as traditional collaborative filtering that
+
+we just learned in our previous session in a way that they fully focus on the utility matrix.
+
+When people say that they use collaborative filtering, then in most cases they refer to
+
+the latent factor model, not the traditional collaborative filtering. So although at least in our class,
+
+I will separate them either as a collaborative filtering or as a latent factor model for more like
+
+awkward use of wording. But in many cases, when you read some papers or when you read some
+
+documents from outside, when they mention collaborative filtering, they refer to this model,
+
+latent factor model, not the traditional one, because it's much more popular and usable.
+
+So let's think about the idea. If we assume there are latent factors, then the next question is,
+
+what are those latent factors and how can we summarize the idea for it in terms of latent factors?
+
+Our basic idea for thinking of latent factor model is we consider the utility matrix R
+
+as the product of vector matrix U and V. So here we have the utility matrix R, right?
+
+The n by n matrix, which is 1. And we consider that there are two vector matrices U and V
+
+whose products can approximate the matrix R. So it is similar to the SVD. I will talk about
+
+the similarity between the SVD. But in a big picture in an algorithmic way, what we do here
+
+is we consider the latent factor model is in fact a vectorization of the utility matrix into U
+
+and V, not 3. Okay, there's a difference from a feed. And we assume that, so if you think about
+
+these two vector matrices, there's matrix R and n by k. So you can transpose, create some entries
+
+of size and by n, which is the same as the utility matrix, so we can directly compare these two
+
+matrices. But if you think about the one, each one, it's matrix is m by k. So and this matrix is
+
+m by k. So here k is a parameter, hyperparameter that we can choose for designing the algorithm.
+
+And k corresponds to the R value of SVD, which was also tunable by the engineer. And here k
+
+represents latent factors. And for something like this, that k to 3, let me assume every user and
+
+every ID can be represented as a combination of three latent factors. Although we don't know what
+
+these latent factors really mean. That will be examined later, like in a post-processing. But we
+
+can at least know that we are going to model this user's ID to three latent factors. And that makes
+
+sense because I think the first reason is we literally dealt with this utility matrix when we
+
+were learning SVD. I mean, recommender system is closely related to the mathematical property of
+
+this matrix. So we can expect that by successfully decomposing the utility matrix, we can get some
+
+deeper insights from the matrix. And it also makes sense because the relationship between users and
+
+items will be described by more sensible things like the genre statement factors or directors,
+
+although they are not explicitly given as external data. But if the unit matrix is very
+
+consistent and it is of very high quality, then you assume every k means something,
+
+would mean some latent factor that actually determines how this user can be a coordinate
+
+item. So the expressive algorithm for decomposing the utility matrix into a unit is called a UB
+
+composition, which composes R into U and V while summarizing its union will be as a low-dimensional
+
+k-dimensional vector. I mean, since we have already learned SVD, the concept of the composition is not
+
+new, right? So a little more formal definition of this UB composition. We're given an m by n utility
+
+matrix R, like m equals to n items, and we aim to find m by k matrix U and n by k matrix V, such that
+
+UB transpose closely approximates m for the non-blank entry, which is a little different from SVD.
+
+Our R is not a full dense matrix, it has a blank, and we are not sure what number we should build in
+
+in this point. So when we execute our R with our approximation matrix UB transpose, we only care
+
+about the non-blank. We do not use the blank entries into consideration of this error. So that is
+
+one difference. And then let's say we have found U and V variable. Let's say we have succeeded in
+
+decomposing the given matrix into a product U and V. Then, since we assume that our latent
+
+vectors are good, our latent coefficient functions are good, for only our fundamental
+
+test feeling in the missing blank, we can just greatly compute the non-product between
+
+usual latent vectors and non-definite latent vectors to estimate the missing blank. For example,
+
+if you think about that one, like the black one here, like third row and the second column,
+
+then for estimating that element, we can start from the third user-equilibrium patient,
+
+and then the second item-equilibrium patient to reconstruct that thing. So what I'm going to say is,
+
+as long as we have very good U and V matrices, recommendation becomes very trivial or great,
+
+because we can just directly compute the dot model of first-quality user and item
+
+representations to fill in that one. In fact, this is all about what we learned from the
+
+latent vector model. We learned U and V very well. We find U and V from the given matrix by
+
+minimizing this error between the original matrix and the approximating matrix for the
+
+non-blank entries, and then for actual recommendations, we just get the representations
+
+of users and items to fill in the blank for recommendation. I mean, this is all very straightforward.
+
+Then the following question is, okay, and how can we find U and V? I mean, we have spent many slides
+
+for learning how to do SVD for a given matrix, right? So probably we should also learn something
+
+like mathematical, like the fancy algorithm for finding U and V, but the answer is no. We're not
+
+going to take a mathematical, elegant approach to find U and V. We'll take a more coarse, more rough
+
+approach, which is called gradientism. I will talk about it later. So what we want to define before
+
+going into the actual error function, sorry, actual learning algorithm is an error function.
+
+How are we going to measure the difference between the original matrix and the approximate?
+
+And we will measure the error in terms of RMSE, blue base error, which is a simple error measure
+
+between two matrices, where here is a set of non-blank entries. So we just compute the
+
+shapers between the original entry and our approximate entry and start with it, and we
+
+sum this pair of errors for all the non-blank entries related to this error, which is almost
+
+the same as the previous one, although we have the division there, which is not making
+
+this big difference, but we are going to measure the error in that RMSE anyway. And just as a
+
+complementary, you know that our prediction for from user X to item I is basically a simple
+
+null product between user and item I. So here what we want to minimize is some of the
+
+square different distances between these original and unoptimated elements. So we will use SSE instead of our
+
+RMSE in most cases, because we don't want to compute that expensive square root norm which changes the
+
+gradient curve into a real rate. So we just compute SSE, which is simply a version that removes the
+
+shear loop and division function, which makes more like a convenient way to compute the error, but
+
+they are basically equivalent. So when we say we use an RMSE, then in some cases we use SSE instead of RMSE.
+
+So let's think about these two matrices. We have arm consisting of three non-blank entries, and
+
+we get a UV transpose, which is created from our UMB. Then we compute the error between these two, and the error seems to be
+
+large, right? 1.8. So we update our matrices UMB in a way that this error is decreased, like minimized.
+
+So we just update our UMB again and again in an iterative manner until this error is minimized.
+
+That's what we call by training.
+
+Any questions so far?
+
+Ahar, it says turn forward. So let's simply compare UBD composition versus SBD.
+
+I mean, let me just clarify one thing. For this UBD composition, there are no constraints on
+
+what properties that this UMB should set in mind. Should they be order-bordled, like order-normal
+
+between each other? I mean, we have no constraints at all. Our only purpose of doing a UBD
+
+composition is to minimize RMSE for the non-blank entry. That is like a big difference for SBD, right?
+
+So let's think about the relationship between UB and SBD for more information. So we know that
+
+SBD is also a well-defined decomposition of any matrix into a product of three matrices, U,
+
+sigma, and V. And we also know that there is a notion of R, which all corresponds to the main
+
+factors. The effect is R and K in the UBD composition are almost equivalent concepts,
+
+because that's exactly how I explained SBD in our previous lecture. So in terms of the similarity,
+
+we can say both can choose the number of latent factors from the input side. We can just simply
+
+determine the value of R or K as an input. And if you look at SBD, if you compare this to sigma,
+
+we use ISU to remember that our V can be seen as a transformation of matrices from
+
+x-axis corresponding to BCA. And the multiplication of this U and sigma can be considered as a
+
+projection of user entries, like row entries into these new x-axis. So if you think about U
+
+and sigma, they're a product of a single matrix, let's say U prime. And if we think about V,
+
+then we can consider this U prime and V are the factor matrices for UBD composition,
+
+because that's possible because, as I said again, we have no constraints from UBD composition.
+
+So as long as we have two good matrices for estimating the original matrix, it is okay to
+
+consider that this U sigma is a new U and V is a new V for UBD composition. It's okay to assume that.
+
+So that is the big similarity between UBD composition and SBD.
+
+But if they are the same, then there's no reason to study UBD composition. So there is a huge
+
+difference between the two. First, SBD is more like a mathematical framework, which has a great
+
+property of the SBD. We can say the SBD is the best possible solution for low-ranked approximation,
+
+which is a great property. But for the UBD composition, even here, our goal of designing
+
+for using this algorithm is to do well on recommendations. So we are not going to introduce
+
+these complicated mathematical properties. For instance, here we need not to be order of matrices
+
+anymore because we really just don't perform for recommendation. And the second thing is,
+
+our UBD composition, I will talk about it later, relies on statistic optimization of U and V,
+
+not the close for fancy solutions as in SBD. So you can consider UBD as a more relaxed version of
+
+SBD for recommendation. And then another difference is our UBD composition seeks generalization to
+
+same data as we have seen from Netflix. Recommendation is not about reducing error
+
+or to observe entry. This is more like estimating unseen ratings by predicting
+
+unseen ratings from the length in the utilities. So there are many differences coming from this
+
+generalization perspective. First, UBD ignores the missing entries, not treating them as errors.
+
+It's important for using matrix. And UBD minimizes RMSE among the training person, not all. So among
+
+the non-missing, like non-flat entries on the utility matrix, we also divide the utility training
+
+portion and test portion properly and use only the training portion because we want to design our
+
+question to be generalizable to the test portion. So because of these two reasons, the larger K is
+
+not necessarily there. So in terms of SBD, we just know that larger R decreases error. And I mean,
+
+we should pick the optimal R for our goal, but for SBD, it doesn't harm the algorithm. But here,
+
+since our primary goal is generalization, it is important to why it fleets the value of the K.
+
+Because larger K may increase test RMSE, like RMSE for test data, which we cannot observe from the
+
+training time. That's it. So I use the terms like training and test frequently for this class,
+
+because as I said, UBD composition is basically a machine learning algorithm. And I'll explain why
+
+in the second part. But I mean, these days, you all know at least what machine learning is,
+
+because you probably took one or more classes. But I will just assume, as before, that you are not
+
+an expert in machine learning. So any questions, Lumber? No? Straightforward, right? Straightforward.
+
+So let's summarize. UBD composition is on a great plan that creates two vector matrices for
+
+recommendation. As long as we have the vector matrices, recommendation is straightforward
+
+by computing the dot product between user and item latent vectors. Then the remaining question is,
+
+how can we find a suitable UBD for minimizing this other function? So here comes machine learning.
+
+Given data deep, we want a function f to solve a problem b. And this problem is either like the
+
+frequent test mining, like the closed training, like the finding similar items, all these topics
+
+that we covered until so far refers to a different problem. So in traditional data mining, engineers
+
+like us designed this function on our own. For instance, we designed a priori, we designed k-means,
+
+we designed almost all the algorithms that we've covered so far, for only this testing problem.
+
+And we can say that algorithms that we have learned are really successful for solving this problem,
+
+and that's the reason why we learned that. But in terms of machine learning, we do not create such
+
+algorithmic solutions for the problem. We learn the solution from the data, which is the fundamental
+
+difference. So it requires two things. The first thing is not just to explain, but the first thing
+
+is designing the structure of that. Because what we learn is the parameters of that. We cannot learn
+
+the structure, like functional form of that itself. So we create a functional form of that first, which
+
+is what we call a hyperparameter. And then we learn, we do this training, which is the
+
+optimization of parameters inside that from the data, which is computationally expensive, and whose
+
+quality is hard to be guaranteed. So machine learning is great, but it's not necessary if an
+
+existing algorithm is already good for a problem. For instance, if you know what a priori is, and if
+
+you know that a priori works well for finding frequent items that's then we have no reason to
+
+design a new machine learning function for solving the exact problem. So what I want to say is
+
+machine learning is not the answer for every problem. It makes sense only when it is hard
+
+to design a function on our own to solve a problem. So I mean, it's really important for
+
+a data engineer, because many people try to rely on machine learning or deep learning in all cases,
+
+which is not good for us if we have a better algorithm to solve it in a more direct and reliable
+
+way. But let's think about the recommender system. So SBD, I need to think about SBD,
+
+sorry for running out of time. SBD has a very straightforward form of optimising. SBD has
+
+a mathematical property to satisfy and we can agree on a question to find the extreme
+
+parameters from SBD. So SBD can be solved, it doesn't have to be optimised by machine learning
+
+in many cases. We have already a good algorithm, although machine learning can give us a better
+
+way to optimise SBD in a short time, but it's just a matter of efficiency. But if you think
+
+about the UPD competition, unlike SBD, as I said, I mean, I just say it really, but we don't have
+
+any confidence. Any UPD are good as long as we can minimise the centre. So if we are the person,
+
+if we are the engineer, we should be the one who designed this algorithm for finding this UPD and
+
+we should think about very carefully on this algorithm to find UPD. But in terms of machine
+
+learning, the same kind of thing works because in terms of machine learning, we have the goal,
+
+we have the parameters, we have the model. So what we have to do is to update these parameters to
+
+minimise the objective function. So we can at least say that this UPD component is more fitted
+
+with machine learning than traditional data mining. That's the reason why we consider this
+
+as a machine learning algorithm. Okay. So you, good, right? So let's look at UPD
+
+competition as machine learning, which I just said for the previous class. So in traditional
+
+collaborative flow training, like we just learned from the previous class, we manage the rules. We
+
+design the rule to recommend items based on the similarity measure, which we also need to design
+
+between users, right? But in UPD competition, the model is fixed. The how we recommend is fixed
+
+as a dot product. We are not going to change the dot product operation. So what we have to learn is
+
+the vector matrices from the utility matrix and we expect them to be better than this row color than
+
+rows from the utility matrix. Okay. And we don't know exactly how to construct the spectrum
+
+matrices and no spectrum solution exists from the spectrum matrices. So we just learn any UMP to
+
+minimise the training RMS. That's what we do in traditional engineering. So let's think about the
+
+objective function. Our goal, our optimization problem is to find vectors in UMP such that they
+
+are arguments that minimise the objective function today. There are many applications called objective
+
+function volume J here. J is measured between R, U and V and is defined as SSE, like the exact sum
+
+of square over between R and U and V. And the left hand side of this subtract like operation is R.
+
+That side is the ultra entry from the utility matrix and the right hand side is the stop problem of the user
+
+and I will present it. So we just want to find the solution to that problem. So in such an
+
+optimization problem in machine learning we call VMP parameters which we update and the other
+
+non-learnable tricks is not called hyperprime. Like the one biggest hyperprime here is value K
+
+which is number of later vectors which is not learned from our algorithm.
+
+So you have to understand that there is a mismatch in this objective function. So our true goal,
+
+true goal of designing this recommendation algorithm is to minimise SSE for unseen data.
+
+Let's say you are the one who want to solve Netflix challenge and your goal is not
+
+reducing this error for your observed data. Your goal is to reduce this error for unseen
+
+test data to become better in the competition. But the problem is you don't have this on the
+
+same test data, right? So increasing K almost always decreases the value of this objective
+
+function which is better for you since the error decreases with more vectors. But SSE on test data
+
+can be into large rise with larger K because our objective function can only consider training data.
+
+So this mismatch like this unseen generalization to unseen test data is a classic example of overbidding
+
+and because this term is so popular these days and I'm sure that you have heard it before but
+
+I'll explain anyway. So overbidding is kind of relationship between the freedom of
+
+function that we have and the complexity of the rule or the complexity of the data from our
+
+observations. What it means is if we give too much freedom for a model or if we give too many
+
+parameters to the model then this model starts feeding noise with too many free parameters
+
+which is not good because in that case since the model is too feed with the noise in the training
+
+data it does not generalize well to unseen test data. So we should carefully control the model
+
+complexity like the number of clusters and k-nins to avoid noise while feeding the overall shape of
+
+the data or overall patterns inside the data so that it can generalize unseen data. So for the
+
+upper figure so the left here shows under B which is our model is too restricted to learn patterns
+
+from the data the right figure shows an overbidding it creates like too many noise in the training data
+
+which makes it not generalizable but the second the center figure is a good example it has a very
+
+proper learning complexity from learning statistics. So how can we avoid overbidding?
+
+Regularization is a possible way and it's a very common way of solving this overbidding problem.
+
+Okay let's just directly look at this optical function. So you know our the left side here the
+
+left term is our original objective function between R and our EMB. So if we learn EMB then it
+
+matches this R as a then there becomes a mismatch in the objective function. So we introduce more terms
+
+like first you look at this two new terms in our objective function it contains two terms the first
+
+one is the basically this L2 norm of the user representations with a coefficient lambda one
+
+y and the second one is the summation of the L2 norm that like spares L2 norm of the item
+
+representation multiplied with the coefficient lambda two. So these two terms seem arbitrary
+
+like their role is very unsure to understand from the pages but what we want is when we
+
+learn like when we find the proper representations of users and items we want to restrict the space
+
+we want them to be inside some circular shape or some hyperbolic cube so that they do not be
+
+like overbidding the training data. So that is like you can consider these two terms as
+
+regularizing the space that we can search for while we do this multi-planar thing or we can
+
+say there are forces that prevent this representation to be too like specular to
+
+specific to some noise in the training data. So by properly choosing the values of this lambda one
+
+and lambda two which are hyperparameters that are not learned from the training we can control
+
+the balance between our training like our force to minimize the error on the training site while
+
+with our force to regularize this whole learning thing so we can create a trade-off between these
+
+two. So that is the role of our regularization and it allows a rich model where there is sufficient
+
+data it trains the model aggressively. So if you look at this visualization the impact of regularization
+
+is we have a model and let's say this is a representation of this user and let's say we
+
+have two vectors the one vector is what is it one vector is a series and the other vector is
+
+exempt like here or male so if you have two vectors and if this guy if this user has once
+
+a long movement from the utility matrix then we can say there are more forces that guide this
+
+model for the first term. Okay let's say if you think about the user x or specific user x this is
+
+a force that makes the representation of the user more richer in space. So if this user has
+
+watched a lot of movies then this user will be going outside making signals stronger making
+
+his vector stronger in the space but if this user hasn't watched many movies so then to avoid
+
+beating to noise this representation should be shrink to center because in that case the
+
+the power of making it shrink from the regularization term will be stronger than the
+
+positive force so that creates a balance between these two forces like going outside and going
+
+inside. Okay and lastly we think about this visualization there so because our goal of
+
+doing whole thing is about generalizing to unseen data test data training data is not sufficient so
+
+we introduce the validation data which is separate from the training data which is in perm. So when
+
+you do versus the netx helix or neuron you should separate like even training data into two one
+
+training data and one validation data and you need to consider this validation data as unseen data so
+
+you train your model with only the red version and it is up to you how to separate this green
+
+person like it determines the whole performance and it is important for you but we separate this
+
+location data and we train our model on the red version and we validate our model from the green
+
+version so if our model is only very good with the red person while it's bad with the green person
+
+that then means the model fails to generalize something there so in fact what is more important
+
+from this figure is the performance on the green person should be maximized as a result of training
+
+on the red person that is how we measure the amount of generalization for our our model even
+
+without looking at the test version like a blue one so the actual matrix that you will be given
+
+in the netflix companies will look like this one will not separate this training and validation for
+
+you you will have this big portion except for the test portion and then you need to think about how
+
+to separate this data into both training and validation for instance if you get if you create
+
+more data for that for validation then you'll be better for the validation purpose but you will
+
+have less data for the training if you take too many too many samples for training data compared
+
+to the validation data then your model will have more data to be trained but validation purpose will
+
+be weak that is like a trade-off you can choose yourself so like these slides like the first slide
+
+like the starting from here objective function mismatch the overfeeding regularization validation
+
+data is all about the goal because our role is again not about reducing objective bump that is
+
+just a function used for the training model but our truth is not that so this whole slide
+
+are about telling you that why there is a mismatch and how we are going to deal with it
+
+so any questions yeah oh okay you can do it first well i i think the regularization
+
+makes sense only if we normalize our object to make its R because it pushes toward zero
+
+okay in this case it means that the prediction is biased for zero score so to make it sense i think
+
+R should be normalized so it has zero mean R should be a zero mean yeah uh well is it
+
+um i'm not sure about that so what would be the reason why you think like that
+
+so the regularization pushes toward zero yeah like all representations zero yes
+
+it means that the prediction is biased for zero uh i see i mean it's not about the
+
+re-releasing bond yeah so okay so i i get the point so what he says is this like this
+
+re-releasing is a force that makes the representation to be close to the center but if
+
+for instance a user and item representations are let's say are closer to zero that means their
+
+product will be closer to zero as well which means a negative prediction but zero is an
+
+actually negative prediction not the neutral prediction so what it says is probably we first
+
+have to normalize our returning matrix to have the zero mean so that zero prediction can behave
+
+like a neutral prediction rather than the negative prediction i think that makes sense but in reality
+
+in many cases i think that doesn't make a big difference in in threefold perspective because
+
+because every user and item would have at least a few like ratings from the utility matrix and
+
+i think this is more so it is more practical to integrate this force not as making the
+
+representation to zero but more likely it makes the representation space like the search space
+
+to be a narrow space so that the model cannot behave on its own so i don't from my personal
+
+experience experience i don't think that will make a crucial difference for the great
+
+themselves but generally i agree with him it would be better to normalize the utility matrix
+
+in this regularization terms to make them more make more sense okay for occasions
+
+we can do it so the question is can we create multiple process splits or cleaning and building
+
+data for making it work better of course we can so that concept is called in many cases m for
+
+possible addition so if you take the machine learning courses then in fact you will learn
+
+many different techniques to make this work better so in our program i'll not talk about
+
+these chemical tactics for making this training better but for instance one of them is and for
+
+the proposition which is for instance let's split our training data into five by 20 percentage then
+
+we use the four portions of them the same data and one person of that is the relation data and
+
+you swap that validation portion for five times right it makes sense right for instance we create
+
+five portions like one two three four and five and we do this pipeline and we compute the
+
+validation error while using the first portion as the data the second one third one and the fifth
+
+one and we compute the average of the errors and the average of this five drivers this is like
+
+to utilize our training data most efficiently by treating its portion as those Asian data at its
+
+time so this is called the n-fold validation this is useful the only problem is it takes five
+
+times longer than a single split which is it creates a balance between the training accuracy
+
+and speed i mean i mean it's not important but we need to go to the extreme for this case and you
+
+have one lead out one lead out validation what it means is let's say we have a thousand
+
+samples here thousand training samples then we do this n-fold cross validation for every sample
+
+we consider 999 999 samples as training because they're the only one at validation and we do this
+
+which is better than this one the body takes a thousand times longer today okay so everything
+
+is about a balance if we have limited time then we need to choose one trial like one number of
+
+trials that we want to do and how to split the data into training validation and then it's all
+
+related about technical like details of doing this machine learning on your own and if you become a
+
+machine learning engineer then you will learn this different techniques because we didn't have
+
+in practice we have limited resources at that time okay great so now can we measure the test
+
+performance and those solutions or so yeah thank you for so we basically you i guess you understand
+
+that we are not able to approximate the test data but we can question for instance for this
+
+i for cross validation we have a validation error this portion this portion this version this
+
+version so for example this error for the first trial of the n-fold validation cross validation
+
+we can consider the error in for this person would be an approximate for the test error because it is
+
+like an unseen data in terms of this four splits so if we compute the average of the relation
+
+manner for these five balls then we can say their average is approximating the unseen test error so
+
+if we train a model that minimizes despite what average of these five balls we can say our model
+
+should be generalizable well to test data because that's what this one is if you do the one live
+
+out cross validation everything is the same if we just have to compute the average of the
+
+1000 different trials to consider them as a test error
+
+okay great so then the remaining thing we talk about the optimization so here comes this magic
+
+i mean you remember that we have gone through a complicated series of benefit optimization for
+
+vca and sbd but in terms of machine learning we're not going to we just rely on the magic of radiant
+
+which is a super super general and time are great than information it's not the only
+
+optimization or what is that you must be learning but definitely was the most popular one so radiant
+
+descent is a simple mathematical technique to find parameters that minimize this object function
+
+what we do is super simple we have a great like the objective function this is a curve assuming
+
+that our counter is only one so the x axis is the parameter y axis is an objective value and this is
+
+a curve determined by our j function so let's say we have our current under here so for doing
+
+this gradient descent we initialize our parameters randomly so let's say this is our initialization
+
+point without knowing then whether this point is good or not we just initializing parameters
+
+we just compute the loss value here then what we do is we compute the derivative of the objective
+
+function and that we have is brilliant like the derivative of the function and we know the
+
+direction because in this point we know that going left will minimize this area going right will
+
+increase in there so we go so we start from here we compute this gradient or a derivative and we
+
+make a step in the reverse direction of the grid from theta one probably to theta one from theta zero
+
+probability the one and we do the same we come to the derivative here and we know that the left
+
+direction would decrease the error function and we go to the left left left left until
+
+j is sufficiently small so let's say we're here then so as we go left and left and left the gradient
+
+like the amount of the gradient will be decreased because the that's what it does so when we reach
+
+that point here then the gradient will be almost closer to zero and we know that here is the
+
+optimal point for minimizing this element so that's what we do so we only care about this local
+
+property local gradient and our own friend condition and it just changes our parameters by
+
+a little in a direction it decreases yeah but if we go too much like from here let's say our
+
+step size is two months of view for instance here although there is a right then our result
+
+will be worse than here right so we just have to carefully adjust the step size so that you can
+
+move a little by little until they're not this increase so this is all for a gradient distance
+
+so almost for almost all machine learning algorithms for them to be trained we just have the only
+
+requirement which is the gradient like objective function should be differential so as long as the
+
+gradient curve the objective function is differentiable we can apply this gradient descent for
+
+optimization so let's think about this ubt composition how we apply gradient descent for it
+
+so how we use gradient descent for finding u star like restart like all the parameters for
+
+this described mostly step one we utilize gmv in any way they want but here let's assume we
+
+are going to initialize them using sdb treating the blank as zero because we know that sdb gives us a
+
+very good solution so we expect them to be better than the random initialization but it's a minor
+
+video we can initialize gmv randomly if we want then we just copy gmv to minimize this
+
+updated function j by computing the derivative of j with respect to u and mean respectively
+
+okay and if we update u in that way where this ai is an attacker parameter which is called step
+
+size or a burning rate if you repeatedly compute this two lines of clue then we'll reach a state
+
+which shows a small enough value for this objective function okay
+
+so we're gonna do this update step but uh one one problem difficulty is we have to compute the
+
+derivative of the function with respect to each major which seems to be a little hard for us to
+
+do right so what we do is we want to perform the update step one each entry independently instead
+
+of computing this complicated matrix gradients so for every entry row x column c of matrix u like
+
+u xc we compute a simpler derivative of the bigger function for each entry which is more
+
+rule and then we update its entry in the same way as the previous line and i will speak how we
+
+derive this one which is very straightforward from r u v respect to the nth row and c column
+
+of the u matrix okay this is a very simple a first order and it's not about problem versus
+
+first order derivative we can do it yourself and we have also a regularization term here
+
+so in fact i guess this equation of the gradient of this thing gives us a very good intuition on
+
+how this update function or how this gradient design actually works if you look at this gradient
+
+we will move the entry u xc in a way that it in a little correction of the very little right so
+
+what this first one means is based on the error between the x of element and our approximation
+
+it updates this element in a way that it decreases the value right the second term is from
+
+and there is u xc which is if there is no
+
+it will shrink the refinement of the if you restrict this element to zero because of this term
+
+right so we also know that from this equation how these two regularization and the original
+
+term play each other like creating a propane but there is just a detail a bigger picture is we
+
+just update all elements in a way of minimizing this object function that's what we do very simple
+
+but the problem is gradient descent is slow why is slow because sorry to going back if you go here
+
+let's say our matrix r can be huge our original matrix can be consisting of billions of users
+
+but if you look at this we can update the primary matrices one time by computing the
+
+derivative of the updated function with respect to the whole matrix that takes a lot because we need
+
+to do these steps a lot for doing this gradient descent which is not good for us so in practice
+
+no people almost no people no person uses this full gradient some people use stochastic gradient
+
+descent or scv so what it does is based on this assumption we know that the gradient but the
+
+derivative of the arguably like of the objective function is decomposable into the sum of these
+
+element wise gradients with respect to every element in the non-plane entry we know that they
+
+are easily equivalence between these two then we change our gradient a little bit instead of
+
+computing all derivatives and doing this step once we change our gradient so that we make a
+
+step for every element instead so if you look at this three thing there is a difference here
+
+if you look at the gd the gradient descent we do the step after computing the sum of all the
+
+gradients right but in that cd we do the step for every element and we do the enumeration for every
+
+so for instance if you have a thousand training entries as this g computes a thousand dimension
+
+gradient and doing a big one but for just as we update the calendar a thousand times for every
+
+length which is much faster and g but you know they are not in people actually is not the same as gd
+
+because gd is more like exact more than you can expect from the gradient descent but actually is
+
+kind of a coarse approximation of gd which can make the gd much faster so if you compare this
+
+sd and g so that's the gradient descent and just normal gradient descent we can consider them in
+
+this way so this gradient descent improves the value of this objective function of every step
+
+so it's more stable way but this actually improves the value but in a noise way because every update
+
+step of sd is good for minimizing the value with respect to a single element okay so if you look at
+
+this sd firm so each each step is good for this element rx file but the optimization of this one
+
+step can be bad for the other entries that are not considered in the single mapping so every step of
+
+sd is not guaranteed to minimize this objective function for the whole matrices that is the reason
+
+why sd is called a noisy way of optimization so if you run this sd yourself you will look at the
+
+figure like we left you present as you proceed the updates of the primary increases then the red one
+
+the full gradient descent is first data but you will get a blue one it goes up goes down very
+
+sharply because for every step we consider only a single element and that can change the the whole
+
+objective function in an unexpected way okay but it's faster so how we use sd to find this
+
+optimal primary and restart or re-replacement is described in this way first we utilize it and we
+
+using sd or any visualization method everyone consists of the minor detail treating the blanket
+
+zero then we iterate over the ratings until so here we have a new for loop for every entries in
+
+the three set and we compute the error specific to this entry and we compute this two term of a
+
+representation of this user x the presentation of this item i which are incorporated in this
+
+editor okay we do this for every element until and probably we will have another word here right
+
+because we here here we need another loop that runs this whole process until the error function
+
+is needed okay so this is why the dual for loop so we just keep doing this until convergence which
+
+makes sense but as a for instance computer scientists we don't like that sd very much
+
+because in terms of sd we have no guarantee of convergence it actually is really bad in some
+
+cases that it can completely diverge i mean it will not diverge but you can at least
+
+not converge because you can iterate between a certain type of conditions so in many cases
+
+people don't use sd in fact people use that duty not for individual samples but for mini benches
+
+of several samples so if you compare these three greater descent performs one step using and all
+
+step true as like a super stochastic revenue set uses and set you know in only one set so this
+
+batch sd computes a creation of this sample a random example and do this and divided by these
+
+steps which is a which makes a very good between gd and 3d so when people in the evolutionary
+
+community say that they use sd in 99 percent they refer to this batch sd they create that
+
+then you will know that this b is another type of hardware to choose if b is small the
+
+optimization gets faster but it's no easier if b gets large the optimization gets slower but it's
+
+more awkward okay so any questions any questions so i mean i try to assume that you are not experts
+
+on machine learning and i treat i try to explain the very deep insights on how we build a concept
+
+of machine learning for every function but if you know what machine learning is in that in fact the
+
+second part the what i just we just learned is pretty straightforward we had progress umv we
+
+have an objective function and we update this umv by minimizing this optimization function with
+
+a regularization term that's what all we need okay so later if you look at this deep learning
+
+you will see that in actual deep learning this gradient curve is not this linear beautiful
+
+curve in many cases this curve is because a neural network is a non-linear function of the input
+
+in fact this great like this objective function does much more complicated in many cases so
+
+then finally an optimal point using gradient descent has many challenges in practice but we'll
+
+talk about it later this ubt composition is in fact a linear function so gradient descent gives
+
+us a very stable optimization point for the optimization point of the objective function okay
+
+and another thing is gradient descent relies on the first order approximation of the curve
+
+if we look at the second order term a third order term then we can optimize this there so if
+
+you take a class for instance the optimization or more complicated like the linear scheduling of
+
+these things then you will learn a more complicated and awkward ways of optimization like the method
+
+and all the other things but the gradient descent is the fastest and more like the most simplest
+
+way to do it because it just looks at the first order approximation of the curve okay
+
+okay so what i really want to say is machine learning is a magic that comes from a differentiable
+
+model differentiable objective function and gradient descent if we combine these three then
+
+we can do almost all about it without worrying about what specific algorithm that we design
+
+that's the beauty of bush learning so any questions no great then let's look at some variants they're
+
+not complicated variants but they are mostly to show that why this machine learning thing is
+
+flexible okay so let's think about it you can try to do to use your own netlix science but
+
+in fact it's not the globally optimal there can be better models than you for instance we can think
+
+about this global effects of users and movies so in our previous competition we modeled the
+
+ready xr sub x and i as about interaction between user x and item in fact that product between that
+
+these user and item representations but there can be some biases there can be some global events
+
+that are not accurately modeled by this interaction between x and y for instance some people are very
+
+critical in reviewing things but some people are very generous but and some movies are very popular
+
+very high quality but some movies are really bad on that and such global biases of users and movies
+
+are in fact not operating a model in their interactions there are i believe there should
+
+be separated from this interaction right so let's change the model we want to change our model into
+
+this work so this new model is not only about your interaction this model contains three different
+
+first is a new which is the always mean rating and by having this new here it works as normalizing
+
+the whole utility because it is almost the same as like the substrate subtracting this mean from
+
+this area right and there's a new and there's a bx and bi which are biases for user x and the
+
+i is rapidly and bx and bi are also parameters that can be learned from our so now we have three
+
+i for prompt ux sorry u b and b for users and b for line we include more primaries here
+
+expecting that these biases will make our model fair so let's look at an example if our mean rating
+
+of training data is 3.7 then here is the mean it doesn't have to be learnable because it just can't
+
+compute it from there and if you maybe i am a very critical reviewer then probably the bias
+
+can be learned from me but if our word is favored by many people that we wouldn't have a positive
+
+bias then what really what this interaction really has to do is to model the interaction between me
+
+like the user and the item in a more accurate way like it just estimates whether the interaction
+
+becomes positive or negative because other biases or global effects are not indifferent okay so
+
+what we have as a result of introducing more parameters doesn't change the model fundamentally
+
+because it doesn't increase it doesn't induce the non-linear to the model and it doesn't make the
+
+model your network or so it just changes the form relation by introducing a few more terms which is
+
+a very little overhead but by having this new term our model can be more successful because
+
+because if this model satisfy your assumptions or the properties on data more close more problem
+
+and does it change the optimization process not at all what we need to change is the only this
+
+like how we compute this approximate rating for our exile we just have to change this term and we
+
+can still add regularizers you can read and probably for the user and if we want to regularize
+
+vehicle and it is also up to us whether to include the user and the item the regularizer or not it's
+
+up to us for instance if i were you i'm not gonna include the user and the item into regularizer
+
+because i believe b doesn't have to be regularized because b is most likely a global like the
+
+biases of user and items and i think there is not much noise to be more big by me but it's just a
+
+design space you can consider you can design your model yourself okay so i mean it is up to you
+
+whether you believe this new model extends or not compared to the previous model some of you might
+
+agree but some of you might not agree but it's totally okay because the model is not fixed so
+
+here comes the beauty of machine learning any idea for modifying the three components is okay to try
+
+which are basically a set of learners an objective function and the regular you can change the states
+
+without changing the fundamental idea of the one and you just have to try different variants until
+
+you achieve the best validation performance not the training performance because sgd will take care of
+
+finding this optimal progress we may live in the power of gradient based optimization as long as
+
+our models and our objective functions are differentiable then it will make care of the
+
+many things so for instance if you go back i mean they're not all we can think about for instance
+
+hey that part of it is too simple there probably there should be a different way to model the
+
+interaction between this and we are let's say let's not use the dot product here let's say addition
+
+it makes sense why you can't even do a list for instance like i say
+
+let me turn this one thing okay so this is not a product of ux we are transverse okay
+
+it's good but what if we introduce for instance the x the matrix m we got here
+
+and what if we model this m as a learner plot that is based on the assumption that this dot product
+
+uh considers only the transitions between distinct length and vectors between this user and item
+
+but if we have a new matrix and learnable inside the dot model then this m can be a
+
+permutation matrix which can map different elements from user and different items from item
+
+different elements from item so it will give a more freedom of learning to the model but does
+
+it make sense i'm not sure i just came up with that idea and that's up to you whether to try
+
+then or not so anything is okay anything okay but you just have to remember the trade-off if
+
+he introduced more parameters and if you make them all more complicated then it has a higher
+
+risk of overfeeding and lower time of computation computation okay okay remaining thing hyper
+
+parameters we still have some hyper parameters like the regularizer parameters and even the size
+
+of the latent vectors which is not learnable so a common practice is we pick the one with the best
+
+validation performance so the fundamental reason why we should introduce the validation data one
+
+of the reasons is because we have some hyper parameters to tune which are not learnable from
+
+the data so there are many basic ways and in fact they are not greatly defining hyperbrands the first
+
+one is the research we just compute we just create a grid of values and we pick one we run the model
+
+we see the performance and we take the best so we'll be the best at these requirements or we can
+
+do random search we can create a grid sorry you can create a space of values and we try for each
+
+random selected combination until the performance is satisfactory so is it satisfactory no we it's
+
+not satisfactory but in fact we have no i mean this hyper parameter search is also a research
+
+field in machine learning there are many advanced algorithms for doing this automatic hyper parameter
+
+search but obviously there are other scope so a basic way with either great search for random
+
+but still there needs some space where engineers can play for instance when we design this research
+
+let's think about the regularizer trunk we know that every regularizer should be
+
+non-negative obviously because if this regularizer is negative then it doesn't do regularize anymore
+
+then our only condition is if we believe that every regularization coefficient should be
+
+positive then what space should be moved for this regularizer so for such a positive parameter a
+
+common way to create is a goal scale because it approaches the value to zero but it doesn't go to
+
+zero so let's say we have run our model five times for this five different values and our model's
+
+performance was almost like almost five weeks and let's say this is a 0.01 and this one is 0.1
+
+and so then in this case so in fact our actual samples would be much
+
+fewer because we can run our model or only for a few times then at least we know that okay this
+
+region makes sense right then after that we create another great little hyper parameter like 0.01,
+
+0.1 then you know the whole scale problem I'll try
+
+to explain.
+
+These three values and we do it okay with these three new values and they will build in the
+
+missing entries okay so machine learning is in many cases engineering that we had no beautiful
+
+algorithm to do this one we just had to think keep thinking about how can we optimize our model how
+
+can we optimize our hyper parameter and all these different design choices there are many design
+
+choices inside this machine learning and as a machine learning engineer we just had to think
+
+about that constantly. Okay any question? Yeah.
+
+So you mean the protest new model?
+
+Oh I like that yeah.
+
+Why do we leave new as just a simple average file with using D as parameter
+
+measure them there's also average data? Great it's so great it's also a design choice for us
+
+so okay let's think about it. First of all we can learn this mu, b, u,
+
+b everything as a large parameter okay our first choice is to learn every parameter
+
+which is good our second choice would be okay u mu is just a scalar it's a single value and we
+
+believe that if you train our model very carefully with this all level parameters then we can expect
+
+that this mu will probably converge to this global average it's not that you have a theoretical
+
+guarantee for that but it's more like an expectation that if you train our model with all these three
+
+parameters then what the role of the whole data is that on mu is to leveraging or crossing to the
+
+program and some people so we can if you go deeper into the curve of the function the curve that
+
+equates that we can possibly say that we will approach the global average because that is a
+
+passive way to minimize the loss function in terms of the place between these parameters so but I
+
+will not give you this theoretical guarantee for that and I'm not sure how to type the theoretical
+
+guarantee set so that's just an expectation but if we believe that mu will approach the global
+
+average anyway then by fixing this mu the global average we can reduce the computation like we can
+
+reduce the instability instability of training process because if we fix the mu to the global
+
+average then the search space for the whole model is greatly decreased because the predictor
+
+parameters are no longer affected by the scale because mu is fixed then let's go to the second
+
+third tree first if we go further then we can also think that this biases will be also fitted to
+
+the average rating of its user and its item if we believe that these viruses will converge into
+
+these directions then we can also fix this vx and vi from their rates from the training data then
+
+it will also greatly reduce the space search space of the training compared to not fixed purpose
+
+but I guess mu is true but for me I'm not completely sure how this model will determine
+
+the play between b and unb and the regulation term if we control the regulation strength so
+
+from there actually there is a little uncertainty that I want to fix to the strong button so there
+
+can be one justification on why I fix mu but I do not fix b but that is just a design mistake
+
+it's just up to your word so everything so which parameter should be updated which
+
+parameters should be fixed is also a trade-off between the complexity or stability and speed
+
+or parameters so and in fact from here we have almost no guarantee on how it actually works
+
+in fact at least for ubd completion because as I said the model is linear we can derive so many
+
+great theoretical properties of the model but if you change the model into a neural network then
+
+we almost have nothing to expect from
+
+yeah workations workations okay great so uh well since we will have uh one class as a review
+
+for the midterm and since we have some more slides finished then I think it is a good
+
+uh timing to finish this today's class so the remaining the left one the fourth one will be
+
+covered uh this Thursday along with a very quick review of the things that we learned for the first
+
+half then that'll be all for the midterm and for the next Tuesday we have a class but the class is
+
+for the next topic for the final okay and we have an exam on Thursday okay and then let me just
+
+briefly say about the summary slide although I we didn't cover the last one so we took we just
+
+learned it is ubd composition because it's not a complicated operator at all which is the first
+
+machine learning operation that we learned on and this ubd completion is better than traditional
+
+cf in many ways in terms of accuracy and scalability and people so usually explain the
+
+mechanism a lot for building their computers and then we also learned some variants to show that
+
+why this machine learning things are generalizable and flexible
+
+okay so that's all for today and see you this Thursday
+

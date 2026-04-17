@@ -1,0 +1,1254 @@
+you
+
+ah
+
+a
+
+two
+
+Okay, so it's time.
+
+So let's begin today's class.
+
+So today is the second part of distributed computing.
+
+So after we learned the bad-rubies framework, which is a basic way to distribute computation
+
+into a cluster of many commodity hardware for dealing with large data and large computation,
+
+we will move on to a more advanced framework, which is called Spark.
+
+So you will see that Spark is more generalized and more flexible framework compared to MatReduce.
+
+And let's say you are a programmer, then it would be much easier for you to program something
+
+in Spark compared to MatReduce.
+
+So I guess MatReduce is one of the most popular distributed computing frameworks overall possible
+
+implementations, although Spark has been, I guess it's been more than a decade since
+
+its first launch.
+
+So there are more advanced frameworks as well in the market.
+
+So you can see these new frameworks if you're interested.
+
+But still, I guess Spark is one of the most powerful and influential frameworks overall.
+
+So this is the announcement.
+
+I checked with the department and they said we have no official way to communicate other
+
+than ETL.
+
+We could use Slack or Discord, but I just think for this semester ETL would be not right.
+
+So if you have any questions or you want to discuss something with other students, although
+
+it would be a little hard to do it on ETL, but still we can use ETL for any possible
+
+communications.
+
+And we will also upload all the materials including the slides, videos, and announcements
+
+to ETL.
+
+So please check ETL at least for every week.
+
+And we will also upload Homework 0 today to ETL.
+
+So please check the Homework 0.
+
+And although we are not going to evaluate your submission and you're not going to submit
+
+the Homework 0 at all, but still we encourage you to do Homework 0 before we announce Homework
+
+1 because starting from Homework 1, there will be a Spark programming assignment.
+
+So Homework 0 is basically a tutorial for Spark.
+
+So if you do not do Homework 0, then you will have more things to do for Homework 1.
+
+And we also uploaded an announcement for the computing environment because your programming
+
+assignments will be evaluated in a fixed environment with a fixed version of the packages.
+
+So you really need to check the versions of the packages so that your submitted code
+
+is running well on our side.
+
+So you can check out the announcement.
+
+And so as I said, if you have a question, the basic way of communication is ETL.
+
+So you can upload a question on the ETL, then we'll promptly answer to your questions.
+
+And if your questions are private, if your questions are not, you don't want to share
+
+this question with other people.
+
+Only in that case, please send us an email.
+
+And yeah, so do you have any questions on regarding the course, like how the course
+
+works and everything else?
+
+No?
+
+Great.
+
+So we'll still have the participation score on ETL.
+
+I mean, that's just 2% of all scores.
+
+I mean, not much to determine your grade.
+
+But if you are active, then you'll have a little bit of credit for that.
+
+Alright, let's proceed.
+
+So recap.
+
+I'm not sure you remember Mavibus well.
+
+It was just last Thursday, so I'm pretty sure that you remember this one.
+
+So Mavibus is a framework suitable for RRX files rarely updated in place.
+
+And you note that the condition is mostly for DFS, the distributed file system.
+
+Because Mavibus is built on a distributed file system, it assumes that the
+
+basic file system is distributed.
+
+I guess all of you know that.
+
+And for using this Mavibus framework, a user implements two different functions,
+
+MAD and RRX.
+
+MAD is a function that events a pair of a key and a value to a list of pairs of key
+
+and value.
+
+You know that, right?
+
+And the reduced function is, so because you assume that the group by key, the
+
+conceptual operation is done by the framework, for a reduced function, we can
+
+just write a function that maps the key and the value list into a pair of key and
+
+value.
+
+And if this reduced function satisfies some conditions, then you'll know that
+
+there can be a combiner which optimizes the reduced function by reducing the
+
+amount of shopping between the state and key.
+
+So this is a figure that you need to keep in your mind.
+
+And I guess one of the most important things about this framework is the system
+
+automatically handles those failures, which is the reason why we use these
+
+frameworks.
+
+So today we'll learn only a single thing, Spark.
+
+It's overview, operations, and important features.
+
+Before I introduce the main part, let me introduce the framework, like more
+
+framework.
+
+So memory dose is a programming framework.
+
+So memory dose handles how the computation is done, but when we manage a
+
+cluster, then there are more than the computing.
+
+So let's say you are an engineer, you get a job at a company, and the company
+
+asks you to buy a 10 computers and build a distributed system.
+
+Then you will use a system, like the system software that manages all the
+
+things, and one of such software is called Hadoop.
+
+Hadoop is an open source framework for distributed computing, and memory dose
+
+is, in fact, highly coupled with Hadoop.
+
+And I will show you a figure very soon.
+
+But this Hadoop framework consists of three key components.
+
+First is the file system.
+
+So we use the Hadoop distributed file system, hsns, which is one of the
+
+distributed file systems.
+
+And built upon this file system, there is a manager that manages the
+
+resources and job scheduling across nodes.
+
+And then on top of this manager, there is a processing engine, which is
+
+either memory use or a file or any other framework.
+
+So basically, a distributed computing framework consists of multiple stages,
+
+and in fact, memory use is only one of them, because memory use is built upon
+
+well-controlled resources and the loop.
+
+So in modern Hadoop, when we say the master controller in the last lecture,
+
+the master controller typically refers to this VR, which is in the second stage.
+
+So if you look at the whole figure, then it looks like it.
+
+There is a database for a file system, which is either like Hadoop, HTSS,
+
+or many other things, mostly from Hadoop.
+
+And there is a research manager, like for instance, Hadoop VR.
+
+And on top of that, there is a memory use framework or SPAR.
+
+So in this figure, it shows a SPAR, but it can be a memory use.
+
+Then on top of memory use, there is packages for libraries.
+
+For instance, there is a SPAR, and there are many important libraries
+
+that are built on SPAR, such as Spark SQL or MLlib,
+
+which is a machine learning library built on Spark.
+
+So this is the actual figure, but I will not discuss about the database,
+
+file system, or research manager, because they are mostly on engineering part.
+
+I will focus only on the core API used in SPAR.
+
+But if you want to become a data engineer for a distributed complex cluster,
+
+then you will learn how to use the code manager to state this level as well.
+
+So let me first discuss about the limitations of MapRedress.
+
+I mean, if the MapRedress is great, it can do all the things.
+
+At the same time, then there's no reason to move on to the second one.
+
+So MapRedress, one of the important properties of MapRedress
+
+is that it stores intermediate files on disk.
+
+So we know that every map worker produces an output on its local disk,
+
+which is transferred to the reduced workers controlled by the manager.
+
+So that was the reason why if the map worker fails,
+
+we need to rerun the whole map test because the files are not accessible anymore
+
+if the worker fails.
+
+So there is a main property, but the problem is,
+
+even for the jobs that can be done in vain,
+
+let's say the output of the map worker is very small,
+
+so it doesn't have to be stored on disk.
+
+It can just store the memory and you can just transfer to the MapRedress worker.
+
+The MapRedress worker does not perform such a thing.
+
+It only stores the results on disk.
+
+I mean, disk is, SSD is quite fast these days,
+
+but it feels slower than the main memory, of course.
+
+So that is one part that we want to optimize.
+
+For some data, we want to store them in memory,
+
+because if we know that, this data are not necessary for the further jobs.
+
+Another thing is, MapRedress encourages the substantial overheads for a complex job
+
+because due to data revolution.
+
+What that means is, if you're trying to implement a complicated algorithm with MapRedress,
+
+we need multiple MapRedress iterations that I introduced last time.
+
+For instance, here, it shows that we have two iterations of MapRedress,
+
+and each iteration consists of a map and a reduce.
+
+So the first thing is, the result of a map task is stored on local disk, which is a problem.
+
+But the second problem is, the result of a reduce task is stored on HTMS.
+
+So if we, for instance, combine these two iterations,
+
+the result of the first iteration is stored on HTMS,
+
+which is another problem because storing data on distributed file system
+
+creates an overhead of data replication, they say.
+
+Which is a similar problem to the previous one.
+
+And another problem is, this one and the previous limitation was about mainly the data overhead.
+
+Another thing is, the framework limitation, which is,
+
+many algorithms are not easily described as MapRedress, as I also talked in the last time.
+
+I mean, versus machine learning,
+
+MapRedress consists of only a fixed strong functions of map and reduce,
+
+but you know that many algorithms are very hard to describe with map and reduce functions.
+
+So in the two basic categories, MapRedress is not for every job.
+
+Like memory heavy jobs or like iteration heavy jobs, like that.
+
+So the super core idea that allows us to move on from MapRedress to Spark is a workflow.
+
+Right?
+
+So MapRedress creates a chain of tasks.
+
+Let's think about the chain of tasks, right?
+
+If you look at the left here, then if we combine multiple MapRedress jobs,
+
+then the whole workflow looks like that.
+
+Map, reduce, map, and simple chain.
+
+But what we really want to do is to create a chain,
+
+like a more generalized version of the workflow, which is a directed or cyclic graph.
+
+Because, I mean, in the real world,
+
+the workflow doesn't look like a chain in all cases.
+
+It is a more complicated graph where each module or each block can take multiple outputs from previous blocks.
+
+That is what actual workflow looks like.
+
+So that's what we want to do.
+
+We want to generalize the chain into a back directed or cyclic.
+
+I'm pretty sure all of you know what that is.
+
+So in this way, we'll get a low function to take more than one input,
+
+and we can create more complicated workflow or a complicated algorithm.
+
+And in this way, we'll probably have a master controller, even in this part of the field.
+
+And that master controller will be responsible for dividing work among tasks.
+
+So this is an idea.
+
+Then the following question is, I mean, you always have to ask yourself about to understand something.
+
+So let's say we extend this chain into this set.
+
+One of the most fundamental reasons why we restrict our workflow to this chain is because we really need to ensure no failures.
+
+Like we need to deal with no failures.
+
+But if we create a graph like this, then dealing with no failures becomes a tricky problem.
+
+Because, for instance, if I die, it's a node of I die, then it's hard to determine what to restart,
+
+what to run again, what to get, something like that.
+
+So to ensure a node failure, like robustness, we need a property which is called blocking property.
+
+So a blocking property is a simple rule.
+
+Operation can run only after all its predecessors are completed.
+
+That is why this is not an undirected graph.
+
+So the task of I can be done only after F and H are completed.
+
+Okay, then I start.
+
+So if a task fails, we know that any of its successors didn't start.
+
+Which means if I fail, we know that the node J didn't start because the node failed.
+
+So because of that, we don't have to rerun J or G because we know that they didn't start.
+
+If I fail, we can trace back to its predecessors like F plus H or more nodes like offsite.
+
+Then we run this test to recreate I.
+
+So because we have full information about this graph, we know what to restart and what to do again if a node J.
+
+Okay, so let's say the master controller knows all this information.
+
+Then if a task I fail or if test G fails, then the master controller reassigns that task to another node.
+
+And it reruns the predecessors that are required to run J.
+
+So this graph is okay.
+
+If we know this graph, then we can still create the framework that is full-colorant.
+
+That is a super important thing.
+
+All right.
+
+So because of based on this idea, there is a Spark.
+
+I guess it's we can say the most popular workflow system.
+
+So Spark is a flexible workflow system not limited to MapReaders developed by UC Berkeley and Databricks, now maintained by Apache.
+
+So additions to MapReaders is it directly addresses the limitations of MapReaders.
+
+It allows the best data sharing by allowing to avoid saving intermediate results to the.
+
+So if a programmer wants, he can avoid storing data on this at all, and he can just transfer the data in memory to the other version.
+
+And he can also cache for repetitive parts.
+
+For instance, let's say in this DAG workflow, like you know that this graph can be large for a complicated algorithm.
+
+Then let's say there are 100 more tests upfront of this year.
+
+And if a test fails, for instance, then we can say that 100 nodes should be rerun if we store all the data in memory, which is another problem.
+
+So a programmer can decide when to cache the data on this.
+
+So it gives more power to a programmer when to cache data or when to store data in memory.
+
+So that is a really good thing for a programmer.
+
+And it also supports a general execution graph in DAG form and provides richer functions than MapReaders.
+
+So I'll describe its details.
+
+And it's also compatible with HALF.
+
+So Spark can directly go into the whole framework and replace MapReaders.
+
+All right, any questions so far?
+
+No?
+
+Straightforward, right?
+
+So we understand it's workable.
+
+Then another super important component that composes this framework is a data structure or a data element.
+
+So here Spark uses a data structure called resilient distributed data set, RDD, with the key central data structure.
+
+So RDD is basically a...
+
+So you can safely assume that all the data are RDD in Spark.
+
+So RDD is basically a distributed data.
+
+So when we say an RDD, you can safely assume that the RDD is divided into multiple chunks and will be stored in DNS.
+
+So RDD is basically a all-tolerant data set.
+
+So why is it RDD?
+
+RDD is basically a partitioned collection of records of one time.
+
+So it's basically a list, a simple list, of the elements of one time which are divided into multiple chunks.
+
+So you know that in MapReduce, the basic data architecture was the key-value pair.
+
+So everything was a key-value pair after the MapReduce, after the map test, or after the reuse test.
+
+Everything was a key-value pair.
+
+So Spark generalizes that key-value pairs into RDD.
+
+And of course RDD is a stratotropic collector, and RDD can be cached in Maygaming.
+
+So I guess I was wrong about using the word caching.
+
+So caching is actually storing data from disk in that map.
+
+So anyway, it can be cached.
+
+And RDD is important.
+
+Can it be created from VFS or by transforming other RDDs?
+
+Okay, oh yeah, I was wrong about that.
+
+RDD is not basically stored in VFS.
+
+RDD is stored on disk of multiple machines.
+
+I think that was the correct one.
+
+So let me correct what I just said.
+
+There is a DFF at the starting point, and we create an RDD from a DFF.
+
+And other RDDs are created from other RDDs by transforming RDDs.
+
+So if we create a word pool like this, then basically we assume these RDDs are stored on local disk computers.
+
+And it is best if the same operation is applied to all elements.
+
+So let me give you for example.
+
+Do we have an example?
+
+Okay, later.
+
+So this is the concept.
+
+And in the Spark program, there are two types of operations that work on RDDs.
+
+The transformation and action.
+
+Transformation builds RDDs from other RDDs.
+
+So let's say in this figure, we have an external world which is kind of DFS, and we create RDD from the DFS.
+
+It is like loading the data from a data server.
+
+We create an RDD, and we can transform this RDD to create another RDD.
+
+And this transformation is kind of rather different, but it is much more generalized form.
+
+Like you can include the map, filter, join, union, distinct, sort.
+
+All the functions that we can think of for instance Python program can be a transformation between an RDD.
+
+But one restriction here is because the transformation included an RDD and the output is RDD,
+
+it is basically a mapping from a list of elements to a list of elements.
+
+Because RDD is basically a distributed list of elements, right?
+
+There is one restriction.
+
+And there is an important thing which is called lazy evaluation.
+
+What is that?
+
+So RDD is a distributed fault.
+
+Basically, our assumption is we cannot check the status of RDD during the computation of this framework.
+
+What it means is we don't have to check the RDD.
+
+Because to check the values in RDD, we need to gather all the elements of RDD from multiple machines into a single machine to check the values.
+
+So the system assumes that the user doesn't want to check the RDD.
+
+Then what is good?
+
+We can check the result of RDD only when there is an action.
+
+So action is another type of operation which is used to return value for its core data.
+
+So in this figure, there are three transformations and one action here.
+
+So we can check only the result of action.
+
+We cannot check the result of RDDs, right?
+
+And this action is an operation that returns something to a user program for instance.
+
+So it includes like count, collect, reuse it.
+
+So if you look at the functions there, count is the counting number of elements.
+
+Collect is collecting something and reuse is reducing something.
+
+So action is basically mostly mapping from many elements to fewer elements.
+
+So it is not always the case.
+
+But action is mostly designed to reduce the number of elements from the input to the output.
+
+Because we assume that the result of action is gathered from multiple machines into a single machine as an output.
+
+So the result of action is not an RDD.
+
+The result of action is actually the returning value.
+
+So here comes another important property of Spark, which is the lazy evaluation.
+
+What that means is the user can check the result of action only when the action is completed.
+
+So although we can create a workflow like this,
+
+the system can fully control how transformations can be done in the intermediate stage.
+
+Because the user doesn't have a way to know what is happening here.
+
+So when you write a Spark program, and let's say you write a Spark program in Python,
+
+and you can by line, by line, you can write Spark transformations, right?
+
+One transformation, two, three, and four like that.
+
+And these transformations are done only when there is an action.
+
+So when there comes an action, then the master controller organizes all the workflows of the transformation when there is an action.
+
+So that allows room for optimization for Spark.
+
+Because when a Spark runs a job, it knows how this tag looks like, how these transformations are composed of.
+
+That is the meaning of lazy evaluation.
+
+It doesn't evaluate the result until there is an action to check the result.
+
+So because of this lazy validation property, the Spark system controls how to draw these workflows.
+
+Whether to merge operations, whether to split the operations, whether to cache data, whether to not cache data like that.
+
+Alright, any questions?
+
+So the first part is mostly about introducing the concepts.
+
+So you might think the details are not very clear in this moment, but it will be okay if we go further, like to part two or part three.
+
+So if you have questions, no?
+
+No.
+
+Memory disk does not support such a flexibility.
+
+So memory disk strictly imposes that the result of map test is stored on disk, the result of reduce is stored on DFS, and that's all.
+
+Yeah.
+
+We cannot cache data in memory, and we cannot determine the workflow or something like that.
+
+If you think about it, that's because the objective of memory disk, when it was first designed, it was not designed to support various operations.
+
+It was designed by Google, who really wanted to optimize their matrix vector multiplications for their web search problems.
+
+So memory disk is a great framework, but the goal of its design is different for Spark.
+
+So after the success of memory disk, people thought, okay, this really computing can be the future of data analysis.
+
+So Spark people created this part to generalize the memory disk by introducing the functions that were not supported by memory disk.
+
+So that is the reason why Spark is much more flexible than memory disk.
+
+But still, memory disk, so I will show you this slide later.
+
+There is one slide to compare memory disk and Spark.
+
+So I mean, I will explain it later.
+
+But in today's class, I will say that Spark seems like a much better framework than memory disk, but it is not all the case.
+
+Because as a computer scientist, we always think about the trade-off.
+
+Spark has more flexibility, which incurs more overhead control.
+
+There are more jobs that a master controller needs to do to optimize them.
+
+But if your job is really simple, if you are going to do is a really a simple matrix vector multiplication that doesn't require a complicated set of memory stops,
+
+then memory disk can be a faster and more reliable framework.
+
+So a programmer chooses what computing engine to use when they build this really computing cluster.
+
+And after that, they have to just program in that framework.
+
+Right, okay, more questions?
+
+Suppose we have a path that can be performed with memory disk.
+
+I think biodegradable engines can technically emulate a lot of map reviews.
+
+And if we do the same path, if we were to do a path that can be done in map reviews,
+
+is it faster to use Spark to emulate map reviews or just use the map reviews in the first place?
+
+Great question.
+
+So I will also talk about that later, but it depends on what the job is.
+
+So for instance, if the job doesn't require complicated iterations or the caching, for instance,
+
+then we can say map reviews is, it's hard to say map reviews is faster, but we can say map reviews is easier to use.
+
+Because for instance, since map reviews does not support the caching operation,
+
+that means we do not have to care about the memory size of the computing nodes at all.
+
+Because map reviews is designed for super cheap computers.
+
+But when we use Spark, because its basic function is it tries to optimize the functions,
+
+then it tries to load something into memory as much as it can.
+
+So it means that we need to think more about our computing resources
+
+and more about the overhead that the master controller has.
+
+So if the job is simple, it can be described by, for instance, one or two map reviews jobs
+
+without severe disk overhead, then map reviews can be better for engineering perspective.
+
+And of course, you're right, Spark can do every job that can be done by map reviews.
+
+But I don't think Spark is always better than map reviews.
+
+Great. More questions?
+
+The basic data structure which is in between the two tasks here, which is in the arrow,
+
+is the RDD. And RDD is not fault resilient. RDD is distributed data, and that is distributed
+
+across the nodes. So if we do nothing, then if we fail, the app should be ruined.
+
+So there are two choices. First, we can cache RDD in memory, which means we don't store
+
+the results of RDD on disk at all. That speeds up the process, and that is good if the result of
+
+app is instantly used by G, but not in other way anywhere. Because in that case, we can just keep
+
+the stage of storing data on disk. That is one thing. Another thing is, if we really believe that
+
+the output is at the soy porn, and we want to make sure that the data is fault resilient,
+
+then we can choose to store data on DFS. So that is the opposite of caching. It is like to store
+
+data on DFS. In that case, even though the test G fails, we don't have to rerun it, because we
+
+can just remove the data from the DFS. But then flexibility is a good thing for us.
+
+Great. So let me proceed into an actual operation. So you will have a more clear picture
+
+on how this part works in PimbaBlock. So operation. I mean, it's always good to learn something by
+
+example, right? So the example here is an average word length by letter. The problem is, we are given
+
+a large text file, and for each letter from A to D, our question is, what is the average length of
+
+words that start with P, like, O? This is a simple problem. So if you want to do it with averages,
+
+we'll probably do it in this way. We map. So we assume that the input, the initial keyword
+
+pair is the line index and line, and here line index is nothing because it's enormous. And we
+
+have that because the input should be a keyword pair. Then our map function should be, I mean,
+
+it is not the only way to input this, but should be mapping the first letter of this word into
+
+the value of its length for every word in line. So that is basically a map function.
+
+And then the reduce function is given a word and a list of length, then we will map this into a
+
+pair of words and the mean of this. So it looks good. So in fact, because of this one, this job
+
+doesn't need to be run in Spark because it is too simple, but I'll just describe how to do it in
+
+Spark. Okay. So the first thing is we need to load data from a DFS to our RDE. So yeah, I guess
+
+it's another type of a line right there, but in the DFS, we have a large data. We load the data
+
+into an RDE, which is, as I said, distributed like the way to store data in our computers.
+
+So in Python, so Spark was not implemented in Python originally, but people use Python versions
+
+of Spark if it's easier to use. So SC is shortened for a Spark content. That is like what we pull
+
+every time when we want to use Spark. SC.mixfile is to load data from DFS into an RDE, which is
+
+straightforward. Then we apply a flat map function. So I will describe its function later,
+
+but a flat map function is basically the same as a map in values. So the input of flat map is a
+
+function that maps a line into something. So we can look at this RDE. The first RDE is an RDE of
+
+text line. So each element is a string, right? So after we apply this flat map, we create another
+
+RDE, which is to split its line to words. So then you can say the second RDE is a list of words,
+
+like list of strings the same, but there will be no white spaces and strings, right? Because we split
+
+the sentence into multiple words. And you apply map. So map is similar to flat map, but it's more
+
+restricted version. So I will describe later. But by applying map, we transform its word into a pair
+
+with the first word and its length, right? Then we run the group by key. So here we really need
+
+explicit operation of group by key, which is not included in Babridge. Because the whole goal of
+
+this part is to give more flexibility to a programmer. So we do a group by key here,
+
+and that is a shuffling. So when we look at a lot of arrows between RDE, that is called a shuffling,
+
+and that costs a lot of time because it really needs to exchange data. But we kind of need to
+
+avoid using group by key because we really need to gather the data with the same key, right?
+
+Then we also apply a map function, which maps a key and value list like length list into a key
+
+and the average length. So not difficult, right? Then we run an action. Okay, so there is no action.
+
+So at this point, we are pretty sure that RDE is small enough because we know how it works. So here
+
+we call a function like collective, which is an action, which returns the results to our local
+
+computer. So when an action is called here, the Spark optimizes all the transformations of that.
+
+So that is, as I said, the lazy evaluation, but here is no action there. All the things that are
+
+done here are transformations. So this is just one I said. There are two basic dependencies in Spark,
+
+which are wide and narrow dependencies. Here, when I say shuffling, is a wide dependency, which puts
+
+a lot of weight. And by definition, a wide dependency happens when its partition is
+
+dependent on by multiple tile partition. So let me explain it later. But other than the wide
+
+dependency, there is a narrow dependency, which is parallelizable operation. So as a programmer,
+
+we really want to increase the number of narrow dependencies while minimizing the number of wide
+
+dependencies. That is like the performance of a programmer. So I guess there will be no questions
+
+until this point. So let me introduce one operation by operation. FlatMap is a transformation that
+
+applies the function to every element. Same as very user-friendly map, but there's no restriction on
+
+the type. So you can take any RDD. It doesn't have to be a kilo here. So it maps any object into a
+
+list of zero or more objects. So the output numbers can vary based on the input. And all the lists are
+
+flat mapped into a single RDD of output objects. So what it means is if we apply a flat map,
+
+as shown in this figure, then multiple lines can contain different numbers of words. For instance,
+
+sentence 1 contains three words. The sentence 2 can contain 100 words. So when we apply a flat map,
+
+it's flattened the output, which means the result is simply a list or an RDD of words
+
+where we don't care what words are coming from what sentences. The result is a simple RDD. So
+
+that's the reason why the RDD looks like that. I use the dashed line between the
+
+chunk figure, because at this point, although it's not a white dependence, it's still a narrow
+
+dependency, but the outputs, we can say, are flattened into a single RDD.
+
+But MAP is a little bit different. MAP is a stricter version of the flat map transformation,
+
+because it forces to create exactly one object from each input element. So if you look at this
+
+MAP function, we know that every input is transformed to exactly one object, but there is
+
+no flat main of line, as shown here. Then why do we need these two different functions? Because
+
+when we can use MAP instead of flat MAP, it is always better to use MAP, because it gives more
+
+freedom to control to the system, because the system knows that the output is exactly one,
+
+that the system can do more things to optimize the operations.
+
+So we can change the MAP into a flat MAP if we want, but that is not recommended.
+
+And there is another operation like filter. Let's say in the same problem, we add this one
+
+additional line to the algorithm, which is a filter. So we want to check whether a word is a
+
+stop word or not. Then a filter is another transformation that takes a predicate that applies
+
+the RDD object type, and then it returns elements that satisfy the predicate.
+
+I mean, it's straightforward, right? It just filters the RDD into another RDD. So it is better
+
+to apply as early as possible to reduce the RDD size. So that is, as I said, the programmer's job
+
+to optimize them. If some transformations reduce the size of our data, it should be applied as
+
+early as possible, because that optimizes the whole other data. So the amount of optimization
+
+that a Spark program does depends on the actual implementation. But if a Spark is really smart,
+
+let's say, then probably it can also change the order of transformation. It really believes that
+
+the output is the same, right? So what a Spark does with the lazy validation is similar to
+
+compiling it. It takes the list of transformation, and when there is an action, it compiles all the
+
+operations to make the best results with the best optimized workbook. And there is a reduce.
+
+Reduce is an action, not transformation. So the result of action is not an RDD, it just returns
+
+a value. So I guess the example is simplified to show you how the reduce works. But here,
+
+after the math function, let's say there is a reduce function. Reduce function takes a parameter,
+
+which is a function that maps a pair of elements into a single element. So by repeatedly applying
+
+this function to the list elements inside an RDD, it returns only a single value. Because
+
+recursively, by taking this function, it can reduce any long list into a single element.
+
+And here we have a strict restriction on the function. It should be associative and
+
+communicative. You know the reason why. Because these are important to make sure that the result
+
+is consistent as expected by the program. So if you use Python, and if you implement this
+
+inside your Python program, then the abg length variable should be a single number.
+
+It is not an RDD. So you can actually use that number inside this program to do more useful jobs.
+
+So you don't have to really remember all these operations, but if you know what they mean,
+
+that is really straightforward for you. For instance, there is a join. I'm not sure whether
+
+you took the test of database or not. The join is a fundamental operation on database. It merges
+
+two RDDs of key values based on their key. So for instance, it takes the RDD1, RDD2, and let's say
+
+this RDD consists of key values here. Then for every pair, kx from RDD1 and ky from RDD2, it creates
+
+kx and y here. So it joins the elements from work to our RDDs based on their keys. And join is quite
+
+important for many opportunities. For instance, if you look at this example, here comes a new function,
+
+parallelize. What is a parallelize? It is a mapping from our local variable to an RDD. If you program
+
+in Python, let's say here we create an example list of two elements at the local disk, right? But we
+
+want it to be an RDD, so we call this function as c.parallelize. Then x is an RDD, y is an RDD with
+
+keys a and b. If we apply x.joinby, which means we run a join operation between x and y, and we call
+
+collect, which is an action that literally takes an RDD into a local variable. So collect does not
+
+reduce an RDD size, but it just returns an RDD. So collect can explore your program. If you apply
+
+collect to a large RDD, you should be really careful on calling collect. But if you look at
+
+the result, the result is an RDD of x, a1 to a1 entry. Important thing, join creates a y dependency.
+
+Why is that? Because we really need to compare all the chunks between these two RDDs to apply
+
+this join operation. There is no way to avoid applying join without creating a y dependency.
+
+Group by key. Straightforward, which is a transformation that is the same as
+
+reproduce group by key. It's an RDD of key-value pairs and produces an RDD of key-value list pairs.
+
+I don't have to explain this too much, but it creates a y dependency.
+
+All right, so let's just simply compare a wide and narrow dependencies. So the question is,
+
+can flat map create multiple partitions from one? So flat map is a confusing operation because it is
+
+not exactly a mapping from one chunk to another chunk. Because chunk sizes can be really asymmetric
+
+between different chunks because of the input property. So a flat map can create multiple
+
+partitions from one as shown in this figure. If the chunk sizes are really asymmetric, really
+
+different from each other. So it can be a one to many function. Then the following question is,
+
+does it create a y dependency? Well, probably not. Because if partition is R1, it will come from only
+
+one partition. So we don't have to refer sharply. That's because we create two partitions from one
+
+partition. So I mean, you see that this is a simple exam question that I can have, right? Whether this
+
+operation is having a y dependency or a narrow dependency. Although it's super easy, so I'm not
+
+going to have it on our exam. But you know the difference, right? So as a Spark programmer,
+
+you really need to reduce the RDD size as early as possible. You need to minimize the number of y
+
+dependencies and all sorts of things. So different Spark programmers can create the same programming,
+
+same program, but with different optimization performance. Okay, so okay, there is a pop quiz.
+
+Is it different? Okay, so before doing this pop quiz, any questions so far?
+
+No? Okay, then as the last time, I will come back here when I have more time. Okay, so the pop quiz
+
+is basically this one. So there are many other transformations and actions of Spark. If you look
+
+at it, if you go to the Spark official website, you will see a lot of transformations in there.
+
+For instance, there is a reduceByKey function, which is basically a combination of the groupByKey
+
+and the reduce function. And you will understand why there is a function such as groupReduceByKey,
+
+because if we apply a reduceByKey instead of combining groupByKey and reduce, the system
+
+knows it better. The system can optimize better because the system knows that, okay,
+
+this guy is the reduceByKey. Then, so if we call a reduceByKey and if the function is
+
+associative and commutative, then the Spark can do a combined thing, because it knows that
+
+the results of groupByKey is needed only for the reduce function. But if you apply this groupByKey
+
+and reduce separately, and the Spark doesn't know how to optimize it, then the Spark will create
+
+an explicit list of values before applying the reduce function. So as a programmer, we always
+
+need to have a more strict version as much as possible to give more flexibility to the system.
+
+So the pocket here is to implement work taught using reduceByKey, so I will come back if I
+
+need more time. All right, that's just it. And I guess there are no questions, right? I'll ask
+
+again. Great. So let me go to the implementation part. I guess, let's see what is there. Okay,
+
+okay. There are not many slides, so I think we'll end sooner than the time, but let me proceed.
+
+The implementation part. If you compare Spark and memory juice, there are similarities and
+
+improvements. So I guess all of you now understand what RDD is. So similarities is RDD is divided into
+
+chunks, which are given to different ones. I mean, that is the core idea of this theory of computing,
+
+so that is the same as memory juice. And transformation on RDDs can be performed in parallel on chunks,
+
+which is again the core idea of this theory of computing. But there are two key improvements of
+
+memory juice, which are lazy validation, basically for efficiency and lineage for RDDs,
+
+for control problems. Let me explain this very soon. Lazy validation. I already talked a lot
+
+about the lazy validation because it's so important for Spark. Spark does not apply transformations
+
+until it is retired to boost scope. Okay, so, retired to boost scope means storing an RDD to
+
+all systems or returning a little to the application is done by an action. So thanks to lazy
+
+validation, Spark can optimize execution plans and combine transformations, minimizing the number of
+
+tasks. For instance, if a Spark is intelligent enough, then it will combine group by key and
+
+reduce if the system knows that it can be replaced with reduce by key. Then by doing this, it can
+
+optimize the workflow a little bit. That is basically what it does. Okay, and for instance,
+
+if the Spark believes that the result of R1, for instance, is used instantly by R2 and not elsewhere,
+
+then the Spark can determine to store the result of R1 in memory of the computing. So this is like
+
+automatic optimization of Spark. So by default, Spark tries to use memory as much as possible.
+
+Because Spark can instantly be transferred to R1 and it can determine to catch the data in memory
+
+without using this algorithm. But if I don't want that to happen, then I can choose again
+
+to say that not to catch data here explicitly or to store data in the data if the data is really
+
+important. So this flexibility, this functionality of Spark makes it a little more complicated to
+
+think about compared to memory. I mean, in memory, everything is simple and easy, but here
+
+I really have to think about optimizations that this Spark does. Example, okay. Common words are
+
+not stop words in the document. So we first, let's say we apply a plan map to input R0 to create
+
+w,1 times R1. This is a word counting example, which is very simple. And we apply to filter
+
+to its chunk in R2 to produce R1 to produce R2. Only if R2 is stored in DFS by reduced action,
+
+then R1 and R2 are actually produced and subsequently dropped at previous. Okay, next.
+
+And another part, resilience of RDDs. Spark records the lineage of every RDD for
+
+all nodes. Why is it lineage? So it is a state that is very closely related to the blocking
+
+property. So for every RDD, there is a, you can say there is a variable that tracks its
+
+parents. For example, here, the master controller knows the whole thing, but if you look at a local
+
+perspective, R2 has a single variable that tells you that, okay, your parent is R1. If you go to
+
+R1, there is a variable that says, okay, my parent is algebra from my family. So let's say if R2 is
+
+locked, then the master controller looks at the variable that, okay, the spotter is R1. Then it
+
+goes to R1 and if R1 is lost, then it goes to R0, something like that. So it tracks back from the
+
+lost RDD or a lost node to some outcome like that. But if you look at this RDD, it is very rare to
+
+expect all this RDD is lost because no failure is happening inside this RDD for chunk level.
+
+So let's say you have a RDD, so suddenly we cannot offset this chunk because it's not failed.
+
+Then it knows the lineage of this chunk. So a more important thing, a detail is the lineage is not
+
+between RDDs, it's between chunks. So that's important. So this chunk, the father of this chunk
+
+is maintained as this loop because this is a loop, RDD is a master structure. So you can think of the
+
+lineage in the RDD level, R2, R1, R2. But you can think of this RDD as a chunk level, lineage in a
+
+chunk level because this chunk is created from this chunk. This can be the same node, but these
+
+loops can be different based on the operating. Probably at least in this case, I guess all three
+
+chunks will be the same node because there is no reason why this chunk should be distributed to other
+
+nodes, I guess. But that is just controlled by Spark Manager.
+
+So you get the point, I think. So today I just mostly introduced the basic concepts and ideas
+
+of Spark. So to learn more about writing Spark applications, you can read the file there,
+
+or you can look at the original paper which was produced in 2012. So it's been
+
+after like 10 years and 4,000 since its first announcement, but it has become one of the most
+
+influential primaries, it says. And of course, we will have Format 0, which will guide you to become
+
+more familiar with writing Spark. Comparison. Mavridus is of course faster than traditional
+
+algorithms, but we can say Spark can be much faster than Mavridus thanks to all its optimization
+
+techniques. So Mavridus is basically optimized for batch processing. It has a very strict
+
+data line, but Spark can give us a more accurate data for something like machine learning jobs if
+
+we are really optimizing the tasks in memory, not on this. I mean, although it should be slower than
+
+a single machine algorithm because of all the wide dependencies that are created by some operations,
+
+but we can still optimize Spark and those. And here we've come back to easier than Mavridus.
+
+Easier means it is easier to write a program. Like if you have a 100-line Python code, then you
+
+you will have a severe headache if you want to implement your algorithm on Mavridus. But it's
+
+easier for a programmer to write Spark. But I can say it's harder to manage the resources
+
+in Spark. You have more things to control in terms of Spark. And no caching in Mavridus, but
+
+in Spark, it catches data in memory when it can, and it enhances the system performance.
+
+So when to use what? Mavridus is good for linear processing of large data. Here the linear means
+
+the chain of workloads. And a simple task easily read and reduced can be done in Mavridus.
+
+Opline, large-scale, fast-talk. Spark, on the other hand, is best for interactive data processing
+
+for a 30- and real-time job like machine learning for this month. Especially when it has sufficient memory.
+
+So here comes the summary. So I guess I didn't expect to finish today's class this early.
+
+So just let me go back to the pop quiz and I'll give you just two or three minutes
+
+for doing this pop quiz before we finish today's class. So the pop quiz is, as I said,
+
+you can implement the word count using reduceByKey. So click right, although it should be
+
+just very easy for you, and I'll just give you two or three minutes.
+
+And I think the word count here is a simple word count that we learned from Mavridus,
+
+not the complicated one in the today's slides.
+
+Okay, it's not that difficult, right? Anyone has been done? No? Okay, I'll give you just...
+
+Okay, I guess it's just a matter of time, so I'll just get you the answer. Okay, so let's think
+
+about the word count example. I guess we first assume what the original data looks like, right?
+
+So probably we will take the data, like I see as before, next file from a DFFed product, right?
+
+And then, so the result of this one is an RDB, so we can just put a comma here and put more
+
+transformations here if you want to save space. Then what do we need? I guess probably we need
+
+a flat map as before, right? Flat map, lambda w into, what is the comma, right? I mean this
+
+straight board. Then we apply the reduced by key, saying that...
+
+Oh, okay, here's w, a, I'm not sure how... Okay, w, b, w.
+
+I don't have to write a key here, right? Just a comma b.
+
+Yeah, that's it. It's almost the same as map reduce, right? Because, so here we see a point.
+
+The reduced task in map reduce is actually a reduced by key in Spark, and the map task in
+
+map reduce is actually a flat map in Spark, so we have different names, right? And reduced in Spark
+
+is not the same as the reduced in map reduce, and the map in Spark is not the same as the map in
+
+MapChest, so please make sure that differences. Yeah.
+
+Should be first, next. First five words.
+
+Ah, yeah, great point. I just forgot that. So probably here, probably first, yeah, there
+
+should be... So I guess this should be a split. The split of lines in the multiple words, and there
+
+also should be a map, and this should be a map, and the flat map function should be the splitting.
+
+So yeah, thank you for that. I just forgot that.
+
+So let me go to the final slide. So Spark is, as I said, it's a great framework for doing things,
+
+and as I said, for our entire course, we will have at least one Spark program assignment for everyone,
+
+from homework one to homework four. It's not actually that we really need to learn Spark,
+
+but it's more like to give you more experience on how to write a program in a distributed
+
+environment, not in the typical single machine setting where you say you assume all the data
+
+can be loaded into main memory, but in many cases, we need to assume the data cannot be loaded in
+
+memory of a single machine. So that is the reason why we study Spark, and you will get used to using
+
+Spark throughout our course, okay? So in our first week, we learned memory-reduced Spark,
+
+which are basically frameworks. They are not exactly solutions to problems, but they are more
+
+environments. But starting from this Thursday, we will cover different problems and different
+
+algorithmic solutions to solve problems. So when I say our course's combination of algorithms,
+
+math, theory, and implementation, something like that, this topic is mostly about engineering and
+
+implementation. Some topics of our course will be about mathematics. Some topics will be about
+
+theory. Some topics will be about algorithms. So you will see how diverse topics can be
+
+grouped as a single topic as a data mining. So that's all for today. Before we finish,
+
+any questions so far? No? Great. So let's call it a day and see you next Thursday.
+

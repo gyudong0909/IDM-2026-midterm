@@ -1,0 +1,1243 @@
+Okay, let's start with this class.
+
+So hello everyone.
+
+This is the first day of the new semester and in fact this is the first day of my semester
+
+in SMU.
+
+So I guess every one of you is here because you want to take the class named Introduction
+
+to Data Mining, which is a fascinating course that teaches you how to understand data and
+
+how to analyze data and how to solve important problems using the patterns derived from data.
+
+So today is mainly an introduction, so I will talk a little bit about some basic concepts
+
+that you may need to understand for further lectures, but mostly today is about introducing
+
+the course itself rather than teaching something.
+
+So this is the outline and in fact because this is my first day in this room and in this
+
+school so maybe things cannot be a little unsmooth, but please understand because it
+
+will become much better in person.
+
+This is the outline and of course because I am talking in English, this course will
+
+be done in English.
+
+But you don't have to use English for questions and answers.
+
+You can just really ask in Korean anytime.
+
+Then I will translate it into English when I want to answer the question.
+
+But I will try to use English as much as possible because I will assume that there can be some
+
+international students who are not good at it.
+
+Before starting our lecture, let me briefly introduce myself.
+
+So my name is Jaemin Yoo as introduced in the first slide, like the bottom here.
+
+And I in fact did my bachelor's and PhD both in computer science in here at SMU.
+
+I was working as an assistant professor at TICE just before I came here and I started
+
+to work here starting from this month.
+
+And I am at the building 301 and my office is being remodeled.
+
+So I have nowhere to go at this point.
+
+But yeah, that was the introduction of myself.
+
+So it will be the first time for you to see me because this is my later legal first.
+
+Okay, so you know the title of this course is Introduction to Data Mining.
+
+So then we need to understand what data mining is and why we need to learn this course.
+
+You know, everyone says that this like recent trend is AI.
+
+Everyone knows that AI is powerful and everyone believes that AI will change the world in
+
+a way that nobody has been expected before.
+
+And we also know that data is like a fuel for AI.
+
+We know that data is power and we know that every powerful AI models are trained on a
+
+lot of massive amount of data.
+
+So we know that data is important, data is power, and we want to use the data that comes
+
+from every different source.
+
+But the problem is data is not quite easy to handle because data creates value only
+
+when it can be turned into decisions.
+
+I mean the amount of data itself does not mean anything because let's say we have a
+
+running company and let's say we have like terabytes or petabytes of data.
+
+But that doesn't mean that we can make meaningful decisions or meaningful insights from this
+
+data before we know how to handle this data.
+
+So data mining is kind of a field of research or a field of study for a process of transforming
+
+raw data into insights which we can actually use for doing meaningful things.
+
+And for doing data mining we need various stages for handling data.
+
+For instance, we first need to store data like in memory or on disk or in the cloud
+
+based on the amount of data or based on the tests that you want to do.
+
+Or we want to manage the data because storing data doesn't mean we can like handle this
+
+data and get the data samples as much as we want in an appropriate time.
+
+So managing data requires a knowledge on the proper data structures or even databases.
+
+And then if we manage the data well then we want to analyze data using a proper algorithm
+
+for specific purposes.
+
+So as a computer scientist or a student in computer science department you will learn
+
+these different steps in different classes like the databases, like the operating systems,
+
+like computer memory or data mining like this course.
+
+So when you hear the word like data mining or data science or data centric AI I believe
+
+that these three terms are basically the same.
+
+Because almost many techniques, many data mining tactics recently are based on AI.
+
+So like these days there is no clear distinction between data mining and data centric AI.
+
+So let's say you enter a company and let's say you want to work as a data scientist.
+
+I mean as a computer scientist we have many directions to work in the future like you
+
+can be a programmer, you can be a machine learning engineer, you can be a data scientist,
+
+there can be many job descriptions.
+
+Let's say you want to be a data engineer.
+
+In fact if you enter a company that deals with a lot of data the data mining pipeline
+
+is incredibly complex.
+
+Like it starts from a raw data like data stream or data lake like on the left side of the
+
+figure and then it will like pass through a lot different a lot of various pages from
+
+the raw data into a meaningful insights like we need to store data, manage data, and exclude
+
+the data if you want to train machine learning models then we need to split the data into
+
+training, elevating and test that and we need to train the model, we need to evaluate the
+
+model and we need to serve the model for the people outside.
+
+So what I want to say is the actual industrial data mining pipelines are not only about machine
+
+learning models like even though you are very good in understanding like large language
+
+models or transformers or convolutional inter-networks that doesn't mean that you can be a good data
+
+engineer because dealing with data is totally different with dealing with AI models.
+
+So I want to say data mining is a technique that requires a practice and that requires
+
+knowledge and experience.
+
+So basic the goal of this course is to make you be able to extract actionable information
+
+from large data sets.
+
+Here the keyword large is important because if the data is small like the amount of data
+
+is just a few gigabytes and you don't need a specific technique to handle this data because
+
+it is small but if the data is large as shown in the previous slide you need to learn a
+
+lot different techniques to handle this large data which often cannot be stored in memory.
+
+You need to learn like distributed computing, you need to learn like on disk processing
+
+algorithm like that to handle this large data.
+
+So our course is not all about machine learning as I said but most of it is because as I said
+
+recent data mining techniques are mainly based on machine learning or AI techniques because
+
+AI is so powerful but you need to understand that the goal of our course is not to teach
+
+you machine learning it's about using machine learning as a tool for doing useful data mining.
+
+So that is a quite difference between this course and probably any other AI courses in
+
+our department.
+
+And as I said we especially when compared with machine learning we emphasize algorithms
+
+that scale often with parallelization because as I said we want to scale to large data.
+
+So what we cover in this course is a great combination of these three parts.
+
+Algorithms and theory part like the red and the machine learning part and the data processing
+
+system part.
+
+So our course is some algorithm course, some machine learning course and some system course.
+
+So we don't have a single specific prerequisite.
+
+You don't have to learn something really important for our course but this course will challenge
+
+a variety of skills like the mathematical intuition, problem solving ability, implementation
+
+skill.
+
+So I mean this course is not about a single knowledge or a single direction of work.
+
+This will combine a variety of skills and a variety of experience.
+
+So I will say in a later slide but this course will be challenging.
+
+This course will be fast paced and I strongly believe that this course will be different
+
+from the same course taught by other professors because this will be challenging.
+
+I warn you.
+
+So what do we learn?
+
+We will learn to analyze different types of data like high dimensional type of data,
+
+graph structure data or streaming data and we will also learn to use different models
+
+of computation like distributed computing, single version in memory computing or strings
+
+and online algorithms.
+
+Or we learn to solve real world problems like recommender systems, market basket analysis,
+
+filtering clustering and we will learn various tools and techniques like linear algebra,
+
+optimization, dynamic programming and patching.
+
+So I mean as you see from these two slides we will cover a variety of different topics.
+
+So although I assure that this course will be challenging but I also assure that this
+
+course will be really useful for you to become a great data engineer and to make you practice
+
+for upcoming challenges in your future.
+
+Okay so that was a very brief introduction of our course.
+
+So any questions so far?
+
+I guess there won't be a question but I will still ask.
+
+Okay?
+
+Right?
+
+No questions?
+
+Right.
+
+I mean because literally there were nothing to be asked about.
+
+So I will go to the course logistics because you will be mostly interested in the logistics.
+
+As you know this lecture time would be Tuesday and Thursday 9.30 to 11 and probably I will
+
+end the lecture at least before like 10.45 and the location is this room 302.107 and
+
+I'm the instructor and my office is 0146 which is on construction.
+
+And we have four TA's and I haven't decided who to be a head TA but one of them should
+
+be a head TA.
+
+So these four are students in my research group so I will closely work with them and
+
+if you have any questions or any inquiries you can ask these TA's.
+
+And we will use a single email address.
+
+I will not let you know the individual email addresses of these TA's.
+
+You just can use this email address which is forwarded to every TA.
+
+Okay?
+
+And we will use the textbook which is one of the most popular textbooks in the field
+
+of data mining which is called Mining of Massive Data Sets.
+
+A good thing about this textbook is that its PDF is available online so you can just directly
+
+access the URL and download the PDF.
+
+The problem is some lecture topics are not in the textbook because this field of data
+
+mining is growing fast and the topics are changing very fast.
+
+So I have modified some contents and added some so some will not be in the textbook.
+
+And I will upload the lecture slides probably to ETL.
+
+Probably you will know how to use ETL.
+
+And my plan is I will record and upload every lecture video to ETL as well.
+
+So I'm also recording this lecture as a starter.
+
+So that is what I've done in KAIST.
+
+I recorded every lecture and uploaded it to the system so that you can study every time,
+
+any time that you want.
+
+But since this is my first time in this room, I'm honestly not sure whether this lecture
+
+will be recorded well or not.
+
+So there will be some trials and errors for the first few classes but I will try to record
+
+the videos because that's what I believe to be a good class to be.
+
+And we will use ETL for mostly uploading lecture slides or videos or assignments.
+
+And in fact, I have used a classum like the service called classum which is a great service
+
+for like making discussions between you yourselves and between you and me.
+
+So classum is kind of like the social media for each lecture that every student or every
+
+TA or every instructor can easily join and discuss anytime.
+
+But I'm not sure whether this school supports such a system.
+
+So if there is not, then probably I can use ETL.
+
+I don't like it but I don't have any other choice.
+
+But if there are some services for free discussions like between us, then I will use the service.
+
+So I'll color that as red because what system that we're going to use is not determined.
+
+I will let you know very soon.
+
+And for email, please use that email.
+
+And if we use a communicating system such as classum, then mostly you can ask questions
+
+on the system.
+
+So please use this email only when your questions are private or you don't want to make it open
+
+to other students.
+
+But if we choose not to use such a system, then you can ask any questions on our email.
+
+That's not determined yet.
+
+So coursework, assignments, 40%, midterm, 30%, final 30%, which is the very common way
+
+of coursework.
+
+And the 2% participation, this is not that important.
+
+And so this course will be assignment heavy.
+
+You will be asked to do four heavy assignments which are not that easy to solve.
+
+My previous experience of this course, I have taught almost the same class in KAIS for three
+
+consecutive years.
+
+And assignment scores are not a game changer.
+
+In fact, your grades will be largely determined by your exam scores.
+
+While some people will like it, some people will not like it, that's because assignments
+
+are easy to get the maximum points if people do not make mistakes.
+
+But I mean, you need to do the assignments.
+
+But I can just say that that is not a game changer.
+
+So there will be four assignments on Python and Apache Spark programming.
+
+And deadline is always 11.59, like the midnight.
+
+And the homework zero will be posted next week, which is mostly a tutorial for distributed
+
+computing.
+
+So we will learn Apache Spark, which is one of the most popular distributed computing
+
+frameworks.
+
+But for homework zero, there will not be an evaluation.
+
+So it is basically a tutorial and so you are free to do it yourself.
+
+But you will be asked to do it because the following assignments like homework one, two,
+
+three, and four are based on this Spark programming.
+
+So you will probably do this homework zero because you want to practice yourself.
+
+And each assignment will have very specific instructions of what to do.
+
+So you don't have to worry about the ambiguity of homework for assignments.
+
+And you are free to ask any questions about clarifying the assignments.
+
+And this is a tentative schedule.
+
+So this can change.
+
+And I have not fixed the schedule yet.
+
+But before the midterm, we will have two big assignments, homework one and two.
+
+And after the midterm, there will be two big assignments, homework one.
+
+And there is a final.
+
+Nothing special, right?
+
+And we will have some late day policies for assignments.
+
+So basically what it does is for the first three assignments, you will have some late
+
+days, which allow you to submit your homework late without getting a penalty.
+
+So that means you are allowed to delay your assignment up to three days in your entire
+
+semester for the first three assignments.
+
+I guess homework zero should be out of that thing because homework zero will not be evaluated.
+
+Once the late days are exhausted, let's say you submit a homework like four days late,
+
+then a score is reduced by 20% per late day and there will be no exception.
+
+We give you these late days because we want to give you exceptions in the form of late
+
+days.
+
+If you exhaust all the late days, then we cannot accept late submissions without giving
+
+you a penalty.
+
+And no assignment will be accepted more than four days after its due date.
+
+It's not related to late days.
+
+It is just a rule.
+
+And for the last of that assignment, no late submission is allowed because we need to submit
+
+grades to the system.
+
+We don't want to make a delay of submission of your grades.
+
+So the late days is not possible for the last assignment.
+
+And exams, like there will be a midterm and final.
+
+Midterm covers the first half, final covers the second half.
+
+There are other details like the rule, time, date to be a term.
+
+So in fact, many of the details are not determined yet for this course because as I said, I'm
+
+still not very confident in how I will run this course because as I said, this is my
+
+first semester here and I want to think a little bit about how to run this course.
+
+And this is a topic that I will cover for the midterm and the final.
+
+You will not understand what they mean at this point, but these are the keywords.
+
+Meridians, Tarif, Recon items, Sets, Cloud Stream, Knight, all these things.
+
+So I can say that probably 50 to 70% of all these topics will be in the textbook.
+
+Like 30 to 40% are not in the textbook.
+
+But since these days, AI is so powerful and you can ask almost anything to AI, then that
+
+AI will help you understand everything in my slides, even though these things are not
+
+in the textbook.
+
+And this is for the 2% participation.
+
+So we will not take attendance.
+
+You are free to come here or not here, not come here.
+
+It's like you can decide.
+
+And probably I will record the videos and upload it to the system.
+
+So even though you don't come to this physical class, you will be still able to study.
+
+That's just how I manage my course.
+
+Instead, we encourage you to answer questions on Plathom, which can be anything, and we
+
+will give you credit to both the number of answers and the number of likes that you receive.
+
+So this is how I want to manage this course.
+
+Instead of making you come to this physical class, I want to make the online discussion
+
+very active and I want you to make questions and answers online.
+
+And I want to give you some credit if you are very active in the system.
+
+But as I said, the main system is not yet determined.
+
+And there is a possibility that I will not use the system at all.
+
+So I will let you know very soon.
+
+And you will also get credit by reporting any bugs or typos in course materials.
+
+This is included in the 2% participation score.
+
+Okay.
+
+So any questions at this point?
+
+Everything's clear?
+
+I mean, there will be more slides to come in terms of the course logistics, but I just
+
+want to stop.
+
+No?
+
+Great.
+
+And prerequisites.
+
+Programming, data structures and algorithms, linear algebra, basic probability theory,
+
+familiarity with writing forms.
+
+I mean, you don't have to be an expert in every one of these topics, but I encourage
+
+you to be at least familiar with this because as I said, our course will handle a variety
+
+of topics and there will be not enough time for you to study every basic knowledge.
+
+But if you are ready, if you are ready to spend your enough time and energy to this
+
+course, then it's okay that you don't know some stuff because each topic that I will
+
+handle in our course is important for a small part of the course, which means let's go
+
+back to the topic names.
+
+For instance, some topics here are related to linear algebra.
+
+Some topics are related to probability theory.
+
+Some topics are mostly related to statistics, some kind of that.
+
+So if you don't know some preliminary knowledge, then you will only miss some topics among
+
+all.
+
+It's not that you cannot follow the entire course.
+
+So as long as you are ready to study these things, then it is okay for you.
+
+For instance, if you miss a knowledge on linear algebra, then you can visit this URL and study
+
+yourself.
+
+If you don't know probability very well, then you can visit this URL and study yourself.
+
+I strongly believe that because of AI, it's very easy for us to study something new.
+
+So if you don't know something, I encourage you to study before it's too late.
+
+But the exception is programming.
+
+To do well in this course, you need to be comfortable with writing.
+
+In our exam, we can have hand-coding questions in the exam.
+
+So because of that and because of the assignments, like heavy assignments, you will not have
+
+enough time to practice programming if you are not familiar with this program.
+
+Course policy is important.
+
+You can use AI, please use AI, to support your learning and understanding.
+
+As I said multiple times, I believe AI can be a better teacher than almost any expert
+
+even me.
+
+However, we do not recommend using AI for programming.
+
+We know that AI is super powerful in programming and many people believe that AI will replace
+
+the programmers at all.
+
+I don't personally agree with that, but some people believe that.
+
+But it is inevitable that as a programmer, you will be required to use AI because without
+
+AI, your productivity is not comparable with those who use AI.
+
+Although you will eventually use AI as a programmer, if you don't know how to code, if you don't
+
+know how to read a code, or if you don't know how to debug a code, you cannot debug AI-generated
+
+code.
+
+I mean, that is an important thing that separates between a junior programmer that can be replaced
+
+by AI or a senior talented programmer who can manage several or hundreds of AI based
+
+on this guise of knowledge.
+
+I believe that this course is where you practice and develop your own skills before going into
+
+the field and making AI code for your behalf.
+
+You will be tempted to use AI because you don't have enough time for doing your assignments
+
+or if you want to just go out and for instance drink with your friends after submitting your
+
+assignment.
+
+But this is my personal recommendation.
+
+Please do not use AI for programming.
+
+That will remove your time and your precious movement for practicing your song.
+
+And I said that as a personal recommendation because we will not force you to not use AI.
+
+You are free to use AI for any purpose as long as you are a programmer.
+
+So if you use AI for your assignment, please explain in a report how you use AI and what
+
+health it provides.
+
+You can be transparent because we are not deducting your score based on your AI usage.
+
+Even though you made AI do the full programming assignment on your behalf, we will not reduce
+
+your score.
+
+That is not just my recommendation.
+
+And you can also discuss assignments with other students as long as we include their
+
+names on the workbook.
+
+And I will not reduce your score just because you discussed with your friends.
+
+So what I want to say is this course is heavy with assignments.
+
+These assignments are not easy and they will require a lot of various skills of you.
+
+But you are just free to solve these assignments on your own.
+
+You can use AI, you can discuss with your students, or you can do it on your own.
+
+Workbook.
+
+This course will be fast paced.
+
+When I taught this class at KICE, I frequently received feedback such as this course is too
+
+heavy, too hard.
+
+Mainly because every topic that I will pitch in the class is not that difficult for my
+
+personal perspective.
+
+But we will cover a lot of topics for various problems in various scenarios with various
+
+constraints.
+
+Because of that, you may need to review the content after each class.
+
+That's another reason why I upload the video.
+
+And each assignment may take over 20 hours for AI.
+
+I mean, that hours will be greatly reduced if you use AI.
+
+But as I said, assuming that you do these assignments on your own, it will take more
+
+than 20 hours.
+
+So you may consider dropping this course if you are not ready.
+
+If you take this course with other heavy courses, like when I was in the department, one of
+
+the most difficult courses was programming language.
+
+And if you take this course with such courses, I personally recommend probably consider dropping
+
+this course because it will be hard for you.
+
+And for the programming environment, you can use your own computer.
+
+And you may use the lab machines in the department.
+
+I, since it's been years since I was in the school, I will probably have to contact the
+
+office and ask what machines that we can use.
+
+But this also will be announced soon after I talk to the department.
+
+But you will not need some GPUs because this course is not machine learning.
+
+I mean, we teach machine learning, but not heavy machine learning.
+
+So you will not need some heavy GPU machines or your super strong laptops like that.
+
+Almost all the code can be run on your simple, lightweight lab.
+
+And this is just an acknowledgement.
+
+Some slides of this course are adapted from or inspired by the Stanford Forest mining
+
+based datasets and the KAIS course, Foundation of Big Data Analysis, which I taught.
+
+Okay, that was the end of the course logistics.
+
+Any questions?
+
+Yeah.
+
+So you said that the environment is a group of skills with issues, but I think that as
+
+far as the field is concerned, we will be able to explore implementation and practical
+
+skills.
+
+And I wonder what kind of neurons or something that will be improved?
+
+Yeah, thank you for the good question.
+
+So as you said, this course is mainly leaning toward practical knowledge and implementation.
+
+But I can say that many computer science algorithms or many data mining techniques are useful
+
+because we can prove their property.
+
+For instance, we can run some algorithm based on the belief that this algorithm can finish
+
+in polynomial types instead.
+
+So when I say a proofing skill, it's not about doing some super heavy mathematical proof.
+
+It's mostly about we understand how this algorithm works and what kind of properties
+
+that we can ensure for this algorithm, whether this algorithm will end, what time it will
+
+require, or whether it can assure that it gives us the exact answer, not an approximate
+
+answer.
+
+And if it gives an approximate answer, we want to understand the approximation bound
+
+and want to reduce the bound by improving the algorithm like that.
+
+So even though I can say our course is leaning toward the practical things, at the same
+
+time, we'll challenge your mathematical intuition as well.
+
+That's the reason why this is this course is challenging.
+
+Yeah, okay.
+
+Great.
+
+More questions?
+
+Yeah.
+
+Can I ask you?
+
+No, no, no, you can ask in Korean anytime.
+
+And for the exams, you can ask in Korean as well.
+
+Well, for the assignments, we will ask you to write in English because you will have
+
+some time to translate your Korean answer to English for the assignments.
+
+But for exams or the during class questions, you are free to use English because, well,
+
+I know that some of you are not very familiar with English and I don't want you to limit
+
+your chances of questions just because of language barrier.
+
+So that was your question.
+
+Okay.
+
+Great.
+
+More questions?
+
+Nope.
+
+Okay.
+
+Great.
+
+So that's almost all information that I wanted to give you.
+
+So the summary is I can assure that this course will be fun because I like teaching and I
+
+just do my best effort to do a good class and to make this course fun and interesting.
+
+But at the same time, I will challenge you because I personally believe that ASNU students
+
+should be good, should be excellent.
+
+So that's like what I believe.
+
+So I mean, I really, you need to really think about taking this course if you're not ready,
+
+because literally every semester I get the feedback that this course is too difficult
+
+for some students.
+
+At the same time, for some students, they say it was the best course he has ever taken.
+
+So just please think about, please plan your semester before taking this course.
+
+Yeah.
+
+Then let's go to the final part.
+
+And we have just around 10 more slides to finish today.
+
+And I guess that's good because today is just introduction.
+
+So the remaining things are just the random keywords that I wanted to share before going
+
+into really like the real lecture.
+
+Okay.
+
+So let's say you are a data engineer.
+
+You want to find some patterns from data.
+
+What I can say, a simple thing is an analyst can always discover patterns that are meaningless.
+
+So there is a principle, you don't have to memorize this principle, but there is a principle
+
+that is named von Thernes principle.
+
+What it means is when you look for events of a certain type within a certain amount of data,
+
+you want to make sure that your events are meaningful or not.
+
+So for answering the question, you assume random data of the same size.
+
+Then you calculate the expected number of operances in the random data.
+
+So if the number of operances and in the random data is large, then you must expect almost
+
+anything to be balanced, which means if a pattern like despite it looks great, if it
+
+can easily happen in random data, that pattern is not meaningful.
+
+So let's give you an example.
+
+I guess you haven't heard of this example.
+
+So this is called a birthday problem.
+
+Let's say there are 23 people in the room.
+
+Surprisingly, let's say we have found that there are two of the people who share the same birthday,
+
+which seems like a surprising pattern, right?
+
+Because we have 365 different dates and it's surprising that only like with only 23 people,
+
+there is a pair of people who share the birthday.
+
+But the problem is, it's not that meaningful because if you actually calculate the probability,
+
+the probability of sharing a birthday for at least two people, if we had 23 people in the room,
+
+is over 0.5, which is over 50%.
+
+If the number of people grows like to 50 to 60 as shown in the plot, the probability quickly goes to 1.
+
+Because in fact, the sharing birthday is not that special event, and it can be easily observed even from random data.
+
+So by computing the probability or by comparing your pattern with those in the random data,
+
+you can be sure that whether your patterns are really meaningful to be reported, both or not.
+
+So as a data analyst, you always need to ask yourself whether the patterns are really meaningful or not.
+
+That's the thing.
+
+And this is another thing.
+
+So I guess, as I said, like the recent trend is machine learning is getting more popular and popular,
+
+and I guess people are using the term AI more than machine learning these days.
+
+So I can say that not all data mining algorithms use machine learning.
+
+Because sometimes machine learning is useful, but sometimes it's not.
+
+ML machine learning is useful when we are not sure what we are looking for.
+
+Machine learning is useful when we know the answer, when we know what we want to do, but when we don't know how we want to do it.
+
+For instance, let's say we want to create a recommendation algorithm.
+
+Let's say you have a job in YouTube and you need to design a recommendation algorithm that matches people with their videos.
+
+We know that some people will like some videos. We know that fact.
+
+But what is missing is we don't know how to design an algorithm,
+
+but we know how to write a code that matches people with their best videos in the system.
+
+And let's say you want to forecast the stock prices.
+
+We know that these days the stock prices are rocketing this like Korean market, right?
+
+Let's say you want to forecast a stock price and you want to become rich.
+
+You know the answer.
+
+I mean, from the historical data, you can get the answers of forecasting.
+
+But the problem is you don't know how.
+
+So for such problems, machine learning can give you a solution by training the model from trained data.
+
+But if you know how to describe the goal, if you know how to approach the problem, ML is not necessary.
+
+And it adds like unnecessary overhead to your algorithm.
+
+For instance, let's say you want to locate people's resumes on the web and you want to improve your resume based on the other people's resume.
+
+Then that doesn't require ML because you can just directly go into the HTML code of every website and you can just parse the information there.
+
+That can be done in traditional programming and that doesn't require AML.
+
+OK, so ML requires a training process, evaluation process, and it requires a model architecture a lot like complicated.
+
+If the things can be done easily, you don't have to use ML or AI.
+
+That's the kind of spirit of data mining.
+
+We are given a problem and we want to solve this problem in an easiest manner.
+
+So let's think about a simple, easy problem which does not rely on machine learning.
+
+Let's say you have like hundreds of documents and let's say these documents can be categorized into different topics.
+
+Like some documents are for baseball, some are for basketball, some are for universities like that.
+
+And we know that each document is a sequence for.
+
+So let's say as a data engineer, you want to design an algorithm that can categorize the documents by their topic.
+
+So let's say that is a homework like that.
+
+You just need to program your own like the code for doing that.
+
+And for solving a problem, we need assumptions, right?
+
+Because assumptions are the clue for designing our algorithm.
+
+So let's say our assumption is that the topics of documents are identified by special elements.
+
+So we don't know whether this is true or not.
+
+That is kind of assumption or an observation that we have from a pile of documents.
+
+Let's say for a baseball document, there will be many words about ball, bat, pitch, run, and so on.
+
+I mean, having these words does not necessarily mean that this document is about baseball.
+
+I mean, right? But that is kind of our assumption.
+
+So then if we assume this way, then our test changes from categorizing documents to finding special words.
+
+Because by finding the special words from a document based on our assumption, we can categorize the document into baseball or basketball like that.
+
+Let's say you are doing this problem solving, then you get some alternatives.
+
+First of all, frequency is not the same as significance.
+
+Because the words like dog or ant frequently appear in almost all the documents, but they do not determine the topic of the document.
+
+And at the same time, rarity is not all the same as significance.
+
+Because there are some words like outlay or notwithstanding, which are not very common in English documents.
+
+So just because these are rare, they do not determine the topic of the document.
+
+So this problem assumption observation is a process of traditional data mining.
+
+You don't rely on machine learning or AI. Just think about yourself, make assumptions, and make observations.
+
+So how do we approach the problem based on these observations?
+
+The idea is we want to find useful words, keyword words, based on the concentration of useful words in just a few documents.
+
+So I will introduce you to a very popular data mining term, which is called TF-IDF, which is not used frequently these days, but it has been popular for almost decades.
+
+TF-IDF is a shortened word for term frequency times inverse document frequency, as is defined in this web.
+
+TF-IDF of i, j, where i is a term, like i is a word, and j is a document.
+
+TF-IDF is defined as the product between TF and idea.
+
+Term frequency and inverse document frequency.
+
+The TF is proportional to the number of occurrences of a term i in a document j.
+
+For instance, if a term like men, like she, like the and, like the, if these terms are appearing many times in a document, then TF will be increased.
+
+But at the same time, IDF is proportional to one over the number of documents where his term appears.
+
+What does it mean? If a word appears a lot in a document, then TF will increase.
+
+But if the same word appears in almost all the documents in our pile, then IDF will be variable because it is one over the number of documents.
+
+OK, right. So by making a product between these two terms, we want to find the terms that appear only in a subset of documents.
+
+At the same time, those that appear a lot in a single document.
+
+OK, so I mean, we know that this is not a perfect answer to our problem, but at least this measure is aligned with our assumption and observation.
+
+So we can say this is our first trial in our assignments for designing a way to categorize documents.
+
+Then what do we do? We test these algorithms.
+
+We have this data. We use this algorithm to categorize a topic and we see how much quality it provides or the categorized documents.
+
+If the quality is not satisfying, then we can change this algorithm or we can change even the assumption or observations.
+
+We need to be sure that whether our algorithm is wrong or our assumption is wrong.
+
+We don't know it yet just from looking at the results.
+
+So this iterating this slide and the next slide is kind of a process of doing data mining process of designing your own algorithm or solving a problem.
+
+And that is what I teach throughout this course.
+
+You will be having a problem. You will observe observations and assumptions and you will learn how to solve this problem based on intuition.
+
+So data mining, like problem solving, is not about memorizing the specific details.
+
+You don't have to memorize the equations that it provides.
+
+You just have to remember, you just have to be sure about the intuition and the core assumption that it provides.
+
+So lesson one. Any questions so far? No? Great. One.
+
+And this is just another term in case you don't know.
+
+I believe that hash functions are one of the most important concepts in computer science, like all the computer science.
+
+And a hash function, H, takes a key and produces a bucket number, which is basically an integer from 0 to b minus 1, where b is the size of the bucket, like size of the table, which is probably a prime number in those cases.
+
+And normally hash is an integer, but it can be anything. It can be a string, it can be a structure, it can be a class, anything.
+
+So this hash function enables us to build a constant time data structure for reading.
+
+If the data grows, then even linear time takes a lot, because for big data, it cannot be stored in memory.
+
+It is stored on disk or in the cloud. So just enumerating all the samples in the data takes a lot of time.
+
+So this hash function is like a savior for us for dealing with large data.
+
+And hash table, or an index, is a data structure for retrieving records efficiently based on the concept of the hash function.
+
+For instance, we can create a hash table where phone numbers are hashed to buckets.
+
+So let's say I want to create a hash table for all the students here in this room, then the b should be almost like 100.
+
+And I want to store your phone numbers, and I also want to store your personal information in the phone number.
+
+Then I don't want to create a linked list or a tree because I want a constant time offset.
+
+Then I can use your phone number as a hash key, and I can create a table where your information is stored as a record in this hash table.
+
+So that hash table is called an index.
+
+I mean, it's really useful.
+
+So these are some basic questions. What if hash keys are not integer?
+
+I mean, it doesn't matter because all data types have values that are composed of bits.
+
+I mean, as a computer scientist, we know that all the information can be represented as a series of bits.
+
+Because of that, every information can be converted into integers because they are fundamental bits.
+
+For strings, for instance, there are many ways to convert them to integers.
+
+And for complex types like classes or structures, we can recursively convert values to integers.
+
+So what I want to say is the hash function is a general concept, not just for integer hash keys, but almost for all the possible information.
+
+The second question, can we avoid collisions at all?
+
+I mean, there can be collisions, you know, because hash key is basically a mapping from any data structure to a bucket index.
+
+So if b is small and the size of the hash table is small, collision is inevitable because the number of unique entities is larger than the size of the table.
+
+So what I want to say is there always can be collisions.
+
+And when we design an algorithm that relies on a hash function or hash table, we always care about the collision rate.
+
+And that is related to the mathematical proof.
+
+Because when we design some algorithm based on the hash function, we many times compute the collision ratio and we see whether this algorithm is practically useful or not based on the rate.
+
+But there are many techniques to reduce collision solve, so we can learn these techniques as well.
+
+And then I just have two more slides.
+
+I mean, these things like today, these things that I tell you today are very basic concepts.
+
+And I'm sure that every one of you knows my name.
+
+And this is one of the two remaining things.
+
+Power load is a tendency that describes the relationship between two variables.
+
+We sometimes say that x and y are in the linear relationship.
+
+That means y equals a x plus b, something like that.
+
+But power load is a little bit different from that.
+
+Power load is a linear relationship between the logitants of the variable.
+
+That means if log of y equals a times log of x plus b, then you can say that y and x are in the power load relationship.
+
+They're linear, but their logitants are b, not their load values are linear.
+
+So if you draw a plot between log x and log y, then the relationship should be linear, right?
+
+But if you draw this figure on the linear scale, like a plane x and y, then the plot will look like this one.
+
+Because this is a log scale, this is a linear scale.
+
+In fact, this power load is very common in the world, like super common in almost all the data types in the world.
+
+For instance, sales of products.
+
+So if you look at this x and y, let's say x is the number of products and y is the amount of sales.
+
+Let's say I run a supermarket and I sell a product like a thousand products.
+
+Then only some of the products will make almost all the sales of the market, while mostly most of the remaining products do not make meaningful sales.
+
+That is common. For instance, if you look at the wealth of people, let's say we sort almost all the people in the world based on their wealth.
+
+We see that a few people make almost all the wealth in the world, while most people do not make meaningful wealth.
+
+So if you look at the real world, you know that the world is biased.
+
+Almost all the things are focused on a few entities like people, products, or websites, while most of the remaining entities share a remaining portion, like as said in the 8 versus 2 rule, something like that.
+
+So this is the power load and it's important to understand how the real world data behaves.
+
+And lastly, I will share with you this memory hierarchy, which is a crucial concept in computer science.
+
+So we know that a computer memory has a hierarchy, and if you go upward, the speed is better, but the memory is more expensive and it takes a lot of effort to create a large memory.
+
+While if we go down, then the memory is cheaper. We can store a larger data, but it takes more time to access.
+
+So starting from Vita, ready series, SRAM, DRAM, local series, and the cloud.
+
+So based on the type of the data, based on the amount, and based on our goal of using the data, we need to carefully select the proper hierarchy for storing our data.
+
+And how we design our algorithm changes based on where the data is stored.
+
+For instance, let's say, assume that our data can be stored in like L3, then the main bottleneck for designing our algorithm at this point is about computational complexity of our algorithm.
+
+We care about the linear complexity while avoiding some polynomial like quadratic complexity or exponential complexity.
+
+But if we go down, if we go to local series or if you go to the cloud series, then the main bottleneck is the data processing line.
+
+Because if you go, I mean, SSD is much better than Hargis, but still it's slower than...
+
+Well, I can say, okay, because recent SSD is quite fast, let's say there is not big gap between linear and SSD.
+
+But if you go to Hargis or you can go to the cloud series, which is limited by the physical speed of the communication between computers, the speed is very slow.
+
+So if you go, for instance, to L5 for remote world cloud series, then you really want to minimize your access times for the data.
+
+I mean, algorithm can be slow.
+
+Algorithm can take even polynomial or even exponential time depending on the task, but you really want to reduce the number of accesses to the service.
+
+So this is why it is important to study data mining in the viewpoint of the amount of data, where you store it, how do you manage it and what you want to do.
+
+That's kind of, I guess that's a unique thing that you can learn in this course and overall data, the field of data mining.
+
+Okay, so that's just it for today.
+
+I just introduced the concept of data mining and I introduced how this course will be running and I introduced some basic concepts that might be important for you to study.
+
+And starting from this Thursday, I will teach you a meaningful topic starting from distributed computing to frequent item set.
+
+I mean, the order will follow, almost follow these slides.
+
+I mean, I can change the order or topics based on how I will go in the future because I'm just recreating all the slides because I don't want to just reuse the slides that I've been using.
+
+But so things can change, but this is my plan.
+
+And for the like how to communicate and for the other details that are missing from today's lecture, I will think about it and let you know very soon so that you understand how the course will be managed.
+
+So that's almost all for today. And let's go to the last slide.
+
+Before we finish the lecture, do you have any questions?
+
+Anything?
+
+No? Everything clear?
+
+Okay, then that's all for today and let's see you on Thursday.

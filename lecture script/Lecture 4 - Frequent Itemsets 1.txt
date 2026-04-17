@@ -1,0 +1,1547 @@
+Okay, everyone, let's start a class.
+
+So we are at the second topic.
+
+So I guess you now kind of have a little perspective on what distributed computing is and why we
+
+need frameworks like MatReaders and Spark and why they are good for dealing with this
+
+large cluster distributed computers.
+
+So now we move on to our next topic on problems.
+
+So we're not going to learn a lot about a framework anymore.
+
+I mean, we could learn some frameworks later, but now we more focus on a problem and a solution,
+
+algorithmic solution to solve a problem defined on large data.
+
+And the name of the task that we're going to learn today is called frequent item sets.
+
+So it's very traditional topic in data mining.
+
+So you might think this is too old or too old fashioned to learn, but it's always good
+
+to understand how this operation has been designed on which motivations for dealing
+
+with which aspects of the problem.
+
+So a brief recap of Spark, which we just learned last time.
+
+So as you know, Spark generalizes MatReaders with a bag of operations.
+
+Spark has some important ideas like data abstraction, which is to represent a data which is a list
+
+of the same type elements divided into chunks as a resilient distributed data set, which
+
+is an RDD.
+
+So, you know, an RDD is created either from DFS or either from another RDD or a transformer.
+
+And there were two operations that are building blocks of Spark, which are transformations
+
+and actions.
+
+And we know that Spark, the core optimization technique of Spark is lazy evaluation, which
+
+is to schedule all the transformations and all the workflow only when there is an action
+
+called at last, because the result that a user actually sees is the result of action.
+
+So we don't care about the intermediate results between transformations and Spark takes care
+
+of the intermediate optimization of the workflow in an abstract manner.
+
+That gives a lot of power to Spark to optimize a lot of things going on in the form of that.
+
+And then we have another idea of Spark, which is the linear RDD, which is to keep track
+
+of the parents of a current RDD to make sure that if a node fails, then we can instantly
+
+recover that node from another node by knowing the parents of these nodes or a graph.
+
+Any questions on Spark or Mavridis or on the course in general?
+
+No?
+
+Great.
+
+So we have uploaded the announcement for homework 0, which is again not evaluated, but I strongly
+
+encourage you to do it before the work blog is out.
+
+Yeah.
+
+So let's go to the actual thing that we're going to learn today.
+
+Frequent item set.
+
+So let's say we work in a supermarket and let's say I want to optimize how to organize
+
+the items in a supermarket because we know how to organize these items will affect the
+
+overall revenue of the market.
+
+We always care about which items to put together, which items to separate like that.
+
+So for making such a decision, the manager wants to find some patterns of items.
+
+So it's important to define this pattern well.
+
+I will cover it later.
+
+But anyway, we want to find some patterns.
+
+But if a data set is huge, like we run a super large like the Cusco, then it will take forever
+
+to do it manually.
+
+So we need to design some algorithm.
+
+And there can be many possible patterns that can be discovered by some algorithms.
+
+But here we're going to focus on the association rule, which is, as I said, a traditional way
+
+to understand the patterns of items.
+
+So the goal of association rule discovery is to identify items that are bought together
+
+by many customers.
+
+What that means is, let's say we think that this person's beer is bought frequently with,
+
+let's say, let's look at this flash book.
+
+If someone buys diaper and milk, then let's say you have a pattern that this person is
+
+likely to buy here.
+
+So at glance, diaper, milk and beer seem to be not irrelevant at all because beer is for
+
+adults, diaper and milk are for young, like the children.
+
+But in some cases, we can't understand the rule here, because if the parents are going
+
+to buy diaper and milk, probably they want to buy beer as well because they want to replace
+
+themselves.
+
+So by looking at such a rule, we can probably put six packs of beer next to diapers.
+
+If we want to make them lure to buy beer because we know that there is a pattern.
+
+So to find such a pattern, our approach is we process sales data, like large data, to
+
+find dependencies on the items.
+
+So such correlations or dependencies are the thing that we want to find through new discovery.
+
+So the association rule here is a simple sentence.
+
+People who bought x and y, or so that can be any arbitrary item there.
+
+Is going to buy another item that's z and y.
+
+So if you find suitable items that are unconditioned and they're unresolved, then we say that
+
+we have a good association rule.
+
+So for understanding the goal, we first need to care about the model.
+
+But here the model is not a machine learning model, but the model is more like a representation
+
+of data.
+
+Because when we want to study a problem, we first understand how this data is represented.
+
+That is like the core assumption of all the problems that we are interested in.
+
+So here the model is market basket model is another simple many to many mapping between
+
+a large set of items and a large set of baskets.
+
+So you know, items are just items.
+
+So things that are sold in a supermarket.
+
+But baskets are kind of a subset of items that are bought together.
+
+Let's say a person buys, like for example here, if you look at this example, if a person
+
+buys a beer and bread at the same time in a single basket, then we say that as a model.
+
+So these baskets are the core, like the blocks for us to allow to understand the pattern
+
+of the user's items.
+
+So let's say we represent our data set in this way.
+
+Like a simple table where the first column contains the basket in basket and the second
+
+column contains the set of items.
+
+Then this is the data set that we have.
+
+I mean, we don't need any more.
+
+Because if we have a lot of samples in this form, then we can design an algorithm that
+
+finds the items that are frequently bought together.
+
+For instance, if you look at this table, let's say, well, OK, beer and diaper are both in
+
+basket grid, in basket block, right?
+
+Then we can at least say that beer and diaper are not that meaningless item set.
+
+That's pretty probably because they appear in two of the five baskets.
+
+So if the basket, the number of baskets is small, if the number of items is small, then
+
+we can manually do it.
+
+But the problem is if the data becomes large, it is almost impossible to do it.
+
+So frequent item sets.
+
+So frequent item set is a little bit different from association rule discovery.
+
+It is more like a preliminary task to solve association rule discovery.
+
+A frequent item set is to find sets of items that appear together frequently.
+
+So only after we know which items that are frequent, then we can understand the rule
+
+between the items.
+
+So I guess this is more informed than association and rule discovery, although that would be
+
+our ultimate goal.
+
+So here I will define some terms regarding these item sets.
+
+First, the support for item set i is the number of baskets containing all elements in S.
+
+And given a support result S, which is just a computer, an item set i is a frequent item
+
+set if it appears at least in S baskets.
+
+For instance here, as I said, the item set beer, bread, the support of it is two because
+
+it appears in a basket two and basket four, probably.
+
+So because it appears twice, the support of it is two.
+
+If ours support result is two, then it can say this set is frequent.
+
+If our result is three, then this is not frequent because it does not satisfy our predefined goal.
+
+Let's look at an example.
+
+I mean, so far everything was so easy, so I just think we don't need an example.
+
+But let me show you one.
+
+Our item set is five.
+
+So our global item set consists of five items and let's say we have eight different baskets.
+
+And let's say our support ratio is three.
+
+So we want to say an item set is frequent if it appears in three baskets.
+
+Then let's skip to the result.
+
+I mean, we can do it manually since the item set is small.
+
+But let's say we have found this frequent item.
+
+For instance, M, like a single item can also be a frequent item because it satisfies the
+
+mission.
+
+So because, for instance, the single item meals, because it appears in many different
+
+baskets, of course it is a frequent item set.
+
+So if the item set size becomes larger and larger, it is harder to make it frequent because
+
+if the item set is large, then the natural probability for it to appear decreases exponentially.
+
+So it is more likely that we observe small item sets in this slide.
+
+So if you look at M and B by Milkan and Beer, then it appears in four baskets.
+
+So the support of it is four.
+
+So of course it is frequent.
+
+Alright.
+
+I guess you don't have questions, right?
+
+So this market basket model effect is, although today I focused on a supermarket and items
+
+and baskets, but in fact, the thing that we learned today is not all about a supermarket.
+
+It's more like an abstract of many relationships between something and something.
+
+So when I first introduced the market basket model, I said...
+
+Where is it?
+
+Okay.
+
+So market basket model is a many-to-many matching between two sets of something.
+
+So what I want to say is this frequent item set thing and the association rule thing can
+
+appear in all possible mappings between many things and many things.
+
+So let me show you an example.
+
+That is the reason why I call this as an abstract.
+
+For instance, let's say we want to do topic discovery, which means we have a lot of documents
+
+and we want to find some topics that compose these documents.
+
+We don't know which topics are there.
+
+Some topics can be baseball, some topics can be basketball.
+
+I don't know.
+
+We don't know which topics are existing in the document.
+
+Let's say we find document that's market basket and we find items that work.
+
+Then if we find frequent item sets in that study, that means we want to find frequent
+
+word sets that appear frequently together in different documents.
+
+Then probably, although we don't know which topics are there, we can possibly find some
+
+topics.
+
+If one frequent word set is like the ball, like pitcher, baseball, something like that,
+
+if these words appear as a frequent item set, then we know that it is a topic.
+
+And we can assign a name to that set, although we don't know what name is, only from this
+
+result of our algorithm.
+
+So the point of this thing is we want to find some patterns from data, but it doesn't have
+
+to be items and basket.
+
+You can edit.
+
+And even more, items do not have to be in basket because our market basket model is
+
+a mapping, not like the set relation.
+
+For instance, we can swap the position of the word and document to do it differently.
+
+Let's say we have documents.
+
+It's the same as in this time-created example, but here we assume documents are items, not
+
+baskets.
+
+And let's say we consider sentences as baskets.
+
+But here the relationship is a little bit confusing because, I mean, documents are not
+
+in sentences, right?
+
+The relationship is the opposite.
+
+But if you try to find frequent items here, frequent documents here, then you will understand
+
+that this is related to plagiarism.
+
+Because if you think about it, if some documents appear in, it is like a market basket matter,
+
+appear in many sentences together with a high support, then you can say these documents
+
+share a lot of sentences.
+
+Then it's likely that these documents are plagiarizing each other.
+
+So I guess this one is harder to understand in motivation compared to the previous one,
+
+but you really need to understand what that really means.
+
+Because in that way, we understand this as an answer to a single example.
+
+And I will not explain about this because there are a bunch of more examples that can
+
+be represented by this model.
+
+So that was the introduction of the things that we were going to do, like what the frequent
+
+itemsets are, which model that we used, which representation that we assumed, such like
+
+that.
+
+Any questions?
+
+No?
+
+Am I too bad?
+
+I'm not that bad, right?
+
+No questions.
+
+Because straightforward.
+
+I mean, you can always ask me questions and I'll just try to try my best to answer your
+
+questions.
+
+So let's go to the second part, the solicitation rule.
+
+So now we really want to find some rules because that's our ultimate rule.
+
+Given itemsets, itemsA, different itemsets probably, we want to find an associated rule
+
+I from day such that if a basket contains all of items in I, then it's likely to contain
+
+J as well.
+
+It's simple as that.
+
+And we assume there is no intersection between I and day by default because there is no reason
+
+to have an intersection between them.
+
+It is meaningless.
+
+So let's say we have a basket, which is a very simple one before, and let's say we have
+
+some associated rule, M, B, C, D.
+
+So before moving on to the next slide, let's see if this rule exists, at least exists.
+
+So for instance, if we look at the B1, then there are three items, M, C, and D.
+
+So maybe that B1 can be a supporting evidence of this associated rule because there is
+
+a negative evidence.
+
+So we can see when there is M, M, B.
+
+And if you look at the B6, this is another positive evidence because we have all M, C,
+
+and D.
+
+Then what is a negative evidence?
+
+Negative evidence is if some of these baskets contain only M and B, but it doesn't contain
+
+C, that is a negative evidence.
+
+So B3 is a negative evidence because B3 contains M and B, but it doesn't contain C.
+
+So this is a negative evidence that says that this rule is not that important.
+
+So as I said, if the whole dataset is small, we can read manuals, but we're going to do more.
+
+So the question is, we can try to find any arbitrary rules that we can do, but the question
+
+is, how can we decide if an association rule is significant, which is valuable to study
+
+and valuable to actually apply to our experiment?
+
+So the support of the association rule is defined to be the support of their union.
+
+So I'm going to define many properties of an association rule, but support is one of
+
+the first of them.
+
+So support of the rule I from J is the same as the support of I union J.
+
+So the support of that rule, M, B to C, is 2 because the union M, B, and C appear twice
+
+in the overall dataset.
+
+So that is just a definition of the support of the rule.
+
+Alright, then we have another property, confidence.
+
+Confidence. Confidence of the rule from I to J is the probability of J given I in a basket.
+
+So although I use the term probability, it's not a complicated probability theory at all.
+
+It's just a simple math.
+
+So the confidence of the rule I to J is the conditional probability of J given I, which
+
+is just the probability of I union J divided by P of I.
+
+Which is because here the probability can be easily transferred into the support because
+
+the size of the whole dataset is fixed as a constant.
+
+So the confidence from I to J is simply the support of I union J divided by the support of I.
+
+So since we know the support of these rules, we can simply compute this confidence.
+
+So we know that the support of all these three is 2, and if you look at the dataset, the
+
+dataset for support of MMB would be 4.
+
+Right 4, M1, B1, B3, B5, and B6.
+
+So the confidence is 0.5.
+
+Because in overall, in 4, like the candidates of MMB, only their two baskets contain M, B, and C.
+
+So the confidence is 0.5.
+
+Still, well, some people say this confidence, like 0.5, would be significant.
+
+Some people say this is not significant.
+
+So there is no rule that says whether this value is really meaningful or not.
+
+That depends on a user or a programmer.
+
+But at least we can understand that at least if a person buys MMB, then probably half of those people will buy CSR.
+
+That is like the meaning of the confidence.
+
+And we move on to another problem.
+
+In training.
+
+In training.
+
+Not all.
+
+So if you look at confidence and support, you will understand that probably these things are all we need to find.
+
+But that's not true, right?
+
+Because not all high-confidence rules are interesting because the rule from X, any item, to milk will have high confidence if milk is purchased a lot.
+
+Which means if the target item, like the target item set, is frequently sold, then we can put almost any condition on that part.
+
+Because that will still give us a high confidence and the high support in milk.
+
+So we study another property of the item set of the rule, which is an interest, which is the confidence of IA today minus the probability of J, which is simply...
+
+So that is not exactly the support because confidence is a number between 0 and 1, so the P of J should also be a number between 0 and 1.
+
+So we say it is a probability, but it's just the support divided by the number of baskets and the whole data set.
+
+So here the interest of this rule is confidence minus 5 over 8.
+
+5 is the probability and 8 is the number of baskets.
+
+So its value is minus 1 over 8.
+
+So interest can be negative or either be positive.
+
+If the value is closer to 1 or minus 1, we say that the rule is interesting.
+
+If the value is almost close to 0, then we say the rule is not interesting.
+
+If the value is 0, so what does it mean the value is 0?
+
+That means although the rule itself seems to be confident and supportive, but that doesn't make the difference from the target item set alone.
+
+So that means although the item C can be frequently solved, so it is beneficial for us to put C across the main door of the market,
+
+it will increase the revenue of our market, but that is because C is important, not that this rule is important.
+
+So that's the meaning of this interest.
+
+So now we know almost all the things.
+
+The frequent item set, the association rules, the market basket model.
+
+So the overall goal of our mining association rule is to find all rules with support greater than or equal to S and confidence greater than or equal to C.
+
+So here we're not going to consider interest in this problem definition, because we can think that interest more like a relative measure,
+
+which is to validate whether a rule is interesting or not at the final, like the time, which is not suitable as a threshold for finding rules.
+
+So you can understand the overall framework as we first find item sets with the support and confidence ratio,
+
+and then we're going to filter these rules based on the interest.
+
+So the support and confidence are the main things that we consider.
+
+And let's say at this point, let's say you are a data engineer.
+
+You did this class and you need to design algorithms to do this.
+
+Right. That is basically the job of a data engineer or data scientist.
+
+But in many cases, we can just take the existing algorithms to do our job.
+
+But if you are a scientist or if you are the first one to do it and you need to think of the algorithm.
+
+So the difficult part of this whole thing is in fact finding frequent items.
+
+Identifying rules is easy if we have frequent items.
+
+So we will study why this is easy and why we need to focus more on the frequent item sets.
+
+So let's say we have found all the frequent item sets with a support ratio, which will be explained later.
+
+Let's say we have those.
+
+Then if we have all the frequent item sets, then as I said, it is not that difficult to find all the associated rules from this item set.
+
+So this is why we have a rule item set I.
+
+For every subset A included in time, we can generate a rule A from I like set minus A.
+
+So we can create all possible rules from I.
+
+So what is the meaning of creating this rule?
+
+We can compute the confidence of every possible rule in this way.
+
+So because let's say we have a rule A B 2 C D with union in A B C and B.
+
+But here we know that our whole item set I is frequent.
+
+We know the support of that frequent item set because we have already found I in the step one.
+
+So if we create a rule from A to I minus A, we always have a constant support of the union of A and A minus A of course.
+
+I minus A of course.
+
+So we only need to care about the support of the condition if we find a rule in this way.
+
+So this simplifies the whole process of finding rules.
+
+Supposing that we have a frequent item set already.
+
+So this is good.
+
+Then based on this fact, we can eliminate stronger rules like party from weaker rules.
+
+This is super important because if we create rules in this way, we know that the numerator is always the same.
+
+So we can always think of this denominator.
+
+So let's compare these two rules A B C to B and A and B to C and E.
+
+Their unions are the same.
+
+So their denominator will be the same and only the confidence of the condition will be the same.
+
+But if you compare these two rules, you can safely say that the first one, the first rule is weaker than this one.
+
+Why is that?
+
+Because that contains more conditions.
+
+And it contains more results.
+
+The rule is weak if we have more things in condition because that reduces the scope of the rule of our training.
+
+So if we know that the first rule is below confidence, if we know that the first rule is not confident at all,
+
+then we also know that this rule will never be confident because we have a clear relationship between these two.
+
+So in this way, although at the first sentence of this chapter, you will think that,
+
+okay, how can we find all possible subsets in a polynomial time frame?
+
+But in fact, it is not that hard because we know there are many relationships in the initials.
+
+We start from the weaker ones and we go, we make like the rules more complicated and complicated
+
+while eliminating all the candidates based on the confidence of the waiver rules.
+
+So that is what we do.
+
+Let me give you an example.
+
+Here our support variable is 3 and confidence variable is 3 over 4 and we have 8 baskets in our data.
+
+In step one, we find all the frequent item sets like these are, let's say, 1, 2, 3, and 5.
+
+Five item sets and I use here, we don't consider the single item as a frequent item set
+
+because they don't need it.
+
+They don't be needed to make a rule.
+
+Then we can generate all these rules.
+
+Let's say we can enumerate all possible rules starting from these frequent item sets
+
+like B to C to M, B to M to C, like all possible values.
+
+So here these three are, I can say, the weaker ones because they have two variables that condition one variable that is the margin.
+
+It is a strong rule, right?
+
+Then, and you know, this thing like the W first is the same,
+
+or the column from the rule graph, of course,
+
+because that is just the support of the all set.
+
+And because we know that this rule is below the confidence variable,
+
+we also know that we don't have to go into this rule at all
+
+because, of course, this is the weaker one compared to this one.
+
+So with that being said, we don't have to go in this way,
+
+but probably we will consider this to be.
+
+And we probably need to think of more rules starting from that frequent item set,
+
+but in this way we don't have to explore all possible values of the rule.
+
+Any questions?
+
+Yep.
+
+So, can you see the elements when you're doing the frequent item set?
+
+Like just like C or something?
+
+Sorry, can you say it again?
+
+So like, for example, the frequent item set,
+
+can only be elements C, B, or frequent item set?
+
+Sorry, I just think I can hear you well.
+
+And a frequent item set is like a side of the set of non.
+
+Yeah, yeah.
+
+By definition, it can be one.
+
+So that's the reason why I probably in a previous slide,
+
+where is it, yeah, the single concepts are in here in this slide,
+
+by definition.
+
+But if you know that our ultimate goal is to find rules
+
+and we don't have to care about this in close-sites,
+
+so that's the reason why we don't have that in the next slide.
+
+Okay, yeah, thank you for the good question.
+
+Okay, more questions?
+
+Great, great.
+
+Okay, so now we understand
+
+that finding a frequent item set would be a harder one
+
+because if we know the frequent item sets,
+
+then we can just follow it.
+
+So it is not that hard for us to design an algorithm
+
+that's time for big rules and go into the harder rules
+
+and we eliminate all the candidates in our way.
+
+Like I just think the writing that algorithm can be done
+
+in I guess a few hours at most.
+
+Then let's switch our focus a little bit
+
+toward frequent item sets, okay?
+
+So finding a, ah, okay, like that, yeah, okay.
+
+Finding a million rules or finding a million frequent item sets
+
+may be quite practice.
+
+So some frequent item sets would be redundant,
+
+so I will talk about it later,
+
+but we just want to compact the output of this whole thing.
+
+So the question is,
+
+what can we do other than adjusting the threshold?
+
+So if we want to reduce the size of the rules,
+
+then probably we can increase the threshold,
+
+like the poor threshold and confidence threshold.
+
+Of course we can do it, but other than that,
+
+we want to find some systematic way to filter
+
+the frequent item sets or the rules
+
+before we do a meaningful job, okay?
+
+So what we do is a post-process frequent item sets
+
+before finding rules.
+
+So suppose that the support of A and C
+
+is the same as the support of A and B.
+
+So this is just an example, my assumption.
+
+Suppose that these two have the same threshold.
+
+Then the fact is we don't have to have this A and B
+
+in our frequent item set,
+
+because if their support is the same,
+
+we can say the confidence from A to B and C
+
+is the same as the confidence from A to B.
+
+If the confidence of these two sets are the same.
+
+And at the same time, we know that the first one
+
+is stronger than the second one.
+
+So if we can't have a stronger rule in our result,
+
+we don't have to have weaker rules.
+
+That will just waste our memory and our time.
+
+So if the support of these two sets are the same,
+
+we can safely remove these sets from our candidates
+
+before finding association rules.
+
+That is the meaning of when I say redundant.
+
+A and B is redundant if we have an A, B, and C
+
+of the same support.
+
+That makes sense, right?
+
+I mean, when I do this class,
+
+you really need to think that this makes sense.
+you really need to think that this makes sense.
+
+Because what we do is not about memorizing the algorithm.
+
+This is more like you understand what is the problem
+
+and whether this approach is a sensible solution to the problem.
+
+You always need to think about it.
+
+All right.
+
+So based on that motivation, I will introduce some concepts
+
+for comparing the algorithms.
+
+So we can retain only the closed and maximal frequent items
+
+that are defined as follows.
+
+So an item set is closed if no immediate superset has the same support.
+
+What does that mean is, let's say we have A, B.
+
+If there is an immediate superset A, B, and C,
+
+which has the same support, then this set is not closed,
+
+which means we can remove this set safely.
+
+If the support of this is 5 and if the support of this is 4,
+
+and all the immediate supersets.
+
+Immediate superset means a set containing A and B and something.
+
+So the immediate supersets have the size of 3,
+
+and we don't care about the remaining one.
+
+So if no immediate superset has the same support, which is 5,
+
+as this set, then we can say this is closed.
+
+Then we can say we have some value to contain this set in our candidate.
+
+So closed item set is like a safer way to reduce the number of sets,
+
+which is good.
+
+But still, because the closed item set's definition is very narrow,
+
+we still want to reduce the items more.
+
+So that's the reason why we have another definition,
+
+maximal frequent item set.
+
+So an item set is maximal if no immediate superset is frequent.
+
+So in terms of the maximal frequent item set,
+
+it is okay that an immediate superset has a different support,
+
+but it just cares about whether the immediate superset is frequent.
+
+What that means is, let's say we have found that this A and B is frequent.
+
+This is frequent.
+
+But let's say we have all these different item sets,
+
+and let's say this support is 3, support is 4, 3, 2,
+
+like they have different supports.
+
+So because no immediate supersets have the same support, this is closed.
+
+But if the support threshold is 5,
+
+then we can say all these supersets are not supported,
+
+are not satisfying threshold.
+
+And this is maximal at the same time.
+
+So this is closed and maximal.
+
+So some item sets can be both closed and maximal.
+
+But some items are only closed but not maximal.
+
+So I will show you an example.
+
+If you look at this example, for instance, let's say the support threshold is 3.
+
+Then, where is it?
+
+So let's look at A.
+
+The support of A is 4, and its immediate subset A and B contains A,
+
+and the support of that is 4.
+
+So A is not maximal and not clean.
+
+But if you look at, let's say B, let's look at B.
+
+B, is it E speed maximal?
+
+No.
+
+Because A and B, the immediate superset of B, is frequent.
+
+So because the support threshold is 3, and A and B are supported 4.
+
+So because A and B is frequent, we can say it is not maximal.
+
+But is B closed? Yes.
+
+Because no immediate subsets have the same support as B.
+
+So from this slide, you understand the relationship between maximal and closed.
+
+All maximal frequent item sets are always closed.
+
+But some closed item sets are maximal.
+
+So there is a strict relationship between maximal and closed.
+
+So let's look at B.
+
+Since B is closed, if we consider the closed item sets, we should remain B.
+
+Because B is valuable in some sense.
+
+Because even though we have A and B, B and C, A, B and C in our set,
+
+their support is different from the support of B.
+
+So because the support of B is unique, there is a value in containing B in our set.
+
+But if you look at the maximal representation, because we have A and B, which is frequent,
+
+some people can say, then why do we have to keep B?
+
+Because we have immediate supersets, which is frequent.
+
+So some people, based on this principle, can remove B from our set.
+
+So B is like removing more item sets, losing some information of the support.
+
+While at the same time, closed item sets are a more conservative way to reduce the item sets,
+
+but they have more information about the support of smaller item sets.
+
+So there are pros and cons.
+
+So let me look at this slide.
+
+So at this point, you can think of why do we have to care about closed item sets?
+
+I mean, if an immediate superset is frequent, then is there a meaning to contain a smaller item set,
+
+which we know that it's superset is frequent.
+
+But the answer is closed item sets are sometimes important.
+
+Because let's say, if you store all the maximal sets, let's say A, B, and C is frequent, this is not a summing.
+
+Then by the way, then we have the maximal frequent item set,
+
+all the subsets of this maximal item set will be not in our candidate set, with little information.
+
+But in some cases, it is possible that, for instance, A is extremely common,
+
+A and B is moderately common, and A and C is very frequent.
+
+So although A and C is frequent, there should be some meaningful information inside these subsets.
+
+So in the definition of the closed item sets, we have such smaller item sets, because they are variable.
+
+But in terms of maximal item sets, we don't have to care about that, because we can just safely remove them.
+
+So this is important.
+
+Not important as we, as I said, memorize something, but it is like a different philosophy on how to reduce the item sets.
+
+Before we move on to the next part, the finding of the location rules.
+
+Because if we have fewer item sets, it is easier for us to find the item, I find the rules.
+
+And here comes the pop piece.
+
+Okay, because this is very simple, I can just do it quickly.
+
+We have the following baskets with support thresholds, and we have four baskets and support thresholds.
+
+We have the support for items and add them to the bottom.
+
+I can leave it to you, because this is so easy, and I'm pretty sure that you will be able to do it on your own.
+
+Any questions?
+
+You get the point of why finding rules is easier than finding frequent item sets, and why there's a meaning of maximal and closed sets and listings.
+
+So let's move on to finding frequent PRs.
+
+Here comes the implementation.
+
+So until so far, we have covered only the theoretical part.
+
+It's not theoretical, but mostly like the conceptual understanding of the problem.
+
+So let's move on to the actual implementation as a computer scientist.
+
+Let's go back to finding frequent item sets.
+
+Market basket data is stored on this basket by basket.
+
+Either in a DFS or in a DFS, and it's stored on the basket by basket.
+
+Why is that? Because we assume this market basket data is large.
+
+I mean, it should be large.
+
+Think about a single supermarket in Korea, let's say like E-Mart.
+
+Then how many customers will visit E-Mart for a day?
+
+Then each person, each customer creates its own role of market basket data.
+
+I'm sure that this size of the file would be enormous for this market, right?
+
+So our safe assumption is that storage is data in memory.
+
+But if you look at modern computers, because they have a large main memory of even several terabytes,
+
+probably many data cannot be stored in memory compared to the past.
+
+But I assume some data cannot be in memory in many cases.
+
+So this is our basic assumption.
+
+So if our data is in a file, like is on disk, then the true cost of algorithm finding large data is usually the number of disk items.
+
+Because accessing disks takes a lot longer time than a mere algorithmic complexity in the algorithm.
+
+I mean, if the complexity is really unexponential, then it would be a problem.
+
+But as long as the complexity is polynomial, like the quadratic or the cube, then in many cases the disk time takes more than the algorithmic complexity.
+
+So I guess that's the main difference from this class and the algorithm class that you probably took before.
+
+So in practice, association of rule algorithms read the data in passes.
+
+Each pass is a reading data from the start to the bottom.
+
+So when we read data from disk, we do not do random access.
+
+We do not use hash tables or we do not do indices in lists because it takes a lot of time.
+
+So it is more like when we design this resident algorithm, we do passes.
+
+So if we have to access a disk, we want to get all the data as much as possible, as what we need by passing.
+
+So at least today we will measure the cost of an algorithm by the number of passes, disk passes, that an algorithm makes rather than algorithmic complexity.
+
+So if you think about finding frequent item sets, and let's say that disk has a lot of market basket data, and let's say you do passes.
+
+But the problem is you cannot take all data into main memory.
+
+The amount of information that we can store is limited by the size of the main memory.
+
+So even though we do this useful disk passes, it is impossible for us to store all the data.
+
+So we need to carefully select which information to get, which information to summarize based on our memory size.
+
+So as we read baskets, we need to prompt something.
+
+It can be anything, but for instance, item walk prices or the support of the frequent pairs, frequent trickles, like that.
+
+So the number of different things we can count is limited by the main memory.
+
+And swap page is the thing that we really want to avoid.
+
+So a mitered type page is, and it is not even a product, but we will represent items simply by mitered.
+
+We will not store items as diapers or beers on condition, which costs multiple lines, right?
+
+So we will map the item names to consecutive integers from 1 to n, where n is the number of these in plain.
+
+Of course we can do it.
+
+And we can construct a hash table that translates item names to integers before designing an algorithm.
+
+So let's think about this whole process. Let's think about that we design an algorithm.
+
+The hardest problem is finding frequent pairs.
+
+It is not finding frequent trickles or quadruples.
+
+The smaller the sizes, the harder the problem is.
+
+Because frequent pairs are common, but frequent trickles are rare.
+
+Probability of being frequent drops exponentially with time.
+
+So if we are able to find all frequent pairs, then it is not that hard problem to find frequent trickles,
+
+because the size would be much less than compared to frequent pairs.
+
+And if we go to larger sizes, then the problem becomes even easier.
+
+But pair is hard, because the number of items, like just for instance storing the occurrences of individual items will not be a problem,
+
+because our memory is large enough.
+
+But the problem is if we go to the frequent pair, if we want to store all possible pairs of items,
+
+which takes n square memory, which can be a problem, because n square is large, right?
+
+So let's first concentrate on pairs and then extend to larger sets.
+
+Counting case.
+
+Our goal, count the occurrences of each pair of items, which can be a problem if the number of items is large.
+
+So we have basically two methods.
+
+First is the triangular matrix method.
+
+It is just to use a large matrix, which is basically an array, to store all common.
+
+This is a very traditional, conventional matrix.
+
+And there is a triples method, which is to keep a hash table of triples, i, n, j, c, sorry, count, or n square, i, n, j.
+
+So because this is a hash table, we can get benefit of sparsity.
+
+We don't have to assign memory for all possible pairs in this way.
+
+The problem is because we are not creating a hash table, we need to store i, n, j on top of c.
+
+So instead of 4, we need 12 times for each pair with c, greater than 0.
+
+And plus we have some additional overhead we are using, like memory overhead and time overhead.
+
+So as an engineer, it is the basic choice that we need to make for determining how to store the occurrences.
+
+So this is a simple illustration.
+
+In the triangular matrix, we just create this triangular dense array, while in the triples method, we create a sparse array as a hash table.
+
+And the number of bytes that this sample takes is three times more compared to the triangular matrix method.
+
+So I don't even have to tell you this, but we can simply compute which method would be better than the other based on some variables.
+
+So the number of bytes that we need for storing n items is 4 times n times n minus 1 divided by 2 in terms of the triangular matrix method, which is a very simple method.
+
+But since in the triples method, we can assume a probability p, which is basically the sparsity of elements in the full possible array.
+
+Since the number of bytes is three times more, the triples method is better than the triangular matrix method if the density is smaller than 1 over 3.
+
+So the more sparse these elements are, the better it is to use the triples method.
+
+But it's not always the case because we need some overhead for maintaining this hash table, but it's a conceptual comparison between these two.
+
+So in many cases, probably I'll try to use the triples method.
+
+I mean, in data mining, when we deal with large data, it is so important to utilize the sparsity of data in many possible cases.
+
+So I would probably say the triples method would be more like a default method to try.
+
+But if you really can ensure that these data are dense, then we can always try to triangle the matrix method.
+
+So here is the baseline. So here comes my way to solve a problem.
+
+Let's say there is a problem, and we try to design a naive algorithm based on a simple idea.
+
+And we check how efficient this naive algorithm is to solve the problem.
+
+So the naive algorithm for finding overhead comparisons to count the operances of each pair in main memory, simply by main memory.
+
+So for each basket of B, basket B consists of N sub B items we can generate its own possible pairs and store their operances in main memory, which fails if the square of number of items exceeds main memory.
+
+So if the number of items is one billion, then probably the problem is really solving.
+
+So how can we do better when we have too many items?
+
+There's a thing. So the previous part is about introducing why it is hard to find frequent item sets and why we need to focus on finding frequent pairs, not triples.
+
+And we introduced a basic way to store data in memory, limited size. And then I just showed you that the naive algorithm will not work.
+
+So we're going to learn the actual algorithm. So the all previous parts are like the background for this algorithm.
+
+So the true name of the algorithm that we learned today is A-Priory, which is one of the most popular algorithms in data mining.
+
+Any questions?
+
+Great.
+
+A-Priory is a two-pass approach with limits memory. When you say two-pass, that means it obsesses this two times.
+
+The key idea of this A-Priory is monotonicity, which means if an item set I appears at least S times, so does every subset of it.
+
+So it understands the relationship between item sets of different sizes.
+
+So this is of course positive, right? What makes it positive?
+
+So the motivation that we can have from this sentence is we first want to find the offenses of individual items, and then we want to reduce the chances as much as possible.
+
+Because we know that if an item is not frequent, then no priori including that item can be frequent.
+
+And that way we can reduce the potential candidates of the compares to reduce main memory.
+
+So I mean the algorithm itself is really simple. In PES1, we read the data, we read the basket, and count the offenses of individual items.
+
+But at that point, it requires only memory proportional to the number of items, so it is okay to have a lot of items.
+
+Then we mark the items that appear more than S times or equal to S times as frequent items.
+
+In PES2, we read the basket again on this, keeping track of only the frequent items.
+
+We count only the spares where both elements are frequent.
+
+So it requires memory proportional to the square of the number of frequent items.
+
+What if the square of the number of frequent items exceeds the memory?
+
+That's the basic assumption of this algorithm.
+
+So if the data becomes super large and so many items are frequent, then I would probably say that the support threshold is too low.
+
+So we can increase the support threshold, and then we can re-regulate.
+
+So let's just give you an example.
+
+Illustration. This is how our main memory looks like.
+
+And these are baskets stored on this.
+
+In table 1, we create some tables in memory.
+
+In table 1, we translate item names to integers.
+
+You will see this is a silly, but we still need memory for that.
+
+And then we visualize an array of counts in 0.
+
+So item names to integer tables and item counts tables.
+
+As we read data from this, we create a hash table from actual names, actual numbers, and actual counts.
+
+So I can just say that a lot of portions of the main memory will be unused because it is linear to the number of items.
+
+Then, so the previous slides, this one, this slide, and this slide are for pass 1.
+
+We care about the individual items.
+
+Then before we move on to pass 2, after pass 1, we do this.
+
+We find frequent item sets with support greater than or equal to an s, and we discard the previous count table because we don't need the count anymore.
+
+So we change the table into a new way, which is we create a new number from 1 to m for the frequent items.
+
+And we set 0 for instance for infrequent items.
+
+I can't print, not the item sets.
+
+So this new table, which replaces the previous one, is an indicator whether each item is frequent or not and what is the new index for that item between 1 and m.
+
+All right.
+
+I mean, we need that table for pass 2.
+
+So in pass 2, when we read data in baskets, for each basket, we see which items are frequent.
+
+So before we do pass 2, we probably need to create this data structure, either in a triples method or in a triangular matrix method.
+
+But the size of this data structure will depend on the value of m.
+
+So I think at this point, after pass 1, we know that whether this data structure will fit in main memory or not.
+
+So if m is too large, then probably we can redo this whole process again with a smaller threshold.
+
+Anyway, we have this data structure and we go to the list, we see the baskets, and for each pair of frequent item sets, we increment the count of the pair in the data structure.
+
+We have to be done.
+
+So for instance, if there is an item which is not indexed to a value between 1 and m, then we can easily discard the item from each basket.
+
+So for determining whether an item is frequent or not, we really frequently need to go to this table and check the new index of that item.
+
+So that's just it.
+
+If we generalize the previous A prior algorithm to multiple, like to larger frequent item sets, then we can create this whole pipeline.
+
+This is like an overall way to find out understanding of this algorithm.
+
+So you understand there are passes, pass 1 for individual items, pass 2 for frequent pairs.
+
+Then probably we can create pass 3 for frequent triples or pass 4 for quadrants.
+
+So we can repeat this process for any size of the frequent item set by creating this pipeline.
+
+So here in a general manner, in an abstract manner, you can say when we move from size k-1 to k, either from 1 to 2 or from 2 to 3, we use two sets of item sets.
+
+C is a set of candidate k-tuples that might be frequent sets, and L is a set of truly frequent k-tuples.
+
+If no frequent items are found, we are done finding out on this day.
+
+So let's compare this pipeline with our previous two-step algorithm.
+
+So in the first case, C1 is the potential candidates of all frequent items.
+
+We can say all frequent size 1 items.
+
+Then we do a filter operation, which requires a disk pass, which is the region Y that is in red.
+
+So after we do filtering, we can reduce the number of frequent item sets, certain items, L from C.
+
+Then from L1, which is the list of frequent items, we can create a candidate for the frequent pair, which is exactly the process of creating this data structure.
+
+Then we do another disk pass, which filters our candidate sets into frequent pairs.
+
+Then based on these frequent pairs, we can create candidates for frequent pairs, C3, which does not require a disk pass, which is mostly about creating a data structure.
+
+Then we can do another disk pass, and so on.
+
+So this is very simple and very easy to understand for a fan, but it's remarkably efficient and effective for doing this.
+
+So let me show you an example.
+
+So sometimes my lecture notes have many examples, sometimes they don't have many examples.
+
+But I guess today they have many examples that are good for you.
+
+So we start with C1, which is the list of all items in the data, because C refers to candidates.
+
+We count the support of item set in C using the disk pass, and we prune non-frequent items and create L1.
+
+Then we create a new data structure for storing columns for all possible frequent pairs, C2, and we do disk pass, and we remain only L2, by pruning non-frequent size to item sets.
+
+Then we move on to L3, creating a data structure for candidate frequent triples.
+
+But you know, the rule is a little more complicated compared to between 1 and 2.
+
+Because for a set, 2, 3, and 4 to become frequent, all immediate stopsets should be frequent.
+
+So for if you want to consider 2, 3, and 4, we need to clear out these three sets.
+
+So I think in this set, we use this algorithmic complexity, because we need to enumerate all possible softwares.
+
+But I guess this problem can be resolved in at least full-dome of time, because we can design an algorithm this way for a great puzzle.
+
+So that's it.
+
+That's it.
+
+There's pop quiz, which is to apply a priority algorithm, which supports the result S equals 3.
+
+Yeah, I think we can have some time, so I can give you some minutes to do this pop quiz.
+
+But before doing this, any questions?
+
+Yeah.
+
+The results for the puzzle are always constant, or they're constant.
+
+So it's very easy to break your puzzle.
+
+You mean before we run the algorithm, or during running the algorithm?
+
+Well, so, 30 or...
+
+Yeah, okay. So you can say, let's say, a support threshold and a confidence threshold are the parameters that are controlled by a user or programmer.
+
+So, for instance, let's say I have a job at Amazon. I need to study this data.
+
+Then I would probably try different values of this threshold to understand the size of data and the distribution of the data and to get an optimal number of these thresholds.
+
+Of course, if the data size changes or if the data distribution changes, we really need to change the thresholds accordingly, because that is a value that is related to the statistics of the data set.
+
+And if I am a boss, like if I am a boss of a data engineer, then I would care whether the rules are good or not.
+
+I will not care about the threshold value because that's a job for the engineers.
+
+So as I can say, as an engineer, we really have to care about which values should be optimal, which values give us the best break-through item sets.
+
+So it can change during deployment. But it's hard to change it during this algorithm, as you can understand, because if we change the threshold across this algorithm, across this test, then that violates the monophenicity assumption, which is the core theoretical foundation of this whole algorithm.
+
+So it's really not a good practice to change the value during this way.
+
+More questions?
+
+Yeah.
+
+I didn't get the data set that is too large, because I'm good to remain now. You said we have to adjust the threshold to keep the pain away. Is that the only way to solve the problem or in practice we have to do another solution?
+
+We have another solution. So in fact, this A prior algorithm is not a modern algorithm. It's been many years since its first appearance.
+
+And in fact, in our next class, we will learn the improved versions of A priori.
+
+So of course, they are not the only solutions that we can cover, but we understand how this algorithm can grow, can improve over the years.
+
+So everything that I teach at Scalp has been first announced as a research paper. And then the algorithm is becoming more popular and popular, and it is included in textbooks, and it becomes like a public notion for many people.
+
+So if you try to become an engineer or a scientist, then you will see how this knowledge grows over time. So if you learn an improved version of this A priori, then you will see that, okay, this is the way that people have thought of how to improve this.
+
+Yeah, great question. More?
+
+Is there any type of theoretical complexity of the entire process of shape programming?
+
+Okay, short question. So that depends. In fact, I guess we can still analyze some complexity.
+
+But so, okay, here, I guess the overall time depends on many, for instance, the disk classes, which is obvious.
+
+And another thing is, for instance, to create a candidate set from the previous like the proof set, for instance, this will take some complexity.
+
+So overall, we can analyze the complexity. But here, the main problem is the overall computational time will highly depend on the data product.
+
+What does that mean is, for instance, some data sets can be really dense and some data sets can be really sparse.
+
+For instance, in some, although two data sets have the same item operances like 555,000, 555,000.
+
+But based on how these items compose frequent pairs, the number of counts for the frequent pairs can be really different between the two.
+
+Because in person here, if A and B, E and C, E and C, these sets are appearing frequently.
+
+But if here, let's say, this one, this one, these pairs appear frequently, then the number of resulting pairs is largely different between these two.
+
+So I can say, at least for today's algorithm, I just think it is not that important to understand the algorithmic complexity.
+
+Because it is more about the function of the disk passes and more about the data properties and more about the threshold.
+
+So I guess here, the complexity will be trivial, which means the complexity is not that important.
+
+But later, in other algorithms that we will study throughout our course, we will learn very different ways to understand the complexity, which is important.
+
+So again, I think these are a little differences from our algorithm class, because everything is a little complex, right?
+
+But here is not always the case.
+
+More questions?
+
+Okay, then, so I know that you don't want to have this class for very long, but since we have more than 10 minutes, at least I can give you some minutes to do it.
+
+So please try it for two or three minutes, and then I will take the answer with you and then I'll conclude the class.
+
+Okay.
+
+Okay.
+
+Okay.
+
+Okay.
+
+I just didn't give you enough time for doing this, but digesting is not an difficult problem, so let's do it together.
+
+So when we apply an A priori, we first need to find the frequent item.
+
+So probably the frequent items, there are apple, butter, meal, three items, probably, right?
+
+And then for apple, for meal, we create a data structure, we count the number of operands in the fifth pairs.
+
+So yeah, apple, butter, meal, and let's do this like triangular matrix, right?
+
+So this is a triangle, basically, because you don't have to cover both parts of the matrix.
+
+So here, I guess, and these diagonal entries don't have to be considered at all.
+
+So this part is useless, right?
+
+So we have the three elements there, which we need to keep track of.
+
+And so if we go to the first basket, B1, then for there, because of all three items, there are all frequent, we need to iterate all possible tree cases.
+
+So apple, butter, one, apple, and meal, one, for a meal, one.
+
+So if you go to the second basket, apple, butter, meal, so two, two, two, for a meal, three, apple, meal, two.
+
+Okay, so in our homework one, there will be an assignment for implementing the A priori.
+
+So the homework one will be announced in probably next week.
+
+So you'll check it. But problem is assignment itself is not that hard, but you can have some time implementing on yourself.
+
+All right, so that's it for today.
+
+To summarize, we have learned frequent item sets, associated rules, main properties, and how to find the frequent pairs and triples with A priori.
+
+So that's it for today. And as I said, we're going to learn improved versions of this A priori next time.
+
+So that's it. See you next week.
+

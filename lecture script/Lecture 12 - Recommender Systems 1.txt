@@ -1,0 +1,1362 @@
+Good morning everyone. Let's begin. So we just finished our previous topic on dimensional
+
+linear reduction and we move on to a new one. So I guess I'm not sure but some of you might
+
+feel that the previous lecture was a little mathematical and a little hard to follow.
+
+It's okay because today will be much easier than the conference. So our difficulty of topic goes
+
+up and down based on the topics that we address following like week by week and I think this topic
+
+will be more fun than the previous one because this feels like more practical application
+
+of data mining compared to a mathematical. That's mainly because I'm not a mathematical person.
+
+I like to practice and operate. Okay so recommender system. Announcement is exactly the same as before
+
+so this is just a copy and paste. Just remember that the line of homework 1 is today and we will
+
+share homework 2 probably today or tomorrow at most but probably will be today. So that line
+
+of homework 2 is April 30th and there is a new term information. Any questions regarding the course?
+
+So recap. So we just learned a singular value. So if you take this course probably right after
+
+linear algebra or if you have a very good insight or very good knowledge on linear algebra then the
+
+singular relative composition like the eigenperiods like PCA felt a little easy to learn because
+
+what I wanted to say with this topic is this like practical techniques like how to deal with this
+
+data matrices, how to reduce the dimensionality or how to get insights from the data or how can we
+
+get this new expert that shows more information than others or how can we summarize the whole data
+
+with the new space or the new access. All these things can be related to a matrix, the proper
+
+kilobitrix. So when we learn math I think in many cases we're often curious on
+
+where do we apply these techniques to like why we learn such things if they are purely theoretical
+
+but I just think this dimensional reduction is a very good connection between theory and practice
+
+because in practice we really use SVD and PCA a lot because they are really fast, really efficient
+
+and deterministic reliable approaches to deal with this data matrix. So we learned basically what
+
+a SVD is and I didn't even discuss like all the details of SVD because if I go deeper then this
+
+course will be a mathematical course which I want to avoid so I wanted to focus on the idea and the
+
+main motivation of the algorithm and then I discussed how we actually reduce the dimensionality
+
+by applying SVD to data matrix of mainly consisting of users and items and then I also discussed the
+
+CUR decomposition which can be thought of a variant of SVD that utilizes the sparsity of data matrix
+
+by sampling the rows and columns for constructing the kind of singular vectors in the
+
+like one and the left one. So that's it and we will move on to more practical topic as I discussed
+
+the recommender system. So in fact many students that come to my research group
+
+say that they are interested in recommender system and I think this is kind of a fun topic.
+
+So today we'll learn very basic ways to do recommendation like the methods that are not
+
+even related to machine learning and that are mostly based on very simple intuitions and very
+
+simple algorithms. Later we will discuss more advanced ones so let's keep it simple today.
+
+So what is a recommendation? What is a recommender system or what is a recommendation system?
+
+So if I had to define what a recommendation is I would say a recommendation is a class of
+
+applications that predict user responses to options. So we have a system like the Netflix,
+
+like the YouTube, like the coupon, we have any kind of application or system like mobile application
+
+then we assume there are options like in YouTube options are videos in coupon or Amazon big options
+
+or items and Netflix the options are videos or like TV shows like that. So we have options
+
+and we want to predict user responses whether this user will like this movie or not whether this user
+
+will like this item or not because if we can predict such responses then we can change the
+
+interface we can show the related like we can show the better item to each user so that the user is
+
+more likely to buy such an item that will increase the revenue of our application and that will
+
+increase the time that each user uses our application. So in fact the quality of
+
+recommendation is really important for modern applications like Instagram or YouTube probably
+
+their revenue will largely depend on this recommendation. So but this recommendation
+
+is quite common these days because I heard I hear the word algorithm from many even non-computer
+
+scientists like people always say that this video has been chosen by YouTube algorithms
+
+something like that right here when they refer to an algorithm they read they means recommendation
+
+algorithm. So there are basically two types of recommendations like the first one is a non-
+
+personalized one when we go to YouTube for instance there is a list of trending videos or top 10 videos
+
+they are global videos that are shown to all users but on the other hand there is a personalized
+
+recommendation which personalizes the output of this algorithm to each user based on the user's
+
+interest or taste. So when I when when we say we learn recommendation or we study recommendation
+
+it's mostly personalized information because I mean non-personal recommendation is there's nothing
+
+much that we can do like there is just a list of things that you can do like top 10 most popular
+
+rich uploads they are just based on some rules so when we want to build a good recommendation
+
+system it is like mostly 90 percent like 99 percent of it focuses on the personalized
+
+information and that's what I would also do anything. Then some people ask why do we have to
+
+learn recommendation system so if you think about it let's say if you think about the physical
+
+board there will be a lot of them but in fact considering the number of books like possible
+
+books in the store the books that you can actually see from the bookstore is limited like
+
+hugely limited so this physical delivery systems have scarcity of resources because the stores
+
+have limited shelf space so in such a bookstore they cannot basically cannot perform personal
+
+line recommendation they every recommendation is global so there's not much to do they just
+
+will determine where to put some genres of books or some like trendy books of like types of books
+
+right but the online store is different because they can make anything possible and for instance
+
+amazon offers like millions of books or or more than millions of books and every user can have
+
+their own interface like that every user can see a different list of items so that is basically
+
+why this recommendation is important in modern application or web service states compared to the
+
+physical base and if you think about what is the meaning of doing a good recommendation I mean
+
+if there are a limited number of items and if like everything is kind of a zero-sum game
+
+recommendation feels like just moving the revenue from some items to another item but we don't think
+
+that's true because online institutions provide the entire range of items like if you visit amazon
+
+like for example if you can consider this as a netflix or youtube everything is the same let's say
+
+there are like millions of items in the ad sector and the why is this let's say that that is the
+
+popularity of each item then almost all such a system shows the long tail distribution which we
+
+always call a power low distribution which means there are the few items that are really popular
+
+but almost all items in the system are not popular you can consider this long tail thing as a like
+
+80 to 20 like rule I guess you haven't heard such a rule which means if we work together like a
+
+100 people work together then 20 of these people work 80 of all the time like 80 of the people do
+
+20 of the time which is almost three of the all cases so you know online institution we so these
+
+a few items that are already popular probably they don't need to be recommended anymore because
+
+they are popular but there are more items that are not popular but these items can be a good
+
+candidate for for those who have very great like very specific things for instance there can be
+
+some horror like novels in this list which are not that popular but if we recommend this horror
+
+novels to those who are really loving this horror things then then you can actually increase the
+
+overall revenue by increasing the tail by strengthening the tail so we can say the
+
+ideal recommendation is about finding a proper tail finding a proper tail and finding the person who
+
+wants this tail item so I mean this is the this is the overview and although I spent some minutes
+
+introducing recommendation I just feel everyone in this room will know that recommendation is
+
+important because it's really important but the problem is recommendation is in fact hard to
+
+define because that will depend on what data that we use for instance for youtube recommendations
+
+system they use a lot of data like the thumbnails of videos like the abstract of videos like channels
+
+of the videos like the trend of the videos everything so we will sit with by the setting
+
+we will use only this single matrix as our input for designing a recommendation system
+
+which is called the utility league this matrix is a relationship between users and items and you can
+
+see a very similar matrix in our corresponding so here we have four rows which correspond to
+
+different leaders and we have like seven columns which represent seven different items users and
+
+and here it's element is a gradient between one and five which means five means
+
+at least here see gloves is probably software but is one like user a this line software a lot
+
+and super important thing this utility matrix is part really part why is that because if we
+
+release all the users in the system all the items in the system then this should be smart because
+
+probably that place will have like probably like almost hundreds of thousands of items but
+
+if you have to count the number of movies that are actually seen from netflix then that would be
+
+at most hundreds i think it does not be even hundreds so this matrix is really sparse so when
+
+we design a recommendation algorithm the goal is maybe to feel in the missing entry if we are able
+
+to build in the meeting entry with proper numbers or proper scores then designing a
+
+recommendation algorithm is really easy because we can just simply store the items based on their
+
+predicted score and then recommend the highest score items of the users
+
+so then let's talk about one thing for constructing this utility there are basically two ways to get
+
+ratings to form this utility matrix which are explicit feedback or which are basically back
+
+explicit feedback is about asking users to rate items like when we watch youtube videos sometimes
+
+the system asks us like whether we like the video or not and it happens in medlix or it happens in
+
+any other systems because explicit feedback is useful because it tells us whether this user
+
+likes this item or dislikes this item which is good but the problem is explicit feedback requires
+
+some input from users and users are generally unwilling to provide responses i i skip all the
+
+asks from the system although i say you can be stupid because i don't like it i i don't want to
+
+spend on my time on that so there's a problem so another problem is let's say we have gathered
+
+explicit feedback from many of yours but in many cases such explicit feedback is a little biased
+
+because there are basically two types of users who are willing to provide explicit feedback and who
+
+are not willing to provide explicit feedback in fact the people who are willing to give the feedback
+
+are very active users they do not represent the whole like distribution of leaders who are inactive
+
+and who are like like like not liking giving the feedback so although our today's lecture class
+
+will be based on this explicit feedback utility matrix but in many cases creating this high quality
+
+unbiased explicit feedback matrix is really hard in practice so what we actually do what like this
+
+modern
+
+we can say if the user closes the video like youtube video by just like you know like 10
+
+seconds after clicking it then we can probably say this user doesn't like this movie like so
+
+it's like in frame the the page from the action for the problem is in this way it is hard to model
+
+lowering because either a user watches a movie which is positive or the user does not watch the
+
+movie which does not give us any information so even though we assume that these users like the
+
+movie because they watch it it is much harder to assume this user does not like the movie because
+
+not because because not like because this user didn't watch the movie because i mean i like many
+
+action movies i and i like many sci-fi ones but sometimes i cannot watch this movie because i
+
+don't have time so not watching a movie doesn't mean that i don't like that movie so in this
+
+implicit feedback we need a better way to infer the like negative signal from the utility matrix
+
+because it only tells us a positive one okay so you can say designing a recommendation algorithm
+
+is harder for this implicit case while it is easier to get the data in the implicit case compared to
+
+the explicit case but as i said today we'll focus on the explicit case because in that case it is
+
+easier for us to design an algorithm recommendation
+
+so today we will cover two basic recommendation systems very basic like the algorithms that
+
+everyone learns when we say we learn we study recommendation algorithm the first is the content
+
+base for example the second is a collaborative what is the content based information i guess
+
+if i ask you to design a recommendation algorithm like right now at this moment then you will
+
+probably think of the content base which is if this user likes for instance a horror movie or
+
+if this user like comedy movies then the system can find the other horror movies or comedy movies
+
+that are mentioned in this video which is probably the easiest one right so that is the content
+
+based recommendation we focus on the profiles or features or information of users or items for
+
+recommendation but the important thing is that is not the only way of doing recommendation in fact
+
+the more common for more popular way of recommendation is culinary footprint which
+
+focuses on the interactions between users and items so this is how it works let's say we have a user
+
+we're here and we can go orange users and let's say this green user has watched like a hundred
+
+and this orange user also lost 100 movies and let's say 90 movies of all these 100 are shared
+
+between the two users then we can say these two users have a very similar taste even though we
+
+do not know what this movie is we don't have to care about what these movies are just based on the
+
+fact that these two users have a very similar history of watching movies and you can say this
+
+teacher person love then we can find a movie that is liked by this green user and we can recommend
+
+it to this orange picture based on the fact that the two users are similar in their taste so this
+
+collaborative filtering is like it bring the relate like similar taste users or similar taste
+
+items and recommend them so for collaborative filtering we don't need external data we don't
+
+need the genres of movies or we don't need the actors in the movies because we are not interested
+
+in that so these two in fact like modern recommendations systems are of course a highly
+
+they use for content information and this collaborative information at the same time
+
+because that's obviously a better way than taking one but as today's basic introduction
+
+i will separate them explicitly and let's learn them together
+
+any question
+
+straightforward right therefore okay then let's first learn this content based information which
+
+is easier i think so the idea is simple we use the profiles of items here the profile profile means
+
+some information about this item for instance for a movie we can get it down road we can get
+
+this director actress plot really easier and this profile like these features are not fixed it's just
+
+based on how how much information that you can get from and then we recommend items similar to
+
+previously highly rated items to each user for example for instance we can recommend movies with
+
+the same actors same directors and genres with similar content so it's i mean it's really
+
+straightforward so let's say this user like this guy likes these two items like the red circle and
+
+red writing then we have to extract what makes each user like this one right now it's not a
+
+shape but it would be a color i guess then from the school of items in our system we can take
+
+another red item and decrement it right because that's what we do
+
+so then if you think about it if you think about this content based recommendation then
+
+the only thing important is to get the right product the right the right feature because
+
+as long as we have a correct like the high quality features or profiles so remaining
+
+recommendation thing is really straightforward we can just do as shown in the previous slide
+
+so the problem is to create a good item profile which is sometimes hard for some places on item
+
+for instance for instance let's say we have a document and this creating an item profile is
+
+the same as creating a representation of this item and making a good representation of this item is a
+
+challenging problem not just in our course but in overall in almost all like ai repairs so let's say
+
+we want to find so we want to represent the document as a federal import word from the document
+
+because probably because we believe these important words are a good summary of the topic
+
+then probably one way you can do is to eliminate spot words and completely Tf items for the word
+
+i'm not saying that this is a right one i'm just saying that this is an option called creating a
+
+good thing real representation and then we use the copy words and these features to represent
+
+this document so that may be a one way so because these days we have very good machine learning
+
+models or what we can say large models that can summarize the videos or images or text very well
+
+like for instance we can simply apply our chgbt models or similar ai models to summarize this to
+
+this whole document and we create a smaller representation which is good so these days
+
+creating item profiles is much easier than before because previously we needed to design a specific
+
+algorithm to extract these features for almost all kinds of items which is really hard to but
+
+lately we can just apply a pre-trained model like language model like vision model pre-trained ai
+
+model to extract the features which is easier these days okay anyway because we are not dealing
+
+with this uh trend trending ai models i think about let's focus on the traditional way so let's say
+
+uh we have a movie and we want to represent this movie with various features like various profiles
+
+then there might be some discrete values like uh for instance there can be some actors like there
+
+can be a director there can be a genre which is not basically numerical value but at the same time
+
+there will be numerical features as well like the like the every scale like the like the release year
+
+like that so if you want to create a long vector that represents every movie or an item that we
+
+need to separate this feature by distributors and numerical features for distributors a more
+
+one common way to do it is to create a one-half vector where the length of this one-half vector
+
+is a number of possible discrete values for instance if there are like uh 10 different
+
+genres in the whole of this 10 then we can create a 10-dimensional vector where an element is
+
+activated if the genre of this movie corresponds to that genre that is a one-half vector but if
+
+one of the actors like because the movie contains a lot of actors and the actor information is
+
+and we can create a multi-half vector where the length of this vector is a number of actors is our
+
+whole system and we can activate each element if that actor appears in the movie that is a common
+
+way to create a representation vector from a discrete value and if the feature is numerical
+
+then it is a little easier because you can just use the scale exact value for instance it can be
+
+here it can be already it can be a number of audience then you can just adjust the scale
+
+considering other features and create a vector so it would be easier for you to look at
+
+an actual vector like the actual example of an item profile for instance here we have two movies
+
+and two movies are represented as different representation vectors the first the first movie
+
+here the actor vector is like eight which means we have eight multiple actors in our system
+
+and this is one if this actor here that actor like Julia Roberts appears in the movie and director
+
+is probably one half I mean there are some movies that has all like a cool directors but almost all
+
+movies have one single director and there's another vector and there's average ready right
+
+so this whole vector is a profile that we say to represent this movie this sector is also they
+
+we represent are subjectively representing this movie so this content-based recommendation is
+
+largely derived by how we represent its movie all right because how we represent this movie as a
+
+vector determines the similarity between items or a similarity between contents of items so that will
+
+ultimately determine the performance of our model
+
+and another thing is just simple thing and you might ask like for instance let's go back to
+
+the previous slide like what if the princess if the information is discrete let's say let's say
+
+we have a three director like for instance a crystal one like like single spielberg like anything
+
+then probably we can represent this information as a single integer as either zero one or two I mean
+
+that is still preserving the information of the director but this is in fact not good you might
+
+think I'm not sure you get the idea or not this is not good because representing this director
+
+in this three different values creates an order between this number this is not good for us I mean
+
+let's say still a silver is not two times of principal one they are just independent information
+
+which should be like independent right in terms of the representation as well but if we
+
+use a single integer to apply or to represent such a
+
+different information we create some items so that is the reason why we create a sparse one-half
+
+vector instead of this single integer including so this is how we represent these item profiles
+
+and then we also have to create a user profile so what I want to say is there is no single answer
+
+in creating this item or user profiles that's what an engineer can choose when designing a item based
+
+ID content based recommendations but here at least in our slides we say that we do not create
+
+a user profile from the user's personal information like the age like location like the gender we can
+
+create user profile as it's on but let's not do that in our slides as well at least in slides
+
+so here what we do is we have a user and we have a history of movies that this user has watched
+
+before then we get all these movies and we have the profiles of all these movies and we compute
+
+average of the movies to create this user's profile but in this way we can say that this user's
+
+paintstrap this user's taste is a summary vector of the all the movie profiles that this user has
+
+ever watched in the history which I think makes sense and this can also put this movie information
+
+and this user information into the same space so this space is a like a vague word I do not define
+
+it very clearly but you can say at least this vector and this vector and this vector if are
+
+on the same space where the these vectors are comparable to each other because this video vector
+
+created from movie vectors not from external information that describes this user so this thing
+
+this whole thing allows us to compare these vectors like profile vectors between movies
+
+between users and between movie users and movies in on the same space okay
+
+but as I said this is not the only way for instance if this user rates movie one with rating one and
+
+movie two we're waiting for that that obviously means they should be reflected differently in the
+
+user's profile so probably can do away something of the profile maker with the movies if we want to
+
+like differentiate how based on how this user rates its movie so as I said there's no answer
+
+it's just up to us then how can you predict like let's say okay we have a good movie profile we
+
+have a good user profile and the only left thing is to do prediction because they are basically on
+
+the same space we can greatly compute the cosine distance between user and any or any distance
+
+because there are those vectors so let's say we have a user we have 100 different candidate movies
+
+then we compare the this user vector with movie vector we compute the distance between all pairs
+
+of movies and then we command the highest rating movie to this feature which is August
+
+but what if we had like a billion of movies why why do we have a billions of users and
+
+and that will take a long time right so that in such a case we can apply LSS localities
+
+sensitive hashing to find to filter out the to only retain the probably similar vectors between
+
+so you might think LSH like it's hard to think how these LSH can be connected to the
+
+recommendation system but this actually is so for instance if we have a user you either use vector
+
+and what is our goal our goal is to find the movie vectors that are the most similar to this
+
+your vector we are not occurring the exact same vector we are occurring similar vectors then we
+
+have a pool of movie vectors let's say and let's say these movie vectors are huge then we can apply
+
+this locality sensitive hashing technique to retain only a small candidate then we can do
+
+recommendation only in that only from this pool reducing the complexity from quadratic to
+
+possibly linear right there can be both positive there can be both negative i mean it's okay to do
+
+it because recommendation is not about finding an exact answer so i want to say this recommendation
+
+is not about finding a medical answer or learning some patterns from existing data or mining some
+
+patterns like it's not about a study on existing data but it's more like a prediction and prediction
+
+has never is okay to have it so applying LSH is totally okay because anyway we'll have an
+
+error in prediction but it will speed up the process a lot okay so let's think about project
+
+cost by content based approach it's really straightforward uh with them i guess almost all
+
+people can agree with this algorithm so it's good and it's able to recommend items to users with
+
+unique tastes because it's really based on the specific structure specific profile how a movie
+
+is represented so this really can consider the unique taste of users and it is also able to
+
+recommend new or popular items and it is also able to provide explanation because when we compare
+
+a user vector and the movie vector we know what elements are the same what elements are different
+
+and you can say to users that okay we recommend this user movie to you because this movie is for
+
+but you have watched like the five different horror movies in your history so
+
+giving explanation together with the result recommendation is really important that because
+
+in that way you would believe trust a decision but a recommendation and actually follow the
+
+recommendation in the system cons weaknesses the most obvious weakness is finding a proper feature
+
+is difficult and in fact having these features is difficult let's say you we you we are on a
+
+youtube there are like probably billions of videos here and having videos itself is a hard
+
+thing because of the large size but if we have to find the features and if we have to store and manage
+
+the features all the time and if we for instance let's say we want to add a new feature to this
+
+movie then we have to add this feature to all the videos in the system let's say we have a new video
+
+and this new video loses some information which existed in the in previously then we cannot use
+
+this information just because our new videos don't have such an information that we need to
+
+remove this information from all existing videos which also takes time so in fact having
+
+maintaining a proper feature across all these items in our system is a really difficult thing
+
+if i am a database engineer i will take this guy like you can do from vision guide so that is a big
+
+weakness of this content-based recommendation but i mean this day many algorithms are still
+
+relying on this content-based recommendation because we cannot totally ignore these contents
+
+but what i want to say is although but it's on the expense of having this straightforward
+
+simple equation the cost is having these great features that's what i just want to say
+
+okay and there is a minor issue which i don't think is important is over specialization which is
+
+if we if a user has its own profile ice history then our recommendation is on contents cannot go
+
+beyond this profile so it is like amplifying the pace that you should have already so i mean every
+
+recommendation system has a trade-off between exploitation and exploration exploration is about
+
+suggesting more trending videos although that this might not be liked by the future exploitation is
+
+to recommend the items that are already in the history of this year already in the case of this
+
+future so it is important to make a great balance between these two but the content-based recommendation
+
+is mostly about exploitation using the existing history of the user okay
+
+so that's it for the content-based recommendation any questions yeah
+
+uh in the example of
+
+in that example the dimensions of actors are much larger than other things then in this case maybe
+
+the signal of actors may be stronger than other things but can we make the other signals stronger
+
+or when when the number of actors and the number of characters are already
+
+yeah great question so if i repeat the question when we combine multiple different information
+
+for creating these profile actors they uh affect differently to the result of similarity for
+
+instance but more important thing is not about the dimensionality of these vectors but more about the
+
+variance inside it first let's say you're going to release the year 2010-1998 something like that
+
+then the difference in this year would be much higher larger than the difference in other things
+
+right so we always have to consider the balance of if i for instance here actors have more one
+
+than the director but we know that a single director can be more important than multiple
+
+actors because director is an important point right so in such cases an easier way to do it
+
+is to rescale this action proficient like those persons by dividing this whole thing by
+
+the like tree or by or by the number of elements in that case we can generally rescale its
+
+information to make a very balanced and versus to look at this average rating of one another way
+
+to do it is to get the average ratings of all the movies and standardize this information like
+
+as we have done to zero centering proficies for instance we can standardize all this information
+
+by having them uh zero mean and many barriers then it is like you need to find the information that
+
+if you have a release year then obviously we need some standardizes the release year because
+
+its scale is more or less different from what happened here like it's like two dollars right so
+
+that's important so important thing here is what data we call back how to represent so what
+
+information we collect how to represent this information how to scale each information and
+
+how to merge this information and how to design a similarly measured things with vectors and how to
+
+get user vector from the movie vector all these things are different design choices when creating
+
+such a recommendation system so i as always i do not discuss such details but in fact is important
+
+so if that is not properly embedded into the system then as i said for instance a single
+
+information actor can dominate the whole recommendation system and we can even we can
+
+look at the results and we can analyze why and we can then give some feedback to the recommendation
+
+system designer that okay i i think actor plays too much in the role so please do this wait for
+
+something
+
+in that case how can we uh like
+
+like
+
+okay another great case so i shouldn't use the ear as an example because that's exactly
+
+so okay i think i will have some time for today's class so i think i can say okay so here
+
+here is a funny thing because here is basically a number but it's in fact not a numerical
+
+information because 2010 is not two times as a thousand five or 2010 is not a plus five or
+
+two seven five so it's a number so there is an order between these things between this information
+
+so it's not that this is a completely discrete information but at the same time this is not
+
+something like numerical rating this belly is almost like uh i mean the difference between
+
+years to make sense but as he said like that more it's not that more newer movies are always better
+
+or the newer movies are like that in the linear relationship with this other years like that
+
+so if we want to use the ear information or representing these movies in these cases then
+
+we need a hypothesis hypothesis that how this year will affect the recommendation performance
+
+because if we do compute the cosine similarly as a prediction heuristic then we know that our
+
+recommendation system is super simple super linear it cannot learn such a linear relationship between
+
+years and between predictions of them so for using this simple prediction heuristic then we
+
+need to think more on how to design a feature so that's okay one thing i can try is the ear for
+
+instance i guess okay i can do pre-covid, covid, post-covid so let's say i want to classify all
+
+the existing movies into these three categories pre-covid, covid, and post-covid probably that
+
+makes sense although i'm not sure how this information will affect the prediction but at
+
+least i know that there is some change in trend between these three categories then i can create
+
+like a linear three-on-one factor to pre-process the ear information so not using the raw ear as
+
+a prediction like as a feature so in this case probably this can be better than the raw ear so
+
+this whole thing is called a feature processing when we design a representation or when we design
+
+a feature that represents some information we need to think about how this information will be used
+
+in the later algorithm so that is i mean the one of the biggest roles for data engineer or data
+
+scientists because they are in charge of dealing with this data and what their presentation would
+
+be good for designing a good algorithm but another thing is if i extend like one or more one or two
+
+more minutes finding this good representation like finding this better way of pre-processing
+
+requires some domain knowledge i can do it because i know what the covid is and i know how movies work
+
+but if i work in the bio domain or like let's say like the missile once domain like airspace domain
+
+i don't know anything so i cannot do this feature processing in such domains because i don't have
+
+enough knowledge for that so in fact this recommendation and almost all machine learning
+
+applications or data mining applications they are a great combination of domain experts and
+
+engineers so that is one reason why this collaboration is important good ready locations
+
+no good okay
+
+so let's move on as i said like today will be easy to follow collaborative filtering so
+
+collaborative filtering is a title recommendation that does not require
+
+problem it just uses the utility matrix as a sole information so we can consider collaborative
+
+filtering in this way we i mean we just create we just talked about how to create the item profile
+
+which is important right but we already have a utility matrix let's go back sorry for that
+
+let's just go to next i'm just want to show you this we already have a loop matrix and we can say
+
+that this column the column that each item has is some kind of item profile because this column
+
+represents some properties of this item right and its role represents the property of this user so
+
+this collaborative filtering does not require external information it just relies on the utility
+
+matrix and it just uses the rows and columns of this utility matrix to learn the patterns and
+
+learn the properties of users so that's how this collaborative filtering works and these come in
+
+two flavors which are user side collaborative filtering and the item side collaborative filtering
+
+so i will describe the details very soon so what is a user user collaborative filtering given the
+
+user u which is our target user we want to find the users whose ratings are similar to this user's
+
+ratings and then we can estimate our target users rating based on similar users and this is exactly
+
+the same example as before so what we do is we have a green orange user which is our target user
+
+and we find the users having a similar pre-grounds with this user based on the utility matrix and this
+
+is mostly thought by comparing the rows of two because each user is represented as a different
+
+role so we compare the rows of the utility matrix and we find similar ones and then we search from
+
+the database the boobies that are like the five similar users but not by the orange user for such
+
+an item we can recommend such an item to this orange user and we can find the user result
+
+then then what is more important like what is most important in this whole process of collaborative
+
+filtering is as you can imagine finding similar users because it is similar to content-based
+
+as long as we can find the similar users with similar taste then the remaining recommendation
+
+algorithm is really easy to design so what i want to talk about from now is how to get the
+
+similarities between users where there is no answer to that for instance let's compute the
+
+jumper similarity i mean you know the jumper similarity is basically a set difference measure
+
+even two sets we compare we measure the size of the intersection divided by the side of all of
+
+says the jumper similarity so okay let's ignore the rate although we have a very great exclusive
+
+feedback but let's ignore the rate and let's consider each user as a set of items for instance a
+
+we can consider a as simply a set of hfp1 tw and sw1 simply a set of three items and we can
+
+represent b as simply a set of three items hfp1 hfp2 and hfp3 ignoring the ratings then we can
+
+compute the jumper similarity between the sets that represent users then the jumper similarity
+
+between a and b would be one over five and the jumper similarity between a and c would be two
+
+over four which okay which makes sense although it ignores the ratings which are important information
+
+but the process is solved makes sense but the problem is since it ignores ratings i mean it's
+
+good in comparing but hits real users but you see it ignores ratings it has some error like
+
+different vibes versus if you compare a and c definitely these two years have different things
+
+because like five into one and four they have very different things but because these two movies are
+
+shared between these two years the similarity is higher than the similarity between a and four
+
+although they watch the same movie with high rating okay so what i want to say is we have a bunch of
+
+various options and all of them have their own protocols so we will see why let's see the next
+
+example let's think about the cosine singularity cosine similarity is a measure between vectors
+
+but the problem is each user's vector is smart so for instance a has only three elements b has only
+
+three elements i mean if you want to compute the same similarity between a and b or a to c we need
+
+to fill in these values but filling in this value is hard let's say we fill in this value that is
+
+but this is questionable because if we fill in the zeroing this host and that means these users
+
+don't like these loopers because zero rating is even lower than one right so it doesn't make that
+
+sense to use the value of zero but anyway we do it then at least we know that the similarity between
+
+a and b is higher than the similarity between a and c which might be better than our previous example
+
+because at least by considering this ratings and being moved more similar to each other but
+
+they'll like filling in zero that will make another bias which will create another different story in
+
+the individual matrix okay so that that is the con of the cosine similarity what if we use the
+
+pierce and correlation point which is the most complicated one among the three so here when we
+
+design a pierce and correlation coefficient between two users we consider only the ratings
+
+on items rated by both users so for instance for computing this correlation coefficient
+
+between a and b for instance then we can only let's say we use only ht1 which is shared with a and b
+
+for between a and c we use only these two movies which are shared between these two so among the
+
+movies that are watched samely by the two users we can compute the pierce and correlation coefficient
+
+which is computed in this way so i mean the
+
+how verse is really straightforward but the thing that looks a little complicated but it's just
+
+doing that based on the average rating for each user it tells whether each shared rating is higher
+
+than their average or lower so this like computes a trend of the ratings made by the two different
+
+users and it gives us a better estimate of their similarity compared to the cosine similarity and
+
+the java similarity so if i had to pick one among these three i would say this is the best one that
+
+we had but the only problem is this measure can work only a list of items shared between these
+
+three years so if the number of shared items is small this correlation coefficient is even
+
+impossible to be completed almost impossible to be completed so this is limitation i mean this is a
+
+higher higher quality measure which is better but this requires more items which is another strong
+
+witness so the reason is the basic reason why there is no single answer and why these three
+
+options give different project constants because the utility matrix is sparse i mean estimating the
+
+similarity of rows in a sparse matrix creates challenges which cannot be solved entirely
+
+it just allows us to have different options having different present cons okay so let's think about
+
+other rates i mean i mean it's almost like great for me i'm just giving you a different option
+
+so okay i like some more similarities i like it i want to use it but i want to use it better so then
+
+instead of completely ignoring the rating i want to consider ratings three four and five as one
+
+i want to rate consider rating zero empty one two and zero in that case we consider only the ratings
+
+over like at least three as one so if we compute the jacquard similarity between years based on
+
+that pre-processing we can say this is better than our previous one because in this way the
+
+jacquard similarity between a and c is not higher than that of a and b it is lower and it's in fact
+
+zero because a and c in this case has no intersection at all because their ratings are here so a and b
+
+then one so you can see this is a plausible way reasonable way to improve the jacquard similarity
+
+or we can also improve the cosine similarity okay how can you do it is so in fact in our previous
+
+version we filled in zero in this cells which creates a super non-liking bias but what if we
+
+normalize the rating rating for each user before we do it let's say so every user has their own
+
+different average rating some users are positive they give all these more or fine some users are
+
+negative they always get one or two then if we normalize this rating by their numbers and then
+
+we fill zero zeros into this field into this whole then we can say these zeros do not create
+
+a bias because these zeros follow the average rating of this user because these zeros are
+
+added after this rotation so then we can say this cosine similarity can now work back okay for
+
+instance now a better thing is when we compare the same b cosine similarity is in this way 0.092
+
+okay good the similarity between a and c is minus 0.5.9 so there is a minus sign which is good
+
+because a and c seem to be different from each other they they i mean you can look at the original
+
+utility matrix they they obviously have different leads right so cosine similarity based on this
+
+pre-processing of averages it shows us whether the similarity is positive or negative this is good
+
+then the following case is is always good or no because because let's go back sorry for going
+
+back and forth here the user d gave a rating of three to this two movies probably this user d can
+
+give ratings of five to this one to this one let's say these two are not three but five okay fine
+
+then with our new pre-processing because we normalize this user based on its average rating
+
+this 55 should be zero zero zero zero means we ignore the information but 55 is important
+
+information obviously it's important because it tells us that he liked it too but if we just
+
+normalize this role based on these averages and ignore this which is not good okay this is not
+
+good and very well so it's just as i said no answer it's like they're like their project content you
+
+need to understand what pros and cons that it will bring every approach will bring that is more
+
+important than just memorizing these different options it's it's just about your choice okay
+
+as long as we so let's say let's apply uh one plausible option of computing similarity then
+
+as long as we have this similarity then the remaining prediction is easy really fairborn
+
+so let's are so okay before explaining this any questions so far
+
+vacation therefore good good good okay so let's say let's also be x r sub x be the vector or
+
+your of our your axis rate like the rule you clean baby and then n be the set of k
+
+years was similar to your head and then n the settlement is found by our similarity measure
+
+and let's say this item i is our target so what you want to do is we want to estimate the rate
+
+from x to i but now not all similar users in and will have watched this item i so let n prime be
+
+the sub-type features who rated this item so and all users in n prime are similar to our target
+
+user text and they also want this movie i or anyone so their ratings can be a good information
+
+for us to predict the rating from x to y so a simple version is for every user y in this step
+
+and prime we take their rating from each user line to line and we compute their average then that
+
+will be our estimate for the rating from x to lock with consent or if we want to consider the
+
+ratings we want to consider the different similarities between x and y we can do a little
+
+more complicated way which is a way so for every user y in our n prime we do the way
+
+it ever is both their ratings based on the similarity between x and y because not all
+
+users in n prime are equally similar to user x some users are more similar some users are less
+
+so we can do it in a simple way or a complicated way but both of them are obvious as long as as i
+
+if we know similar users okay so that is about user user collaborative filtering
+
+which is to find users to do recommendation but we can do the same on the opposite item item
+
+point so what we do here is sorry uh sorry sorry okay so let's just look at it so what we do here
+
+is we not we do not compute the similarities between because we compute the similarities
+
+between items we want to know which items are related to each other and which items are connected
+
+to each other so if we know this item similarity information as we did with the user then we can do
+
+the collaborative filtering on the item side so what we do is let's say here an item is our okay
+
+i will show you from this blackboard uh okay where's a white one okay let's i'll just use the
+
+blue one oh sorry here's the one so we have a user x and let's say we have a list of items that are
+
+watched by this in your head and we have a user view item i where and we want to estimate the
+
+rating from user x to item i then from the all the items that are watched by this user we find
+
+a subset of them which are similar to item i i mean not all items watched by edge will be similar
+
+to i there will be some subset and that subset is called the n i colon x in the equation the portal
+
+all the items in this subset there will be for all item j there will be a rating r x j which is
+
+a rating from x to j so we just simply compute the averages of the ratings from x to j to estimate
+
+the rating from x to i which makes sense because these subset of items are already similar to this
+
+item item i okay and in other words it is almost the same as so personally i do not like romance
+
+movies like i really don't like romance movies so but i have watched some of these romance movies
+
+in probably in my neflix history so and probably i would give very low ratings to these movies so
+
+if a new movie is a romance movie then based on the similar movies in my history which i gave
+
+very low ratings then my estimate rating would be also low for this new movie which makes sense okay
+
+okay
+
+so let's compare this item item and user user so some people many people say that item item
+
+similarity is more reliable than user similarity because items are classifiable the movies are
+
+either horror or action or movie items are either like tents or either computers or laptops they
+
+we can't describe item but users are much more complicated users have multiple tastes multiple
+
+genres so it's harder to come to similarity and the user's taste changes over time so as we update
+
+our recommendation algorithm as we collect more information from these users then the user user
+
+similarity can change drastically over time so it's not that user user preliminary filtering is
+
+worse than the item item one it's just saying that item item similarity can be more reliable
+
+and predictable than user similarity so we need to keep in mind there's a difference but overall
+
+there is no clear advantage of one from another so it's just up to us whether we have to use user
+
+user or item item okay for instance a user user like way can be better for relatively new items
+
+because new items will have more like less information to compute similarly with other items
+
+okay
+
+present class collaborative filtering the super important advantage of collaborative filtering
+
+compared with item content-based recommendation is it doesn't have to come up with features or
+
+profiles we what we need is just a single utility matrix and all these algorithms can be done
+
+on this utility matrix and because that is a super important advantage almost all like startups
+
+almost all companies like who don't who have no time and energy to spend like a lot of dollars
+
+for recommendations them they use collaborative filtering it's like cheap easy to implement and
+
+predictable algorithm but it is not perfect it has many ways to find compared to content-based
+
+recommendation it cannot recommend items with unique taste because collaborative filtering is
+
+mostly based on trends so it is highly likely that these are great that recommends already
+
+popular movies already trending movies in the head side not in the tail side because as an item has
+
+more information has more history and more scores that this algorithm favors that's why we're writing
+
+just because of the way it works so i will not tell detail how exactly that works but if you think
+
+deeply about it this operation favorites copyright so that is one super important is the energy
+
+compared to content-based one because content-based recommendation can work with tail items as well as
+
+long as their contents are good their profiles are constructed good okay and another thing probably
+
+what i can say is since the density of the utility matrix affects the program if we have more
+
+interest in utility matrix then all of us to add a better estimate of similarities between users
+
+and between items but if the matrix is two sparse then the quality of this recommendation
+
+will be also not as good as the content-based one
+
+is it any question any question no okay
+
+so for example your question is uh why is the difference from clustering users and items and
+
+pick one from the same cluster to recover okay so what i can say is related so if a clustering
+
+and you find these similar items recommendation or related because they are all about understanding
+
+how data works and how what patterns that we can get from the inside and in fact this is also
+
+related to dimensionality reduction because as we have seen we can even do recommendation with
+
+sbd just by reducing the demand only so what i want to say is they just have a little slightly
+
+different goals like for instance when we design a recommendation only oriental algorithm then the
+
+focus is not about clustering because okay we can do clustering for doing recommendation but
+
+recommendation doesn't always require clustering because there can be many other ways to recommend
+
+do recommendation although the clarity filtering that we learned today seems like almost the very
+
+of the clustering it it looks like that but we will learn other ways as well in probably the next
+
+class so you will see what is different from each other so what i want to say is in in the whole
+
+field of data mining many problems are related to each other that means if you are an expert on one
+
+problem then you might be an expert of another problem because the ideas are shared but the
+
+important thing is when we face a new problem we need to understand the core of it like what is
+
+required for solving the problem and how are we going to approach the problem so that sometimes
+
+give us the same answer from another category or but sometimes it needs us to design a completely
+
+new algorithm to solve the problem okay okay more questions
+
+all right so the remaining part is not some kind of knowledge it's just some fun introduction of
+
+the recommendation system okay so make it make it brief so when we study recommendation we often
+
+learned in that place which was the biggest event of the whole recommendation like field or community
+
+20 years ago so it's too old so it's like the algorithms used for these challenges are not
+
+practical anymore but it's just fun to learn how this field was forming in the day so netflix was
+
+doing the same thing even the 10 years ago and they believe that the recommendation algorithms
+
+were so important for uh for increasing their revenue so in fact netflix currently is one of
+
+the largest companies that have a large team of recommendation people because this company is
+
+really uh like feeling uh responsible for doing recommendation there so in that challenge netflix
+
+offered a million dollar which is a lot to be it's really reasonable so netflix already had a
+
+recommendation on price that they had one but they created the challenge to get more possible
+
+solutions from outside so the goal was to be fair and the price was already after three years of
+
+work that means their algorithm was good at that time but after three years of work someone
+
+beat it the challenge so the description of challenges as follows we have training data
+
+and test data which are the terms from machine learning but i will say it because that's all
+
+video so the training data is you can say the training data is observable data or given data
+
+training data is a hundred million ratings in numbers from one to five from 480k users on
+
+18k booths and it is collected from four six years from 2000 to 2005 and the test data or
+
+an unseen target data which is not observable to the competitor is a several the last few ratings
+
+each user 2.8 million in total so for every user we get like the the first 80 percent of these
+
+ratings for training and we give it to competitors and we remain the latest one as a test set so to
+
+evaluate the quality of the submitted algorithm and we better the error that we experience error
+
+between the ratings are continuous numbers and the netflix system rmse is uh 0.95 lipstim
+
+should be okay i mean the rating scale is being 1.5 so that means in overall the error is almost
+
+like a little one which seems to be okay to me and over 2000 teams were completed for doing this call
+
+so as i said the one big difference between recommendation and all the previous topic of
+
+like clustering finding similar items like the finding frequent item sets is that
+
+here in recommendation we want our algorithm to generalize so to generalize to unseen data
+
+because we want to keep using our equation as the more data come in so for this competition
+
+we have a training data set like the red version which is observable from the users like participants
+
+in the competition so the blue one is hidden blue one is hidden so we so this netflix gets
+
+submissions from outside and they ask them to fill the numbers the blue region and they
+
+rate the error and they feedback the error so the small other team with the smallest error
+
+on this test that will be a winner okay same thing the existence of test data is a notable
+
+difference from the previous topic because i'll just repeat it both data lines often find to find
+
+patterns and given data but this challenges about generalizing to unseen data so as we learn more
+
+machine learning things later like after the meet term in our course you will see that what will be
+
+a difference between finding existing patterns and zero likely to unseen data these are similar
+
+goals are but different when you want to generalize our data to unseen data our algorithm should be
+
+reversible should be efficient and should be reliable in terms of the data like the
+
+problem but if our goal is to find patterns that almost what we care is the time
+
+okay that's a small difference and we have some takeaways so one thing is so okay i will tell you
+
+this in our homework two there is a netflix challenge so one programming question of the
+
+homework two is to design your own recommendation algorithm and it will not give you the test data
+
+set you will compete with each other with the performance on this test data set so it is just
+
+one question of the whole homework so it's not that that will define your grade it is like you
+
+so you can determine whether you want to try this challenge hard with spending your a lot of time or
+
+you can just simply consider your trade-off and use a small bit of time and move on to other
+
+like courses or other problems i can assure you that the performance of the challenge will not
+
+like a huge indicator of this of your grade is a smaller portion but it will be fun because it's
+
+not about solving a problem it's about improving your algorithm like to work better on this unseen
+
+which is hidden from you so for doing this uh let's say for creating an actual recommendation
+
+system then you will find this takeaway is useful one takeaway is it's really not easy to offer for
+
+very simple ones let's say we design a very valuable part of doing this recommendation which
+
+predicts the rating are some ui as simply a spell of uu and ui where uu is every rating
+
+of your u mu i is the average rating for i can buy like all the pictures i mean it's just that we
+
+compute the average of the row we compute the average of the column and we build in the whole
+
+super simple right but student edge was our netlist's previous solution was only three
+
+percent better than design a bunch so in in recommendation because it's basically a prediction
+
+prediction is hard because it's about future so no matter how much we try to create an algorithm
+
+it is really hard to make an improvement from the existing one and in many cases simpler approach
+
+can be better because this recommendation is as that is again is about generalizing to us data
+
+and additional data like as a data scientist we are always tempted to use more data to solve a
+
+problem but additional data can help or not for instance movie information many teams try to get
+
+movie permission from imd to get the information from actors like directors and genres more
+
+information like ratings right but some of them are not effective and some of them will even
+
+make the performance worse because if this information is not closely related to the
+
+problem that they're going to solve then they give us they give us more noise to design our
+
+order of writing but my information has shown to me should shown to be useful because some movies
+
+have a decreasing reputation over time but some movies have increased replication of time for
+
+instance let's think about the titanic kind of movie that movie was a classic but it was loved
+
+by more people probably i i think it was popular at that day but it's being loved even after it's
+
+really easy but some movies like the you know very classic great movies were not liked by the
+
+audience at the time but they are liked by more people over time so for instance this time
+
+information can give us a new access to understand how this data works i mean our utility matrix
+
+itself does not give us any temporal or time information but if we think about it if we use
+
+this information very well then it can be effective and this is the last almost the last slide before
+
+the summary so the winning solution was a combination of several algorithms and these
+
+algorithms were developed independently and the second team also uses use the land of independent
+
+algorithms and is hoping like when the different independent algorithm is called as some
+
+and some of the same work because every algorithm that we create every way of computing similarity
+
+in our collaborative filtering creates a bias in its own weakness and its own strength so if we
+
+design for instance three different algorithms and like totally independently and we combine their
+
+predictions together then in many cases it is more generalizable than a single algorithm in many
+
+cases so if you do this competition like the performance competition based on machine learning
+
+in many cases ensemble is really important ensemble makes us a great performance but as an
+
+engine as a scientist we don't buy an ensemble because when we compute create an ensemble of
+
+models we cannot interpret the predictions anymore and the prediction becomes really hard and the
+
+computation becomes excessive so it's not a good practice for a researcher but for doing such a
+
+competition it's important
+
+so before we move on to the summary slide any questions
+
+no no right okay then that's it so again i think recommendation or recommender system is one of the
+
+most interesting topics in our domain because it's related to the field and it's related to
+
+industry and it's like very intuitive to understand and it's it's easy to feel that how
+
+recommendation affects our daily lives so today we covered the most basic algorithms like content
+
+based recommendation and collaborative filtering which are the two main ways to do
+
+recommendation and i also introduced the dynamic challenge so our meter will cover only until the
+
+recommender system so like the official meeting coverage would be until our next tuesday like our
+
+next class so and then we have more week before the midterm so probably i will do this one kind
+
+of review and i'm not sure about the other one but i don't want to put too much on the midterm so
+
+the you should study until the recommender system okay so yeah no great so that's it for today
+

@@ -1,0 +1,1162 @@
+Good morning everyone.
+
+Again, great to see you.
+
+Did you please flood the board?
+
+So we add the second part of flood frame.
+
+For this, I guess you remember, the topic to cluster a set of points into multiple fence loops or flood loops.
+
+So this flood frame was quite related to our previous topic, which was to find similar documents.
+
+But it is a little different, as you remember, because cluster is more about finding a group consisting of more than two or three points.
+
+But our previous topic was to find finding similar document pairs.
+
+So although these two topics are related to each other, we can say our goal is a little bit different.
+
+But as we study more advanced algorithms today, mostly for this resident data, like large volume of data, you will understand why this topic is more different than finding similar documents, because as I said, the full is different.
+
+So the announcement is the same as before, homework one is out.
+
+So I will let you know about the exam results, like either on this Thursday or last Tuesday, if it's like, if it takes some time for us to determine the specific rule for the exam.
+
+But as I announced, the exam will be on our designated official class hours.
+
+So you don't have to worry about finding a new time slot for the exam.
+
+But I guess our room is a little bit crowded for all students to take exams.
+
+So probably we'll find another classroom because at least you have you need some space between two adjacent students to take an exam.
+
+So we might need another room for the exam.
+
+So let me find a room and let us determine the specific rule like time and whether we should do it either on open book or not, and announce that very soon.
+
+So we'll just on the process of determining all of the details for exam.
+
+So any questions for the homework or the exam or the overall course management?
+
+No, no.
+
+So let us do a little bit of reading.
+
+So in fact, our previous class, like on the first part of the class, I guess it was a little bit easy to follow because in that class we introduced the very basic notions of flow stream like pressure dimensionality, which said why flow stream becomes hard when the data becomes a high dimensional data.
+
+Because if we look at three dimensional or higher dimensional space, it seems like all these points are equally distant from each other, which makes clustering more difficult.
+
+And then we learn some algorithms like hierarchical flow stream, which can work on non-clean spaces at the same time, which on which is harder to find the center of points or create a synthetic point.
+
+Although, as I said, our place is not a mathematical class, so I'll not discuss more on non-clean property.
+
+But I guess you understand why it becomes harder if you go to a non-clean space.
+
+And in that case, probably we need to replace the center, which we can consider as the center of the cluster into a clustering, which is an existing point that can be considered as a representative of the cluster.
+
+Clustering is not necessarily worse than centric because clustering is sometimes easier to interpret because it is an existing data point, not a synthetic one.
+
+And then we learned that k-means flow stream, which applies more restrictions or more assumptions compared to hierarchical flow stream because k-means assume the Euclidean space and Euclidean distance, and it also assumes the specified number of clusters.
+
+So in some sense, k-means is more like a restricted, like a more specified form of clustering for them.
+
+But as a return, it gives us more like more easier way of clustering and more straightforward way of working.
+
+For the k-means cluster, we don't have to suffer from the quadratic complexity or even cubic complexity that comes from the hierarchical flow stream because in k-means, we don't specifically compare pairs of points.
+
+In k-means, we only compare cluster centers and points, which greatly reduces the overall complexity.
+
+And probably that's the reason why many people love k-means algorithm, even in the modern age of deep learning.
+
+And then we learned a variant of k-means, which is the k-means floodplas, which tried to do better for selecting the initial centrates.
+
+Or we also learned how to select the optimal value of k based primarily on trials and errors because we don't have a very great algorithm for selecting k before running floodstream.
+
+And it's just...
+
+So what we are going to learn today is not that different from the last time.
+
+We're just going to learn a more advanced version of the algorithm, especially for high-dimensional data or large volume of data.
+
+So we learned three algorithms, CURE, BFR, and GR-DPM algorithm today.
+
+And you need to understand how each algorithm is different from each other and what would be the main motivation and main idea to solve some limitations of existing algorithms.
+
+So let me start with the CURE, which is the simplest among the three.
+
+So, as I say, if we study data mining, there are many challenges that come from the real world data, not just the synthetic, like small research data.
+
+One of the problems is the data size.
+
+The question is, how can we do clustering if the data is too large to fit in memory?
+
+And this is very similar to our one of our previous topics on finding frequent item sets.
+
+So if all the data are on disk, the matter is to reduce the number of disk instances.
+
+It doesn't matter anymore whether our algorithm is linear or running or even CURE.
+
+I mean, it matters a little bit, but what is more important is how can we design a process or algorithm that gathers the data from disk into memory of limited size.
+
+So for doing that, we need to design a specialized algorithm.
+
+We cannot just apply an existing memory-based algorithm to this written data.
+
+But one simple option is to sample data.
+
+So for every large data, a simple solution for applying our existing algorithm is to sample data.
+
+So as long as we can create a great sample of all data from disk and get them into the memory, then we can apply any memory algorithm without worrying about the size.
+
+But that would be a straightforward solution, but we want to do it better.
+
+So today we're going to cover three different algorithms, and I'll skip their overview because we're going to learn them very soon.
+
+So what about CURE?
+
+CURE is a very simple algorithm that we might consider as a straightforward initial solution to the disk-racing data.
+
+So CURE, I'm going to skip its full name, is a two-pass algorithm for large disk-racing data where the two passes are described as smaller.
+
+So in the first one, we find clusters from a sample data set, as I announced.
+
+So then in the second one, as we find all the clusters from the sample data, we just assign points to the cluster.
+
+So at this point, you understand that as long as we have all the cluster information from test one, assigning points to clusters is not that hard.
+
+Because we can safely assume that all the cluster information can be safely stored in memory, because the number of clusters is very small compared to the number of points.
+
+So after we find all the clusters, let's say the cluster number is like 100 or 1,000, even, then we can still store such information on this cluster.
+
+And for every memory pool of the data, let's say we get a batch of data so that each data batch can be in memory, then we can assign data these points to these clusters.
+
+And we can move on to another batch, another batch, another batch.
+
+So in this cluster and algorithm, the more important part is about finding clusters rather than the assignment set.
+
+So this is a great example because it just uses a representative point, got from the base on test one, to create clusters.
+
+And here the cure uses a collection of representative points to represent clusters in a simple way, in space and distance with a number of clusters.
+
+So let me move on to the details.
+
+So in this one, it just takes a random sample of data.
+
+Probably the size of this random sample can be adjusted by the engineer based on how large our memory is.
+
+And then we can cluster these points in main memory using hierarchical clustering.
+
+So I mean, it doesn't have to be hierarchical clustering.
+
+It can be anything like the names or any of them.
+
+But I think that hierarchical clustering is very powerful clustering algorithm if we don't have to worry about the complexity of this algorithm.
+
+But our whole assumption in this whole, like today's classes, we assume that any algorithm that runs the memory does not create a substantial overhead compared to these clusters.
+
+So at least in that perspective, it is okay to apply a hierarchical clustering without worrying about the complexity.
+
+And then you probably burst the clusters and they have clusters of points.
+
+And then we pick representative points from each cluster as a representation of that cluster for radar step 2.
+
+So we first cluster, we pick a sample point for each cluster as distant as possible.
+
+So that means we pick points that cover mostly the boundary of the cluster.
+
+So, I mean, it depends on how we are going to represent the cluster and are you going to do these clustering things.
+
+But at least in the two upgrades of our assumption is we want to find the boundary.
+
+So that is the reason why we find the distant points as much as possible.
+
+And then we move these points a fraction of distance by 21 percent or 30 percent for the centric of the cluster.
+
+So let me show you a work in calculus.
+
+Let's say we have a very simple two dimensional data space where the axis is the size of H, the y axis is the size of 7A.
+
+So here H is the historical researcher and D is the anterior researcher.
+
+So you might see there are some, I mean, you know, this is right.
+
+So, you know, there are some clusters between H and E points and probably there are going to be two or three clusters on the left like H and E.
+
+And let's say here is more like a little bit noisy cluster of the right upper hand of the figure.
+
+Then we apply some kind of so this is basically a central point, right, because we can apply a closer and break them only on a sample point in this one.
+
+So from the sample points, we apply probably the higher field clustering to find these three clusters.
+
+And then we pick some points like representative points, say four, to represent each cluster as shown in this figure.
+
+And then we move them toward the center a little bit.
+
+Then in pass two, so you need to understand why we do this.
+
+So in clustering, in many like efficient clustering, one of the most important choices is how to represent the cluster for a point assignment.
+
+So as long as we assume a Euclidean state and a Euclidean distance, a more between way, a more easier way is to represent like to cover only the centroid and probably the width of the cluster, for instance.
+
+Or we can even get only the centroid alone because that's what I'm talking about.
+
+But the problem is in that case, it is hard to like model this weird shape of the cluster if this cluster doesn't look like a pretty like a circle.
+
+So if we pick some representative points to each cluster, our authentic three pieces, we can represent this weird shape cluster by applying this kind of representation.
+
+So you should understand there always is some pros and cons for every design choice for clustering, even for any algorithm in our whole course.
+
+So the point of this algorithm is because we're going to find these clusters from the sample points, we want to do it better for representing each cluster compared to the remaining, the preserving only the centroid.
+
+That's the reason why you pick each piece that represents each cluster.
+
+So if you find three clusters and if we pick four points from each cluster, then probably we need to preserve these 12 points in memory for cluster two.
+
+Because that's the information of all clusters got gathered from set one or pass one.
+
+Then it has to, since we have all the information that represents our cluster information, we can scan the whole data set by dividing this data into batches.
+
+Each batch is assumed to be fit in memory.
+
+So for every batch that we get from this into memory, we assign each point in the data set to the closest cluster.
+
+So if we have only the centroid of clusters, then this closest cluster means comparing the centers of the clusters with this point.
+
+But since we have some representative points for each cluster, we find the closest representative points to P for every point P and the tenons of P to the representative cluster.
+
+And you know, for defining this closest cluster, there are also more design choices.
+
+But here our way of doing it, we find the closest representative point and then assign P to that point's cluster, that representative's cluster.
+
+So in fact, although I tried to explain it in detail, but the algorithm is really simple, right?
+
+So one question might be, why is there a moon moon process?
+
+I mean, overall, this algorithm makes sense. But one weird point is we moved that data into the center by 10%, which seems like an arbitrary step, right?
+
+So let's think about why there is such a step in this algorithm.
+
+So as we sample points as dispersed as possible for representative, some of them will be on the boundary of clusters.
+
+I mean, that's the whole point of doing this.
+
+So if we just do that, just do find the representative points as shown in the previous slide, the problem is it favors a sparse, like large cluster over a small dense cluster.
+
+Because if you compare these two clusters, you might think that red one is a better cluster than the blue one, because the red one creates more dense cluster,
+
+creates a more easier looking shape compared to the blue one.
+
+But let's say we pick four points as dispersed as possible, and this blue cluster will pick percent before.
+
+And when we assign a new point into either red or blue cluster, then blue one will take most of the new points, because it's a larger than the red one.
+
+So because of that, we don't want to favor just sparse clusters like this much.
+
+So we move the points toward the center by 20%.
+
+So that will shrink the size of the sparse cluster a little bit compared to the dense one.
+
+So it is like balancing between the small dense clusters and large sparse clusters for later assignment of points, right?
+
+So as I said, large is sparse cluster, we shrink more dense, more dense ones as a result of their opposite favor, it's a more dense cluster.
+
+So everything looks good. But okay, let me go back to this slide.
+
+This one. Sorry. Okay. So here it says we assume the equal use space will keep.
+
+So let's think about this assumption. First, why do we have to set the response by number of clusters?
+
+Not because of how this algorithm works, but just because if we do not limit the K, then we are not limiting the number of clusters that really remain in the main vector.
+
+That's the real point. But since if you look at this algorithm itself, since we can apply the hierarchical clustering in set one, and we can just assign x point to the existing cluster.
+
+So here, in fact, this K doesn't have to be a specific number. We just need a limit for K for assuring that our algorithm can run.
+
+At the same time, we can think about the equilibrium state assumption.
+
+Like the algorithm itself seems irrelevant of the equilibrium space because we don't use the sanctuary, right?
+
+We just pick a set of representative points. So at least in this process, we don't need an assumption of the equilibrium state.
+
+But for moving these points into the sanctuary, we need an assumption of the equilibrium state.
+
+Because the movement of the space is the same as creating a symbolic point, which is a little bit distant from its original position.
+
+And this movement requires a notion of the sanctuary. So this process is what requires this operator to assume the equilibrium space.
+
+So that makes sense, right?
+
+I mean, so that's all. This is the cure algorithm. Simple, two-step.
+
+In the step one, we sample a point. We do the clustering, either hierarchical clustering or any other algorithm.
+
+We store the information clusters based on their representative points, move to the center by 20% or 30%, maybe one.
+
+And then we get in pass two, we move on to pass two, and we get every batch of the data and assign a new point into the existing cluster.
+
+So I guess cure is one of the most straightforward algorithms that you might think if I asked you to design this regimen clustering algorithm right now at this point.
+
+Any questions? Very straightforward, right?
+
+Okay, move on to a more interesting algorithm.
+
+So I mean, of course we want to do it better. Cure is good. It's simple as it is good. But there should be a better way of doing this, right?
+
+So let's think about BMR. It's a three-letter, it's come from three different versions.
+
+So BMR is basically a variant of K-means for large-risk resident data.
+
+And it assumes normally distributed clusters in the equilibrium space where clusters are axis aligned ellipse.
+
+What does that mean? It means it applies an assumption on how the clusters look like.
+
+So it assumes equilibrium space, okay, because that's what it's doing.
+
+And another thing is it assumes a normally distributed cluster where they have the shape of axis aligned ellipse.
+
+Which means if we think about the two-dimensional space, the first one is okay.
+
+The second one is okay. If a cluster looks like that one, okay. This one, okay.
+
+But it doesn't allow you to mis-shape the cluster.
+
+So it always has an assumption that every cluster will look like either the first one or the second one, but not the third one.
+
+It doesn't allow a not aligned axis of the ellipse. So that is the basic restriction of the algorithm.
+
+So at this point, you might understand that clustering algorithm is kind of a balance between the restriction and efficiency.
+
+If you don't apply any restriction on the shape of the cluster or the property of the space, then it is really hard to optimize this algorithm.
+
+Because, I mean, we don't have any evidence for doing that.
+
+But if you want to have more evidence, like more evidence, like more assumption on the shape of the clusters or the properties of the distributions,
+
+then we can make the algorithm more efficient, faster.
+
+Because we can remove unnecessary parts of the algorithm based on ours.
+
+But this is our assumption. But a good thing is it doesn't have to be assertable.
+
+It is okay for it to have a different standard deviation along that system, which is a good use for the algorithm.
+
+So the goal here is to find cluster centuries efficiently, mostly in task one.
+
+Why is that? Because most of these resident clusters and co-examples consist of two steps, two passes.
+
+In task one, we want to find good clusters. In task two, we use the cluster information to assign all the points on the disk to this cluster.
+
+So task three is in fact very straightforward for all of our algorithms.
+
+Most algorithms care only about task one. Using five-inch clusters, using a limited portion of the data.
+
+Because we cannot use all the data for doing this clustering.
+
+So let's think about the main idea.
+
+The cure algorithm was... let me say this to you.
+
+So you might think why do we have to care about the shape of the cluster?
+
+The point is storing only the centuries of the clusters are not enough.
+
+I guess that's the common motivation that is shared for this algorithm and the cure algorithm.
+
+We want to store more than the centuries.
+
+The cure algorithm stores a set of representative points to avoid storing more than the centuries.
+
+But here, as we assume this axis aligns a loop state, we can store the overall shape of the cluster in an efficient manner.
+
+That's the reason why we have such an assumption for this algorithm.
+
+So here's the main idea.
+
+The idea is to keep a summary statistics of groups of points.
+
+Or we can say how can we store the shape of the cluster in an efficient way.
+
+So what it does is it reads points from this one main memory pool at a time.
+
+And it summarizes most points from previous memory loads.
+
+And then the memory requirement changes from the proportion of the data to the proportion of the clusters.
+
+So what it means is, unlike the cure algorithm, which samples the data and do the clustering and finishes step one, this algorithm uses all data in step one.
+
+So not just in step two, but in step two, even in step one, it reads all the data from the disk into main memory.
+
+Then the problem is, we have memory, we have a disk, which is a lot larger than the memory.
+
+Then let's say we take this batch, batch one, to the memory and do the clustering.
+
+Then as we move on to batch two, we should summarize all the information from batch one in memory, like using only a portion of the disk, sorry, in the memory.
+
+So that's the reason why, again, this assumes such a strict shape of the cluster.
+
+The point is, how can we summarize the existing batch to the additional information of the clusters before moving on to the next batch?
+
+So after we leave the second batch, then probably the second batch will update the information of the cluster to be a better, I guess.
+
+So as we read more and more and more, then after we read all the batches from the disk, this cluster information is, we can say, is like the overall, our final cluster information.
+
+Then we move on to test two. When we're in test two, we just read the data again, assign the point to the existing clusters.
+
+So I mean, test two is obvious, but the problem is in step one.
+
+So because it doesn't use a sample point, unlike the cura, probably we can say this can be better than cura because it doesn't rely on a curistic sampling of existing points.
+
+Let's skip the challenge. Let me look at the algorithm.
+
+So how it does is based on the categorization of the existing points into three sets.
+
+So every point, so during test one, so I talk only about test one.
+
+During test one, we divide all the points at every point of our test one into one of the three sets. Discard that, compress that, and retain that.
+
+So discard that corresponds to cluster and compress that corresponds to mini cluster.
+
+I will show you an example version. So discard that is a set of points that are discarded because their information is summarized as a cluster.
+
+So what discard that means, a point is already reflected in an existing cluster, so I don't have to get the information of this point anymore.
+
+That's the reason why we call that discard that.
+
+And compress that is similar to discard that, but what they are summarized to is a mini cluster, not an existing cluster.
+
+And there is a retained set, which works almost like an outlier. So these are isolated points waiting to be assigned to a compressed set.
+
+So let me look at the example, which is better to understand this algorithm.
+
+So this is the end point. Let's say that is an illustration of our test one after reading until batch two.
+
+So what I want to say is that two is not that two is important, but more like it is a certain snapshot of our test one.
+
+So during any snapshot of our test one, we have three sets. Basically a discard set which creates a cluster.
+
+So in this cluster, it doesn't get the information of individual points. It summarizes the whole shape of the cluster.
+
+And then we have compressed sets, which create clusters like mini clusters that are a group of points, but they are not exactly a large existing cluster.
+
+And there are some retained sets. So probably we need to limit the number of mini clusters and the number of retained points, because this will take some space in memory when we move on to the next batch.
+
+So, I mean, it is good for us that if every point, every existing point can be summarized into a main cluster.
+
+But the problem is, as we see only a portion of the data, it might be the case that, for instance, here is this point.
+
+Although this does not create a cluster at this point, then probably for later batches it can create a very good one.
+
+But because we don't know the same thing at that point, we just have to get the information of these retained points.
+
+But at the same time, you have too many points in the retained set, this algorithm will probably break because it will require too much space in the memory.
+
+But anyway, this is the idea of this algorithm.
+
+So then our natural question is, if we believe that a point can be summarized into a cluster, then how can we definitely represent it?
+
+This is related to our assumption, because with that assumption, we can represent any cluster or any mini cluster with only 2d plus 1 data points.
+
+First of all, what we need to store is the number of points in each cluster, which is a single number, which is okay to store, right?
+
+And another thing that we need to store is the vector sum, which is basically a vector of size b, where each element is basically the sum of the coordinates of all the points in the cluster.
+
+So we basically add all the vectors because each point is a vector, and all the vectors in the cluster to create a sum vector.
+
+And then we have another vector which is the sum square, where each element is the sum of the squared coordinates of the vectors.
+
+What it means is, regardless of the number of points in the cluster, we only need a specific number of points, sorry, number of data.
+
+A number of points, a sum vector, and sum square vector.
+
+So it's good for us that the number of data elements to store for a cluster doesn't rely on the number of points.
+
+Although that value n will decrease as we have more points in the cluster, but that doesn't require the memory constraint, like memory constraint for that.
+
+So the exact definition of the sum and sum square will look like that.
+
+Any questions so far? Okay, let me tell the person more slides and then ask your question.
+
+So based on the fact that we can represent a cluster with that three vectors, then our problem question is why do we store these three different things to represent the cluster?
+
+The point is, with these three information, we can represent the shape of the cluster.
+
+For instance, what would be the center of the cluster?
+
+Well, we can simply divide the sum vector by the number of points, which is basically the average of all the points, which becomes the center of the space, which is good.
+
+So we have the information of the center. At the same time, we have the information of the variance for each dimension.
+
+So here, if you think about this shape of cluster as a distribution, like if you think about it as a Gaussian distribution, then the variance for standard deviation for each dimension determines the size, basically size.
+
+If the variance is large, that means that cluster is large in that dimension. If the variance is small, this cluster is small in that direction.
+
+So if you think about the equation for computing the variance, then the variance equation looks like this much.
+
+The expected value of x squared minus the expected value of x squared, which is we can compute it by our sum square and sum, because we already have sum square.
+
+The good thing is because of our assumption, we don't have to care about this co-ordination, like the covariance of this distribution, thanks to our assumption.
+
+And this is why the assumption is here. Since we also have very specific shapes of the cluster, we can compute the size of the cluster with the sum square and sum vector.
+
+At the same time, we can also compute the standard deviation as the square root of the variance.
+
+So at least this BMR algorithm interchangeably uses the terms of cluster and the distribution, because this algorithm assumes these two are almost equivalent from each other.
+
+Because every cluster can be considered as this kind of distribution.
+
+So as I said, this is based on the assumption of axis-aligned clusters.
+
+Without having this axis-aligned cluster assumption, we need to store the divided equal variance tree tree.
+
+If this is some kind of option. And that will make the memory usage into the quadratic one, which is avoidable in high dimensional space.
+
+And then benefits. Let's think about the benefits.
+
+So if you look at the outline, I specifically divided this algorithm into two parts.
+
+The first one is mostly about representation, the second is mostly about actual operation.
+
+So at least in the second chapter, second part, I will talk mostly about the representation.
+
+So if you go back to this slide, we know that based on these three informations, we can represent the shape of the cluster very well.
+
+But another thing, if you think about it, another property that we really need is that the cluster information should be able to be updated incrementally as new points get in.
+
+Because I mean, because this is a certain snapshot.
+
+As we have more points, for instance, let's say if we go to the next database, and let's say we have a new data point here, then this new data point should be included in the cluster.
+
+But the problem is, since we don't have any information of the points in the cluster, this cluster's summary information should be able to be updated with the introduction of the new model, which is a little bit harder for some ways of representations.
+
+But our like this BFR representation makes that easy because let's say you have a new model, then we can increase n by one.
+
+We can add the vector to sum, and we can add the square root components to sum square. So it is really incrementally applicable for new clusters.
+
+And what if we need to combine two clusters? We don't have any information of the clusters, like point information, but how can we combine the two clusters?
+
+Because you can just add all these n, sum, and sum square between the two clusters, right?
+
+So I mean, this is a clever way of representation because adding a point is easy, combining clusters is easy, and we can easily represent the shape of the cluster with this information.
+
+So I can say although there should be some weaknesses like the hard assumption, but this is a very efficient representation of clusters for this this resident large data.
+
+Great, then let me do a little bit of practice.
+
+Although it's easy. I think I don't. Well, okay, I'll do it.
+
+Well, how can we represent the cluster of these three points and allow this to be three? Sum is 18 and minus one, hopefully.
+
+Okay, the second one, I can do it.
+
+Okay, the variance of the first dimension, I mean, we know how to do the variance, right? We just follow that equation. Where is it? Where is it? Okay, we just follow that.
+
+Okay, so this is it. This is it.
+
+So what I want to say is, we're going to move on to the third algorithm after we talk about the process, right?
+
+There's three different algorithms having their own ways of representing clusters and their own ways of summarizing clusters and making all information efficient to handle.
+
+So you really need to understand the differences between them.
+
+Okay, then I will move on to the algorithm of this.
+
+The algorithm of this data bar because I didn't talk any of it yet.
+
+Let's look at the overview.
+
+The algorithm works is it first initializes a k clusters and sentries as in a, that's the reason why it is called a variance piece.
+
+Then, so the initializing, the initial centers can be done either from represent fixed data points or randomly, it just depends on how we want to do it.
+
+Then for every chunk in the data bar or a batch, if we call it a batch or a chunk, for every chunk in the data bar, for every point in the chunk,
+
+we get a point and we assign the point to a cluster or a mini cluster if it is sufficiently close to an existing cluster or mini cluster.
+
+If it is not, then probably it will be in the retained set and we need to store that information on the individual.
+
+Then after checking every point in the chunk, we cluster the remaining points because we want to reduce the number of points in the retained set.
+
+So we try to cluster the remaining points creating new mini clusters.
+
+So these mini clusters are not actually one of the k clusters that we initialized.
+
+These mini clusters are, we can think of these mini clusters as intermediate summary of the points before they are involved in an existing cluster, one of the k clusters.
+
+So this mini cluster is mainly for reducing the number of points in the retained set.
+
+And then after creating mini clusters, we try to merge existing clusters and mini clusters between any pair of them if they are close.
+
+So this is the one for loop. But after we do that, we go to the next chunk, we do this again, we go to the next chunk, we do this again.
+
+Got it hard?
+
+Then how can we select the initial centric?
+
+First, probably we can take k random points from the list, which is easy to do.
+
+And then we can take a small sample, plus rate, and use the centric.
+
+Probably it's how one of the variants of k is done.
+
+And in option 3, we take a sample, we take a random point, and we take k minus 1 more based on the previous selected ones.
+
+You remember all the variants, right?
+
+So in this way, we can sample a set of points which are distant from each other so that we can create better represented clusters.
+
+I mean, any option is good. It just makes a trade-off.
+
+Let's think about the actual process of dealing with the chunk of points.
+
+So let's say we are at some point, let's say we are at the point where we dealt with batch 1 and we moved on to batch 2.
+
+So we get a new data into our existing information.
+
+But here we have a single cluster and we have two mini clusters.
+
+As I said, the number of mini clusters is basically irrelevant to k.
+
+And then we have two points that we can set.
+
+So when we get a new point in the chunk, we assign all points that are sufficiently close to any centric into that cluster.
+
+Either a cluster or a mini cluster.
+
+And by doing that, we also need to change the value of n sum and sum squared.
+
+Then, probably there will be points that are not sufficiently close to anything.
+
+So for the points that we think that we should choose how to deal with these points.
+
+If our memory is sufficient, then probably we can retain this point and retain that as much as possible.
+
+Or if we want to do it, then we need to force to use some algorithm to retain that so that they create mini clusters.
+
+For instance, at least in this case, since these two points are close to each other,
+
+so we can create a new mini cluster to summarize the information of these two points.
+
+So that's up to us.
+
+Okay, yeah, this is it.
+
+But if a point is not close to anything, then obviously it should be in the right hand side.
+
+So in this process, we create a new mini cluster.
+
+After that, if you think about the algorithm, there is a step where we merge the clusters into a mini cluster.
+
+So let's say at some point we see that this new mini cluster and our existing mini cluster are close enough.
+
+Then we create a new mini cluster by combining these new mini clusters.
+
+So you might think, what's the actual difference between clusters and mini clusters?
+
+I mean, this is not mini anymore.
+
+This is big.
+
+But it still is called a mini cluster because, here's the problem.
+
+Only the K initial clusters can be called as clusters.
+
+It is very unfair for the new mini cluster because that's just a rule.
+
+This K cluster is not called mini cluster, and every mini cluster that is created during this algorithm is a mini cluster.
+
+So no matter how large this new cluster is, this is called a mini cluster.
+
+But this can be a cluster only when it is combined with the existing cluster.
+
+So it is a very unfair way of saying this, but probably this cluster is just waiting for a chance to be included in the mini cluster.
+
+Until then, this should be called a mini cluster.
+
+That's it, everyone.
+
+So, I mean, then you might think, do we have to do that?
+
+Really do that?
+
+What if we stop calling this one a cluster and call that a cluster?
+
+This becomes a very close one.
+
+Probably there can be one design choice you can try, but this original algorithm does not allow such a thing.
+
+Well, I haven't thought carefully about that, but probably the reason is because this algorithm stays to itself as a variant from K-NES.
+
+So the point of K-NES is the initial centuries get updated by not changing or replacing.
+
+So this algorithm says that it is a variant from K-NES.
+
+Probably it's just trying to use the initial information as much as possible.
+
+But it should create mini clusters because it doesn't want the too many points in the remaining sense.
+
+So probably this algorithm considers this mini cluster only as an intermediate or intermediate summary of the points before them to be included in the cluster.
+
+Then points assigned to a cluster or a mini cluster are written to the trigger's done and ready to use it.
+
+Then one thing that I can say too is, if you understand this algorithm, you might understand that this order is better.
+
+How the data is distributed on disk and how the data got into this memory can change the shape of the cluster.
+
+For instance, in this example, because we have a mini cluster here, we create a mini cluster combining these two.
+
+But for instance, we have a mini cluster here or here so that the order combined into the mini cluster changes.
+
+This whole algorithm is not guaranteed to find some kind of global of this. It's based on the order of points.
+
+But we don't have a way to avoid such an order like variance. We don't have any other choice.
+
+But it is okay. I'll just let you know it.
+
+So that said, this is the end of dealing with points in the new chunk.
+
+Then we probably move on to the next chunk and get new points into our cluster information.
+
+Finally, let's say we dealt with all the data on disk and we are just about to finish the past one.
+
+We have a full information cluster as a big point, but what to do with compressed sets like the mini cluster or retained sets?
+
+Basically two options. The first one is we can treat them as outliers and never cluster them.
+
+We might discard all these points and we do not use their information for finalizing our cluster information, but this might be a little unfair.
+
+So for option two, we can assign it to the nearest cluster for both individual points and main clusters.
+
+Or we can probably think about option three, hybrid.
+
+We can assign the points which are relatively close to the nearest cluster and use them and we can discard the rest.
+
+So this is also not fair.
+
+Any questions so far?
+
+Good. Great.
+
+So then the remaining thing, which I didn't describe yet, how close is close enough?
+
+How can we determine whether the two clusters are close from each other and it's time to merge them?
+
+We need a way to decide whether to put a new point in each cluster or merge them in each cluster.
+
+So the basic distance measure that we are going to use is the Mahalan-Gobis distance with a threshold.
+
+So this Mahalan-Gobis distance is basically very similar to the Euclidean.
+
+We compare every point with a centroid of the cluster which is represented as C.
+
+So basically the Euclidean distance between point P and the centroid C and it forms all the coordinates.
+
+But here the only difference is we divide every element by the standard deviation of the cluster.
+
+So we can say that this Mahalan-Gobis distance is the Euclidean distance normalized by standard deviation.
+
+Why do we do that? Because it reverts to the assumption that points are normally distributed.
+
+So if we think about the centroid, if we don't have any information about the shape, then the Euclidean distance makes sense.
+
+But since we know the shape of the cluster and since we know that our cluster is longer in this aspect,
+
+it's wider and shorter in the width, we can design a better distance. Why is that?
+
+Because let's say our cluster looks like this.
+
+Let's say we have a point here.
+
+Is it suitable? Okay.
+
+Let's say that we have a point P1 and here point P2.
+
+Let's say that Euclidean distance from the center is the same.
+
+But are they similarly distant from the center? Probably not.
+
+So we know that P1 is farther from the center compared to P1 considering the shape of the cluster.
+
+So if we just divide the Euclidean distance by the standard deviation, you can consider the shape of the cluster.
+
+So as a result, in the Mahalan-Gobis distance, we can say P1 is farther from the center compared to the standard deviation, this length.
+
+So this is relative length compared to the size of the cluster for every dimension.
+
+And we can compute this one because we have the sum and sum square factors for every cluster.
+
+So this might be better than just using the Euclidean space.
+
+And the good thing is because we use the terms like standard deviations and the covariance like that,
+
+we can consider this whole thing in a probabilistic way.
+
+So it doesn't change the way the algorithm works, but it just gives us a new perspective on understanding the algorithm.
+
+So for each point P, we probably choose the cluster with the closest center for every moment.
+
+Then the good thing is this Mahalan-Gobis distance is almost equivalent to the probabilistic density function, PDM, of the Gaussian distribution.
+
+So basically, if, for instance, this P is some distance far from the center,
+
+then we can compute the probability of P to be resigned in the distribution model by this cluster.
+
+So the good thing is this is integrable.
+
+Suppose that our distance threshold is 4, let's say that our distance threshold is 4.
+
+Then we know that we have a normal Gaussian distribution table or a figure that gives us how likely it is a point to be distributed with this Gaussian if it is some distance far from the center.
+
+For instance, for standard deviation, it's very unlikely from the center.
+
+That means probably the distance threshold of 4 might be too large, for instance, because it's too far, but it should be anyway.
+
+What I want to say is it's not about making a new conclusion of that.
+
+It's about making the distance more integrable.
+
+And it's about saying to another person that, okay, we will include this point into the cluster because its probability of being sampled is probably like the
+
+I tend to lower minus 6 or 0.1, 0.01, something like that.
+
+So I just think this VMR algorithm is a very good way, gives us a very good way of thinking because it doesn't, it generalizes the concept of the cluster into probability distribution and probability densities in the form of Gaussian.
+
+And okay, I just think these two slides like the how close is close enough and this slide is about assigning a point to the cluster.
+
+It is not about merging clusters, which is described in this slide.
+
+So when to merge the cluster? The point is this Mahalan-Novi distance is harder to compute between clusters because it's mostly about evaluating the likelihood of computing based on the cluster information or distribution information.
+
+So I would say instead of trying to measure the distance between two clusters, we can use a combined one.
+
+So, you know, one of the choices that we can make for the clusters, what we can do here is we first combine the two clusters and then we compute the variance of the new cluster.
+
+If the combined variance is below the threshold, we can say that the new cluster is good, but if it doesn't give us a low variance, then it might be too big to handle.
+
+So this might be one approach that this operator recommends to us for determining when to merge the two clusters.
+
+There are many alternatives.
+
+Okay, that's it. So I mean, I think now all the blocks are there to understand the VFR, how to present the cluster, how it works as an operator,
+
+and how it combines the points and clusters by sequentially updating the memory information in PAS1. Any questions?
+
+How do they aggregate the information of the blocks and the patches?
+
+In PAS1 probably, right?
+
+So, okay, let me show you this again, which is a good question.
+
+So, okay, let's draw this figure again. Let's say we read this.
+
+After reading batch 1, we have a compressed set, we have a discard set, we have a retained set.
+
+Then we read the new batch, V2. Then after we read all the points in the V2, it will create a lot of points in the space, right?
+
+For this point, what would be a good... So if you look at this algorithm, for this new point, we assign the points that are sufficiently close to an existing cluster or mini cluster for some points.
+
+So it will... the lines 4 will update our cluster and mini cluster information by adding these points.
+
+How can we add a point into an existing cluster? Just by increasing n by 1 and doing this.
+
+And after that, if there are remaining points that are not close to any cluster or any mini cluster, we try to combine them into new mini clusters.
+
+And then we discard this point information. And then lastly, we try to find the existing cluster and the new cluster.
+
+So after we do these lines 3 to 6, we update our existing cluster information, probably let's say from this figure to probably this figure.
+
+Then we go to batch 3, which introduces us a new set of points, which will update our cluster information. And then we go to batch 4 by n6.
+
+And then we make it into information about clusters and discard the correct information and move on to the next stage.
+
+Yeah, correct.
+
+What the information that we store is the 2d plus 1, like cluster information of the clusters and mini clusters and all the individual data points in the waiting set.
+
+So if you think about this, like this figure alone, we need to create 2d plus 1 values for the 3 clusters and 1d size vector for that point in the waiting set.
+
+Questions? I guess they're...
+
+So if we're able to combine two regular clusters, does that increase the overall number of clusters? Or do we assign another mini cluster, the biggest cluster, mini cluster to another regular cluster?
+
+Good point. I haven't thought about that. So I guess anyway is okay.
+
+So probably I don't think it's good for us to reduce the number of clusters k because it is kind of the assumption between the input and output of the algorithm.
+
+So probably if I am an engineer, I'll probably combine them as a single cluster.
+
+And as you said, like promote one of the existing mini clusters, the largest one, probably to a new cluster.
+
+Yeah, good point. Questions?
+
+Are there any restrictions for overlapping of multi-gap clusters?
+
+You mean overlapping? Could you say more detail?
+
+Some cluster can...
+
+Overlap with the other...
+
+So I can say, okay, thank you for your question. So probably...
+
+So first thing, it is okay for this algorithm to create overlap clusters. It is just okay.
+
+But I think if the two clusters are very close to each other, almost like almost for creating an overlap, then I can say it is reasonable to combine them into a single cluster.
+
+Because meaning that there is an overlap, so this VFR considers the shape of the cluster.
+
+So if the two clusters are close enough, like this much, then probably I can say their instance is very small compared to their sum of their standard deviations.
+
+So probably in this case, I'll create a new cluster because the new cluster variance would not be that different from the existing variance.
+
+So it is cool to have two clusters if there is an overlap.
+
+But technically, if we set the threshold very high, then very small, I can say, then this overlap can happen.
+
+And I guess it doesn't matter. It does not make the integrity of this whole thing.
+
+More questions? Yeah.
+
+Generally speaking, I'd say the K-means algorithm is very unique when there are a lot of outliers.
+
+And CURE is less prone to that issue. What do you have to say about this VFR algorithm? Is it still not so good at handling outliers?
+
+Great point. So let me repeat the question just for reporting.
+
+So the question is, we can say the K-means is weak, like sensitive to outliers, or we can say weak to outliers.
+
+CURE is probably not that weak because CURE is mostly based on hierarchical clustering, and it does sample to represent the points not summarizing a cluster interrupt essentially.
+
+What about this VFR algorithm? I can say this algorithm is also very sensitive to outliers, I guess basically in two ways.
+
+First one is, unlike in CURE, it summarizes a point of points into a cluster.
+
+So because it considers the real shape of the cluster, we can say it is just better than K-means, which is towards the centroids.
+
+But still, I can say this is still weak to the outliers because of the cluster shape assumption.
+
+And another reason is the outliers create the memory consumption because they will probably on the retained set.
+
+So in this figure, because these two points are in a similar position in the retained set, it could be very easy to win the cluster.
+
+But what if we have many outliers that are equally far from each other? Then we have no way to cluster these outliers in the retained set.
+
+So probably this algorithm will increase a lot of memory overhang for storing all the points in the retained set.
+
+So I can say my answer is, although you might disagree, this algorithm would be not good if there are many outliers.
+
+More questions? No? Great.
+
+So let me move on to the final algorithm.
+
+So for the final algorithm, I will not talk all about this algorithm.
+
+So this algorithm does not require a Euclidean space, a line, a tour, and data, which is good, which means this algorithm is more general.
+
+And it presents points by well-chosen sample points in memory, which is kind of a necessary condition for making this work on the non-Euclidean space.
+
+And it organizes clusters hierarchically as a tree, but I will not talk about how this algorithm represents the organized cluster.
+
+Because first of all, I don't have enough time for doing that.
+
+Second of all, I guess it's not that related to the main algorithm.
+
+So it's discussed in the textbook, so you can refer to the textbook if you're interested in, but I will not consider this as an official part of the algorithm.
+
+So then what I want to say is how to represent the cluster, because I just think that is the main difference between many existing, many different cluster algorithms.
+
+So this GRBPF algorithm represents a cluster with the number of points, same as BFR, and the cluster rate, C, not the centric.
+
+That is important for Euclidean space.
+
+And the row sum of the cluster rate, where the row sum is defined as the sum of the spheres of the distances from each point to every point in the current.
+
+So let's say we have only three points in the cluster, and the row sum of P is, if the distance from Q is 2 and distance from R is 3, the row sum is 4 plus 9 is 13.
+
+That is the row sum of this cluster rate, which is basically a single number, a scalar.
+
+So we store the number of points, we store the cluster rate, we store the rows of the cluster rate, and we store K points that are nearest to the cluster rate and their rows.
+
+We store the K points that are farthest from the cluster rate and their rows.
+
+So the overall number of data that we store is 2K plus 1 points, because we have cluster rate, K points, K points, and 2 plus 1 row sum and 1 number of rows.
+
+That is all the information that we store for representing a cluster.
+
+But they don't seem like obvious to quickly grasp what they mean, right?
+
+So let me justify why they choose such a unique way of representing clusters.
+
+So by definition, you can say the cluster rate is a point in the cluster with the smallest row sum, because row sum is basically a sum of squared distances from all the points in the cluster.
+
+So by definition, a point, if it shows the smallest row sum, you can say that is a cluster rate.
+
+Why the K points nearest to the cluster? Because we need to update the information of this cluster incrementally as new data get in memory from the disk.
+
+Let's say we have this cluster.
+
+Let's say we have a new point P. If you assume a Euclidean space, changing the centroid of this cluster is easy, because we can just update M and some square and square, something like that.
+
+But in a non-Euclidean space, updating this cluster is a much harder problem, because we need to find another existing point.
+
+But the point of summarizing the cluster information is to discard the individual point information.
+
+So we store the nearest points in the cluster as a new candidate for a new cluster rate.
+
+So as P comes in, if we have to, we will probably move on to this new cluster among the K nearest points.
+
+So these K ones are like the next candidates to be promoted to the cluster.
+
+So one of these closer nearest points will be promoted if its row sum is smaller than the existing row sum based on the new point.
+
+So that is when we update the cluster rate.
+
+Why the K points started from the centroid cluster rate?
+
+Because these points are used to determine whether two clusters are close enough to merge.
+
+Like we need to merge this cluster during our Pest1. I can just say Pest1.
+
+Then these K points are not sufficient to determine whether two clusters are close enough.
+
+So for this two cluster, we also store K points at the boundary.
+
+At the boundary.
+
+And these boundary points will let us know whether it's time for us to merge these clusters or not.
+
+So this is the reason why we have K nearest points and K farthest points and their row sums.
+
+So then based on this representation, how can we add a new point to a cluster?
+
+First of all, we add an n to 1 to n, others.
+
+And then for every point that we store, like this plus rate, K nearest points, and farthest points, we update their row sums.
+
+Which can be done incrementally because you already have all of their rows.
+
+So we just compute the new square distance between every existing point and the new point.
+
+And we update the row sums of this whole information.
+
+So far, so good. Everything is good.
+
+And if the new row sum is smaller for the existing point compared to the cluster rate, we will update the cluster.
+
+So everything looks great.
+
+The point is, what if P needs to be included in the representation?
+
+Let's say, in this figure, we can consider that P is better farthest point than this point.
+
+Because P is now a new boundary of the point.
+
+So then we want to replace this existing point into P.
+
+The problem is, the row sum of this P cannot be computed.
+
+Because to compute the row sum of a new point, we need the information of every point.
+
+Because we need to compare the square distances between P and every point in the cluster, which we don't have in the memory.
+
+So the question is, what if P needs to be included there?
+
+We need to compute the row sum of P, which means this row sum. Which makes sense.
+
+So here comes our estimation.
+
+So here comes our proposition.
+
+With the curse of dimensionality, let's say our data is on the 100-dimensional space, like a thousand-dimensional space, based on the design of our data.
+
+We can say, with the curse of dimensionality, almost all angles are right angles.
+
+So I will not talk much about it.
+
+But if you think about it, it seems a little bit intuitive.
+
+Because in the high-dimensional space, the angles are not important anymore.
+
+Because all distances are equally distant from each other, and there are too many dimensions.
+
+So because of that, I will not talk much about it.
+
+But I encourage you to find some information about that to have a more intuitive understanding for that.
+
+Because of that assumption, we can say the row sum of P by the new point is approximately the row sum of C plus n times the distance between P and C.
+
+If you look at this illustration.
+
+So if you just assume that that is the right angle between P, C, and R, then, which is where R is some non-existent point in memory,
+
+we can say that the distance between P and R can be approximated by the sum of the discrete distances between P and C and C and R.
+
+The point is, all the distances between C and R, every point in the cluster, every point R in the cluster, is already computed as a row sum of C.
+
+So what we really need to compute is the distance between P and C.
+
+But we have the information of C because it's a close rate, so we can avoid getting all the points R from the disk for getting the row sum of P.
+
+I just think it's a very clever idea to approximate this P, the row sum of P.
+
+So, yeah.
+
+That's it. So based on our previous approach, we can safely compute the row sum of every point, and we can determine whether this new point should be inside our representation or not.
+
+So if the row sum of any point Q is more than row sum of C for any Q, we make it to the new central.
+
+So you might see that this whole process is based on approximation.
+
+The first approximation is the new close rate will be one of these cases, which might not be the case.
+
+The second approximation is the row sum of the new point is approximated by the integration theorem, which is not always true in many cases.
+
+So eventually, the accuracy of this algorithm will degrade over time as we continuously do this process over and over and over.
+
+So, the repository representation needs to be recomputed periodically from disk.
+
+If you want to reduce some errors, accumulated errors over the process.
+
+And other details of this algorithm are in the textbook.
+
+But as I said, I will not officially include this content as official like the coverage of our course.
+
+You are just free to look at these details or not.
+
+So I might say something about these details for instance, making my exam questions, but these are mostly about not assuming you already looked at these details.
+
+So for instance, when I want to create the exam question on this algorithm,
+
+probably I can use some knowledge of these details.
+
+But these are not because I assume you have looked at these details, but because I want to make my exam question more interesting to study.
+
+Any questions before we finish the class?
+
+No? Great.
+
+Then that's it.
+
+So I can say these three algorithms, compared to the k-means or hierarchical clustering, these three algorithms are not that popular.
+
+Because if you look at these algorithms, they are complicated.
+
+And in practice, many people don't like complicated algorithms.
+
+And many people, in fact, if they really had to address the disk-regimen algorithm, then they will prefer probably QR algorithm.
+
+Because it is simple and it's just based on the representative set of points.
+
+But the reason why I introduced these algorithms is because as a problem solver, we want to design a better algorithm for disk-regimen data.
+
+And I just want you to understand how these algorithms can be designed differently.
+
+And how these algorithms have project concepts that are different from each other.
+
+So you really can understand the designing process of these algorithms.
+
+And what will you do if you are an engineer to solve such a problem?
+
+So if there are no more questions, I will say that that's it for today.
+
+Thank you.
+

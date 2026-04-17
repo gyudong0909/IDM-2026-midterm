@@ -1,0 +1,1138 @@
+Good morning everyone. Let's begin the basic lesson.
+
+So we have finished one topic before. So we covered two overall. We first covered, we
+
+first learned about distributed computing, especially MapReduce and Spark. And then we
+
+learned one problem, which is called, what was it, like the finding, like the frequent
+
+item sets. And we move on to another topic, which is related to hashing. As I said, briefly,
+
+like last time, hashing is one of the most important techniques in computer science.
+
+So it would be, I guess it would be interesting to study what hashing, like how hashing works
+
+and what types of advanced hashing functions can there be for solving data mining problems.
+
+So the name of this topic is finding similar items, because we're going to use a new good
+
+hash function for finding similar items from a lot, like a super huge corpus of documents
+
+or any items. Announcement, so homework one, like assignment one will be posted today.
+
+The deadline is in three weeks, and it will contain probably a few programming assignments
+
+and probably a few like the handwritten assignments. So it will be enough time for you to do it,
+
+but the amount of work is not that small. So I encourage you to start earlier if you
+
+want to make your like the report completely. And if you have any questions, like regarding
+
+the specifications or what you should submit as a result of homework, you please ask any
+
+to me or on ETL. So I'm not sure I announced it earlier or not. We have one TA for every
+
+class like at the back of this classroom is there. So if you have any questions regarding
+
+the homework, because homeworks will be taken care of by this TA. So I don't know the specifics
+
+of the homeworks, but I can like let them know your question, but it'd be better for
+
+you if you directly ask the TA's. One at the bottom, like at the back of the classroom,
+
+or you can ask a question on ETL. So I'm not sure whether we created a board of Q&A on ETL,
+
+but we will do it. And you are free to ask any questions. Just please like read the questions
+
+before you ask something. But we tried our best to clarify every specification of the
+
+homework. So it would be generally okay for you to understand the comments. And recap,
+
+recap. So I guess you remember what we just said there. We our goal was to find frequent
+
+item sets from a large set of baskets, in some ways contains a multiple item. And the
+
+main algorithm is called HRE. And it is basically a disk based algorithm, which causes one disk
+
+has more every size of the frequent item sets. And then we learned its variations and its
+
+improvements for if you want like multi stage algorithm, like multi stage algorithm,
+
+dual algorithm, and some random sampling for a continuous algorithm like that. Each of
+
+these algorithm was not that complicated, but they were based on different motivations
+
+and different goals. So I guess it would be good to understand why people have designed
+
+this different algorithm with different purposes and to understand how they actually work.
+
+Well, I think I don't have to explain this again. But for instance, if you think about
+
+the PCY algorithm, we create a hash table, right? We want to use this tile memory in
+
+a test block, which is the good motivation, and then we compress it into a bitmap and
+
+type it into while we really copy and paste it. I guess you remember the details.
+
+So any questions regarding the course, like the homework or the previous lectures? Good.
+
+I mean, I guess the lecture is so far so good. It was not that hard so far, I guess. It can
+
+be harder later, but apparently I think it's good. So let me first define the problem or
+
+introduce the problem. So the main problem is finding similar as its name implies our
+
+goal is to find and say we are working on the web. We know that there are a lot of web
+
+pages in the web. And let's say we want to look for pages that have near duplicated content.
+
+For instance, here, there are new articles, but they are mostly about the same thing.
+
+I mean, like the earthquake of magnitude 6.8. But they will not be the same. Their contents
+
+can be a little different because they are written by different reports. But most of
+
+the time, they say about the same thing. So let's say we want to find such duplicate
+
+pairs from the large set of articles to use them. But the challenge is, I guess you understand
+
+the complexity thing. So the challenge is to compare all possible pairs of articles
+
+with higher quadratic complexity in terms of the number of documents, which is basically
+
+infallible if the number of documents is large in the web. So our main question is, we want
+
+to compare these documents based on their similarities, but we want to avoid this quadratic
+
+complexity, which seems really hard because I mean, it seems that we need to check all
+
+pairs to do something. But the question is, isn't it even possible to reduce the complexity?
+
+So that would be the main question that we're going to study today.
+
+So before we describe how we do it, let's think about the problems. Because the problems
+
+should be interesting enough to study them. So the first complication may be finding similar
+
+documents. So exactly as I introduced in the previous slide, we want to find textually
+
+similar documents in a large group. In terms of character level similarity, it's a similar
+
+So that's important. Here, we do not think about the meaning similarity between documents.
+
+Because let's say several documents have almost the same meaning even though their representations
+
+are different. But our topic is not about finding semantic meanings of documents. It's
+
+mostly about finding character level similarities or sentence level similarities, which is more
+
+related to plagiarism. So the point is, many documents overlap significantly but are not
+
+identical. So let's say if I want to detect plagiarism from your submitted homeworks,
+
+then I don't expect you to be identical to someone else's submission because we are not
+
+that I mean, studio, right? So you're going to change the homework a little bit. So probably
+
+I will try to find the similar documents by the overlap, at least by 50%, like 30% as
+
+a number collection. Or there can be many meter sites, which are just different sites
+
+stating basically the same thing of the other sites. So we can probably pick those mirror sites
+
+or similar articles as introduced in the previous slide. So if you think about it, there can be many
+
+potential applications of this topic, this problem, finding similar documents.
+
+Another application is, so later we're going to introduce recommender system, which is another
+
+present day topic in data mining. But one of the most important algorithms for recommender system,
+
+like recommendation itself, is called celebrity pool. So we're going to learn later, so you don't
+
+have to worry about it. And let's say we want to recommend items like by others with similar
+
+takes. What does it mean? It means, let's say I want to recommend a movie to like, let's say
+
+to some of you, then one way to do it is, so I have the whole system, right? And I know
+
+which person interacts with which movie, like which person watches which movie. Then for instance,
+
+if I want to recommend movies to like, let's say student A, then I can find other students
+
+who have similar tastes with this student A based on the similarity. Then here the document is the
+
+watch history of this person. And I think it makes sense. Based on the watch histories, I want to find
+
+the similar users for a target user. And then we can recommend new movies based on the similar
+
+users, right? So although the actual implementation of this recommendation model is a little bit
+
+different from what I just described, but I just think the motivation is correct. For instance,
+
+in Amazon, we can say that to customary all similar if they have similar purchase item. Or in Netflix,
+
+we can say customaries watch and rate movies. But we can say these two people, two persons,
+
+are similar if their watch histories or rating histories are similar. But the problem is in these
+
+two systems, Netflix, Amazon, they have like even like a billions of probably users. I guess it's
+
+not billions, but almost like more than one billion users, which is a lot of them, right?
+
+So let's think about the solution now. So I guess you now understand why we solve this problem,
+
+which seems to be important. So before we describe the actual thing, like actual algorithm,
+
+let's think about the motivation or the basic idea of what we do. So we know how hash functions
+
+work. Typical hash functions are basically a random uniform. And we say a hash function is good if it
+
+is more like a random uniform. So let's ask your hash function and you want it to be two documents.
+
+Then we can say for an ideal hash function, H of B1 and H1 of B2 should be independent of their
+
+actual similarity. That is like the definition of a good hash function. But what if we have a hash
+
+function that has the locality sensitive property? That is like a big question. So let's say the
+
+probability that the hash value of B1 and the hash value of B2 to be the same is large if B1 and B2
+
+are similar. So that means we are the unaligned hash function, but we expect the probability that
+
+the hash values are the same for a pair of documents is proportional to their actual content
+
+similarity. So that is the meaning of the locality sensitive hashing. So this hash function, locality
+
+sensitive hash function is no longer a uniform. It is more like a proxy of the document similarity
+
+or the item similarity. So if we have such a hash function, then we can use this hash function to
+
+find similar documents and eventually we can reduce the complexity for comparing documents into
+
+almost linear. So I will describe the details later, but this is like the whole idea of our thing.
+
+Okay, so here comes the word locality sensitive hashing, L, S, which is a basic idea to find
+
+pairs of similar items and large them without the contract programming for us. So as I said,
+
+so we understand this hash function has the locality sensitive property. Then if we have
+
+such a good function, we can follow this way. We throw items into buckets using several different
+
+locality sensitive hash functions. Then since we expect that a similar document will have a
+
+higher probability to be put into the same bucket, we can say we do that for several different hash
+
+functions and then we examine only the item pairs that share the bucket for at least one item. So
+
+for a single hash function, it may not be guaranteed that the two similar documents are
+
+put into the same bucket. But if we create multiple independent locality sensitive hash functions
+
+and if we examine the item pairs that share the bucket for at least one time, then you can say
+
+it is probably an accurate approximation of the old pair comparison. So as I said, I will
+
+describe the details later. To the upside of this approach, only a small fraction of pairs are
+
+examined, which is great for us because we no longer have to compare the items that are not put
+
+into a single bucket. That's the same bucket. But the downside is there will be false names.
+
+Some pairs will not get configured. And similar to our previous class, previous lecture, it is really
+
+hard for us to remove false names from almost all assembly-based or almost all approximation of
+
+right-handers, which is fundamentally different from eliminating false positives. You should
+
+always understand the differences between these. So this is our whole overview, our whole topic.
+
+So you really need to understand this one. But it will be more clear if I explain more details.
+
+So from now on, I will describe how our framework will work based on locality sensitive padding.
+
+This is the big feature. Our whole framework will consist of three main stages, where we are going
+
+to cover only the first two today, and the last one next time. So shippling, mean hashing, and
+
+locality sensitive hashing. It doesn't mean anything to just read it to you, but I'll
+
+anyway read it. So the shippling is a process to create a characteristic matrix from a set of
+
+documents where the characteristic matrix summarizes this whole document. And then in the mean hashing
+
+set, we create a signature matrix, although I didn't explain about that, but still we create
+
+a signature matrix that reduces the size of the characteristic matrix. And from the signature
+
+matrix, we expect it to effectively approximate the distances between them. So what we want to do
+
+until this part, like mean hashing is, we create a large matrix that allows us to approximate the
+
+distances between them. And then if we are able to compute the distances very fast, then we're
+
+going to apply the locality sensitive hashing function later. So this is the illustration.
+
+Shippling, mean hashing, and locality sensitive hashing. So I will come back to this slide
+
+after I explain everything, like at the end of today's talk.
+
+So I'll just explain the problem, and then we're going to talk about shippling and mean hashing,
+
+like the first two steps of our whole framework. And then I'll talk about a little bit
+
+detailed information on mean hashing. Questions?
+
+Good. Okay. So let's talk about the shingling. So what is shingling? You can understand shingling
+
+as a compact representation of documents. So our whole goal is to compare all the documents,
+
+and then we want to find a pair of similar documents. But the document itself is a large,
+
+I mean, a single document itself is a long, large data, so we don't want to compare it with
+
+large data. So we don't want to deal with every original document in our whole algorithm. So we're
+
+going to learn, we're going to map each document into some kind of pre-determined vector, some kind
+
+of that. So the shingle is one process for that. So, page shingles. What is a shingle? A shingle is
+
+basically a length-page string. So for instance, if our document is ACBADE, like a very simple
+
+document consisting of seven alphabets, then it pays to, and the set of two shingles are AB, BCC,
+
+BADE. So it is super simple way to represent the document at the step of working. So here, why do
+
+we care about the shingles? Because shingles are used for identifying less fully similar documents,
+
+not meaningful similar documents, but at least in terms of the characters. And there are several
+
+options for handling white space. For instance, we can replace any sequence of white spaces with
+
+a single blank. So it would be clear if you look at the example. If you're using that document,
+
+and then it pays nine, and if we replace the sequence of white spaces into a single blank,
+
+then this is a set of nine shingles that represent this document. So in fact, our whole LSH thing,
+
+our whole framework does not rely on this specific way of shingling the document. But
+
+you can consider this as one possible way to represent the document as the set of words.
+
+So at least in this way, we have more like a shingle set that can be applied to
+
+universally to all documents in our data set. So if we apply these page shingles for a hundred
+
+documents in our whole data set, then we can create a binary vector, which has the same length
+
+across all documents that represents the contents of the document in this way. So by doing this step,
+
+we now transfer a document, a series of words into a set of words. So now based on that,
+
+since we represent the document in this way, we have to define similarity in terms of sets.
+
+So for simplicity, we'll define the similarity as a Jotpart similarity between k shingle sets of
+
+documents. So this Jotpart similarity is quite popular and super easy to understand. It's a
+
+simple similarity measure of sets based on relative size of intersection. So the Jotpart
+
+similarity between these two sets is three over eight, because they have three elements as an
+
+intersection and they have eight elements overall. So super like three or four, right? So
+
+we can say if we represent the documents as a set of shingles, if their Jotpart similarity is high,
+
+we can say, we say that they are similar. And I guess there is no confusion in that process.
+
+Although someone can say, hey, a shingle is too like a straightforward way to represent documents.
+
+We need a better way to send documents and better way to define a similarity function,
+
+which makes sense. But at least today, we're going to assume a simple way of representing
+
+documents in a k shingle and Jotpart similarity. And if the Jotpart similarity is one,
+
+that means the two sets are identical. That means the two documents are identical.
+
+So first we'll do, so today's a little bit about implementation. We follow the whole
+
+framework one by one. So after we create shingles, which are a complex way to represent documents,
+
+but still shingles are big. Because every single, let's say we have a k equals nine,
+
+every single consists of nine characters, which takes nine months. But we don't want that. So we
+
+want to hash the shingles to four binding integers, which are all lookings. The way we do it is because
+
+if you create nine shingles in this way, then we will have a set of whole nine shingles for
+
+reverse or whole documents in our whole dataset. But we know that among all possible sequences of
+
+nine characters, only a very few subset of them will actually appear in our dataset. Because
+
+English words are a very compact space compared to overall the whole possible alphabet space.
+
+So we want to map these nine shingles into fewer bytes as a plugin for a very automatic.
+
+So let's say if we design a hash function, so here this hash function is not the locally
+
+sensitive hash function. This is just a hash function. So you create a hash function,
+
+and we transform nine shingles like string into a four byte integer. Then we can say
+
+that because the number of potential nine shingles would be good, we can say almost all four bytes
+
+are used effectively in our four byte space, and we can reduce the space by two times just by doing this.
+
+Make sense? I guess it's a little bit more complicated to say instead of four
+
+nine there. I really want to say there's each of these nine. Because nine shingles are basically
+
+sequences of nine characters, and we know that most of those possible sequences are not actually
+
+there. So that's the reason why we hash them. If this assumption is violated, then there's no way,
+
+like the reason why we do this, because there will be a lot of collisions. In this stage,
+
+we don't want collisions. We want to minimize collisions. So we probably should
+
+think carefully about the size of the output of the integers, which is four bytes now.
+
+So after we do this thing, we create k shingles, we create tokens, then we have this single
+
+characteristic matrix that represents our whole data set. Here, if your row is a shingle,
+
+and we have a row index as a group. So here we do not assume a hash function, we just assume an
+
+increase number around zero. And each column here is a document. S1, S2, and S3 are different
+
+documents represented as sets. So this document S1 contains this shingle and this shingle. This
+
+document contains this shingle alone. So at this point, every document is now a set, which is
+
+basically a binary vector. So by doing this, we've transformed the problem into comparing
+
+documents into comparing binary vectors or comparing binary sets. So here, in this sense,
+
+since we have a data structure that looks like this way, we can compute the Doppler
+
+singularity as the column singularity. So if we compare this, for instance,
+
+S1 and S3, just by looking at these two columns, we know that the Doppler singularity is one over
+
+three. Because they're linear, they have three ones, but their intersection, they have one one.
+
+So we don't really have to look at the documents anymore. We just need this table to do something.
+
+Okay, so what's out of here? It is not the actual way we store data, because this table would be
+
+greatly sparse. All the elements will be zero, because we create the set of all the universal
+
+shingles across all the documents in our data set. So we do store a dense table in this way.
+
+If you think about the term, we can say we will probably use the, what was the name, the tripled
+
+method, which is a basic way to store a sparse data set. And in fact, if you learn more about
+
+large data mining, you will know that there will be, there are many different ways to represent
+
+large data based on their using their sparsity. So although I show you this as kind of a
+
+dense table, in fact, we use a different way to store it actually in our memory.
+
+Okay, any questions?
+
+Yeah, yeah, I mean, it would be one minor minor implementation detail, but we can absolutely do it.
+
+Or one thing is, we can even consider an element of a shingle as a word. So here,
+
+each element is an alphabet, right? So the nine shingles mean a sequence of nine characters. But
+
+we can just safely think about a shingle of words. So for instance, if a page two, page nine,
+
+nine shingle, then you can probably think about a sequence of nine words or representing words.
+
+So the base idea is, here idea is, we want to represent the document as a set of something
+
+that is shared across all the documents. So it can be like our choice to whether what case we
+
+should use and how we slide this item, slide this thing, and how we treat the white faces,
+
+like all these things are minor things that we can control. Thank you. Yeah, great question. Word to ask?
+
+Great. Okay, let's move on. I mean, shingling itself is not that much difficult to understand, right?
+
+So let's go to mean hashing, which is like the main body of thing.
+
+The problem is, it's good that we represent these documents as a characteristic matrix. So just by
+
+doing that, we can say we can reduce a lot of memory for the stories. But the problem is,
+
+characteristic matrix is still too large, probably because we have too many shingles to represent these documents.
+
+So our goal is, we want to replace each step or replace this document as a small vector,
+
+which we call signature. So our goal in this step is to transport our characteristic matrix
+
+into a signature matrix, which is much more dense and compact representation compared to the
+
+characteristic matrix. So here, our goal, our expectation for creating the signature is,
+
+the signature matrix should be containing the information of document similarity,
+
+because if we lose such similarity information, then there's no reason why we create this signature
+
+matrix, right? So we expect that by comparing the signatures of two steps, we should be able to
+
+estimate the top part similarly. And by mean hashing, we can actually do it. And by the larger the signatures,
+
+the more accurate the estimate. So by using the mean hashing, we can control the trade-off between
+
+accuracy and efficiency. If we apply a larger signature, then it will be more accurate, but we can
+
+do the vice versa. So, is an example here. So we see that the signature matrix is a large vector,
+
+so is an example here. So we have two documents, for instance, and this document will be based
+
+basically to represent the set of symbols, and we will present the symbols as a simple signature
+
+vector. So by comparing the signature vectors, we have a more effective idea on how similar they are.
+
+So mean hashing is a technique to do it. Mean hashing is a technique to create signatures from
+
+the characteristic matrix. So the idea is, I will show you the example, we apply several random
+
+permutations of the row. For each permutation, the mean hash value of each step is defined as the index
+
+of the first row that I had one. The result is a signature matrix where the columns are sets and the
+
+rows are mean hash values, and is smaller than the characteristic view. So let me just directly go
+
+into the example, which will be much easier for you to understand. So here, the purple, like the,
+
+okay, so this info matrix is the characteristic matrix. We have four documents and we have a
+
+signature, right? So each document is a length vector. So the purple one, that is a permutation.
+
+So we start from the simplest permutation, which is just an increasing number. So we follow the
+
+permutation, one, two, three, four, five, six, seven, and for each document, we store the index of the
+
+first one. So the first document, the index will be three, right? The marked one. In the second and the
+
+third document, the first one will be the first, the one one. For the last document, the first one
+
+comes with that index too. So it's okay. Three, four. Then we design another random permutation.
+
+So any permutation is okay. It just has to be a random permutation. So this new permutation is
+
+opposite. Seven, two, one. Then if you follow that order, then for the first two documents, the first
+
+ones appear at the second index. So two. For the third document, one appears at the first one,
+
+one, and the last document is one, two, three.
+
+Not hard, right? Let's go to the final one. That permutation looks like a more complicated.
+
+But we can still follow it. If we follow from one, two, three, four, and I follow again permutation,
+
+for the first document, the first one is there, one. For the second document, one, zero, two, zero,
+
+three, zero, four, zero, five, one. The five is the first element. And then for the third document,
+
+three, last document, two. Okay? Question? No, right? So when we do it, there is a solo point.
+
+People ask whether the mean hash value should be the original number of the row or the number
+
+in the permutation order. So let's say we follow this, the last permutation, right? So here,
+
+what we store is the index of what we store in the order. So for the first document, we store
+
+one because the one is the first element, and we store five, this is five, is the fifth element.
+
+But we can instead store the index of the line. For instance, here,
+
+okay. For instance, the first document, since the first index comes at the third line, we can store
+
+three. For the second document, we can store six. For the third document, we can store two. For the
+
+fourth document, we can store five. So these are just the line numbers of the first ones when you
+
+follow the new permutation. So this one or that one, my answer is it is okay. It is okay as we are
+
+consistent. So to understand why it is okay, we need to understand why we do this mean-hashing.
+
+So the whole goal of this mean-hashing is not that we want to create some accurate matrix,
+
+like some accurate matrix that has an answer. It is more like we want to approximate this whole
+
+characteristic matrix in a more complex form. So as long as we are consistent, we can say some
+
+property is still satisfying our signature matrix, although I didn't explain about the property yet.
+
+So as long as we are consistent, we are good.
+
+Then important thing, why do we do this? Why do we create these permutations and record the line
+
+number which doesn't mean anything? The surprising property is here, which is the core
+
+of the mean-hashing. Probability that mean-hash values are the same is the same as the dot-card
+
+similarity of that. You do get the sense? Like for instance, if we go to here, the probability that
+
+these two documents have... Okay, let me go to the later example. Okay, so here,
+
+so this is before I explain the details, so let me look at the example. Here, let's say columns one
+
+and two. If you compare these documents one and two, we know that there is a dot-card similarity
+
+one over four because their reading is four, but there is a second each one. If you compare
+
+their similarity, their similarity signature is one over three because they are once the same element
+
+to here, but the two elements are different. Okay, and then if you compare the columns two and three,
+
+the dot-card similarity is one over five because there are five ones overall, but their signature
+
+similarity is one over three because they have one the same and they have two different signatures.
+
+Okay, so here the dot-card similarity and the signature similarity seem to be different from
+
+the others, seem to be irrelevant to each other, but theoretically it is known that the probability
+
+that the two documents should have the same signature is the same as their dot-card similarity,
+
+so which means if you create infinitely many signatures, then the two numbers will be probably
+
+the same because the probability is the same. Does that make sense to you? So for every signature value,
+
+if they can be altered, that they came the same or they came different, it just depends on what
+
+permutation that we use, but if we apply a uniform random permutation to create many signatures,
+
+then eventually the signature similarity will converge to the dot-card similarity.
+
+So this is before I explain why, but it's just the thing here. Okay, so because the probability is the
+
+same, it is basically a cradle. If you create smaller, fewer signatures, then it can be
+
+different from the actual dot-card similarity, but if you create many signatures, then it will
+
+cause more memory. So let me see why. Let's say we have two columns as one and as two, which
+
+represent two different documents, G1 and G2. There are three classes of rows existing. First,
+
+pie-bents. So if we compare two columns in the permutation matrix, they have either one in both
+
+columns, which is pie-bents. They have either one, one, and one, zero in the other side,
+
+which is pie-bent Y, and they have zero in both columns, which is pie-bent Z. So every row is either
+
+pie-bent X, Y, or Z, obviously, if you think about these pair of documents as a matter of study.
+
+Then let's say there are X rows of pie-bents, like small x, and the Y rows of pie-bent Y.
+
+Assumption. Then the dot-card similarity between these two documents is X over X plus Y, obviously,
+
+right? Because X is like the Y and the Y is the M. Then let's think about the probability that
+
+their mid-touch values are the same. Here the median function is 4-page. Then the probability
+
+that their signatures or their mid-touch values are the same is that they meet pie-bents
+
+before they meet type Y. Why do we say a word like mid? Because we record the index of the first
+
+row that we counter. So if for type Z, if these two columns have zero in both columns, we will skip
+
+those rows. But as soon as we counter either X or either Y, we stop there and we record them.
+
+So that's the reason why we care about the probability of meeting X before Y. We do not consider
+
+the time Z. Then what is the probability to meet X before Y? The probability is simply X over
+
+X plus Y. Which is, I mean, it's not even a complicated math, but it totally makes sense.
+
+So if we apply a random permutation for each signature, the probability that the signature
+
+should be the same is the same as their dot-card similarity. So although this signature matrix
+
+seems to be irrelevant to the characteristic matrix, it is even irrelevant from the contents
+
+of the document. So now here, its integers represent nothing. It is just an impact and it doesn't mean
+
+a word, it doesn't mean a character, it doesn't mean anything about it. But this is much more
+
+complex compared to characteristic matrix, and it is much easier to compute the similarity compared
+
+to this large sparse matrix. That is like the goal of doing this mean-hash, and it's a great idea, I think.
+
+So again, this is the last slide that I skipped. So the similarity of signatures between two
+
+documents is the fraction of the same ones. So as I repeatedly said, the expected similarity
+
+of two signatures equals the supply similarity of the sets that the signatures represent.
+
+So the longer the signatures, the smaller will be the expected error. Okay, so now this signature
+
+matrix is the final representation of documents that we have before applying this locality-sensitive
+
+hedge function. So still, even though we have such a good signature matrix, still the problem is here.
+
+We still need quadratic complexity to compare all pairs of documents. Even though each document is
+
+now a very complex vector, which is good, but still we don't know how to avoid the quadratic
+
+complexity because we still have the comparable variable base column. So until this point, I
+
+didn't explain the core idea of this locality-sensitive hedging at all. I just explained the
+
+preparations for going into that stage. Any questions?
+
+No? Clear? Am I too good for explaining this one? Because this can be a little complicated,
+
+but I guess you now understand kind of it. Okay. So let's go to the big picture, right? Big picture.
+
+We have a document, we apply a shingly, we represent this document and set up a training
+
+element k that are appearing in the document, and we apply a main hedging, we create shingly
+
+shirts that are short integer vectors that represent the sets, and we reflect their
+
+similarity. Okay, but as I said, we're going to cover the last one later, back on the next
+
+shingly. Okay, so let's go to the final part. I mean, I've been doing this lecture for several
+
+years while I was at KICE, and I almost took all the time to explain this, but I'm just not sure why
+
+I'm more faster here in the same year. Probably my English got better? I don't know. So anyway,
+
+let's go to the final part. I guess it would be okay for you to have some, like, the ability time
+
+before the next class, so I guess it would be okay. Anyway,
+
+main hedging looks good. Main hedging is a great idea, but the problem is, in fact, permutation is
+
+an expensive operation. So if you think about it, I mean, if you think a little bit about
+
+this permutation, then you know that permutation is a type of expensive operator, because
+
+permutation is hard to approximate. Permutation is like a deterministic, global operation, which is
+
+hard to parallelize or hard to approximate. So we want to avoid permutation, especially if we have
+
+a lot of them, like, let's say, one billion of them, because the characteristic matrix can be
+
+really large. The number of rows is the same as the number of shingles in our entire data set,
+
+but it might have one billion of those. So our idea to approximate permutation is there. So we
+
+are going to apply a random hash function to row indices, one to n, and we sort the rows in order
+
+of their hash values. Then the result is considered as random permutation, which also makes sense,
+
+right? So I mean, in this way, we do not guarantee that the result is the same as the permutation,
+
+because if there is a collision, then multiple rows can be mapped to the same, like, the same
+
+hash value, or if this to be considered as an approximate or permutation, then this hash function
+
+should be sufficiently uniform. So this approximation is based on our belief on the probability of this
+
+hash function. So if the hash function is good enough, then by sorting the hash values, we can
+
+approximate the permutation. But you might think sorting is an expensive operator, right? I mean,
+
+if we have to sort the hash values, then probably I'm going to just permute the row, which can be
+
+faster than sorting the hash values. But the problem is we don't have to really sort the hash
+
+value. If we implement the permutation in this way, we have a much better way to approximately
+
+sort. But it's our ideal to implement this, we create a slug matrix with this kind of intermediate
+
+data structure or tracking the row number, and we initialize all elements to be fitted. Then we
+
+update this element and they conquer smaller values. So I guess it would be better for you to
+
+see an example. Okay, so we have a characteristic matrix consisting of five rows, five signals,
+
+and two sets to document them. And we let's say we just apply a two random response, x modified,
+
+and x plus one modified. So it is important for us to apply an A permutation. So here,
+
+these two hash functions correspond to two random permutations. So as we approximate a permutation
+
+as a hash value, a sorted hash value, if you think about it, what we do in our previous mean
+
+hashing algorithm is to record the first one, right? We follow the permutation and we record
+
+the first one. Then in our actual implementation that corresponds to, we find the row with the
+
+smallest hash value because our sorted hash values responds to permutation. So we just care about
+
+the smallest value, not the entire sorted hash values. So what we actually do is we create a
+
+slot matrix, which is a simple two by two matrix, which is basically an intermediate signature.
+
+Then we apply a hash function, all the hash functions that we have to every row in the
+
+particular sequence. Then the C1 has one there in the first row, right? So the hash values for the
+
+first one is one and three based on our hash value. Then this one and three are smaller than infinity.
+
+So we replace infinity with one and three based on the values of these hash values.
+
+That means that are the current minimum until when we look at the first row. Then we go to the second
+
+row, we apply these two hash functions, but in the second row, our second document has one,
+
+or the first document has zero. So we only look at the second document and we apply these two hash
+
+functions to the second document and which give us the value string zero, which are smaller than
+
+infinity. So we replace infinity with printer. We go to the next row where the two documents have
+
+ones there. Then we apply the hash functions to the row events and replace three, and then we
+
+replace the original one through one, three, two, zero with this one. We check whether we should
+
+replace them or not. But since this two is smaller than three here, we replace three with two, which
+
+becomes three. All right. We go to go and if you look at the last row, the C2 has one. So we apply
+
+the hash functions which give us values of zero and one. Compare zero and one between zero. Zero is smaller
+
+than two, so we replace them as zero. So the final signature matrix is one, two, zero, zero. So you need to
+
+understand what this actually means. So while we iterate from the first row to the last row,
+
+what we do is we replace the existing signatures with the smaller ones if we encounter one.
+
+Okay. So we follow the first row from the first row to the last row. We look at where one is, and
+
+for every one, we compute the hash functions and if the hash values are smaller than the original
+
+values, we replace them. So by doing this, yeah.
+
+Sorry, can you say a little louder?
+
+Okay. Yeah, great. So yeah, so if, let me repeat the question. So if any row has zero, zero,
+
+can we ignore that row? Because that means we can say that is corresponding to, where is it?
+
+Type Z here. So in fact, that doesn't affect our things like jockeys already at all, so we ignore them.
+
+Great question. More questions? Okay. So this works because we only care about the minimum.
+
+Like if you really need the whole sort of hash values, then it would be hard for us to
+
+approximate in this way. But since we care about the minimum, we can simply do it. So you can easily
+
+understand this is a linear grid, which does not take that much memory and everything is really
+
+simple. So this is a great way to approximate permutation, which is an extensible operator.
+
+Okay, good. So for someone who is still like a little confused for polygons, we have an algorithm,
+
+which is also simple. So let T be a characterizing matrix and then we initialize the plot matrix M
+
+as infinity for every other. Then for each hash function, hi, and a colon C, we initialize that
+
+like part of the slot matrix infinity. So we have a separate initializing. Anyway, the first row
+
+and column in the characteristic matrix, if the value is one, only then for each hash function,
+
+we apply the hash function to the row in batch. And if the hash value is smaller than the
+
+corresponding, same with random, slot element when you place it with a new hash function. That is the
+
+whole algorithm, right? Like the simple 9-line circle. Okay.
+
+So we have a part quiz. So, okay, so it is obvious that we have some time today. So let me give you
+
+two or three minutes to put this part in.
+
+Okay.
+
+Okay.
+
+Okay.
+
+Okay.
+
+Okay.
+
+Anyone finished? There's Ryan. Yeah, I guess many of you have finished. So, I mean, I don't have to do it
+
+like because it's easy, but let me just quickly do it. Okay. So we look at that characteristic matrix
+
+from row one to row four, and we have two hash functions, right? So for the first row, since S1 has one,
+
+we apply the hash functions to there. And, okay, so we already have computed hash functions.
+
+So our slot matrix looks like a two by three matrix, all infinity, like infinity,
+
+three, right? So for the first row, we are playing this to infinity to one and one. For the second row,
+
+three and zero. For the third one, three and three. For the third row, zero and two. So we should be zero.
+
+I think two is an easy example. Am I correct? Okay. Okay. So let me go to the final few slides.
+
+Okay. So I want to say that, so, I mean, our course is dedicated to large data mining. So
+
+although I believe machine learning or deep learning or even AI is a thing that is happening
+
+these days, and they are really important, but I'm the kind of person who still believes that there
+
+is some building on this traditional data mining, because not everything is great for machine learning.
+
+But if you think about, at least if you think about language or documents, although our goal of this
+
+topic is not about documents, more about like approximating the quadratic complexity comparison
+
+into smaller ones, and it doesn't have to be documents, can be any data entities possible.
+
+But if you just, if we reduce the scope to documents, if you really think about the documents,
+
+then AI is really good for documents. I mean, there is no, almost no reason we develop some
+
+data mining algorithms for documents these days, because they are too good. So what I want to say
+
+is in the sense of our goal of full mapping, the MIP hashing is not the only way to vectorize
+
+documents. There can be many other ways to vectorize documents, and the goal of
+
+motoglue sensitive hashings to is meaningful, even with different types of signatures.
+
+So let's think about another simple way, tf-idf. I think I introduced it in our first class, but
+
+probably you don't remember it, but tf-idf is a popular way to create a signature. Another
+
+signature. So let M be the number of unique words in the therapist, and tf-idf creates a length M
+
+with a valid signature for its document. So that is like the infinite element. So the i element
+
+of signature for document k is tf times idf, where tf is a paired frequency. The paired frequency is
+
+higher if a word appears more often in a document. And then it is multiplied with the inverse document
+
+which is the inverse of the number of documents that contain that word. So we know that a word
+
+has a higher tf-idf score if that word is rare across the dataset, popular, or often frequently
+
+appear in a single document. So if you apply a document, if you represent a document in this
+
+tf-idf, we can basically create a signature that looks like this one. So here the new signature
+
+matrix would be with the documents s1 and s2 and s3, and there can be many words like the base, ball,
+
+peak, like that. And here probably their tf-idf scores can be stored or zero if the word does not
+
+appear at all. So for instance, 0, 0, 0.3, 0.5, 0, 0, something like that. So this also can work as a
+
+signature matrix, right? Because as we compare these two columns, so it's up to us whether we call this
+
+matrix as a characteristic matrix or a signature matrix. So because characteristic matrix and
+
+signature matrix are both representations of documents, although their compactness are a small
+
+a little bit different, but let me call it a signature matrix in this case. So one thing the
+
+same as our previous signature matrix is by comparing the columns here in this table,
+
+we can approximate the similarity between documents. So the way to define a similarity
+
+would be different here because now it is not a set, but like it is almost like a set, but a real
+
+value set. So Jokhar similarity will not be optimal in this case, but anyway that is the thing.
+
+Okay, so the mean hash signatures are, as we know, are integer vectors. So when we compare the two
+
+columns in the signature matrix from the mean hash, we can measure the similarity in terms of
+
+the number of same integer elements, mean hash signatures. But these TF-IDF signatures are real
+
+value vectors, so that is a little different. So the two documents, two document signatures will
+
+not share any same element, so probably we can, we should measure the distance in a real value way,
+
+probably real value distance function between signatures, for instance, either in a cosine
+
+similarity or any other vector similarity like that. So we're going to learn later,
+
+but our locality-sensitive function relies on what distance function we use. So what we are going to
+
+learn on the next Tuesday is like fit to the integer vector similarity from the mean hashing,
+
+but if we change the distance measure, then we need another locally sensitive hash function.
+
+But what I want to say is the idea can apply in the same way. We have a signature matrix
+
+represented in some way, and as long as we can define the similarity here,
+
+probably we can find some locally sensitive function that allows us to reduce the complexity,
+
+like for compressions. So let me ask this one final question. So what are good signatures?
+
+But these days machine learning, or as I said deep learning, or AI, or LLM, or like
+
+so many words, is used to create signatures, but they are more like called embeddings in the field
+
+of machine learning. So embedding is to represent some data structure, like some sparse, some dynamic,
+
+some variable data structure as a fixed compact vector, where this vector still has some information
+
+of the original space. That is called an embedding. And the field of machine learning to create such
+
+embeddings is called representation learning. So for almost every data structure, like time series,
+
+then for a time series, then we have a time series representation learning. For a graph,
+
+we have a graph representation learning. For images, we have image representation learning,
+
+because many data in the world are high dimensional, like the complicated ones,
+
+but as long as we can represent them as embeddings, which are compact vectors,
+
+then everything becomes easier. So all language models, like specifically, or all other LLMs,
+
+basically work on embeddings. So they first decide how to represent the sentence into a
+
+set of vectors, and then do some useful computations. So these days, at least for
+
+documents, machine learning is not at all, but LLMs are even more powerful. So in fact, I think
+
+if you learn this, if you take some courses on LLP, like lecture language processing, then I guess
+
+they're not probably teach previous materials anymore, because recently, like all the language
+
+based models have been replaced with LLMs. But anyway, if you're interested in these LLMs,
+
+then probably there will be good courses that teach this LLP in our department or
+
+overall in the course. And we have very good professors working on this LLP in our department
+
+as well, computer science and engineering. So please take these courses if you're interested.
+
+But as I said, our course is more like a little bit traditional, so more on the motivation and
+
+the engineering on large data compared to like this fancy data anything.
+
+So this is the summary. So let me just briefly say it. So I just introduced a problem of finding
+
+similar items and why it is important and what that means. And we learned the shingly,
+
+main hashing, which are the V2 stages for our framework. And then I just did some few things
+
+that can be discovered on the main hashing. So any questions before we finish?
+
+I think the question is one limitation which is two documents being compared is very different
+
+in size and we learned that if you quote a more than that, the similarity is probably small.
+
+And is there any way to calibrate this problem?
+
+Yeah, great question. So let me say it for those who didn't like
+
+carry. So the question is, Java similarity is biased, we can say it's biased, if the two
+
+documents are very different in their length. Because in that way, for instance, some, let's
+
+say one document is a length of 100 words, if the other is like 100 plus thousand words,
+
+for instance, then the Java similarity is kind of not working at all. But first thing I can say,
+
+first thing is, if the two documents are very different in their length, probably we can say
+
+their similarity is different. So Java similarity will be naturally low for these cases, because
+
+there is no way for the Java similarity to be high if the length is that much different. So
+
+first of all, I think, well, that doesn't violate our assumption that much, because in the case,
+
+would be still low. But if we want to increase the Java similarity, even in that case,
+
+for instance, there might be a way that let's say one document is this much and another
+
+documents is this much, and let's say the document B contains all the document A. So Java similarity
+
+would be small in this case, because the union of the elements of it large. But you might want to
+
+increase the similarity in this case, if that is the scenario that you want to detect, then probably
+
+we have to think about the other business measures. But honestly, I cannot come up with anything at
+
+this point, because I haven't thought about it. But there should be probably one about such cases.
+
+So as I just say, what I teach during our course is most likely a basic, like the fundamental
+
+information for understanding these things. But like the minor details like implementation details,
+
+what function we use, or the approximation or automation, there can be huge more
+
+techniques that are applied on top of these things. So for instance, if you think about like,
+
+if you're curious about this thing, then I just think you can ask anytime to like the GPT or
+
+something, then he will introduce or it will introduce many useful information for you to study.
+
+Right. Okay. Yeah.
+
+I wonder if there are some differences between the word signature and embedding? It's just
+
+a way to speak in different fields?
+
+Well, a good question. So from my point of view, in fact, I use the word signature
+
+only in this topic, because I didn't see it from the other fields so far. So I just think signature
+
+is a term for people in this mean hashing algorithm. Like the people who study mean hashing
+
+algorithms use this word signature as a way to compact the characteristic matrix. But the word
+
+embedding is used more in a broader manner. So embedding is not specifically limited to this
+
+problem, like finding similar documents or anything. Embedding is more like, as I said,
+
+an abstract vector representation of anything. Grab embedding, time series embedding, like data
+
+set embedding, database embedding, everything can be put into the word embedding. It can be represented
+
+as a compact word. So, and in that sense, there are many various techniques that are trying to
+
+design these embeddings. But one thing, okay, so let me clarify this one thing. Here I can say
+
+the important point for this mean hash signature is it should satisfy, it should satisfy, it should
+
+like, has information of the original JAPAR similarity. So it should be okay for us to
+
+compare the signatures of these mean hash values, and then we should be able to approximate the
+
+original JAPAR similarity. That is like a condition for saying, for us to say that something is a
+
+signature. For embedding, it is similar, but embedding is not just about a single similarity
+
+measure. So in general, we expect from an embedding to contain some important information of the
+
+original data structure. We don't know what that is. For instance, if the thing is an image, then
+
+probably we can expect the embedding to contain some object information of the image, depth
+
+information of the image, or a number of objects in the image. We don't know that. And in fact,
+
+based on where we use these embeddings, the requirements can change. But in a general sense,
+
+we expect from an embedding to have some crucial information of the original data structure,
+
+while for this signature, we don't have such expectations. It is just okay for us to
+
+approximate the JAPAR similarity based on this signature. Good pitch. More to come?
+
+Okay. So if there are no more questions, just please look at the ETL for probably upcoming
+
+homework assignment instruction, and please check it before it's too late. And ask any questions
+
+if you have one. So that's it for today, and see you next week.
+

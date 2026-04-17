@@ -1,0 +1,1254 @@
+Hi everyone, good morning. Let's start today's class.
+
+So we are at the second part of frequent item sets.
+
+And I guess you remember what we have learned last time, but let me recap what we have learned
+
+first and then we will move on to more advanced algorithms for finding this frequent item
+
+sets or association rules that we were talking last time.
+
+So frequent item sets. I guess you remember the goal. The goal is we are given a data
+
+set in a form which we call market basket level, which consists of multiple baskets
+
+where its basket contains multiple items. So our ultimate goal is to find an association
+
+rule for multiple association rules from an item set i to an item set j, which we believe
+
+to be meaningful so that we want to utilize such rules to optimize the revenue of our
+
+market for a general performance of ours. And we have learned various measures to evaluate
+
+the quality of this rule in a way of support, confidence, and legal.
+
+That was about the goal. And we learned one popular algorithm for doing this market basket
+
+analysis which is called A-Priory. A-Priory algorithm is based on some assumptions or
+
+some observations where we know that finding frequent item sets is harder than finding
+
+association rules. And among finding the item sets of various sizes, we know that counting
+
+pairs is the hardest because we know that as the item set size grows, we know that the
+
+number of such frequent item sets will decrease exponentially. So we are not worried much
+
+about the memory size when the item set is large. But the problem is for pairs because
+
+we can easily guess that there will be an enormous number of pairs, frequent pairs,
+
+in the whole data set. So we care about the memory size of our model, of our computer,
+
+especially if the data set size is very large. Our key idea for implementing this A-Priory
+
+is monotonicity, which means we don't have to check all possible item sets. We just have
+
+to check about some small item sets which can result in removing some safe infrequent
+
+item sets even without checking them. For instance, if we know that some frequent pairs
+
+are not frequent, then we are sure we know that some frequent triples are not frequent,
+
+which contains the infrequent pairs that are subsets. So we use this monotonicity or we
+
+use this relationship between item sets of different sizes to reduce the complexity of
+
+our breakdown. And because we have limited memory, we learn two methods to store the
+
+constant pairs, which are triangular methods and triples methods. Here the figure shows
+
+basically a triangular approach, which is to initialize a dense array and we count all
+
+possible pairs between two set items. And then we also learned how to generalize this algorithm
+
+to larger data sets requiring one disk pass per each size. So although we know that the
+
+counting pairage is the hardest, we know that our algorithm is extendable to even larger sizes. So
+
+we know that A-priority is quite efficient algorithm for solving the problem. But we know that
+
+there can be more advanced versions of it. And I remember there was one question about it last
+
+time. So today we are going to learn some advanced versions of A-priority, which are still based on
+
+simple ideas, but which we believe to be improved compared to A-priority. So before we start, any
+
+questions so far? Like regarding the last topic or regarding our like course in general? No? Great.
+
+So let me actually go to this algorithm. The first one is PCY algorithm, but let me first
+
+show you one limitation of A-priority. So the A-priority algorithm is fine as long as counting
+
+candidate pairs can be done in main memory. So our first pass is designed to reduce the number of
+
+possible candidate pairs from L to C to E, if you remember the symbols. And the idea was that if an
+
+item is infrequent, all the frequent pairs, all the pairs that contain that item have no possibility
+
+to be frequent. So based on that idea, we could reduce the size of candidate pairs. But the problem
+
+is still the candidate pairs can be large based on what characteristic of the data set or the
+
+value of our threshold. So our question is what if the memory is not enough even for the candidate
+
+pair? In that case, we have no way to store this information. And I said last time, what we had to
+
+do was to increase the support threshold to reduce the size of it. But instead, we're going to learn
+
+more advanced algorithms that can deal with this training. So we will learn algorithms that can cut
+
+down the size of C to even a smaller set with some ideas. The first algorithm is called PCY
+
+algorithm. You don't have to care about the full name, it is called PCY algorithm. So
+
+for learning every algorithm, as I always say, you need to
+
+focus on its motivation and observation and its idea. So the motivation of this algorithm is in
+
+Pest1 of A-Priory, where when we count the counts of items that I have set, most memory is right.
+
+Because the memory requirement for Pest1 is just linear with the number of items in the whole data
+
+set, which would be not much compared to the whole memory. So in this case, it's unused. And
+
+our motivation is we want to use this item memory during Pest1, preparing for Pest2.
+
+So our goal is we probably in Pest1, although we don't know which pairs are frequent at this
+
+moment, we want to use this memory to reduce the memory requirement for Pest2 in some way,
+
+although we don't know how exactly it can be done, but we want to do that. That's the whole
+
+motivation. So this algorithm uses the idea of a hash table. This PCY algorithm during Pest1,
+
+where the goal of Pest1 is to count the items, the item sets, we use this item memory for creating
+
+a hash table of pairs. But here, the pairs are not just candidate pairs, it's just all pairs.
+
+So we know that we don't have sufficient memory to store all pairs, like the counts of all pairs,
+
+obviously. So here we create a hash table, and we make it add as many buckets of speed in memory.
+
+What it means is, if we have, as a simple example, if we have four kilobytes of memory idle during
+
+Pest1, and if we assume that every bucket in this hash table takes four bytes as a meter, then we
+
+can create a thousand buckets, because that's all memory that we have. So the number of buckets is
+
+in fact irrelevant to the number of pairs at their time. Here, the number of buckets is determined by
+
+the size of our item. And then what we do is, during Pest1, for every pair that we observe during
+
+the Pest1, for every bucket, we add one to the hash bucket. So here, the assumption in our hash
+
+function works for each pair. Even a pair, like a mirror and a build, the hash function computes
+
+an item index from that pair, and it will map that pair into any bucket in this hash table,
+
+and we increase one to the hash bucket. So obviously, we have collision, because the number of buckets
+
+is much smaller than the number of units of bits. So here, you get the point, right? We just create
+
+the hash table as large as possible, and we compute the hash function for every pair that we
+
+encounter in Pest1. So let's say you are smart, if you have very good intuition, then you'll
+
+understand why we do it. You'll understand how this hash table can be used in the future based on the
+
+concept of monotonicity. So I'll give you like 10 seconds to think about it. Even before we learn
+
+how this algorithm actually works, this gives you some hint on how we can actually reduce the memory
+
+requirement for Pest2. Okay, so why do we do that? There's a question that I just asked, right? So
+
+the reason why we do it is to eliminate pairs that have no chance to be free. What it means is
+
+each bucket B has a count of all pairs that hash to B, because there is a collision. So if this count
+
+is greater than or equal to the support threshold S, then we are not sure which of these pairs are
+
+really free convertible. But we just know that every pair that is mapped to that bucket has a
+
+chance to be free convertible, because the whole count is exceeding the threshold. But otherwise,
+
+if the count is less than the support threshold, then we can ensure that all pairs that are mapped
+
+to that bucket have no chance to be free convertible. So it is like safely reducing candidates by
+
+based on the concept of collision. Okay, so because we have a very good way to reduce the
+
+candidates for Pest2, in Pest2 we define candidate pair C2 such that first condition is the same as
+
+before. A pair becomes a candidate only if both items i and j are which is the same as the A pair.
+
+But we have just a new condition for this piece of wire for them, which is a pair becomes a candidate
+
+only if that pair has to do a frequent bucket. So that is the difference. Because we have another
+
+independent condition independent of the first one, although if the collision is severe, then
+
+probably all the counts can be greater than the support threshold. In that case, we have no reason to do it.
+
+But in other cases, if at least some buckets are below the threshold, then we can redo
+
+the candidate pairs compared to A pair based on the spectrum condition.
+
+The other stages are all the same as A pair. The only difference is we just create a hash table
+
+during Pest1 to do this.
+
+Okay, got it? I mean it's not that hard, right? So if we create this hash table during Pest1,
+
+then we need this table even in Pest2. Why is that? Because during Pest2, we need to check whether
+
+each pair has to do a frequent bucket or not. So in Pest2, we still need some memory to store
+
+the information for the second condition, which is the hash table we create from Pest1.
+
+But the problem is in Pest1, we create this hash table to fit all the memory. So we don't have any
+
+item memory at all if we want to keep this hash table for Pest2. So what we do is we replace the
+
+buckets by a beat vector. So like in our original hash table, that will depend on how we implement
+
+it. But still, if we assume that every bucket is an integer, then every bucket will take 32 beats,
+
+which is 4 bytes. But for Pest2, we don't need an actual integer, we don't need an actual count.
+
+It just has to be, it just can be a beat that is either 1 or 2.
+
+So 1 means the bucket count exceeded the core variables and 0 means it did not. So we are going to
+
+replace the space, we're going to reduce the space by 1 over 32 by replacing the integer
+
+hash table to a beat vector or a beat hash table, as I'm saying. We still have to store the hash
+
+function itself, but like a single hash function will take only a couple of strings, so it won't
+
+matter that much. So if we look at this figure, I get the thing to come out there.
+
+In the next one, we have item counts and we have a hash table for pairs. And then if we go to Pest2,
+
+we change the item counts into a table of critical item sets and we're going to reduce the size of
+
+this hash table into a beat map, so a beat vector. So because of this one, we still lose some memory.
+
+Like I guess we can say that we lose 1 over 32 of all the memory because of our new ideas.
+
+So we still have some trade-off, but what we believe is, although we pick some memory, still
+
+we believe this new idea will reduce more candidate pairs compared to the memory that we think.
+
+So based on this beat map and based on these beat map items, then we count the count of candidate pairs
+
+in Pest2. Hoping that our new data structure for candidate pairs will be in memory, thanks to our
+
+new optimization. But I mean, it still be a case that even these new candidate pairs are not fitting
+
+into our memory. That would be a problem and in fact even this ECWI algorithm cannot handle that
+
+case, although we try to optimize our algorithm.
+
+One other thing, let's say you really implement this algorithm, but then PCY algorithm cannot
+
+use the triangular matrix method for our time. Why is that? Because the whole idea of this PCY
+
+algorithm is to utilize the sparsity of candidate pairs. Let's say we have
+
+like 100 items here, 100 items here. So in our A-Parrary, if we reduce the candidate
+
+items, then all these pairs have a chance to be frequent. But in PCY, this data structure is
+
+sparse because although only some pairs are probably frequent, but some pairs do not have
+
+a chance to be frequent at all. So we need to use this sparsity of this data structure.
+
+So we need to use the triple method, which is a data structure that allows us to utilize
+
+the sparsity by storing i, j, and count in a hash table. So I mean it's not that hard, right?
+
+So there is a pop quiz. Let me briefly do this pop quiz with you together so that we
+
+make sure we understand this idea. Here is a collection of baskets. So that 3D basket is
+
+almost all the data set that we need. Suppose that the support ratio is 2. And so on the first
+
+class of PCY, suppose that we use the hash table with 3 buckets. And the pair is hashed to the
+
+bucket. So it is important we design a hash function which is good. But here we use a very
+
+simple pattern. Then the question is which pairs are counted on the second pattern? So let's
+
+simulate the process of PCY. So during the first batch, we create the hash table H with 3 buckets.
+
+Buckets 1, bucket 2, bucket 3. So for the first bucket, we observe 3 pairs. 1, 2, basket 3. 1, 3,
+
+and 2, 3. And in the second basket, we observe 3, 4, 3, 5, 4, 5. And the third basket, we observe 2,
+
+4, 2, 5, and 4, 5. So like all the possible pairs that we observe, 3 plus 1 is 9 cases.
+
+And our hash function is i times j mod 3. So first one is like 1 times 3, 2, right? So it will go to
+
+here. So it will count at the count of the third function. 1, 3. Then the index is 1,
+
+0, 1, 2. So 1, 3, a little bit here. And 2, 3, 6, a little bit here. Right? 3, 4, of course,
+
+it will go here. So this hash function is not good. But anyway. So 4, 3, 5, this becomes 4.
+
+And 4, 5, 20, 2. So this goes to here. So 4, 8, here. 2, 5, 10, here. 4, 5, 20, 2, 4.
+
+Okay. This is about it, right? Am I correct? Well, I'm not sure. I might be wrong in
+
+computation, but this is a process. So here, the support regal is 2. So this
+
+bucket exists a regal. This bucket exists a regal. So all the pairs that are hashed to these two
+
+buckets have a chance to be perfect. This one has a plan of one, right? Because our hash function is
+
+4, the performance is not that satisfactory, but still it works. So I guess the only pair that is
+
+meant to that bucket was, I guess it was this pair, as I remember correctly. Then we know that this
+
+has no chance to be perfect. So when we create a data structure with three items,
+
+four items, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, we can eliminate these two. Where is it? 2, 5, pair.
+
+By the way, so we don't have to count the, like count before that pair because of our
+
+representation, right? So this is it. Super easy. Any questions? Yeah.
+
+So I'm sorry, could you say more or not?
+
+You can use it in Korean too. Anyway.
+
+I think we need to do hash again.
+
+Yeah, good question. So let's say we, so during hash 1, you use the hash function that looks like
+
+this one. This is like definition of our hash function. The first thing is we need to use the
+
+same hash function again, because only in that case, we can utilize this information in pass 2.
+
+Because what we really do in pass 2 is, how do we say that? So we replace this hash table into a
+
+bit vector of the simply 0, 1, 0, 1. So this is the bit vector that we store during pass 2. So
+
+we need the same hash function so that we hash these pairs again to this bit vector. And then
+
+we can check whether each pair was mapped to a pre-configured bucket or not in pass 2. So we
+
+really need the same hash function. Because if we change the hash function, then this bit vector
+
+would mean nothing. You get the point? So we need to use the hash function. And the second thing is
+
+we need to hash these pairs again. The answer is yes. During pass 2, we need to follow the same
+
+procedure again. And we need to hash each pair again to this data structure. Because whether each
+
+pair has a chance to be frequent or not, the information itself is not stored in our data
+
+structure. The only thing that our data structure contains is a pair of a bit vector and the hash
+
+function. So we need to apply this hash function again during pass 2 to every possible pair that
+
+we have. But as I said, we need to keep this hash function. And probably because of that,
+
+our hash function will take some memory as well. But that's just a simple few lines of code so it
+
+will not affect the whole data structure at all, the whole memory organization at all.
+
+So is that the answer to your question?
+
+Yeah.
+
+Right.
+
+Because as you said, this network doesn't actually know about pairs, how many of them are pair buttons.
+
+So in the previous instances...
+
+You mean pockets?
+
+Yeah. The other ones are not frequent. It's like in the third case,
+
+should also be random.
+
+You mean this pair?
+
+One, two, and one, three.
+
+One, two, and one, three.
+
+You mean this pair? But one, one, two. So this is the pair. So one and two is hashed to this bucket.
+
+And the count of this bucket is four, as I did it correctly. Then this pair has a chance to be frequent.
+
+But you mean the one itself is not frequent. That's why you said.
+
+I think the question is that.
+
+Ah. Yeah, but one is frequent, right? Because one appears twice. The precursor of this two.
+
+So if that threshold is...
+
+I guess...
+
+So because the threshold is two, if an item appears twice, then the item is frequent.
+
+That's why I said.
+
+Thank you.
+
+And of course, it controls all the pairs and then counts.
+
+Ah. I see. Yeah, yeah, yeah. You're right.
+
+So that is the original data set. So yeah, I was talking about this decomposed pair here, right?
+
+So because there, one appears only once.
+
+So one is frequent. So that one information is about the first condition here.
+
+This one. But you need to understand that these two conditions are independent.
+
+When we do the second thing, we don't care about whether each individual item is frequent or not.
+
+Because the reason is we know that the item one is in frequent only after pass one.
+
+So during pass one, while we create this hash table by enumerating all possible pairs,
+
+we don't know whether one will be really frequent or not, because that information is determined after pass one.
+
+So while we do this hash table, we just count all the possible pairs and we create this bit vector.
+
+And then after we create this bit vector and after we create this frequent item information
+
+during pass one independently, we are going to apply these two conditions and pass two conditions.
+
+Right. Yeah, yeah. Right. Yeah. And thank you for addressing the mistake.
+
+Work with us?
+
+Okay. I mean, the idea is super simple, but as I get some questions, the real implementation,
+
+I mean, if you really try to implement this for algorithm, then some details can be subtle.
+
+So you can ask always these questions to me and I'll like that, try my best.
+
+Okay. So that was the end of the description of the piecewise algorithm,
+
+which is not that hard, I guess. And then let's go to more extensions of this,
+
+because even this piecewise algorithm has some room for improvement.
+
+I'm not sure if you see this improved like room for like at this point or not,
+
+but let's see its extensions. Okay. There are two basic directions of extensions of this piecewise,
+
+multi-stage and multi-panel algorithm. Both of these algorithms create multiple hash tables
+
+to reduce the number of candidate pairs even more than piecewise. But the way we create
+
+multiple tables is data. Multi-stages, we create tables to obsessive passes like in a sequential
+
+way, but multi-page algorithm creates tables at the same time in parallel.
+
+So let's look at the multi-stage first. Okay. The motivation is, the motivation is
+
+this. At this point, like I just went back to the illustration of piecewise. After test one,
+
+what we see is we still have idle memory of this part. Like our assumption is if we could reduce
+
+the number of candidate pairs by using this idle memory for creating a bitmap, why not twice?
+
+We can do the same thing again using this idle memory using the previous conditions one and two.
+
+That would even reduce more candidates. But still, if we create another like...
+
+So for every test, like we create a script on the item sets and we create this bitmap, right? That
+
+is like a table. If we use that item memory to create another bitmap, then that will take another
+
+of some memory slot for creating the second bitmap. But we can do it the fourth bitmap and
+
+the fifth bitmap as much as we want, as long as we have idle memory. So that is the basic idea of
+
+the multi-stage algorithm. So let me look at this simple algorithm that describes how this works.
+
+In test one, this multi-stage algorithm is the same as piecewise. It just does this
+
+hash table thing and it stores the results in a bitmap. Then it creates the second hash table
+
+to generate another bitmap. So this table, this new table has 31 over 32 of buckets due to the
+
+first bitmap, due to the memory because of the first bitmap. So the collision rate will increase
+
+for this bitmap, but at the same time, we have a new condition that can reduce the candidates for
+
+creating this table, which is here a pair is hashed only if both IOJR fragments and the pair is hashed
+
+to bring the bucket and beat that one. We have such information because we test the first pass.
+
+So for creating this second bitmap, this hash table, although the size of this table is smaller
+
+than before, but we have new conditions to reduce the possible candidate pairs for this hash table.
+
+So I guess overall, the collision rate will be much smaller for this hash table because we can
+
+apply these three conditions while we create the second table. All right, so I guess the second
+
+table can contain much fewer pre-conv buckets. Then this whole operator does not contain the
+
+original test two of A-Card where we really count the three numbers. So we need another test three
+
+for doing that, for doing this original test two. So this multi-stage algorithm is good, but it
+
+requires another disk pass. So it increases the running time because of that. But the idea is simple.
+
+So after we create this second hash table, we place this second hash table into the second
+
+bitmap in our memory that creates another condition for our real path, like for our real counting
+
+bucket. So here our overall conditions are both IMJF frequent, here H2 pre-conv bucket,
+
+bitmap one, pair H2 pre-conv bucket, and bitmap two. So as we have more independent conditions
+
+and we combine these conditions with N operator, we can reduce the size of the candidates.
+
+Subtlety. One subtlety. So many students, as I plot this place multiple times, many students
+
+think that as we create a better condition, that like okay this is condition three and condition two,
+
+here is condition two. So we have condition three, which seems to be better than condition two.
+
+Some students think that we can discard condition two because condition three is obviously better
+
+than condition two. But we need condition two in our memory for doing this counting of pairs. So we
+
+cannot discard the information of condition two, we cannot discard the second bitmap from our memory,
+
+which is important to address. Why is that? Because let's say that a pair IJ, IMJ is hashed to an
+
+infrequent bucket in bitmap one. Let's say this is a function. Then because of this one, this pair
+
+will not be counted in test two. Because while we do test two, we know that there is no chance to
+
+be free count. So because of that, the overall count in our second hash table would be much
+
+smaller than in the first hash table, right? Anyway, but that doesn't mean that that pair cannot hash
+
+to a frequent bucket in bitmap two. So even though we did not count that pair, that doesn't mean we
+
+cannot hash that pair or bitmap two. So it might be possible that this pair is not counted at all
+
+while we create this second hash table, but it can be hashed to a frequent bucket. So if we don't
+
+have the bitmap one, then we don't know whether this hash, this pair has been used to create this
+
+hash table or not. So we really need this bitmap one because all these conditions are in fact
+
+independent. Condition three is not necessarily better than condition two. They are just independent
+
+conditions that we check every time for doing this count. Okay? So because of that, an infrequent
+
+pair may satisfy condition one and three, but can violate condition two. So we really need to keep this bitmap one.
+
+Question? Clear? Yeah.
+
+So are you saying that hashed division, can you still use the hashed division?
+
+Yeah, yeah. And I mean, you can remember what I said, but you really need to understand why we need
+
+bitmap one. And I guess you can understand it, but that is a little tallacy. I get this
+
+question a lot while I do this classes.
+
+So this memory will look like this. In test one, we create a hash table. In test two, we replace the
+
+hash table with a bitmap. And during test two, we also create a second page here. And then in test three,
+
+we replace the hash table with bitmap two. We create the real data structure for finding bits.
+
+And of course, we can increase the number of passes even more, like pass four, pass five, pass six,
+
+when our memory is really short. Okay?
+
+As I said, we can add more passes until there is not enough space for creating another hash table.
+
+And truly frequent pairs, that is important, as you may know, truly frequent pairs will always
+
+hash to prediction buckets. Of course, because the count of that pair itself exists the support
+
+ratio. So no matter how we create this hash table, truly frequent pairs will always hash to
+
+prediction buckets. So it is okay that we increase the number of passes to a super large number,
+
+like 10, even 100. Okay?
+
+Clear? Great. Let's move on to a multi-hash algorithm, which is in fact a simpler one,
+
+the multi-stage algorithm. So our goal of this algorithm is we know that creating multiple tables
+
+is good, but we don't want to increase the number of passes. We don't want to check this again and
+
+again because of the multi-stage algorithm. Then why did we create multiple hash tables
+
+during a single test, like with different hash functions?
+
+Sorry, I like my point.
+
+It's a little obnoxious. So the idea is we create multiple hash tables with different hash functions.
+
+So our condition will look like this. A pair is in the candidate set if both items are frequent
+
+and the pair hashes to a frequent bucket in both hash tables. So as in the multi-stage algorithm,
+
+a truly frequent pair will be frequent in all the hash tables, no matter how we create this hash
+
+function. So it is okay. But if we create, for instance, two hash tables, it is good that we
+
+apply two independent conditions of hash functions, but the problem is the size of each hash table will
+
+decrease. So it will increase the collision rate because of that. As we can see from this figure,
+
+if we create two hash tables, the size of each one is the half of the original size, so it will
+
+increase the collision rate. But at the same time, because we have two independent hash functions,
+
+our general condition for reducing the candidate would be strengthened because we are clearly
+
+dependent on them. Then as a computer scientist, you need to have this question. What number of
+
+hash tables would be optimal? Like if we increase the number of hash tables to too much, like 100
+
+or 1000, then the collision rate would be too much so that almost all the pairs will be frequent
+
+in almost all the hash tables. So it's one mean additive. But at least if we compare one hash table
+
+and two hash tables, probably we can say two hash tables can be better than one hash table because
+
+the size is half, but the condition is independently applied, like multiple, if you think about it.
+
+So this will lead us to this question. We can increase the number of hash tables as much as we
+
+want so one would be the optimal value of n. Let's say that p is a probability of a pair to be
+
+frequent in this table. Let's say that is a simple constant. Then our whole probability for an
+
+infrequent pair to be in C2 is p to the power of n. Because we have n hash tables while probability
+
+for being frequent is p. So in limited numbers, if we increase the number of people, if you use more
+
+people, then it will increase n obviously, but it will also increase p because as I said it will
+
+increase the collision. So the point is the question that I'm going to talk about in this slide is
+
+at some point the p to the power of n will increase if we increase n too much. So it will
+
+for instance control a figure like plot of this function p to the power of n by computing this p
+
+very accurately, then we can find this optimal value. And that will be addressed in our later
+
+lecture because we have a designated topic for a hash function because hash function is really
+
+really important for dealing with large data, especially when even linear passes taking so
+
+much time. So later we'll understand some theory behind this hash function and the collision
+
+range on all these things later. So at least for today you can just simply understand there
+
+might be, there should be an optimal value based on this function, but we don't care about that
+
+value today. Okay.
+
+Questions?
+
+Great. So let me move on to the second part which is a little bit complicated, which is like because
+
+we the second, the third part contains some upgrade that are a little bit complicated
+
+compared to the first one. Okay, so what we want to do is we want to learn some upgrade items that
+
+can guarantee limited passes, which means so far we used one path for each size of items and the
+
+creation of this L that requires a new pass and C is a set of 10 to 2 pulls and I guess you remember
+
+the point. So the point here is as we increase the size of the items to 3, 4 by 3, we need another
+
+which we really want to avoid. So what we learned at this last point, last part of today's class is
+
+to learn limited pass algorithm which can for instance find all size items that's during like
+
+for only two these passes like that. Okay. Yeah, limited pass algorithm. Many, so if we study
+
+limited pass algorithms, probably we care more about speed compared to accuracy because many
+
+applications, let's say if you run a supermarket, we can sacrifice some accuracy or speed because
+
+I mean when we are a supermarket manager, accuracy cannot can be like 80% or 70% or 90%. It doesn't
+
+have to be 100% or important thing is this algorithm finishes on time, right? So in many
+
+data mining algorithms, we care about the trade-off between accuracy or approximation and speed
+
+unlike a theoretical algorithm class. So our goal is we want to find all or most different
+
+items that's using at most two passes based on these three main operations, random sampling,
+
+so you might as well upgrade them and the sun upgrade them. So let me move on to the simplest one,
+
+random sampling. So let's say you are a data engineer. You have limited memory, you have a
+
+large data set of data, and you need to do it on time. Then in fact, even before learning these
+
+complicated algorithms, the simplest way is sampling. Like given the whole data set, you can
+
+just sample like given the whole basket, set of baskets, you can just sample like let's say 10%
+
+of all these baskets to create a data set that's big in memory. I mean that is much easier than
+
+thinking about this complicated disk resident operations, right? In many cases. So if we have
+
+this small set that can be in memory, we can run a priority in memory because we can't be in memory.
+
+So in that case, we don't have to care about the disk passes anymore, so the time will be greatly
+
+reduced, I can say. So if the sample ratio is issued at 10%, for instance, then we can, we probably
+
+should adjust the support threshold as well because if you sample 10%, then the support will be
+
+basically one of our units. So we adjust the support threshold. So this random sampling is in fact
+
+super efficient in many cases because I mean most people don't care about the accuracy that much,
+
+just if you really want to analyze the data set, random sampling is in fact good. But because we
+
+are a computer scientist, we are not very satisfied with that random sampling because
+
+it introduces errors. So when we think about one original algorithm and when we think about
+
+this approximation, especially in this binary decision, we have two types of errors which are
+
+very common in statistics or other fields as well, which are false positives and false negatives.
+
+False positive is if the true answer is no, but we say that the answer is yes, that is kind of that
+
+error, while the false negative is the true answer is no, but sorry, true answer is yes, but our answer is no.
+
+So in this case, a false positive error is items that is frequent in our sample. So we say that
+
+this item set is frequent, but in fact that item set is not frequent in the full data set. So in that case,
+
+the error is called false positive. On the other hand, if the item set is frequent in the full data
+
+set, but if the item set is not frequent in our sample, then we are not going to report this item
+
+set to be frequent, so that is a false negative error. So this random sampling approach by default
+
+causes these two errors to be the same, right? Of course, we increase. But if you compare these two errors,
+
+false positives can be eliminated easily, because let's say we create this random sample and we
+
+create this set of frequent item sets by running this in memory app right now. If we have some
+
+resource and time, we can just do this one disk pass based on our frequent pairs or frequent item
+
+sets to check whether each frequent item set in our memory is really frequent in disk or not. So
+
+for eliminating these false positives, what we really need is another disk pass. So as long as
+
+we can do this disk pass, then we can eliminate all the false positives. But the more tricky problem is
+
+we cannot eliminate false negatives if you think about it, because if a sample is not frequent
+
+in the sample, and if a sample is truly frequent in the whole data, then we have no way to get this
+
+like false negative sample from the whole data in our in-memory app right now. It cannot be done by
+
+another disk pass. So we can reduce the false positive, false negative by reducing the threshold
+
+from p as per p is the sample ratio to 0.9 pm, so that we have more of a conservative threshold
+
+to reduce the false negative. But reducing the false negative is completely different from
+
+eliminating the false positive. In fact, the sampling ratio for us is really hard to eliminate
+
+the false negative, although it is not that hard to eliminate a false negative. So it's important you
+
+have a very clear picture on why these two errors are different from each other, and why
+
+one is easier and one is more difficult.
+
+Okay, questions?
+
+Good. So random sampling is, I mean, it is even not an algorithm. It is just a simple approach.
+
+So let's move on to actual algorithm. Here our question is, let's say, can we eliminate, so we
+
+want to do random sampling because we don't do a lot of these classes, but at the same time,
+
+we want to eliminate false negative. That's a hard question, right? So the idea to solve this
+
+question is a little bit complicated. We can't draw a negative border for an efficient safety
+
+check. So let me explain that later. But here the solution is the toy-bonanza-grade. So how it works
+
+is, it uses one test over sample, and one, so this is like a battle not quite, it is more like
+
+proper detoxing program. It uses one test over sample and one test over the whole data. So it
+
+consists of two classes, but one of them is only this test. And it guarantees that there are no
+
+false negatives and first, it means the algorithm is off track, which is great. However, there is a
+
+small chance that it will not finish by two paths. That means this algorithm is basically a
+
+probabilistic algorithm. We can say that the average number of passes to produce an answer is
+
+a constant. So if you compute the theoretical complexity of this algorithm, we can guarantee
+
+that by average, this algorithm is a constant pass-off algorithm. But if you really run this
+
+algorithm, there is no chance that it will require more passes. So on average, in general, we can say
+
+this pattern is operating over two passes, but it's not deterministic. So it's a little complicated.
+
+So in pass one, so as I said, it consists of two passes. In pass one, we create a sample,
+
+as in random sampling, and we find candidate pairs, like candidate item sets from a small sample.
+
+And we use a support variable less than proportional to the LDPF, let's say 0.9. And then the idea is
+
+to construct the negative order. What is a negative order? It's a new concept, right? So the negative
+
+order defined as a collection of items, item sets, that are not pre-convex samples, but all of their
+
+immediate subsets are pre-convex samples. An immediate subset is constructed by deleting exactly
+
+one item. And it'd be much easier to look at this illustration. So this is our sample.
+
+And this gray area is the pre-conv set found from our sample, by random sample. There are items like ACD,
+
+ADC, ADD, things like that. And the negative order is conceptually a border that contains these
+
+pre-conv sets. It is more like a real border between this pre-conv item set from the sample
+
+and the in-pre-conv item set in general. It is border. So here, ADC, that item set, is in the
+
+negative order, if and only if, that is not pre-conv in the sample. So it shouldn't be in this gray area.
+
+At the same time, all of its immediate subsets are pre-conv. So you just have to understand what that
+
+means. That means although ADC, that item set is not pre-conv in the sample, but it has a chance to be
+
+pre-conv, because all its immediate subsets are pre-conv. So I mean, we can guarantee that all these
+
+subsets are at least pre-conv in the sample. So although ADC is not pre-conv in our current sample,
+
+but we are not very sure whether this item set is really pre-conv or not. Because all its immediate
+
+subsets are pre-conv, probably it might be pre-conv, just because the sampling error is not pre-conv in
+
+the sample, but it can be pre-conv. This negative order is like our conjecture set. It's a set of
+
+item sets that we think we really have to check for the full business class. Like the
+
+highly shaded, like the item sets that have a chance to be broad, that have a chance to be like the
+
+anomalous pattern in our case. And at the same time, that single-ton item set E is also in the
+
+negative order, because its immediate subset is like the empty set, which basically can not
+
+simply be pre-conv. So this E, this item set is also in the discrete negative order. What does that mean?
+
+It means we will also check whether this item is really pre-conv or not in our later business class.
+
+So for this upgrade, it is really important to create this negative order well, because we are
+
+gonna check this negative order item set in our later business class. If, let's say, if this
+
+negative order expands, and if all the other item sets in the whole data set is included in the
+
+border, then it will be a problem for us, because we don't have enough memory to check all items.
+
+But if we assume this negative order is effective, like the design is not that large, but still it
+
+contains really important items that we would have enough memory to check each item set in the
+
+negative order in our later business class. So in test two, we made a press on the entire data set,
+
+and we found item sets which are frequent in sample and existing in negative order.
+
+We finished if no member of the negative order is frequent in full data.
+
+What does it mean? It means we check the item sets frequent in sample to reduce most positive.
+
+Okay, we double check whether our answer is really frequent in the full data or not. That's the A part.
+
+B part is we check the first false negative. In B part, we check whether there might be
+
+some item sets that we missed during our first test in our sample. That's the point of the B.
+
+So if at least one member of the item set in the negative border is found to be frequent
+
+in our second test, then we are doomed. That means there is a breach in our negative border.
+
+There is a fault. I mean, our negative order should be complete, but at least if one item set
+
+is frequent here, let's say in the full data, then we have a fault in this negative border.
+
+That means around this area, there can be many more frequent item sets that we missed in our sample.
+
+That means our border is not good enough to construct this boundary for our sample.
+
+Then what do we do in that case? In that case, we finish this algorithm if no member is frequent
+
+in full data, which is breaking. Otherwise, there might be a larger set that is frequent,
+
+so we do not finish this algorithm. In fact, we need to repeat this algorithm with the new
+
+random sample by discarding all the information that we have at this point. Why do we do that?
+
+Because, I mean, if we know that there is a fault at this point, we don't know how large this fault is.
+
+We don't know how many item sets in this area will be really frequent or not. So
+
+we're really checking these item sets in this area, and we are not sure how many passes that
+
+we really need to run for checking all these areas around before. So instead of doing that,
+
+we just discard all this thing and we repeat this algorithm from the start by creating another
+
+random sample. So you might think this is a little waste of our resources put into our first pass,
+
+but we have no other way to do it. So this algorithm is some really, I can say,
+
+interesting because it can guarantee that our sample has no false positive and no false negative
+
+by next to. So no false positive clearly because of next to, and no false negative because of this
+
+reason. So I will explain it very soon. Before we do that, any questions?
+
+Good. So there is no false negative and the reason is almost the same as I explained.
+
+Because suppose that an item set S is frequent in the whole data but not frequent in the sample.
+
+Then if it is a 17th truth, then we can theoretically guarantee that this border,
+
+the border contains at least one item set frequent in the whole. That means, that means
+
+if at least one item set is in the outside, one item set that is frequent in the whole data is
+
+existing outside, then that theory says that there will be a hole, there should be a hole
+
+that can result in detecting this item set. So that is important theory.
+
+Okay. Why is that? Because if there is such an item set frequently in the whole but not in the
+
+sample, then one of the following either as in the value order, as itself in the value order,
+
+or S has an immediate subset T frequently in the whole data but not in the sample. So this
+
+puts recursively until there is a subset in the value order, in that root order.
+
+And yeah, so in illustration,
+
+so we can simply say that, okay I published a white one. So we have a frequent item set in the
+
+sample, we have a negative border, and let's say in the border we have A, B, C.
+
+It's assumption. Let's say we have a large item set A, B, C, G, E, which is frequent in the whole
+
+data but not in the sample. Then by that theory, we know that there should be some item set,
+
+immediate subset of this one, which is smaller than our, so this is like a thing. So we know
+
+that there is an immediate subset which is not frequently in the whole data but not frequently
+
+in the sample. So we can say we have some path from that to here. Repulsively, we can apply this
+
+theory again to result in some item set that is in the frequent border. So every item set that is
+
+not frequently in the sample but frequently in the whole data will have a path to the negative border.
+
+So because we have such an item set A, B, and C, we know that this is a whole during our path 2.
+
+So we can detect this A, B, C for our path 2, and we know that there should be some target
+
+item sets outside because of this whole. So because of this reason, we run this algorithm again
+
+from the start. So as a computer scientist, just by looking at this theory, we feel that this
+
+algorithm is not complete because we don't have a theoretical guarantee that this algorithm can
+
+finish in some runs. Because every run, again, let's say we rerun this algorithm, right?
+
+Every run of this algorithm is independent. Like the number of runs that we really need to do for
+
+this algorithm can be a hundred or a thousand because we don't have a guarantee for that.
+
+And that is something we're not satisfactory as a computer scientist, right? But still,
+
+although I will not talk about it, a really good part of this algorithm is... Where is it?
+
+Okay, a good part of this algorithm is if you really compute every number of instances,
+
+this is a constant. Although every run, every single run of this algorithm has no theoretical
+
+guarantee, but if you compute every number of passes in a big picture, then it is a constant.
+
+So that is an important theoretical guarantee for us to use this algorithm in practice.
+
+But honestly, if I'm a data engineer, probably I'm just going to use the random sampling instead
+
+of this one because it is too complicated to implement in real companies. But we still
+
+have to understand there are such algorithms that provide a better theoretical guarantee on
+
+these errors. Any questions?
+
+Wait, wait. Okay. So let me move on to another part. Second, I guess it's the final part.
+
+So I guess today's place is not about learning a very complicated thing. Today's class is more
+
+about learning various ways to solve the same problem, which is, I think, good. The last
+
+algorithm is called the sum algorithm. So this is more related to our previous topic, the
+
+matrices or distributed computing, because the idea of this algorithm is to split the data into
+
+multiple chunks and we do this in-memory operation on each chunk. And then we combine these written
+
+items that spawn from different chunks into a single one based on the use of the first. So
+
+it's more like a theory, like a perspective of the distributed computing.
+
+So this sum algorithm can be described in two parts. And we can avoid both negatives and positives
+
+with two rules in part one. So when we do this part one, when we read the data sample, all the
+
+data samples from the list, we divide this input file into one over P, where P, what is the P?
+
+I guess P is just the support ratio, but it's not better than one. But anyway, we divide the
+
+input file into multiple chunks and we run in-memory a priority for each chunk. So I mean,
+
+this takes time. Of course it takes time. But since the number of data is small enough to be
+
+fitted in-memory, we don't care about the complexity of that in-memory a priority, because
+
+as I said, we care about the disk masses. And in part two, we take the union of all
+
+three different item sets from multiple chunks and we select those with the support. So when we
+
+do this thing for each chunk, we decrease the support variable by two into P s, where P is
+
+smaller than one. And here for the part one, when we really take the final output, we use the original
+
+support ratio S. In first thing, there are no frequent false negatives. I mean, it's obvious
+
+that there are no false positives because we will do this final thing. But why no false positives?
+
+Because we can easily see that a frequent item set must be frequent in at least one chunk.
+
+So which means, I mean, it's a simple math, right? So let's say if the support ratio is nine,
+
+if we create a data set into divided data into three chunks, and let's say we apply the support
+
+rate of three for each chunk, then if the overall count of an item set is greater than nine, then
+
+it should be, it must be, it's count in at least one of the three chunks is above three.
+
+Because, I mean, obviously, because of counted memory. So as long as we do it correctly, there
+
+is no false negative. Because a frequent item set should be frequent in at least one chunk
+
+in this process. So in fact, although this algorithm is easy and simple, but it can guarantee no errors,
+
+which is good. And another great thing about this algorithm is, as I said, it's really compatible
+
+with the Matricules or any other parallel computation part. In P s1, so let's say we create
+
+two Matricules to solve this problem to implement this algorithm. So in our first class, we will
+
+implement math and reviews. Now, second time, we will implement math and review. In our P s1,
+
+we find counted items. So we divide the item set into chunks. And we for each map, we take the chunk
+
+and return f comma one for each frequent item set. So in the math test, in fact, we don't have to see
+
+each line of the document that we did in our previous word counting example. We can just take
+
+the whole chunk and you run a memory, a card with them and return f comma one for every frequent item set.
+
+But here is the one that doesn't mean anything. The value doesn't mean anything because what we
+
+want to do is just define the frequent item set in every chunk. Okay. And in the review test,
+
+we ignore the values and we produce items that appear at least one. So, right?
+
+Then in P s2, we found the true frequent items. In the math test, we take counted items from P s1
+
+and a portion of the input data and return c comma v where c is the counted item set and v is the
+
+support of this function. So what does that mean? It means that for P s2, we need to see the whole
+
+data, right? We need to see the whole data. But since the whole data does not fit in memory,
+
+in our math test, in our test two, what we divide is the original data. So that is the meaning of
+
+the portion of input data because that is like the element of division, the element of this really
+
+computing the second time. And our assumption is we can take all the counted items from P s1
+
+and store them in memory. That is our assumption. If the counted item sets are exceeding the main
+
+memory, then we can also divide these counted items into multiple chunks and the math test
+
+will be much more complicated. But anyway, we take a portion of input data and we return
+
+c comma v if c is the counted item set and v is the support for this portion. So we do the
+
+full disk pass dividing the input data into multiple chunks in the second pass. And then
+
+in the reduced pass for each item set, we sum the values and output if the sum is exceeding the
+
+support. That is what we do. So I'm not sure how intuitive this algorithm looks like to you,
+
+but if you carefully understand how web editors work and how this algorithm works, then you'll see
+
+this thing is very intuitive and easy to implement on your site. So I guess that is the end of
+
+basically what I want to say today. So before we move on to the last part, any questions on everything?
+
+Once I was in the room, I was streaming to the big screen.
+
+So,
+
+I mean, there should be a pair of pairs. And for example, that pair is a milk-puma
+
+and then for another pair, milk-puma will always go to the same chunk, right?
+
+Do we mean for the first pass, that pass? I guess that will depend on how we create this chunk from the data.
+
+So here, I guess our assumption for dividing this initial data into multiple chunks in pass 1 is,
+
+I guess we will not care about how these baskets are distributed. I guess we can just say that we
+
+take the 100% of the whole data and we can simply divide it into consecutive chunks, I think.
+
+So the same pair, like milk and basket, can appear in different chunks.
+
+But is there a reason why you think the same pair would always be in the same chunk?
+
+If this is important, then it would cause some change from memory to memory basis.
+
+So there's no different case.
+
+So let's say if we create a hash function and if we divide this data into chunks based on that hash function for the pair,
+
+then probably we can ensure that the same pair appears only in one chunk if we divide the input data in a more careful way.
+
+Is that what you want to say? Yeah, I think that is a quite good idea to try.
+
+Although in that case, probably the problem would be the imbalance between these chunks,
+
+because in that case, some chunk can be really large, some chunk can be really small.
+
+But I think we can definitely try and that would be much better than this algorithm,
+
+because in that case, the number of unique pairs for each chunk would be much greatly reduced compared to this original algorithm.
+
+So probably, I mean, that is how this research works.
+
+Like if we are given this existing algorithm, we think about it and probably we have some better ideas and we try it and it works well.
+
+Then it's like the starting point of the research.
+
+So like, for instance, well, because this algorithm has been old, like it's been some years since its first implementation,
+
+so there would be, as you said, some algorithms that implement your algorithm, your idea, I can say in the literature.
+
+But if there are no such algorithms, then that can be like your long-term risk.
+
+Then the research question would be, how can we guarantee that each chunk, I mean, each pair uniquely is mapped to some chunk without making duplicates?
+
+And how can we deal with this imbalance that is created by dividing these chunks?
+
+And we also have to care about the trade-off, because in your way, there would be an overhead in the first part.
+
+And there would be an imbalance between these chunks.
+
+And we need to compare the state, the time and effort for that with the increased overhead.
+
+That is like how almost all data mining algorithms work.
+
+So we compare this trade-off.
+
+Yeah, great.
+
+More questions?
+
+No?
+
+Great.
+
+So, I mean, I know that I'm happy to answer like every question that you ask after the class, which is good.
+
+But in fact, it is better than you can ask during class, because I mean, I think every question is valuable in this class.
+
+So if you ask something, then that gives intuition about this algorithm, not just to me or to you, but to everybody in the class.
+
+So I want to encourage you to make questions during class.
+
+But I also understand that you feel a little bit shy or you feel a little bit like hard to ask in public.
+
+So I totally understand it.
+
+But I can just say that I encourage you to do it.
+
+Okay.
+
+Locations?
+
+Right.
+
+Then let's just go to the summary slide.
+
+So, yeah, we still have some 10 minutes.
+
+I just think we finished this class compared to how I used to do it before.
+
+But anyway, I think there is not a problem at all.
+
+So we learned some improved versions of the A prior algorithm.
+
+PCY and the multi-stage, multi-hash, random sampling, toy moments algorithm, and so on.
+
+So today we covered various algorithms that are based on various different motivations and ideas on how to, in what way they implement, that they improve the A prior is different from each other.
+
+So it would be good for you to understand how they are different from each other and what ideas they are based on.
+
+Okay.
+
+But I just think today you would have known real deep for this and understanding something because today is not about math, not about theory.
+
+Okay.
+
+So as I introduced, today is the second part of frequent item sets.
+
+And we'll move on to the new topic, like from this Thursday.
+
+I just forgot what it would be.
+
+But as I said, we probably take two days for each topic.
+
+And you can typically say the new thing that we learned is totally different from this one.
+
+So even though you missed some details for this topic, but still you still have a chance to understand the new thing, the new starting point.
+
+So that's just it.
+
+And see you on this Thursday.
+
