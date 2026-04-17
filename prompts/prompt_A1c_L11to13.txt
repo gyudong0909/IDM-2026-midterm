@@ -1,7 +1,8 @@
 # PROMPT A1c: study_guide.html — Part C (L11~L13 + 집계 섹션)
-# 대상: Claude MAX (claude.ai) — 새 대화창 (A1a·A1b와 별개 세션)
-# 목적: IDM 중간고사 학습서 Part C 생성 (3개 세션 중 마지막)
-# 어셈블리: A1a 출력 + A1b 출력 + [이 출력] → study_guide.html 저장
+# 대상: Claude Code (새 대화창, A1a·A1b와 별개 세션)
+# 목적: IDM 중간고사 학습서 Part C 생성 → /mnt/d/SNU/26-1/DM/A1c.html 파일로 저장
+# 어셈블리: A1a.html + A1b.html + [이 파일] → cat으로 합쳐 study_guide.html
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
 # =============================================================
 
 ## ⚠️ 교수 출제 철학
@@ -41,35 +42,29 @@ sudo apt-get install poppler-utils
   /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
   /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
 
-### 과제 PDF
-  /mnt/d/SNU/26-1/DM/hw1/IDM2026-HW1.pdf
-  /mnt/d/SNU/26-1/DM/hw2/IDM26_Spring_HW2.pdf
-
-### ⚠️ 읽지 말 것
-  /mnt/d/SNU/26-1/DM/lecture video/
-
 ---
 
-## 출력 내용
+## 파일 출력
 
-이 파일은 A1b 출력의 `<!-- PART A1c CONTINUES HERE -->` 이후에 붙여넣는 내용이다.
-HTML body와 script 태그가 이미 열려있는 상태다.
-**이 파일의 출력으로 HTML이 완성된다.**
+완성된 내용을 `/mnt/d/SNU/26-1/DM/A1c.html` 파일로 저장하라.
+채팅창에 텍스트로 출력하지 말고, Write 도구로 파일에 직접 써라.
+**완결된 standalone HTML** — `<!DOCTYPE html>`로 시작해 `</body></html>`로 닫힌 단독 실행 가능한 파일.
+파일 저장 완료 후 "A1c.html 저장 완료. 이제 A1d 프롬프트로 병합하세요." 메시지만 출력하고 대화를 종료하라(exit).
 
-### 1. mmdsExamples_late 배열 + 최종 병합
+이 파일은 L11~L13 범위 + 전체 집계 섹션을 다루는 독립 학습서다. A1a/A1b와 무관하게 단독 실행 가능해야 한다.
 
+### 1. HTML 전체 헤더 + JS 데이터 레이어
+A1a.html과 동일한 CSS/구조 사용. script 태그 안에:
 ```javascript
+const pastExams = [
+  // 2024·2025 전체 문제 모두 포함 (T/F, 계산, 증명 전부)
+  { id, year, qnum, type, lectures, question, answer, solution, concept }
+];
 const mmdsExamples_late = [
   // Ch 9, Ch 11 (DimRed 2) 예제·연습문제 전부
   { id, chapter, exNum, lectures, title, problem, solution, concept }
 ];
-
-// 전체 병합 — A1a·A1b·A1c 데이터 통합
-const mmdsExamples = [
-  ...mmdsExamples_early,   // A1a에서 정의 (Ch 1,2,6)
-  ...mmdsExamples_mid,     // A1b에서 정의 (Ch 3,7,11)
-  ...mmdsExamples_late     // 이 파일 (Ch 9,11)
-];
+function renderInlineItems() { /* L11~L13 + 집계 섹션용 */ }
 ```
 
 ### 2. L11 ~ L13 각 강의 섹션
@@ -119,19 +114,9 @@ const mmdsExamples = [
 - 필터 UI: 챕터(전체/Ch1~Ch11) × 강의(전체/L1~L13)
 - mmdsExamples[] 데이터로 JS 렌더링
 
-### 8. 📋 과제 해설 섹션 (id="hw-solutions")
-HW1·HW2 전체 문제·풀이. 탭 2개: [HW1] [HW2]
-
-각 문제 카드:
-- 문제 번호 + 배점 + 강의 태그
-- 문제 원문 (영어)
-- 단계별 풀이 (MathJax 수식, 중간 과정 포함)
-- 시험 관련성: 🔴직결 / 🟡간접 / ⚪무관 (코딩 여부 아닌 개념 기준)
-
-### 9. HTML 닫기 + JS 초기화
+### 8. HTML 닫기 + JS 초기화
 
 ```javascript
-  // script 태그 닫기 전 초기화
   document.addEventListener('DOMContentLoaded', function() {
     renderInlineItems();
     // 사이드바 스크롤 연동 초기화
@@ -140,6 +125,7 @@ HW1·HW2 전체 문제·풀이. 탭 2개: [HW1] [HW2]
 </body>
 </html>
 ```
+※ A1c.html은 완결된 파일 — 반드시 `</body></html>`로 닫을 것.
 
 ---
 
@@ -149,7 +135,7 @@ HW1·HW2 전체 문제·풀이. 탭 2개: [HW1] [HW2]
 ---
 
 ## 금지 사항
-- lecture video/ 접근 금지
+
 - 수식 유니코드 표현 금지 (MathJax만)
 - 중간 계산 과정 생략 금지
 - placeholder / TODO 금지 — 모든 항목 실제 내용으로 완성
@@ -157,10 +143,10 @@ HW1·HW2 전체 문제·풀이. 탭 2개: [HW1] [HW2]
 ---
 
 ## 완료 후 체크
+- [ ] pastExams[] — 2024·2025 전체 채워짐
 - [ ] mmdsExamples_late[] — Ch 9,11 예제 채워짐
-- [ ] const mmdsExamples = [...early, ...mid, ...late] 병합 완료
 - [ ] L11~L13 섹션 완성 (SGD 슈도코드 포함)
 - [ ] T/F 지뢰밭, 수식 마스터, 알고리즘 레시피 완성
-- [ ] 기출 전체, MMDS 예제 전체, 과제 해설 섹션 완성
-- [ ] </body></html> 로 닫힘
-- [ ] renderInlineItems() 호출됨
+- [ ] 기출 전체, MMDS 예제 전체 섹션 완성
+- [ ] `</script></body></html>` 로 완전히 닫힘
+- [ ] 브라우저에서 단독 실행 가능한 완결된 HTML

@@ -1,7 +1,8 @@
 # PROMPT A1a: study_guide.html — Part A (L1~L5)
-# 대상: Claude MAX (claude.ai) — 새 대화창
-# 목적: IDM 중간고사 학습서 Part A 생성 (3개 세션 중 첫 번째)
-# 어셈블리: A1a 출력 + A1b 출력 + A1c 출력 → study_guide.html 저장
+# 대상: Claude Code (새 대화창)
+# 목적: IDM 중간고사 학습서 Part A 생성 → /mnt/d/SNU/26-1/DM/A1a.html 파일로 저장
+# 어셈블리: A1a.html + A1b.html + A1c.html → cat으로 합쳐 study_guide.html
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
 # =============================================================
 
 ## ⚠️ 교수 출제 철학
@@ -48,12 +49,16 @@ sudo apt-get install poppler-utils
   /mnt/d/SNU/26-1/DM/book_chapters/mmds_ch6.pdf   ← Ch 6: Frequent Itemsets (40p, L4~L5)
   ※ Ch 2 첫 부분을 먼저 훑어 예제 형식(Example X.X, Exercise 등) 파악 후 발췌
 
-### ⚠️ 읽지 말 것
-  /mnt/d/SNU/26-1/DM/lecture video/
-
 ---
 
-## 출력 내용 (이 프롬프트 한 번에)
+## 파일 출력 (이 프롬프트 한 번에)
+
+완성된 내용을 `/mnt/d/SNU/26-1/DM/A1a.html` 파일로 저장하라.
+채팅창에 텍스트로 출력하지 말고, Write 도구로 파일에 직접 써라.
+**완결된 standalone HTML** — `<!DOCTYPE html>`로 시작해 `</body></html>`로 닫힌 단독 실행 가능한 파일.
+파일 저장 완료 후 "A1a.html 저장 완료" 메시지만 출력하고 대화를 종료하라(exit).
+
+---
 
 ### 1. HTML 전체 헤더
 ```html
@@ -124,12 +129,14 @@ function renderInlineItems() {
 - `.tag-exam` 블록: "⚠️ 빈칸 출제 유력" + 빈칸 유력 줄 명시
 - 확인된 코드 슬라이드: L5 5-itemsets-2.pdf p34 (SON MapReduce)
 
-### 7. 출력 마무리
-마지막 줄:
+### 7. 파일 마무리
+A1a.html은 완결된 파일이므로 반드시 아래로 닫는다:
 ```html
-<!-- PART A1b CONTINUES HERE -->
+</script>
+</body>
+</html>
 ```
-※ </body></html> 없이 열어둘 것. script 태그도 닫지 말 것.
+※ 파일 저장 후 이 대화는 종료(exit). A1b는 별도 새 대화창에서 실행.
 
 ---
 
@@ -139,7 +146,7 @@ function renderInlineItems() {
 ---
 
 ## 금지 사항
-- lecture video/ 접근 금지
+
 - 수식 유니코드 표현 금지 (MathJax만)
 - 중간 계산 과정 생략 금지
 - placeholder / TODO 금지 — 모든 항목 실제 내용으로 완성
@@ -150,5 +157,5 @@ function renderInlineItems() {
 - [ ] pastExams[] — 2024·2025 전체 채워짐
 - [ ] mmdsExamples_early[] — Ch 1,2,6 예제 채워짐
 - [ ] L1~L5 각 섹션에 data-lecture div 삽입됨
-- [ ] <!-- PART A1b CONTINUES HERE --> 로 끝남
-- [ ] HTML/script 태그 열려있음 (닫지 않음)
+- [ ] `</script></body></html>` 로 완전히 닫힘
+- [ ] 브라우저에서 단독 실행 가능한 완결된 HTML

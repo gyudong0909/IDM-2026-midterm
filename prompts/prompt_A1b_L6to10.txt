@@ -1,7 +1,8 @@
 # PROMPT A1b: study_guide.html — Part B (L6~L10)
-# 대상: Claude MAX (claude.ai) — 새 대화창 (A1a와 별개 세션)
-# 목적: IDM 중간고사 학습서 Part B 생성 (3개 세션 중 두 번째)
-# 어셈블리: A1a 출력 + [이 출력] + A1c 출력 → study_guide.html
+# 대상: Claude Code (새 대화창, A1a와 별개 세션)
+# 목적: IDM 중간고사 학습서 Part B 생성 → /mnt/d/SNU/26-1/DM/A1b.html 파일로 저장
+# 어셈블리: A1a.html + [이 파일] + A1c.html → cat으로 합쳐 study_guide.html
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
 # =============================================================
 
 ## ⚠️ 교수 출제 철학
@@ -46,22 +47,29 @@ sudo apt-get install poppler-utils
   /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
   /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
 
-### ⚠️ 읽지 말 것
-  /mnt/d/SNU/26-1/DM/lecture video/
-
 ---
 
-## 출력 내용
+## 파일 출력
 
-이 파일은 A1a 출력의 `<!-- PART A1b CONTINUES HERE -->` 이후에 붙여넣는 내용이다.
-HTML body가 이미 열려있고 script 태그도 열려있는 상태다.
+완성된 내용을 `/mnt/d/SNU/26-1/DM/A1b.html` 파일로 저장하라.
+채팅창에 텍스트로 출력하지 말고, Write 도구로 파일에 직접 써라.
+**완결된 standalone HTML** — `<!DOCTYPE html>`로 시작해 `</body></html>`로 닫힌 단독 실행 가능한 파일.
+파일 저장 완료 후 "A1b.html 저장 완료" 메시지만 출력하고 대화를 종료하라(exit).
 
-### 1. mmdsExamples_mid 배열 정의
+이 파일은 L6~L10 범위만 다루는 독립 학습서다. A1a.html과 무관하게 단독 실행 가능해야 한다.
+
+### 1. HTML 전체 헤더 + JS 데이터 레이어
+A1a.html과 동일한 CSS/구조 사용. script 태그 안에:
 ```javascript
+const pastExams_mid = [
+  // L6~L10 관련 기출문제만 필터링
+  { id, year, qnum, type, lectures, question, answer, solution, concept }
+];
 const mmdsExamples_mid = [
   // Ch 3, Ch 7, Ch 11 예제·연습문제 전부
   { id, chapter, exNum, lectures, title, problem, solution, concept }
 ];
+function renderInlineItems() { /* data-type="exam": pastExams_mid, data-type="mmds": mmdsExamples_mid */ }
 ```
 
 ### 2. L6 ~ L10 각 강의 섹션
@@ -86,12 +94,14 @@ const mmdsExamples_mid = [
 - L8~L9 (Clustering): A-CURE처럼 shrinkage 변형 시 알고리즘 성질 변화
 - 각 알고리즘의 핵심 파라미터 역할 명시
 
-### 3. 출력 마무리
-마지막 줄:
+### 3. 파일 마무리
+A1b.html은 완결된 파일이므로 반드시 아래로 닫는다:
 ```html
-<!-- PART A1c CONTINUES HERE -->
+</script>
+</body>
+</html>
 ```
-※ </body></html> 없이 열어둘 것. script 태그도 닫지 말 것.
+※ 파일 저장 후 이 대화는 종료(exit). A1c는 별도 새 대화창에서 실행.
 
 ---
 
@@ -101,7 +111,7 @@ const mmdsExamples_mid = [
 ---
 
 ## 금지 사항
-- lecture video/ 접근 금지
+
 - 수식 유니코드 표현 금지 (MathJax만)
 - 중간 계산 과정 생략 금지
 - placeholder / TODO 금지
@@ -109,7 +119,9 @@ const mmdsExamples_mid = [
 ---
 
 ## 완료 후 체크
+- [ ] pastExams_mid[] — L6~L10 관련 기출 채워짐
 - [ ] mmdsExamples_mid[] — Ch 3,7,11 예제 채워짐
 - [ ] L6~L10 각 섹션에 data-lecture div 삽입됨
 - [ ] MinHash 슈도코드, BFR 알고리즘 코드 수록됨
-- [ ] <!-- PART A1c CONTINUES HERE --> 로 끝남
+- [ ] `</script></body></html>` 로 완전히 닫힘
+- [ ] 브라우저에서 단독 실행 가능한 완결된 HTML

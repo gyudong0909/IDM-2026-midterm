@@ -1,6 +1,8 @@
-# PROMPT B-1: React Artifact — T/F 트레이너
-# 대상: Claude MAX (claude.ai) — Artifact 기능 사용
-# 목적: IDM 중간고사 감점 방지 T/F 퀴즈 엔진
+# PROMPT B-1: T/F 트레이너 — study_guide.html에 추가
+# 대상: Claude Code (새 대화창, A1d 완료 후 실행)
+# 목적: IDM 중간고사 감점 방지 T/F 퀴즈 엔진을 study_guide.html에 덧붙이기
+# 전제: /mnt/d/SNU/26-1/DM/study_guide.html 이 존재해야 함
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
 # =============================================================
 
 ## ⚠️ 교수 출제 철학
@@ -29,16 +31,22 @@ sudo apt-get install poppler-utils
 
 ### STEP 1: 문제 생성 (먼저 이것만 출력)
 아래 자료를 모두 읽은 뒤, T/F 문제 목록을 텍스트로 출력하라.
-React 앱 코드는 아직 작성하지 말 것.
+HTML 코드는 아직 작성하지 말 것.
 
 출력 형식:
   번호. "문장" → TRUE/FALSE / 한 줄 해설
 
 STEP 1 출력이 끝나면 멈추고 확인을 기다릴 것.
-사용자가 "STEP 2 진행해줘"라고 하면 그때 React 앱을 작성한다.
+사용자가 "STEP 2 진행해줘"라고 하면 그때 HTML 섹션을 작성한다.
 
-### STEP 2: React 앱 구현 (확인 후)
-STEP 1에서 생성한 문제 목록을 데이터로 사용해 React Artifact를 구현한다.
+### STEP 2: study_guide.html에 T/F 트레이너 섹션 추가 (확인 후)
+1. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
+2. STEP 1 문제 목록을 데이터로 사용해 T/F 트레이너 섹션을 구현한다
+3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
+4. 사이드바에 "🎯 T/F 트레이너" 링크 추가
+5. `</body>` 직전에 새 섹션 삽입
+6. Write 도구로 study_guide.html 전체를 덮어쓴다
+7. "B1 T/F 트레이너 추가 완료" 메시지 출력 후 대화 종료(exit)
 
 ---
 
@@ -59,9 +67,6 @@ STEP 1에서 생성한 문제 목록을 데이터로 사용해 React Artifact를
 ### 강의 스크립트 (교수 강조점 파악용)
   /mnt/d/SNU/26-1/DM/lecture script/Lecture 1 ~ Lecture 13 .txt
   ← 영어 줄이 실제 강의 내용. 한국어는 AI 번역(오역 가능).
-
-### ⚠️ 읽지 말 것
-  /mnt/d/SNU/26-1/DM/lecture video/  ← 영상 파일, 처리 불가
 
 ---
 
@@ -92,141 +97,13 @@ STEP 1에서 생성한 문제 목록을 데이터로 사용해 React Artifact를
 4. **해설 품질**: 정답 이유 + 오해하기 쉬운 이유를 한 줄로 설명
 5. **L12/L13 특별 강화**: 신규 범위이므로 더 꼼꼼하게 — Pearson, SGD, 정규화, biases 모델, BPR 포함
 
-### 참고용 기존 문제 (재사용 가능, 개선도 가능)
-
-#### 2024·2025 실제 기출 T/F 40문항 (원문 그대로 — 반드시 포함)
-
-2024 기출 T/F:
-1. "A good MapReduce programmer is recommended to write a GroupByKey function as well as Map and Reduce." → FALSE
-2. "The MapReduce framework explicitly checks whether the Reduce function is commutative and associative before applying a Combiner." → FALSE
-3. "Spark outperforms MapReduce even when the intermediate data is too large to fit in memory." → FALSE
-4. "In Spark, suppose that there is a sort operation that shuffles the order of all elements in several RDDs. Does it have a wide dependency?" → TRUE
-5. "All maximal frequent itemsets are closed." → TRUE
-6. "A-priori aims to find all interesting rules." → FALSE
-7. "In the multistage algorithm, we can further reduce false positives by increasing the number of hash tables when finding frequent itemsets." → FALSE (reduces false positives, but statement conflates)
-8. "In Toivonen's algorithm, we need to check if the frequent itemsets in the sample are truly frequent in the full data to avoid false negatives." → FALSE
-9. "The character-level k-shingles are necessary for running LSH for documents." → FALSE
-10. "We can't represent shingles as 4-byte tokens if the number of unique shingles exceeds 2^32." → FALSE
-11. "In LSH, we can estimate the shape of an S-curve with the value 1-(1-s^r)^b." → TRUE
-12. "The random hyperplane technique can also be used directly for Jaccard similarity." → FALSE
-13. "The hierarchical clustering is not effective for an Euclidean space." → FALSE
-14. "k-means++ is always more effective than k-means." → FALSE
-15. "The CURE algorithm can still work if we don't move the points 20% inward." → FALSE
-16. "The GRGPF algorithm can be directly used for the other distance measures." → TRUE
-17. "A data matrix of size m×n, containing m independent data points, can have up to n latent factors." → FALSE
-18. "Running PCA with the power iteration is often faster than running it with SVD." → TRUE
-19. "SVD can be applied to any real matrix." → TRUE
-20. "For dimensionality reduction, CUR decomposition can be more accurate than SVD in terms of the reconstruction error in some cases." → FALSE
-
-2025 기출 T/F:
-21. "In a distributed computing cluster, each node typically shares the same CPU and memory with other nodes on the rack." → FALSE
-22. "If a Map Worker fails, all tasks it has completed must be redone, because its output is stored locally and not in the distributed file system." → TRUE
-23. "In Spark, the GroupByKey transformation creates a wide dependency because each output partition may depend on multiple input partitions." → TRUE
-24. "RDDs in Spark can be updated in place to modify existing records." → FALSE
-25. "The interest of an association rule is always positive." → FALSE
-26. "Market-basket analysis can be applied only to retail data and not to other domains such as student-club relationships." → FALSE
-27. "The PCY algorithm can efficiently use the triangular-matrix method to count frequent pairs." → FALSE
-28. "In the multistage algorithm, truly frequent pairs will always hash to frequent buckets across all stages." → TRUE
-29. "The expected similarity between two minhash signatures equals the Euclidean distance between the original sets." → FALSE
-30. "Longer minhash signatures lead to smaller expected errors when estimating similarity." → TRUE
-31. "After minhashing, LSH guarantees that all pairs of similar documents will be identified." → FALSE
-32. "In the banding technique, signatures are divided into several bands, and each band is hashed independently to identify candidate pairs." → TRUE
-33. "A clustroid represents an existing data point that is closest to all other points within the same cluster." → TRUE
-34. "Hierarchical clustering may stop merging clusters when the merged cluster's diameter exceeds a predefined threshold." → TRUE
-35. "In the BFR algorithm, the discard set contains points that have not yet been assigned to any cluster." → FALSE
-36. "In the GRGPF algorithm, a new point cannot be the clustroid immediately when it is added." → FALSE
-37. "The eigenvectors of a symmetric matrix are always orthogonal to each other." → TRUE
-38. "The first principal component corresponds to the eigenvector associated with the smallest eigenvalue of the covariance matrix." → FALSE
-39. "The number of non-zero singular values in SVD equals the number of rows in the data matrix." → FALSE
-40. "The low-rank approximation of a matrix obtained through SVD minimizes the reconstruction error among all matrices of the same rank." → TRUE
-
-위 40문항은 원문 그대로 유지하되, 해설을 강화하라.
-아래는 추가 참고용으로 이전에 작성한 52개 문제다. 좋은 것은 유지하되,
-기출 패턴 분석 후 더 나은 표현이 있으면 수정하고, 부족한 범위는 새로 추가하라.
-
-MapReduce & Spark:
-1. "A good MR programmer should write a GroupByKey function as well as Map and Reduce." → FALSE
-2. "The MR framework explicitly checks whether the Reduce function is commutative and associative before applying a Combiner." → FALSE
-3. "Spark outperforms MapReduce even when intermediate data is too large to fit in memory." → FALSE
-4. "A sort operation in Spark has a wide dependency." → TRUE
-5. "RDDs in Spark can be updated in place to modify existing records." → FALSE
-6. "If a Map Worker fails, all tasks it completed must be redone because output is in local disk." → TRUE
-7. "If a Reduce Worker fails, only in-progress tasks need to be re-executed." → TRUE
-8. "In Spark, GroupByKey creates a wide dependency." → TRUE
-9. "flatMap in Spark creates a wide dependency because one input creates multiple outputs." → FALSE
-10. "In a distributed cluster, each node typically shares the same CPU and memory with other nodes on the rack." → FALSE
-
-빈발 아이템셋:
-11. "All maximal frequent itemsets are closed." → TRUE
-12. "A-priori aims to find all interesting association rules." → FALSE
-13. "Toivonen's algorithm is guaranteed to finish in finite time." → FALSE
-14. "The interest of an association rule is always positive." → FALSE
-15. "Market-basket analysis can be applied only to retail data." → FALSE
-16. "PCY algorithm uses the triangular-matrix method to count frequent pairs." → FALSE
-17. "In Toivonen's, we need to check if sample-frequent itemsets are truly frequent in full data to avoid false negatives." → FALSE
-18. "In multistage algorithm, truly frequent pairs always hash to frequent buckets across all stages." → TRUE
-
-유사 아이템 탐색:
-19. "Character-level k-shingles are necessary for running LSH for documents." → FALSE
-20. "The random hyperplane technique can be used directly for Jaccard similarity." → FALSE
-21. "LSH guarantees that all pairs of similar documents will be identified." → FALSE
-22. "Longer minhash signatures lead to smaller expected errors when estimating similarity." → TRUE
-23. "Increasing r (rows per band) while keeping total hash functions k=r×b fixed increases precision." → TRUE
-24. "Increasing b (bands) while keeping total hash functions k=r×b fixed increases recall." → TRUE
-25. "In LSH banding, signatures are divided into bands and each band is hashed independently." → TRUE
-
-클러스터링:
-26. "k-means++ is always more effective than k-means." → FALSE
-27. "The CURE algorithm fails if we don't shrink representative points toward the centroid." → FALSE
-28. "The GRGPF algorithm can be directly used for non-Euclidean distance measures." → TRUE
-29. "A clustroid represents the mean of all points within the same cluster." → FALSE
-30. "In BFR, the Discard Set contains points that have not yet been assigned to any cluster." → FALSE
-31. "DBSCAN requires specifying the number of clusters in advance." → FALSE
-32. "Hierarchical clustering may stop merging when the merged cluster's diameter exceeds a threshold." → TRUE
-33. "In GRGPF, a new point cannot become the clustroid immediately when it is added." → FALSE
-34. "In CURE, representative points are always the actual data points (not means)." → TRUE
-
-차원 축소:
-35. "SVD can be applied to any real matrix." → TRUE
-36. "CUR decomposition can be more accurate than SVD in terms of reconstruction error." → FALSE
-37. "The first principal component corresponds to the eigenvector with the smallest eigenvalue." → FALSE
-38. "The number of non-zero singular values in SVD equals the number of rows in the matrix." → FALSE
-39. "Low-rank SVD approximation minimizes reconstruction error among all matrices of the same rank." → TRUE
-40. "Running PCA with power iteration is often faster than full SVD." → TRUE
-41. "The eigenvectors of a symmetric matrix are always orthogonal." → TRUE
-42. "In CUR decomposition, rows and columns should be sampled uniformly at random." → FALSE
-
-추천 시스템:
-43. "UV decomposition requires U and V to be orthogonal matrices." → FALSE
-44. "In UV decomposition, SSE is computed over all entries including missing values." → FALSE
-45. "UV decomposition has a closed-form solution like SVD." → FALSE
-46. "In UV decomposition, a larger k always leads to better test RMSE." → FALSE
-47. "Content-based recommendation avoids the over-specialization problem." → FALSE
-48. "Collaborative filtering requires external item features such as genre or actor." → FALSE
-49. "The utility matrix in a real-world recommender system is typically dense." → FALSE
-50. "Discrete item features like genre should be encoded as integers (0, 1, 2) for vector representation." → FALSE
-51. "Implicit feedback (e.g., watch time) clearly signals that a user dislikes an item if absent." → FALSE
-52. "In UV decomposition, k (number of latent factors) is a parameter learned from the data." → FALSE
-
 ---
 
-## STEP 2: React 앱 구현 스펙 (STEP 1 확인 후 작성)
+## STEP 2: T/F 트레이너 섹션 구현 스펙 (STEP 1 확인 후 작성)
 
 ### 기술 스택
-- 순수 React + inline CSS
-- 수식 해설이 필요한 문항에 한해 KaTeX CDN 사용:
-  ```js
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
-    document.head.appendChild(link);
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
-    script.onload = () => setKatexLoaded(true);
-    document.head.appendChild(script);
-  }, []);
-  ```
+- 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
+- 수식이 필요한 해설은 MathJax (study_guide.html에 이미 CDN 로드됨)
 
 ### 채점 규칙 (실제 시험 동일)
 - 정답 클릭: +1점

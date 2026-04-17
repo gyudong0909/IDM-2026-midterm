@@ -1,0 +1,81 @@
+# PROMPT A1d: study_guide.html — 최종 병합
+# 대상: Claude Code (새 대화창, A1a·A1b·A1c 완료 후 실행)
+# 목적: A1a.html + A1b.html + A1c.html → /mnt/d/SNU/26-1/DM/study_guide.html
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
+# =============================================================
+
+## 전제 조건
+아래 세 파일이 이미 존재해야 한다:
+  /mnt/d/SNU/26-1/DM/A1a.html  ← L1~L5 + pastExams[] + mmdsExamples_early[]
+  /mnt/d/SNU/26-1/DM/A1b.html  ← L6~L10 + pastExams_mid[] + mmdsExamples_mid[]
+  /mnt/d/SNU/26-1/DM/A1c.html  ← L11~L13 + 집계 섹션 + pastExams[] + mmdsExamples_late[]
+
+---
+
+## 작업 지시
+
+세 파일을 읽어 하나의 완결된 `study_guide.html`로 병합하라.
+완성된 파일을 `/mnt/d/SNU/26-1/DM/study_guide.html`에 저장하라.
+
+### 병합 규칙
+
+#### 1. 기본 구조 (A1a.html 기준)
+- `<!DOCTYPE html>`, `<html>`, `<head>`, CSS, MathJax CDN 등은 A1a.html 것을 사용
+- A1b·A1c의 `<head>` 안 CSS 중 A1a에 없는 것만 추가 병합
+
+#### 2. JS 데이터 병합
+script 태그 안에 아래 순서로 정의:
+```javascript
+// A1a에서 추출
+const pastExams = [ /* A1a의 pastExams 전체 */ ];
+
+// A1a에서 추출
+const mmdsExamples_early = [ /* A1a의 mmdsExamples_early */ ];
+
+// A1b에서 추출
+const mmdsExamples_mid = [ /* A1b의 mmdsExamples_mid */ ];
+
+// A1c에서 추출
+const mmdsExamples_late = [ /* A1c의 mmdsExamples_late */ ];
+
+// 최종 병합
+const mmdsExamples = [
+  ...mmdsExamples_early,
+  ...mmdsExamples_mid,
+  ...mmdsExamples_late
+];
+```
+- `renderInlineItems()`는 pastExams + mmdsExamples 전체를 사용하도록 A1c 버전 기준으로 통합
+
+#### 3. HTML body 섹션 병합 순서
+1. 사이드바 (A1c 버전 기준 — 전체 L1~L13 + 집계 섹션 링크 포함)
+2. A1a의 body 섹션: 기출 메타 분석 + L1~L5
+3. A1b의 body 섹션: L6~L10
+4. A1c의 body 섹션: L11~L13 + T/F 지뢰밭 + 수식 마스터 + 알고리즘 레시피 + 기출 전체 + MMDS 예제 전체 + 과제 해설
+
+#### 4. 중복 제거
+- A1b·A1c의 `<!DOCTYPE html>`, `<html>`, `<head>`, `<body>` 태그 제거 (이미 A1a에서 열림)
+- A1b·A1c의 닫는 `</script>`, `</body>`, `</html>` 제거 (A1c 것만 최종에 사용)
+- 사이드바 중복 제거 (A1c 것 하나만 사용)
+
+#### 5. 최종 닫기
+```javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    renderInlineItems();
+    // 사이드바 스크롤 연동 초기화
+  });
+</script>
+</body>
+</html>
+```
+
+---
+
+## 완료 후 체크
+- [ ] 사이드바에 L1~L13 전체 링크 + 집계 섹션 링크 포함
+- [ ] pastExams[] — 2024·2025 전체 (A1a 기준)
+- [ ] mmdsExamples = [...early, ...mid, ...late] 병합 완료
+- [ ] L1~L13 섹션 순서대로 존재
+- [ ] T/F 지뢰밭, 수식 마스터, 알고리즘 레시피, 기출 전체, MMDS 예제 전체, 과제 해설 섹션 포함
+- [ ] `</script></body></html>` 로 완전히 닫힘
+- [ ] 브라우저에서 단독 실행 가능

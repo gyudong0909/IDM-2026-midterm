@@ -9,16 +9,17 @@
 
 ```
 DM/
-├── prompts/                      ← Claude MAX 요청용 프롬프트
-│   ├── prompt_A1a_L1to5.txt           ← HTML 헤더 + JS 데이터 + L1~L5  (~159K)
-│   ├── prompt_A1b_L6to10.txt          ← L6~L10                          (~144K)
-│   ├── prompt_A1c_L11to13.txt         ← L11~L13 + 집계 섹션 + 닫기      (~107K)
-│   ├── prompt_B1_react_tf_trainer.txt
-│   ├── prompt_B2_react_code_blanks.txt
-│   └── prompt_B3_react_hw_solutions.txt
+├── prompts/                      ← Claude Code 요청용 프롬프트
+│   ├── prompt_A1a_L1to5.txt           ← standalone HTML: L1~L5          (→ A1a.html)
+│   ├── prompt_A1b_L6to10.txt          ← standalone HTML: L6~L10         (→ A1b.html)
+│   ├── prompt_A1c_L11to13.txt         ← standalone HTML: L11~L13 + 집계 (→ A1c.html)
+│   ├── prompt_A1d_merge.txt           ← A1a+A1b+A1c 병합               (→ study_guide.html)
+│   ├── prompt_B1_react_tf_trainer.txt ← T/F 트레이너 섹션 추가
+│   ├── prompt_B2_react_code_blanks.txt← 코드 빈칸 섹션 추가
+│   └── prompt_B3_react_hw_solutions.txt← 과제 해설 섹션 추가
 ├── lecture notes/                ← 강의 슬라이드 PDF (1~13강)
 ├── lecture script/               ← 강의 스크립트 (영한 교차)
-├── lecture video/                ← 강의 영상 (학습용, 프롬프트에서 제외)
+
 ├── IDM_previous_midterm/         ← 기출문제 (2024, 2025)
 ├── hw0~hw2/                      ← 과제
 ├── book_chapters/                ← MMDS 챕터별 분리본 (A1 프롬프트용)
@@ -38,101 +39,90 @@ DM/
 
 ### ⚙️ 사전 준비 (최초 1회)
 
-A1, B1, B2, B4는 로컬 PDF 파일을 읽는다. Claude Code에서 PDF를 읽으려면
+모든 프롬프트는 로컬 PDF 파일을 읽는다. Claude Code에서 PDF를 읽으려면
 `poppler-utils`가 시스템에 설치되어 있어야 한다.
 
 ```bash
-sudo apt-get install poppler-utils
+sudo apt-get install poppler-utils && pdftotext -v
 ```
-
-설치 확인:
-```bash
-pdftotext -v
-```
-
-> B3는 PDF 읽기 없음 → poppler-utils 불필요.
 
 ### 공통 원칙
 - **각 프롬프트는 반드시 별도 대화(새 대화창)에서 실행**
-- 한 대화에 여러 프롬프트 넣으면 출력 절단 발생
-- 프롬프트 파일 내용을 전체 복사 → claude.ai 대화창에 붙여넣기
+- 한 대화에 여러 프롬프트 넣으면 컨텍스트 초과로 출력 절단 발생
+- 프롬프트 파일 내용을 전체 복사 → Claude Code 대화창에 붙여넣기
+- 파일 저장 완료 메시지 확인 후 반드시 **exit(대화 종료)** → 새 대화창에서 다음 프롬프트 실행
 
 ---
 
-### A1: HTML 전체 재작성 (3개 세션)
+### A1: HTML 전체 생성 (4개 세션)
 
-토큰 한도(200K) 때문에 3개의 독립 세션으로 분리. 각 세션은 별개 대화창.
+토큰 한도(200K) 때문에 3개의 독립 세션으로 분리 생성 후 4번째 세션에서 병합.
+각 A1x 파일은 완결된 standalone HTML — 단독 브라우저 실행 가능.
 
 **작업 흐름:**
 
 ```
 ① [새 대화창 #1] prompt_A1a_L1to5.txt 붙여넣고 전송
    → 자료 읽음: L1~L5 PDF/스크립트 + MMDS ch1,2,6 + 기출 전체
-   → 출력: HTML 헤더 + JS 데이터 레이어 + L1~L5
-   → <!-- PART A1b CONTINUES HERE --> 로 끝남
-   → 출력 전체 복사 저장 (Part_A.html)
+   → A1a.html 생성 (완결된 standalone HTML: L1~L5)
+   → "A1a.html 저장 완료" 확인 → exit
 
 ② [새 대화창 #2] prompt_A1b_L6to10.txt 붙여넣고 전송
    → 자료 읽음: L6~L10 PDF/스크립트 + MMDS ch3,7,11 + 기출 전체
-   → 출력: mmdsExamples_mid[] + L6~L10 섹션
-   → <!-- PART A1c CONTINUES HERE --> 로 끝남
-   → 출력 전체 복사 저장 (Part_B.html)
+   → A1b.html 생성 (완결된 standalone HTML: L6~L10)
+   → "A1b.html 저장 완료" 확인 → exit
 
 ③ [새 대화창 #3] prompt_A1c_L11to13.txt 붙여넣고 전송
-   → 자료 읽음: L11~L13 PDF/스크립트 + MMDS ch9,11 + HW + 기출
-   → 출력: mmdsExamples_late[] + 병합 + L11~L13 + 집계 섹션 + </body></html>
-   → 출력 전체 복사 저장 (Part_C.html)
+   → 자료 읽음: L11~L13 PDF/스크립트 + MMDS ch9,11 + 기출
+   → A1c.html 생성 (완결된 standalone HTML: L11~L13 + 집계 섹션)
+   → "A1c.html 저장 완료" 확인 → exit
 
-④ Part_A.html + Part_B.html + Part_C.html 텍스트 합치기
-   → study_guide.html 로 저장 → 브라우저에서 열기
+④ [새 대화창 #4] prompt_A1d_merge.txt 붙여넣고 전송
+   → A1a.html + A1b.html + A1c.html 읽기
+   → CSS/JS 병합, 섹션 통합, mmdsExamples 배열 합치기
+   → study_guide.html 생성
+   → "study_guide.html 저장 완료" 확인 → exit → 브라우저에서 열기
 ```
 
-> 각 세션은 독립적 — 순서대로 실행하되 같은 대화창일 필요 없음.
+> ⚠️ 각 세션은 완전 독립 — 반드시 exit 후 새 대화창에서 다음 실행. 같은 대화창에 이어서 실행하면 컨텍스트 초과로 내용 절단.
 
 ---
 
-### B1: T/F 트레이너 (React)
+### B1: T/F 트레이너 추가 (A1d 완료 후)
 
 **사용할 파일:** `prompt_B1_react_tf_trainer.txt`
 
-**작업 흐름 (같은 대화창에서 2번 입력):**
-
 ```
-① 새 대화창 열기
-② prompt_B1_react_tf_trainer.txt 내용 전체 붙여넣고 전송
-   → MAX가 기출 + 강의 자료 읽고 T/F 문제 목록(80~100개) 텍스트 출력
-   → React 앱 코드는 아직 작성 안 함
+① 새 대화창 열기 (study_guide.html 존재 확인)
+② prompt_B1_react_tf_trainer.txt 전체 붙여넣고 전송
+   → 기출 + 강의 자료 읽고 T/F 문제 목록(80~100개) 텍스트 출력 (STEP 1)
 ③ 문제 목록 검토 후, 같은 대화창에서:
    "STEP 2 진행해줘"
-   → React Artifact로 T/F 트레이너 앱 구현
+   → study_guide.html에 T/F 트레이너 섹션 추가 + 저장 → exit
 ```
 
 ---
 
-### B2: 코드/슈도코드 빈칸 채우기 (React)
+### B2: 코드 빈칸 추가 (B1 완료 후)
 
 **사용할 파일:** `prompt_B2_react_code_blanks.txt`
 
 ```
 ① 새 대화창 열기
-② 프롬프트 붙여넣고 전송 → React Artifact 한 번에 출력
-   탭별 구성: MinHash | SGD for UV | Spark Quantile | BFR/SON
-   슬라이드에서 추가 코드 발견 시 탭 자동 추가
+② 프롬프트 붙여넣고 전송
+   → 슬라이드 읽기 → study_guide.html에 코드 빈칸 섹션 추가 + 저장 → exit
 ```
 
 ---
 
-### B3: 과제 해설 (React)
+### B3: 과제 해설 추가 (B2 완료 후)
 
 **사용할 파일:** `prompt_B3_react_hw_solutions.txt`
 
 ```
 ① 새 대화창 열기
-② 프롬프트 붙여넣고 전송 → React Artifact 한 번에 출력
-   탭 구성: HW1 | HW2
-   각 문제 카드: 원문 + 단계별 풀이 + 시험 관련성 태그(🔴🟡⚪)
-   뼈대 코드 TODO 해설 포함 (Q1 k-means, Q3 CF)
-   필터: 전체 / 시험 직결만 / 진행 체크박스
+② 프롬프트 붙여넣고 전송
+   → HW PDF + 강의 읽기 → study_guide.html에 과제 해설 섹션 추가 + 저장 → exit
 ```
 
 ---

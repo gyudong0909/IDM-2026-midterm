@@ -1,6 +1,8 @@
-# PROMPT B-3: React Artifact — 코드/슈도코드 빈칸 채우기
-# 대상: Claude MAX (claude.ai) — Artifact 기능 사용
-# 목적: IDM 강의 슬라이드 코드/슈도코드 빈칸 채우기 연습
+# PROMPT B-2: 코드/슈도코드 빈칸 채우기 — study_guide.html에 추가
+# 대상: Claude Code (새 대화창, B1 완료 후 실행)
+# 목적: 코드/슈도코드 빈칸 채우기 인터랙티브 섹션을 study_guide.html에 덧붙이기
+# 전제: /mnt/d/SNU/26-1/DM/study_guide.html 이 존재해야 함
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
 # =============================================================
 
 ## ⚠️ 교수 출제 철학
@@ -13,23 +15,15 @@
 
 ---
 
-## 요청
-IDM 강의 슬라이드에 등장하는 코드/슈도코드 빈칸 채우기 React Artifact를 만들어라.
-순수 React + inline CSS. KaTeX CDN으로 수식 렌더링.
-
-KaTeX 로드 (컴포넌트 최상단 useEffect):
-```js
-useEffect(() => {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
-  document.head.appendChild(link);
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
-  script.onload = () => setKatexLoaded(true);
-  document.head.appendChild(script);
-}, []);
-```
+## 작업 지시
+1. 아래 강의 슬라이드를 읽어 코드/슈도코드 빈칸 채우기 섹션을 구현한다
+2. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
+3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
+   수식은 MathJax (study_guide.html에 이미 CDN 로드됨)
+4. 사이드바에 "✏️ 코드 빈칸" 링크 추가
+5. `</body>` 직전 (B1 섹션 다음)에 새 섹션 삽입
+6. Write 도구로 study_guide.html 전체를 덮어쓴다
+7. "B2 코드 빈칸 추가 완료" 메시지 출력 후 대화 종료(exit)
 
 ---
 

@@ -1,6 +1,8 @@
-# PROMPT B-3: React Artifact — 과제 해설 앱
-# 대상: Claude MAX (claude.ai) — Artifact 기능 사용
-# 목적: IDM HW1·HW2 문제·풀이 인터랙티브 뷰어
+# PROMPT B-3: 과제 해설 — study_guide.html에 추가
+# 대상: Claude Code (새 대화창, B2 완료 후 실행)
+# 목적: HW1·HW2 풀이 인터랙티브 섹션을 study_guide.html에 덧붙이기
+# 전제: /mnt/d/SNU/26-1/DM/study_guide.html 이 존재해야 함
+# 완료 후: 파일 저장 확인 → 대화 종료(exit)
 # =============================================================
 
 ## ⚠️ 교수 출제 철학
@@ -42,29 +44,17 @@ sudo apt-get install poppler-utils
   /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2024.pdf
   /mnt/d/SNU/26-1/DM/IDM_previous_midterm/IDM_midterm_2025.pdf
 
-### ⚠️ 읽지 말 것
-  /mnt/d/SNU/26-1/DM/lecture video/
-
 ---
 
-## 요청
-
-IDM 과제 해설 React Artifact를 만들어라.
-순수 React + inline CSS + KaTeX로 만든다.
-
-KaTeX 로드 방법:
-```js
-useEffect(() => {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
-  document.head.appendChild(link);
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
-  script.onload = () => setKatexLoaded(true);
-  document.head.appendChild(script);
-}, []);
-```
+## 작업 지시
+1. 아래 과제 PDF와 강의 슬라이드를 읽어 HW1·HW2 풀이 섹션을 구현한다
+2. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
+3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
+   수식은 MathJax (study_guide.html에 이미 CDN 로드됨)
+4. 사이드바에 "📋 과제 해설" 링크 추가 (이미 있으면 id 연결만)
+5. `</body>` 직전 (B2 섹션 다음)에 새 섹션 삽입
+6. Write 도구로 study_guide.html 전체를 덮어쓴다
+7. "B3 과제 해설 추가 완료" 메시지 출력 후 대화 종료(exit)
 
 ---
 
