@@ -228,7 +228,7 @@ def predict_item_based(target_user_id, candidate_movie_id, ...):
 ```
 
 ### 코드 TODO 블록 처리 방식 (HW1 Q1, HW2 Q1b, HW2 Q3)
-코드가 포함된 문제는 **pseudocode 수준**으로 다룬다. 위 뼈대 코드(Python 형태)는 의도 전달용이며, 실제 Python 문법 구현이 아니라 "이 줄에서 무엇을 해야 하는가"를 한 줄 pseudocode로 표현하면 충분하다.
+코드가 포함된 문제는 **Python 기반 pseudocode 수준**으로 다룬다. 위 뼈대 코드(Python 형태)는 의도 전달용이며, 완전한 동작 코드가 아니라 "이 줄에서 무엇을 해야 하는가"를 Python 스타일로 간결하게 표현하면 충분하다.
 
 자동 채점 없이 자기 채점 방식 사용:
 - TODO 블록마다 빈칸 `<input>` 표시
