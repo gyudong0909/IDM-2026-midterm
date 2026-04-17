@@ -56,7 +56,8 @@ sudo apt-get install poppler-utils
 ### 1. HTML 전체 헤더 + JS 데이터 레이어
 A1a.html과 동일한 CSS/구조 사용. script 태그 안에:
 ```javascript
-const pastExams = [
+// ※ 변수명 끝에 _c 접미사 필수 — A1d 병합 시 충돌 방지
+const pastExams_c = [
   // 2024·2025 전체 문제 모두 포함 (T/F, 계산, 증명 전부)
   { id, year, qnum, type, lectures, question, answer, solution, concept }
 ];
@@ -143,7 +144,7 @@ function renderInlineItems() { /* L11~L13 + 집계 섹션용 */ }
 ---
 
 ## 완료 후 체크
-- [ ] pastExams[] — 2024·2025 전체 채워짐
+- [ ] pastExams_c[] — 2024·2025 전체 채워짐 (변수명 _c 확인)
 - [ ] mmdsExamples_late[] — Ch 9,11 예제 채워짐
 - [ ] L11~L13 섹션 완성 (SGD 슈도코드 포함)
 - [ ] T/F 지뢰밭, 수식 마스터, 알고리즘 레시피 완성

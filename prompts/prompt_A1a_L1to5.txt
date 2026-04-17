@@ -82,7 +82,8 @@ sudo apt-get install poppler-utils
 ### 2. JavaScript 데이터 레이어 (script 태그 열기)
 ```javascript
 // ── 데이터 레이어 ──────────────────────────────
-const pastExams = [
+// ※ 변수명 끝에 _a 접미사 필수 — A1d 병합 시 충돌 방지
+const pastExams_a = [
   // 2024·2025 전체 문제 모두 포함 (T/F, 계산, 증명 전부)
   { id, year, qnum, type, lectures, question, answer, solution, concept }
 ];
@@ -91,8 +92,6 @@ const mmdsExamples_early = [
   // Ch 1, Ch 2, Ch 6 예제·연습문제 전부
   { id, chapter, exNum, lectures, title, problem, solution, concept }
 ];
-// ※ mmdsExamples_mid, mmdsExamples_late는 A1b·A1c에서 정의됨
-// ※ 최종 병합: const mmdsExamples = [...] 은 A1c에서 정의됨
 ```
 
 ### 3. renderInlineItems 함수 + 초기화 코드 (A1c 끝에서 호출)
@@ -154,7 +153,7 @@ A1a.html은 완결된 파일이므로 반드시 아래로 닫는다:
 ---
 
 ## 완료 후 체크
-- [ ] pastExams[] — 2024·2025 전체 채워짐
+- [ ] pastExams_a[] — 2024·2025 전체 채워짐 (변수명 _a 확인)
 - [ ] mmdsExamples_early[] — Ch 1,2,6 예제 채워짐
 - [ ] L1~L5 각 섹션에 data-lecture div 삽입됨
 - [ ] `</script></body></html>` 로 완전히 닫힘

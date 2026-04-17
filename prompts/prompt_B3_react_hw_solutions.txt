@@ -51,8 +51,9 @@ sudo apt-get install poppler-utils
 2. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
 3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
    수식은 MathJax (study_guide.html에 이미 CDN 로드됨)
-4. 사이드바에 "📋 과제 해설" 링크 추가 (이미 있으면 id 연결만)
-5. `</body>` 직전 (B2 섹션 다음)에 새 섹션 삽입
+4. 사이드바에 "📋 과제 해설" 링크 추가
+5. study_guide.html 내 `<!-- B_SERIES_ANCHOR -->` 마커를 찾아 그 자리에 새 섹션을 삽입
+   (B3가 마지막이므로 삽입 후 마커 삭제해도 됨)
 6. Write 도구로 study_guide.html 전체를 덮어쓴다
 7. "B3 과제 해설 추가 완료" 메시지 출력 후 대화 종료(exit)
 

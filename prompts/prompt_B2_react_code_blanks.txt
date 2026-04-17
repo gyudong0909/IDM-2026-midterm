@@ -21,7 +21,8 @@
 3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
    수식은 MathJax (study_guide.html에 이미 CDN 로드됨)
 4. 사이드바에 "✏️ 코드 빈칸" 링크 추가
-5. `</body>` 직전 (B1 섹션 다음)에 새 섹션 삽입
+5. study_guide.html 내 `<!-- B_SERIES_ANCHOR -->` 마커를 찾아 그 자리에 새 섹션을 삽입
+   (마커는 삭제하지 말고 섹션 뒤에 유지)
 6. Write 도구로 study_guide.html 전체를 덮어쓴다
 7. "B2 코드 빈칸 추가 완료" 메시지 출력 후 대화 종료(exit)
 
