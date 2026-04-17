@@ -20,7 +20,7 @@
 2. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
 3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
    수식은 MathJax (study_guide.html에 이미 CDN 로드됨)
-4. 사이드바에 "✏️ 코드 빈칸" 링크 추가
+4. 사이드바에 "✏️ 코드 빈칸" 링크 추가 (이미 같은 링크가 존재하면 중복 추가 금지)
 5. study_guide.html 내 `<!-- B_SERIES_ANCHOR -->` 마커를 찾아 그 자리에 새 섹션을 삽입
    (마커는 삭제하지 말고 섹션 뒤에 유지)
 6. Write 도구로 study_guide.html 전체를 덮어쓴다
@@ -69,7 +69,7 @@
 - combine 함수의 rmin, rmax
 - compress 함수의 조건
 - query 함수의 조건
-⚠️ rmin/rmax 정답은 슬라이드 + 기출 답안에서 직접 확인하여 정확한 값으로 작성할 것
+⚠️ rmin/rmax 정답은 슬라이드와 기출 문제를 바탕으로 직접 유도하여 정확한 값으로 작성할 것 (별도 공식 답안 파일 없음)
 
 ### 탭 4: BFR / SON (L9, L5)
 슬라이드에서 확인한 내용 기반으로 구성

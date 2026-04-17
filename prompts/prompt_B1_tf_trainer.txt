@@ -45,7 +45,7 @@ STEP 1 출력이 끝나면 멈추고 확인을 기다릴 것.
 1. `/mnt/d/SNU/26-1/DM/study_guide.html` 을 읽는다
 2. STEP 1 문제 목록을 데이터로 사용해 T/F 트레이너 섹션을 구현한다
 3. 순수 HTML + 인라인 CSS + 바닐라 JS (React 사용 금지)
-4. 사이드바에 "🎯 T/F 트레이너" 링크 추가
+4. 사이드바에 "🎯 T/F 트레이너" 링크 추가 (이미 같은 링크가 존재하면 중복 추가 금지)
 5. study_guide.html 내 `<!-- B_SERIES_ANCHOR -->` 마커를 찾아 그 자리에 새 섹션을 삽입
    (마커는 삭제하지 말고 섹션 뒤에 유지)
 6. Write 도구로 study_guide.html 전체를 덮어쓴다
