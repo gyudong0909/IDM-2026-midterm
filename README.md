@@ -150,6 +150,63 @@ sudo apt-get install poppler-utils && pdftotext -v
 
 ---
 
+## 📖 study_viewer_v2.html — 슬라이드별 상세 뷰어
+
+`lecture notes/` 의 PDF 13개를 **슬라이드 1장씩** 왼쪽에 띄우고, 가운데·오른쪽 칼럼에 **한글 번역 + 완전 바보 버전 상세 설명**을 나란히 보여주는 뷰어.
+
+### 구성
+- **좌측 45%**: 원본 PDF 슬라이드 (pdf.js로 렌더)
+- **중앙 27.5%**: 슬라이드 내용 한글 번역 + 교수 스크립트 요약
+- **우측 27.5%**: 🎬 하는 일 / 💡 핵심 아이디어 / 📐 공식·증명 / 🍎 비유 / 📝 시험 포인트 구조의 상세 해설
+
+전체 13강 × 519 슬라이드 모두 번역·해설 완료.
+
+### 실행 방법
+
+**Windows (추천)**
+
+```
+start_viewer.bat  더블클릭
+```
+
+파이썬이 없다고 나오면 `diagnose.bat` 먼저 실행해서 원인 확인 → [python.org](https://python.org)에서 설치 (설치 중 **"Add to PATH" 체크** 필수).
+
+**WSL / macOS / Linux**
+
+```bash
+bash start_viewer.sh
+# 또는
+python3 launch_viewer.py
+```
+
+브라우저가 자동으로 `http://localhost:8765/study_viewer_v2.html` 을 연다. 서버가 준비된 뒤에 열리므로 chrome-error 없음.
+
+### 파일 요구사항
+뷰어를 실행하려면 같은 폴더에 다음이 있어야 함:
+
+```
+study_viewer_v2.html       ← 뷰어 본체
+launch_viewer.py           ← 파이썬 런처 (포트·브라우저 자동)
+lecture notes/             ← 원본 PDF 13개 (1-intro.pdf ~ 13-recsys-2.pdf)
+```
+
+> PDF 파일명이 바뀌면 `build_viewer_v2.py` 상단의 `LECTURES` 리스트 수정 후 `python3 build_viewer_v2.py` 다시 실행.
+
+### 번역·해설 수정
+번역·해설은 `build_viewer_v2.py` 의 `TRANSLATIONS` dict 안에 lecture × slide 번호로 저장돼 있다. 수정 후:
+
+```bash
+python3 build_viewer_v2.py
+# → study_viewer_v2.html 재생성 (~660KB)
+```
+
+조작:
+- `←/→` 또는 `PageUp/PageDown` — 이전/다음 슬라이드
+- 상단 강의 드롭다운으로 L1~L13 이동
+- 상단 버튼으로 vertical(연속 스크롤) / horizontal(한 장씩) 모드 전환
+
+---
+
 ## 기출 핵심 패턴
 
 ### 매년 출제 (2024, 2025 공통)
