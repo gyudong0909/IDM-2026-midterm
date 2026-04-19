@@ -1,0 +1,529 @@
+Clustering 2
+Introduction to Data Mining
+ Seoul National University
+       Spring 2026
+
+
+
+
+          Jaemin Yoo          1
+Announcements
+• Assignments:
+  • HW1 is posted (deadline: April 9).
+
+
+
+
+                                    Jaemin Yoo   2
+Recap
+• Clustering
+   • Curse of dimensionality
+• Hierarchical clustering
+   • Euclidean vs. non-Euclidean
+   • Centroids vs. clustroids
+• 𝑘-means clustering
+   • 𝑘-means++
+   • Selection of 𝑘
+
+
+
+                                   Jaemin Yoo   3
+Outline
+1. CURE Algorithm
+2. BFR Algorithm
+3. BFR Algorithm: Process
+4. GRGPF Algorithm
+
+
+
+
+                            Jaemin Yoo   4
+Overview
+• Q: How to do clustering if the data is too large to fit in memory?
+• CURE: Simplest approach based on hierarchical clustering.
+• BFR: Variant of 𝑘-means for large data.
+   • More advanced but introduces more assumptions compared to CURE.
+• GRGPF: Clever approach for a non-Euclidean space.
+   • Summarizes a cluster without its centroid.
+
+
+
+
+                                    Jaemin Yoo                         5
+CURE (Clustering Using REpresentatives)
+• CURE is a 2-pass algorithm for large disk-resident data.
+   • Pass 1: Find clusters from a sampled subset.
+   • Pass 2: Assign points to the clusters.
+• Use a collection of representative points to represent clusters.
+• Assume Euclidean space/distance, with 𝑘 (# of clusters) given.
+
+
+
+
+                                   Jaemin Yoo                        6
+CURE: Pass 1
+1. Pick a random sample of data.
+2. Cluster them in main memory using hierarchical clustering.
+   • Merge two clusters when they have close pairs of points.
+3. Pick representative points from each cluster.
+   • For each cluster, pick a sample of points, as dispersed as possible.
+   • Move them a fraction of distance, e.g. 20%, toward the centroid ... why?
+4. Merge clusters with the closest pair of representatives.
+
+
+
+                                    Jaemin Yoo                                  7
+Example: Picking Dispersed Points
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             8
+Example: Picking Dispersed Points
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             9
+Example: Picking Dispersed Points
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             10
+CURE: Pass 2
+1. Rescan the whole dataset.
+2. Assign each point 𝑝 in the dataset to the “closest cluster.”
+   • Find the closest representative point to 𝑝.
+   • Assign 𝑝 to the representative’s cluster.
+
+
+
+
+                                     Jaemin Yoo                   11
+Why to Move 20% Inward?
+• Some of the representatives will be on the boundary of clusters.
+• We move them 20% towards the centroids.
+• Large, dispersed clusters will shrink more than small, dense ones
+• As a result, the algorithm favors a small, dense cluster.
+
+
+
+
+                           Source: Stanford CS246 (2022)
+
+
+
+                                    Jaemin Yoo                    12
+Outline
+1. CURE Algorithm
+2. BFR Algorithm
+3. BFR Algorithm: Process
+4. GRGPF Algorithm
+
+
+
+
+                            Jaemin Yoo   13
+BFR (Bradley, Fayyad, and Reina) Algorithm
+• Variant of 𝑘-means for large disk-resident data.
+• Assume normally-distributed clusters in a Euclidean space.
+   • Clusters are axis-aligned ellipses.
+   • Standard deviations in different dimensions may vary.
+• Goal: Find cluster centroids efficiently (in Pass 1).
+   • Point assignment can be done in Pass 2 through whole data.
+
+
+
+
+                  OK               OK               Not OK
+                                    Jaemin Yoo                    14
+Main Idea
+• Idea: Keep summary statistics of groups of points.
+   1. Read points from disk one main-memory-full at a time.
+   2. Summarize most points from previous memory loads.
+   3. Memory requirement changes from 𝑂 data to 𝑂 clusters .
+• Challenge: Not all points can be summarized effectively.
+   • Some points will not create a cluster at all.
+
+
+
+
+                                      Jaemin Yoo               15
+Three Classes of Points
+• Divide all data points into three sets during the algorithm.
+• Discard set (= clusters):
+   • Points close to a centroid to be summarized and discarded.
+• Compressed set (= miniclusters):
+   • Groups of points that are close together but not to any centroid.
+   • These points are summarized but not assigned to a cluster.
+• Retained set:
+   • Isolated points waiting to be assigned to a compressed set.
+
+
+
+                                     Jaemin Yoo                          16
+Cluster Visualization
+                                        Points in the
+                                        retained set
+
+
+
+
+                          Compressed sets
+
+
+
+
+         A cluster. Its points are                 Its centroid
+         in the discard set
+
+                                      Jaemin Yoo                  17
+Summarizing Sets of Points
+• Discard or compressed set is summarized by 2𝑑 + 1 values.
+  • The number 𝑁 of points.
+  • A vector SUM, where SUM! is the sum of the coordinates of all points.
+  • A vector SUMSQ, where SUMSQ! is the sum of squared coordinates.
+                                           %
+     • SUM! = ∑"∈$ 𝑥"! and SUMSQ ! = ∑"∈$ 𝑥"! .
+
+
+                                                               𝐶: Set of points
+                                                               𝑑: # of dimensions
+
+            A cluster. Its points are           Its centroid
+            stored in memory
+
+
+                                        Jaemin Yoo                                  18
+Summarizing Sets of Points
+• We can compute the centroid and the size of each cluster.
+   • Average in dimension 𝑖 (= centroid): SUM! /𝑁.
+   • Variance in dimension 𝑖 (= cluster size): SUMSQ! /𝑁 − SUM! /𝑁 ".
+      • Because Var 𝑋 = 𝐸 𝑋 % − 𝐸 𝑋 % .
+   • Standard deviation is the square root of variance.
+• This is based on the assumption of “axis-aligned” clusters.
+   • Without it, we need to store the 𝑑 × 𝑑 covariance matrix.
+
+
+
+
+                  OK                  OK             Not OK
+                                                                        19
+Benefits of the Representation
+• Benefit 1: Easy to add a new point to a cluster.
+   • Increase 𝑁 by 1.
+   • Add the vector to SUM.
+   • Add the squares of components to SUMSQ.
+• Benefit 2: Easy to combine two clusters.
+   • Add corresponding values of 𝑁, SUM, and SUMSQ.
+
+
+
+
+                                 Jaemin Yoo           20
+Pop Quiz
+• Represent the cluster of points 5, 1 , 6, −2 , and 7, 0 .
+   • N=?
+   • SUM = ?
+   • SUMSQ = ?
+• Compute the variance of the first dimension.
+   • Variance = ?
+
+
+
+
+                                Jaemin Yoo                    21
+Outline
+1. CURE Algorithm
+2. BFR Algorithm
+3. BFR Algorithm: Process
+4. GRGPF Algorithm
+
+
+
+
+                            Jaemin Yoo   22
+Overview of the BFR Algorithm
+1. Initialize 𝑘 clusters/centroids (as in 𝑘-means)
+2. for each chunk in a data file
+3.   for each point in the chunk
+4.      Assign it to a cluster/minicluster if it is sufficiently close to it
+5.   Cluster the remaining points, creating new miniclusters
+6.   Try to merge existing clusters and miniclusters if they are close
+
+
+
+
+                                        Jaemin Yoo                             23
+Selection of the Initial Centroids
+• The 𝑘 initial centroids can be selected as in 𝑘-means:
+• Option 1: Take 𝑘 random points.
+• Option 2: Take a small sample, cluster it, and use the centroids.
+• Option 3: Take a sample, pick a random point, and 𝑘 − 1 more.
+   • Each as far from the previously selected points as possible.
+
+
+
+
+                                    Jaemin Yoo                        24
+Processing a Chunk of Points (1/5)
+• All points that are “sufficiently close” to any centroid:
+   • Added to that cluster or minicluster.
+
+                   Retained set
+
+
+
+
+                                                  Compressed sets
+                                                  (miniclusters)
+
+
+
+
+                                     Jaemin Yoo
+                                                          Cluster   25
+Processing a Chunk of Points (2/5)
+• All points that are not sufficiently close to any centroid:
+   • Clustered with the points in the retained set using any algorithm.
+
+                   Retained set
+
+
+
+
+                                                  Compressed sets
+                                                  (miniclusters)
+
+
+
+
+                                     Jaemin Yoo
+                                                          Cluster         26
+Processing a Chunk of Points (3/5)
+• New groups of ≥ 2 points become miniclusters.
+• Singleton groups remain in the retained set.
+                Retained set
+
+
+
+
+                                            Compressed sets
+                                            (miniclusters)
+
+
+
+
+                               Jaemin Yoo
+                                                    Cluster   27
+Processing a Chunk of Points (4/5)
+• Combine the clusters and miniclusters if they are close enough.
+
+
+
+             Retained set
+
+
+
+
+                                            Compressed sets
+                                            (miniclusters)
+
+
+
+
+                               Jaemin Yoo
+                                                    Cluster         28
+Processing a Chunk of Points (5/5)
+• Points assigned to a cluster or a minicluster are written to disk.
+
+
+
+              Retained set
+
+
+
+
+                                              Compressed sets
+                                              (miniclusters)
+
+
+
+
+                                 Jaemin Yoo
+                                                      Cluster          29
+After Processing All Chunks
+• Finally, what to do with compressed and retained sets?
+• Option 1: Treat them as outliers and never cluster them.
+• Option 2: Assign each of them to the nearest cluster.
+   • For both individual points and miniclusters.
+
+
+
+
+                                    Jaemin Yoo               30
+How Close is Close Enough?
+• Need a way to decide whether to put a new point into a cluster.
+• BFR compares the Mahalanobis distance with a threshold.
+   • Definition:
+
+   • Euclidean distance from the centroid 𝑐 normalized by standard dev. 𝜎! .
+   • Leverages the assumption that points are normally distributed.
+
+
+
+         Euclidean                         Mahalanobis
+         distance:                         distance:
+
+
+                                    Jaemin Yoo                                 31
+Assigning a Point to a Cluster
+• For each point 𝑝, choose the cluster with the closest centroid.
+• Add 𝑝 to the cluster if the distance is less than a threshold.
+   • Suppose the threshold = 4.
+   • Then, Pr(value being 4 standard deviations from the mean) < 10#$.
+
+
+
+
+                              Source: Stanford CS246 (2022)
+
+                                       Jaemin Yoo                        32
+When to Merge Two Clusters?
+• Compute the variance of the combined subcluster.
+• Combine if the combined variance is below some threshold.
+• Many alternatives: E.g., considering density.
+
+
+
+
+                              Jaemin Yoo                      33
+Outline
+1. CURE Algorithm
+2. BFR Algorithm
+3. BFR Algorithm: Process
+4. GRGPF Algorithm
+
+
+
+
+                            Jaemin Yoo   34
+GRGPF Algorithm
+• Does not require a Euclidean space unlike CURE and BFR.
+• Represents clusters by well-chosen sample points in memory.
+• Organizes clusters hierarchically, as a tree (not covered today).
+   • New point is assigned to a cluster by passing it down the tree.
+
+
+                               samples
+                                                        Memory
+                cluster data             cluster data
+
+
+                                                         Disk
+
+
+                                           Jaemin Yoo                  35
+Cluster Representation
+• How to represent (or summarize) a cluster in GRGPF:
+  • The number 𝑁 of points.
+  • The clustroid 𝑐.
+  • The rowsum of the clustroid.
+     • Sum of the squares of the distances from 𝑝 to each point in the cluster.
+  • 𝑘 points that are nearest to the clustroid, and their rowsums.
+  • 𝑘 points that are farthest from the clustroid, and their rowsums.
+
+                                                                   q
+             rowsum of point p in cluster C =                  2
+                                                                       3   r
+                                                               p
+
+
+                                                Jaemin Yoo                        36
+Justification of the Representation
+• Clustroid is the point in the cluster with the smallest rowsum.
+• Why the 𝑘 points nearest to the clustroid?
+   • If the clustroid changes, the new clustroid would be one of them.
+   • Point 𝑝 becomes the new clustroid if rowsum 𝑝 < rowsum 𝑐 .
+• Why the 𝑘 points farthest from the clustroid?
+   • Used to determine whether two clusters are close enough to merge.
+
+
+
+
+                                    Jaemin Yoo                           37
+Adding a Point to a Cluster
+• How can we add a point 𝑝 to a cluster?
+   • Add 1 to 𝑁.
+   • For each point 𝑞 ∈ clustroid ∪ 𝑘 nearest points ∪ 𝑘 farthest points,
+      update rowsum 𝑞 as rowsum 𝑞 + 𝑑" 𝑝, 𝑞 .
+• What if 𝑝 needs to be included in the representation?
+   • We need to compute the rowsum of 𝑝, which needs a disk access.
+                                               One of the 𝑘 nearest or
+                                               furthest points
+                                      q
+           p                      c            Clustroid
+
+                                  r            Not one of the 𝑘 nearest
+                                               or furthest points
+                                                                            38
+Estimating the Rowsum
+• Proposition: rowsum 𝑝 ≈ rowsum 𝑐 + 𝑁 × 𝑑 1 𝑝, 𝑐 .
+• With the curse of dimensionality, almost all angles are 90°.
+• Thus, 𝑑 1 𝑝, 𝑟 ≈ 𝑑 1 𝑝, 𝑐 + 𝑑 1 𝑐, 𝑟 by the Pythagorean theorem.
+
+                                               One of the k nearest or
+                                               furthest points
+                                  q
+          p                   c                Clustroid
+
+                              r                Not one of the k nearest
+                                               or furthest points
+
+
+
+                                  Jaemin Yoo                              39
+Possibly Updating the Clustroid
+• If rowsum 𝑞 < rowsum 𝑐 for any 𝑞, make it the new clustroid.
+• Eventually, the true clustroid may not be in the 𝑘 closest points.
+   • Cluster representation needs to be recomputed periodically from disk.
+
+
+
+
+                                     q          c
+                              p
+
+
+
+
+                                   Jaemin Yoo                                40
+Other Details of GRGPF
+• See the textbook for other details:
+   • How to initialize the cluster tree.
+   • How to use the tree for each new point.
+   • How to split a cluster.
+   • How to merge clusters (with the 𝑘 furthest points).
+
+
+
+
+                                     Jaemin Yoo            41
+Summary
+1. CURE Algorithm
+2. BFR Algorithm
+  • Cluster representation
+  • Three classes of sets
+3. BFR Algorithm: Process
+4. GRGPF Algorithm
+  • Cluster representation
+  • Estimation of a rowsum
+
+
+
+                             Jaemin Yoo   42
+

@@ -1,0 +1,426 @@
+Dimensionality Reduction 1
+       Introduction to Data Mining
+        Seoul National University
+              Spring 2026
+
+
+
+
+                 Jaemin Yoo          1
+Announcements
+• Assignments:
+  • HW1 (deadline: April 9)
+  • HW2 (deadline: April 30)
+• Midterm:
+  • When: April 23 at 9:30 – 10:45
+  • Where: 302-208 and 302-209 (students will be separated)
+  • How: Closed-book; no calculators allowed
+
+
+
+
+                                 Jaemin Yoo                   2
+Recap
+• BFR Algorithm
+  • Cluster representation
+  • Three classes of sets
+• CURE Algorithm
+  • Representative points
+• GRGPF Algorithm
+  • Rowsum
+  • Estimation of a rowsum                         q
+                             rowsum of p =     2
+                                                       3   r
+                                               p
+
+
+                                  Jaemin Yoo                   3
+Outline
+1. Dimensionality Reduction
+2. Eigenvalues and Eigenpairs
+3. Power Iteration
+4. Principal Component Analysis
+
+
+
+
+                             Jaemin Yoo   4
+Data as a Large Matrix
+• Many sources of data can be viewed as an 𝑚 × 𝑛 matrix.
+  • 𝑚 is the number of data points (or samples/instances).
+  • 𝑛 is the number of features (or attributes).
+• Consider a health dataset as an example.
+  • Each person is <height, weight, BMI, blood pressure, age, etc.>
+  • Features are flexible; they can be newly created or discarded.
+
+
+
+
+                                                                      5
+Data Manifold
+• The manifold of data is not necessarily an 𝑛-dimensional space.
+  • The size of manifold = The number of latent factors.
+  • E.g., representing a person with their weight, height, and BMI.
+• We find these latent factors through dimensionality reduction.
+
+
+
+
+                               Source: Stanford CS246 (2022)
+
+                                        Jaemin Yoo                    6
+Rank of a Matrix
+• The rank of a matrix 𝑀 = The number of latent factors.
+   • Rank is the # of linearly independent rows (or columns) of 𝑀.
+   • Independence: There is no nonzero linear sum of rows that is 𝟎.
+• Consider 3 points in a 3D space:
+     𝐴   1  2 1
+   • 𝐵 = −2 −3 1 (1 row per point)
+     𝐶   3  5 0
+• Rank is two, since
+   • 𝐴 − 𝐵 − 𝐶 = 𝟎 (in terms of rows)
+   • 5𝑐! − 3𝑐" + 𝑐# = 𝟎 (in terms of columns)
+                                                      Source: Stanford CS246 (2022)
+
+                                   Jaemin Yoo                                         7
+Rank of a Matrix
+• Then, we can rewrite the coordinates efficiently.
+• Let’s consider 𝐴 = [1 2 1].
+• Old basis vectors: 1 0 0 , 0 1 0 , 0 0 1 .
+   • 𝐴 = 1𝑢! + 2𝑢" + 1𝑢#.
+• New basis vectors: 1 2 1 , −2 − 3 1 .
+   • 𝐴 = 1𝑢! + 0𝑢".
+   • 𝑀 has new coordinates: 𝐴: 1 0 , 𝐵: 0 1 , 𝐶: 1 − 1 .   Source: Stanford CS246 (2022)
+
+
+   • We reduced the number of dimensions!
+
+
+
+                                    Jaemin Yoo                                             8
+Dimensionality Reduction
+• Goal: Discover the actual axes of data.
+   • Follow the red line (i.e., the manifold).
+   • Represent each point with 1 coordinate.
+• By doing this, we incur a bit of error.
+   • Since the points do not exactly lie on the line.
+   • There will be no error if the rank is one.
+                                                        Source: Stanford CS246 (2022)
+
+
+
+
+                                      Jaemin Yoo                                        9
+Outline
+1. Dimensionality Reduction
+2. Eigenvalues and Eigenpairs
+3. Power Iteration
+4. Principal Component Analysis
+
+
+
+
+                             Jaemin Yoo   10
+Terms on Orthogonality
+• A vector 𝑣 is a unit vector if 𝑣 ≡ 𝑣 ! ≡ sqrt ∑" 𝑣"! = 1.
+• Two vectors 𝑣# and 𝑣! are orthogonal if 𝑣#$ 𝑣! = 0.
+• Two vectors 𝑣# and 𝑣! are orthonormal if orthogonal and unit.
+• A matrix 𝐴 is orthogonal if its rows/columns are orthonormal.
+  • Then, 𝐴𝐴$ = 𝐴$𝐴 = 𝐼 and 𝐴$ = 𝐴%!.
+
+
+
+
+                                Jaemin Yoo                        11
+Eigenvalues and Eigenvectors
+• Let 𝑀 be an 𝑛 × 𝑛 square matrix, 𝜆 be a scalar, and 𝑒 be a vector.
+• 𝜆 is an eigenvalue of 𝑀 and 𝑒 is the corresponding eigenvector if:
+                             𝑀𝑒 = 𝜆𝑒
+
+• A pair of 𝜆 and 𝑒 is called an eigenpair.
+• The eigenvector with the largest 𝜆 is the principal eigenvector.
+
+
+
+
+                               Jaemin Yoo                            12
+Ambiguity of Eigenvectors
+• If 𝑒 is an eigenvector, 𝑐𝑒 is also an eigenvector (𝑐: constant).
+   • Why? 𝑀𝑐𝑒 = 𝑐𝑀𝑒 = 𝑐𝜆𝑒 = 𝜆𝑐𝑒.
+   • Thus, 𝑒 and 𝑐𝑒 correspond to the same eigenvalue.
+• To avoid ambiguity, we require
+   • Every eigenvector 𝑒 to be a unit vector, i.e., 𝑒 = 1.
+   • The first nonzero component of an eigenvector to be positive.
+                M       e        λ         e
+                                                     Positive
+
+                               =7                    Unit vector
+
+
+
+                                     Jaemin Yoo                      13
+Eigendecomposition
+• Eigendecomposition of a square matrix 𝑀 is defined as
+
+                              𝑀 = 𝑄Λ𝑄%# .
+
+   • 𝑄 is the 𝑛 × 𝑛 matrix whose 𝑖-th column is the 𝑖-th eigenvector of 𝑀.
+   • Λ is the diagonal matrix whose diagonal elements are the eigenvalues.
+• Note: Eigendecomposition is not for all matrices.
+
+
+
+
+                                   Jaemin Yoo                                14
+Diagonalizable Matrix
+• A square matrix 𝐷 is diagonal if 𝑖 ≠ 𝑗 ⟹ 𝑑 𝑖, 𝑗 = 0.
+• A square matrix 𝑀 is diagonalizable if
+   • Informal: it is an almost diagonal matrix.
+   • Formal: there exists an invertible matrix 𝑃 and a diagonal matrix 𝐷 s.t.
+
+                                𝑃%# 𝑀𝑃 = 𝐷.
+
+
+
+
+                                     Jaemin Yoo                                 15
+Independent Eigenvectors
+• Any diagonalizable matrix 𝑀 has eigendecomposition.
+• Why? 𝑀 always has 𝑛 linearly independent eigenvectors.
+  • 𝑃%!𝑀𝑃 = 𝐷 for some invertible 𝑃 and diagonal 𝐷.
+  • Then, 𝑀𝑃 = 𝑃𝐷 ⟹ 𝑀𝑣& = 𝑃 𝜆& 𝑒& = 𝜆& 𝑣& .
+     • 𝑣! is the 𝑖-th column of 𝑃.
+     • 𝜆! is the 𝑖-th diagonal entry of 𝐷.
+     • 𝑒! is the 𝑖-th column of the identity matrix 𝐼.
+  • Therefore, the columns of 𝑃 are eigenvectors of 𝑀.
+  • Since 𝑃 is invertible, they are linearly independent.
+
+
+
+                                           Jaemin Yoo       16
+Eigenvectors of a Symmetric Matrix
+• Let 𝑆 be an 𝑛 × 𝑛 real symmetric matrix, i.e., 𝑆 = 𝑆 $ .
+   • No complex matrices during our course.
+• Property 1: 𝑆 has 𝑛 orthonormal eigenvectors.
+   • Symmetry lets 𝑆 act independently along orthogonal directions.
+• Property 2: 𝑆 is diagonalizable.
+   • 𝑛 linearly independent eigenvectors ⟹ diagonalizable.
+• Property 3: 𝑄 in 𝑆 = 𝑄Λ𝑄%# is orthonormal.
+   • Due to P1 & P2.
+
+
+
+                                   Jaemin Yoo                         17
+Outline
+1. Dimensionality Reduction
+2. Eigenvalues and Eigenpairs
+3. Power Iteration
+4. Principal Component Analysis
+
+
+
+
+                             Jaemin Yoo   18
+How to Perform Eigendecomposition
+• Q: How can we actually perform eigendecomposition?
+• Two popular approaches: QR algorithm and power iteration.
+   • QR algorithm is a standard way but slow for large matrices.
+   • Power iteration is fast but finds only the largest eigenvalues.
+• We’ll focus on power iteration as we assume a large matrix.
+
+
+
+
+                                      Jaemin Yoo                       19
+Power Iteration
+• Power iteration finds the principal eigenvector of 𝑀 efficiently.
+   • Again, 𝑀 is an 𝑛 × 𝑛 diagonalizable matrix.
+• How it works:
+   • Step 1: Start with any nonzero vector 𝑥' of length 𝑛.
+                                *+
+   • Step 2: Construct 𝑥()! = *+! for 𝑘 = 0, 1, ⋯.
+                                   !
+   • Step 3: Stop when consecutive 𝑥( ’s show little change.
+
+
+
+
+                                       Jaemin Yoo                     20
+Power Iteration: Example
+
+
+
+
+                    Jaemin Yoo   21
+Finding an Eigenvector
+• The converged 𝑥 is approximately an eigenvector of 𝑀.
+  • Why? 𝑀𝑥 ≈ 𝑥.
+• The corresponding eigenvalue is 𝜆 = 𝑥 $ 𝑀𝑥.
+  • Why? 𝑥 $𝑀𝑥 = 𝑥 $𝜆𝑥 = 𝜆𝑥 $𝑥 = 𝜆 𝑥 " = 𝜆 (𝑥 is a unit vector).
+• Example: If we take 𝑥 = 0.53, 0.85 , then
+
+                             1 2 0.53
+               𝜆 = 0.53 0.85          = 4.25
+                             2 3 0.85
+
+
+
+                                  Jaemin Yoo                       22
+Finding the Principal Eigenvector
+• The converged 𝑥 is approximately the principal eigenvector of 𝑀.
+  • Suppose that the eigenvalues are 𝜆! > 𝜆" ≥ ⋯ ≥ 𝜆, .
+  • Let the corresponding eigenvectors be 𝑣!, 𝑣", ⋯ , 𝑣, .
+  • The initial vector can be represented as 𝑥' = 𝑐!𝑣! + 𝑐"𝑣" + ⋯ + 𝑐, 𝑣, .
+  • Power iteration works as 𝑥( = 𝑐!𝜆!( 𝑣! + 𝑐"𝜆(" 𝑣" + ⋯ + 𝑐, 𝜆(, 𝑣, .
+  • By factoring out 𝜆!( , we have
+                                      (                  (
+                                   𝜆"                 𝜆,
+             𝑥( = 𝜆!( 𝑐!𝑣! + 𝑐"         𝑣" + ⋯ + 𝑐,        𝑣, .
+                                   𝜆!                 𝜆!
+  • As 𝑘 → ∞, all 𝜆& /𝜆! ( for 𝑖 > 1 goes to 0.
+
+
+
+                                    Jaemin Yoo                                23
+Finding More Eigenpairs
+• Create a new matrix 𝑀∗ = 𝑀 − 𝜆𝑥𝑥 $ .
+   • Eliminate the influence of 𝑥 by setting its associated eigenvalue to 0.
+• Recursively use power iteration on 𝑀∗ , and so on.
+• Example:
+
+        ∗ 1 2        0.53             −0.19 0.09
+      𝑀 =     − 4.25      0.53 0.85 =
+          2 3        0.85             0.09 0.07
+
+
+
+
+                                     Jaemin Yoo                                24
+Outline
+1. Dimensionality Reduction
+2. Eigenvalues and Eigenpairs
+3. Power Iteration
+4. Principal Component Analysis
+
+
+
+
+                           Jaemin Yoo   25
+Principal Component Analysis
+• Principal component analysis (PCA):
+  • Given 𝑛-dimensional data, it finds the new 𝑛 axes such that:
+  • 1st dimension shows the greatest variance.
+  • 2nd dimension shows the next-greatest variance, orthogonal to the 1st.
+
+                                             First principal
+                     Second principal        component
+                     component
+
+
+
+
+                                                                             26
+Output of PCA
+• Given an 𝑚 × 𝑛 data matrix 𝑀 with column-wise zero mean.
+• Create an 𝑛 × 𝑛 transformation matrix 𝑇 to make 𝑀. = 𝑀𝑇.
+  • The 𝑖-th column of 𝑇 creates the 𝑖-th PC.
+  • Dimensionality reduction is done if we use the first 𝑟 columns.
+
+
+                                                                      T
+
+                                                M’   =    M
+
+
+
+
+                                   Jaemin Yoo                             27
+Why Zero Mean?
+• What will happen if the input 𝑀 is not zero-centered?
+• The first PC is likely to point the mean of data.
+   • Since it introduces a large (artificial) variance.
+• Mean-centering (or feature standardization) is essential.
+
+
+
+
+                                       Jaemin Yoo             28
+Optimization Problem
+• Q: How can we efficiently find the first column 𝑡# of 𝑇?
+• Let’s define the variance of data for a column 𝑡 as
+      var 𝑡 ≡ ∑" 𝑀" 𝑡 − 0 ! = 𝑀𝑡 ! = 𝑀𝑡 $ 𝑀𝑡 = 𝑡 $ 𝑀$ 𝑀𝑡.
+   • 𝑀& is the 𝑖-th row of 𝑀.
+• Then, to maximize variance, 𝑡# = argmax / 0# var 𝑡 .
+
+
+
+
+                                Jaemin Yoo                   29
+Rayleigh Quotient
+• Observation 1: var 𝑡 = 𝑡 $ 𝑀$ 𝑀𝑡 is between 𝜆123 and 𝜆145 .
+   • 𝜆-./ is the smallest eigenvalue of 𝑀$𝑀.
+   • 𝜆-01 is the largest eigenvalue of 𝑀$𝑀.
+• Proof:
+   • 𝑡 $𝑀$𝑀𝑡 = 𝑡 $ 𝑄ΛQ$ 𝑡 = 𝑡 $𝑄 Λ 𝑄 $𝑡 .
+      • 𝑀"𝑀 is a symmetric matrix and thus is diagonalizable.
+   • Let 𝑦 ≡ 𝑄 $𝑡; then, 𝑦 is a unit vector.
+      • Why? 𝑦 # = 𝑦 "𝑦 = 𝑄"𝑡 " 𝑄"𝑡 = 𝑡 "𝑄𝑄"𝑡 = 𝑡 "𝑡 = 1.
+   • Thus, 𝑦 $Λy = ∑& 𝜆& 𝑦&" is a weighted average of 𝜆& ’s.
+
+
+
+                                        Jaemin Yoo              30
+Rayleigh Quotient
+• Observation 2: var 𝑡 = 𝑡 $ 𝑀$ 𝑀𝑡 = 𝜆145 when 𝑡 = 𝑣# .
+   • 𝑣! is the principal eigenvector of 𝑀$𝑀.
+• Proof:
+   • var 𝑡 = ∑& 𝜆& 𝑦&" is a weighted average of eigenvalues 𝜆& ’s.
+   • The maximum is achieved when 𝑦! = 1 and 𝑦&2! = 0.
+   • If 𝑦! = 1, then 𝑦! = 𝑄 $𝑡 ! = 𝑣!$𝑡 = 1.
+   • Since 𝑣! and 𝑡 are both unit vectors, we conclude that 𝑡 = 𝑣!.
+
+
+
+
+                                    Jaemin Yoo                        31
+Optimization Problem
+• Q: How can we efficiently find the first column 𝑡# of 𝑇?
+• Answer: 𝑡# is the principal eigenvector of 𝑀$ 𝑀 with 𝜆145 .
+   • Based on Observations 1 and 2.
+• We can run power iteration to find 𝑡# , and 𝑡! , and so on.
+   • 𝑡" is the second principal eigenvector of 𝑀$𝑀.
+   • 𝑀$𝑀 is often called the covariance matrix of (centered) data.
+
+
+
+
+                                    Jaemin Yoo                       32
+Dimensionality Reduction by PCA
+• PCA is widely used for dimensionality reduction.
+• By keeping the first 𝑟 columns in 𝑀′, not all 𝑛 columns.
+   • The chosen columns have the greatest variances.
+   • Thus, 𝑀′ can represent the “information” even with 𝑟 < 𝑛.
+
+
+                                                                 T
+
+                                                 M’   =   M
+
+
+
+
+                                    Jaemin Yoo                       33
+Summary
+1. Dimensionality Reduction
+  • Latent factors
+2. Eigenvalues and eigenpairs
+  • Eigendecomposition
+3. Power Iteration
+  • Principal eigenvectors
+4. Principal Component Analysis
+  • Principal components
+  • Transformation matrix
+
+
+                                Jaemin Yoo   34
+

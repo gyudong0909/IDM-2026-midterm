@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDM 중간고사 인터랙티브 학습도구 | 2026-04-23</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--code:#0f141a;--border:#30363d;--text:#e6edf3;--muted:#9da7b3;--a:#f78166;--b:#58a6ff;--hint:#d29922;--ok:#3fb950;--r:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6;display:flex;min-height:100vh}
+/* Sidebar */
+.sidebar{width:210px;min-width:210px;background:var(--card);border-right:1px solid var(--border);padding:14px 10px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:11px;font-weight:700;color:var(--a);letter-spacing:.5px;margin-bottom:16px;padding:6px 8px;background:rgba(247,129,102,.1);border-radius:6px;border:1px solid rgba(247,129,102,.3)}
+.sidebar-logo span{display:block;color:var(--muted);font-weight:400;margin-top:2px}
+.sb-section{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:14px 0 4px 8px}
+.sb-btn{display:block;width:100%;text-align:left;background:none;border:none;color:var(--muted);padding:5px 8px;border-radius:6px;cursor:pointer;font-size:12px;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-btn:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.sb-btn.active{background:rgba(247,129,102,.15);color:var(--a)}
+.sb-badge{float:right;font-size:10px;padding:1px 5px;border-radius:8px}
+.sb-badge-a{background:rgba(247,129,102,.2);color:var(--a)}
+.sb-badge-b{background:rgba(88,166,255,.2);color:var(--b)}
+/* Main */
+.main{margin-left:210px;flex:1;padding:24px;max-width:1300px}
+/* Header */
+.page-header{margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.page-header h1 span{color:var(--a)}
+.page-header p{color:var(--muted);font-size:12px}
+/* Sections */
+.section{margin-bottom:48px}
+.section-title{font-size:16px;font-weight:600;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.section-num{width:24px;height:24px;background:var(--a);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+/* Dashboard */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center}
+.stat-n{font-size:36px;font-weight:700}
+.stat-n.a{color:var(--a)}
+.stat-n.b{color:var(--b)}
+.stat-label{color:var(--muted);font-size:11px;margin-top:2px}
+.top5-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.top5-card h3{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.top5-list{list-style:none;counter-reset:c}
+.top5-list li{counter-increment:c;display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.top5-list li:last-child{border-bottom:none}
+.top5-list li::before{content:counter(c);width:20px;height:20px;background:rgba(247,129,102,.2);color:var(--a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.top5-list li .why{color:var(--muted);font-size:11px;margin-left:auto}
+/* Filters */
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filter-btn{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-size:11px;transition:all .15s}
+.filter-btn:hover{color:var(--text)}
+.filter-btn.fa{border-color:var(--a);color:var(--a);background:rgba(247,129,102,.08)}
+.filter-btn.fb{border-color:var(--b);color:var(--b);background:rgba(88,166,255,.08)}
+.filter-btn.fl2{border-color:var(--ok);color:var(--ok);background:rgba(63,185,80,.08)}
+/* Topic tabs */
+.topic-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ttab{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-size:11px;transition:all .15s;white-space:nowrap}
+.ttab:hover{border-color:var(--text);color:var(--text)}
+.ttab.active{background:var(--a);border-color:var(--a);color:#000;font-weight:600}
+.ttab.grade-b.active{background:var(--b);border-color:var(--b);color:#000}
+/* Exercise panel */
+.ex-panel{display:none}
+.ex-panel.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ex-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.ex-header h2{font-size:16px;font-weight:600}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.badge-a{background:rgba(247,129,102,.2);color:var(--a);border:1px solid rgba(247,129,102,.4)}
+.badge-b{background:rgba(88,166,255,.2);color:var(--b);border:1px solid rgba(88,166,255,.4)}
+.badge-src{background:rgba(157,167,179,.1);color:var(--muted);border:1px solid var(--border);font-weight:400}
+.badge-exam{background:rgba(63,185,80,.1);color:var(--ok);border:1px solid rgba(63,185,80,.3);font-weight:400}
+.progress-badge{font-size:11px;color:var(--muted);padding:3px 8px;border:1px solid var(--border);border-radius:10px;margin-left:auto}
+/* Two-panel layout */
+.ex-layout{display:flex;gap:16px;align-items:flex-start}
+.ex-info{flex:0 0 32%;min-width:0}
+.ex-right{flex:1;min-width:0}
+.info-block{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;font-size:12px}
+.info-block h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.info-block p{color:var(--text);line-height:1.5}
+.info-link{color:var(--b);text-decoration:none}
+/* Code block */
+.code-block{background:var(--code);border:1px solid var(--border);border-radius:var(--r);padding:16px;font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;font-size:12.5px;line-height:1.9;overflow-x:auto;margin-bottom:12px}
+.code-line{white-space:pre;color:var(--text)}
+.code-comment{color:#8b949e}
+/* Blank rows */
+.blank-row{margin-bottom:6px}
+.blank-line{display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-height:28px}
+.blank-prefix{font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;white-space:pre;color:var(--text)}
+.blank-input{width:280px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:4px 8px;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;transition:border-color .15s,box-shadow .15s;outline:none}
+.blank-input:focus{border-color:var(--b);box-shadow:0 0 0 3px rgba(88,166,255,.15)}
+.hint-btn{padding:3px 8px;background:none;border:1px solid var(--hint);color:var(--hint);border-radius:4px;cursor:pointer;font-size:11px;transition:all .15s;white-space:nowrap}
+.hint-btn:hover{background:rgba(210,153,34,.15)}
+.hint-btn.open{background:rgba(210,153,34,.15)}
+/* Hint content */
+.hint-content{background:rgba(210,153,34,.07);border:1px solid rgba(210,153,34,.25);border-radius:4px;font-size:12px;color:#e3bc5a;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease;padding:0 10px;margin-top:2px}
+.hint-content.open{max-height:200px;padding:8px 10px}
+/* Answer reveal */
+.answer-reveal{background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.25);border-radius:6px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;padding:0 12px;margin-top:4px}
+.answer-reveal.open{max-height:400px;padding:10px 12px;animation:glow .4s ease}
+@keyframes glow{0%{box-shadow:0 0 0 rgba(63,185,80,0)}50%{box-shadow:0 0 14px rgba(63,185,80,.35)}100%{box-shadow:0 0 0 rgba(63,185,80,0)}}
+.answer-code{font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;color:var(--ok);font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(63,185,80,.2)}
+.af{font-size:12px;margin-bottom:5px;line-height:1.5}
+.af-label{color:var(--muted);font-weight:600}
+/* Buttons */
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.btn{padding:6px 14px;border-radius:6px;border:1px solid;cursor:pointer;font-size:12px;font-weight:500;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.btn-reveal{border-color:var(--ok);color:var(--ok);background:rgba(63,185,80,.08)}
+.btn-reveal:hover{background:rgba(63,185,80,.18)}
+.btn-reset{border-color:var(--border);color:var(--muted);background:none}
+.btn-reset:hover{background:rgba(255,255,255,.05);color:var(--text)}
+/* Logic recall */
+.recall-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.recall-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.recall-card h3{font-size:12px;font-weight:600;color:var(--b);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.logic-code{font-family:'Cascadia Code','Fira Code',monospace;font-size:11.5px;color:var(--text);background:var(--code);padding:6px 8px;border-radius:4px;margin-bottom:4px;white-space:pre-wrap;word-break:break-word;border:1px solid var(--border)}
+.why-line{font-size:11.5px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.why-line strong{color:var(--hint)}
+.if-wrong{font-size:11px;color:#c9522a;margin-top:6px;background:rgba(247,129,102,.05);padding:4px 6px;border-radius:4px;border-left:2px solid var(--a)}
+/* Checklist */
+.cl-section{margin-bottom:8px}
+.cl-header{display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);user-select:none;transition:background .15s}
+.cl-header:hover{background:rgba(255,255,255,.04)}
+.cl-header h3{font-size:13px;font-weight:600;flex:1}
+.cl-arrow{transition:transform .2s;color:var(--muted)}
+.cl-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.cl-body.open{max-height:3000px}
+.cl-item{display:flex;align-items:flex-start;gap:8px;padding:5px 16px;border-radius:4px;cursor:pointer;transition:background .1s}
+.cl-item:hover{background:rgba(255,255,255,.03)}
+.cl-item.checked label{text-decoration:line-through;opacity:.45}
+.cl-item input[type=checkbox]{margin-top:3px;accent-color:var(--ok);cursor:pointer;flex-shrink:0}
+.cl-item label{font-family:'Cascadia Code','Fira Code',monospace;font-size:11.5px;cursor:pointer;color:var(--text);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+/* Responsive */
+@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.ex-layout{flex-direction:column}.ex-info{flex:none;width:100%}}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#484f58}
+/* ── H-2 additions ── */
+.sc-btn{padding:3px 8px;border-radius:4px;border:1px solid;cursor:pointer;font-size:10px;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.sc-ok{border-color:rgba(63,185,80,.35);color:rgba(63,185,80,.6);background:none}
+.sc-ok:hover,.sc-ok.active{background:rgba(63,185,80,.18);color:var(--ok);border-color:var(--ok)}
+.sc-retry{border-color:rgba(247,129,102,.35);color:rgba(247,129,102,.6);background:none}
+.sc-retry:hover,.sc-retry.active{background:rgba(247,129,102,.18);color:var(--a);border-color:var(--a)}
+.blank-row.status-ok{border-left:2px solid var(--ok);padding-left:6px;margin-left:-8px}
+.blank-row.status-retry{border-left:2px solid var(--a);padding-left:6px;margin-left:-8px}
+.topic-done-wrap{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topic-done-label{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);cursor:pointer;padding:3px 8px;border-radius:4px;border:1px solid var(--border);transition:all .15s;white-space:nowrap;user-select:none}
+.topic-done-label.done{color:var(--b);border-color:var(--b);background:rgba(88,166,255,.1)}
+.sb-done-ind{font-size:9px;color:var(--ok);margin-left:2px;display:none}
+.blank-filter-row{display:flex;gap:6px;align-items:center;margin:8px 0 12px;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.bfilt-btn{padding:3px 10px;border-radius:12px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-size:11px;transition:all .15s}
+.bfilt-btn.active{border-color:var(--text);color:var(--text);background:rgba(255,255,255,.05)}
+.bfilt-btn.active-retry{border-color:var(--a);color:var(--a);background:rgba(247,129,102,.08)}
+.bfilt-btn.active-hide-ok{border-color:var(--hint);color:var(--hint);background:rgba(210,153,34,.07)}
+.qr-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center}
+.qr-overlay.open{display:flex;animation:fadeIn .2s ease}
+.qr-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;width:min(92%,820px);max-height:87vh;overflow-y:auto;padding:24px}
+.qr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.qr-header h2{font-size:15px;font-weight:600;color:var(--a)}
+.qr-close-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px}
+.qr-close-btn:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.qr-blank-card{background:var(--code);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
+.qr-topic-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.qr-ans{font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;color:var(--ok);font-weight:700;margin-bottom:6px}
+.qr-hint-text{font-size:12px;color:#e3bc5a;background:rgba(210,153,34,.07);border-left:2px solid var(--hint);padding:4px 8px;border-radius:2px}
+.today-panel{background:var(--card);border:1px solid rgba(88,166,255,.25);border-radius:var(--r);padding:14px;margin-top:10px}
+.today-panel h3{font-size:12px;color:var(--b);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.today-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;cursor:pointer;transition:color .15s}
+.today-item:hover{color:var(--b)}
+.today-item:last-child{border-bottom:none}
+.today-tag{font-size:10px;padding:1px 6px;border-radius:8px;flex-shrink:0}
+.today-tag-retry{background:rgba(247,129,102,.2);color:var(--a)}
+.today-tag-undone{background:rgba(88,166,255,.2);color:var(--b)}
+.no-today{font-size:12px;color:var(--muted);text-align:center;padding:10px 0}
+.qr-open-btn{display:block;width:100%;margin-top:6px;padding:5px 8px;background:rgba(247,129,102,.08);border:1px solid rgba(247,129,102,.3);color:var(--a);border-radius:6px;cursor:pointer;font-size:11px;text-align:center;transition:all .15s}
+.qr-open-btn:hover{background:rgba(247,129,102,.18)}
+.reset-all-btn{display:block;width:100%;margin-top:4px;padding:5px 8px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;cursor:pointer;font-size:11px;text-align:center;transition:all .15s}
+.reset-all-btn:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.dash-grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">IDM 중간고사<span>2026-04-23 | Closed-book</span></div>
+  <a href="study_guide.html" style="display:block;color:#58a6ff;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);padding:6px 8px;border-radius:6px;font-size:12px;margin-bottom:6px;text-decoration:none;text-align:center">← Study Guide</a>
+  <a href="tf_quiz.html" style="display:block;color:#f78166;background:rgba(247,129,102,.08);border:1px solid rgba(247,129,102,.3);padding:6px 8px;border-radius:6px;font-size:12px;margin-bottom:10px;text-decoration:none;text-align:center">📝 T/F 퀴즈 →</a>
+  <div class="sb-section">이동</div>
+  <button class="sb-btn" onclick="scrollTo('dashboard')">📊 Dashboard</button>
+  <button class="sb-btn" onclick="scrollTo('exercises')">💻 인터랙티브 연습</button>
+  <button class="sb-btn" onclick="scrollTo('recall')">🃏 Logic Recall</button>
+  <button class="sb-btn" onclick="scrollTo('checklist')">✅ 시험 직전 체크리스트</button>
+  <div class="sb-section">A등급 topics</div>
+  <button class="sb-btn" onclick="jumpToEx('minhash')">MinHash Pseudocode <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('spark')">Spark Quantile Summary <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('wordcount')">Word Count <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('matmul')">Matrix-Vector Mul <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('son')">SON MapReduce <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('scurve')">S-Curve / LSH <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('sgd')">SGD for UV <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('kmeans')">K-means 2-Step <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('bfr')">BFR Statistics <span class="sb-badge sb-badge-a">A</span></button>
+  <button class="sb-btn" onclick="jumpToEx('svd')">SVD + Power Iter <span class="sb-badge sb-badge-a">A</span></button>
+  <div class="sb-section">범위 필터</div>
+  <button class="sb-btn" id="fl-all" onclick="setFilter('all')" style="color:var(--text)">전체 보기</button>
+  <button class="sb-btn" id="fl-l27" onclick="setFilter('L2-L7')">L2~L7 만</button>
+  <button class="sb-btn" id="fl-l813" onclick="setFilter('L8-L13')">L8~L13 만</button>
+</nav>
+
+<main class="main">
+  <!-- HEADER -->
+  <div class="page-header">
+    <h1>IDM 중간고사 인터랙티브 학습도구 | <span>2026-04-23</span></h1>
+    <p>코드 빈칸 + 알고리즘 로직 복원 + 시험 직전 체크리스트 &nbsp;|&nbsp; Closed-book &nbsp;|&nbsp; 302-208/209</p>
+  </div>
+
+  <!-- SECTION 1: DASHBOARD -->
+  <section class="section" id="dashboard">
+    <div class="section-title"><div class="section-num">1</div> Dashboard</div>
+    <div class="dash-grid">
+      <div class="stat-card"><div class="stat-n a">13</div><div class="stat-label">A등급 topics</div></div>
+      <div class="stat-card"><div class="stat-n b">17</div><div class="stat-label">B등급 topics</div></div>
+      <div class="stat-card"><div class="stat-n" style="color:var(--ok)">36</div><div class="stat-label">총 빈칸 수 (A등급)</div></div>
+      <div class="stat-card"><div class="stat-n" style="color:var(--hint)">4</div><div class="stat-label">일 남음</div></div>
+    </div>
+    <div class="top5-card">
+      <h3>⭐ 시험 직전 먼저 볼 것 TOP 5</h3>
+      <ul class="top5-list">
+        <li>SGD for UV — ε = 2(r−u⊤v), u += η(ε·v − λu)<span class="why">★★★ professor 명시</span></li>
+        <li>Spark Quantile combine/compress/query — 2025 Q6 직접 출제<span class="why">★★★ 재출제 가능</span></li>
+        <li>MinHash Pseudocode — ∞ 초기화 / T[r,c]=1 조건 / &lt; 방향<span class="why">2025 Q2(b)</span></li>
+        <li>BFR N/SUM/SUMSQ + Mahalanobis — 계산 문제 직결<span class="why">2024 Q5(b)</span></li>
+        <li>SVD energy ratio ≥ 90% + Power Iteration 3-step<span class="why">2024/2025 Q4,6</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 2: INTERACTIVE EXERCISES -->
+  <section class="section" id="exercises">
+    <div class="section-title"><div class="section-num">2</div> Interactive Exercises</div>
+    <div class="filter-row">
+      <span style="font-size:11px;color:var(--muted)">필터:</span>
+      <button class="filter-btn fa" onclick="setFilter('all')" id="fb-all">전체</button>
+      <button class="filter-btn" onclick="setFilter('A')" id="fb-a">A등급만</button>
+      <button class="filter-btn" onclick="setFilter('L2-L7')" id="fb-l27">L2~L7</button>
+      <button class="filter-btn" onclick="setFilter('L8-L13')" id="fb-l813">L8~L13</button>
+    </div>
+    <div class="topic-tabs" id="topic-tabs"></div>
+    <div id="ex-panels"></div>
+  </section>
+
+  <!-- SECTION 3: LOGIC RECALL -->
+  <section class="section" id="recall">
+    <div class="section-title"><div class="section-num">3</div> Logic Recall — B등급 핵심 로직</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">코드 빈칸보다 개념 이해·T/F·계산으로 출제될 수 있는 핵심 한 줄 정리</p>
+    <div class="recall-grid" id="recall-grid"></div>
+  </section>
+
+  <!-- SECTION 4: CHECKLIST -->
+  <section class="section" id="checklist">
+    <div class="section-title"><div class="section-num">4</div> 시험 직전 체크리스트</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">각 항목: "왜 이 식인가" 속으로 설명 가능해야 함</p>
+    <div id="checklist-body"></div>
+  </section>
+</main>
+
+<script>
+// ─── UTILITY ───────────────────────────────────────────────────────
+function h(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function jumpToEx(id){
+  scrollTo('exercises');
+  setTimeout(()=>activateTab(id),300);
+}
+
+// ─── EXERCISE DATA ──────────────────────────────────────────────────
+const EXERCISES = [
+{
+  id:'minhash', topic:'MinHash Pseudocode', priority:'A', range:'L2-L7',
+  source:'6-lsh-1.pdf p30', examLink:'2025 Q2(b): signature matrix 채우기',
+  hwLink:null,
+  overview:'MinHash는 집합의 Jaccard similarity를 근사하는 서명(signature)을 생성. 각 hash function이 random permutation을 근사하고, 서명은 해당 permutation에서 집합이 처음 1을 갖는 행 번호.',
+  whyImportant:'2025 기출 Q2(b) 직접 출제 (signature matrix 직접 채우기). 초기화(∞), 조건(T=1 체크), 비교 방향(<), 업데이트(h_i(r)) — 4줄이 각각 독립 빈칸.',
+  codeLines:[
+    {t:'for each hash function h_i and column c:'},
+    {blank:'B1', pre:'    ', ans:'M[i, c] ← ∞',
+     hint:'슬롯 초기값: 어떤 실제 hash value도 반드시 이 값보다 작아야 첫 업데이트 보장',
+     role:'슬롯 행렬을 초기화. ∞이어야 첫 번째 h_i(r)이 항상 조건을 만족',
+     why:'∞: 어떤 h_i(r)도 ∞보다 작으므로 첫 만남에서 반드시 업데이트 발생. 0 초기화 시 h_i(r)=0인 경우 업데이트 안 됨',
+     ifw:'0 초기화: h_i(r)이 0이면 업데이트 안 됨 → 일부 서명이 틀린 값 → Jaccard 성질 파괴'},
+    {t:'for each row r:'},
+    {t:'  for each column c:'},
+    {blank:'B2', pre:'    ', ans:'if T[r, c] = 1 then',
+     hint:'특성 행렬에서 column c (집합)가 row r (원소)를 포함할 때만 처리. T의 값이 무엇일 때?',
+     role:'T[r,c]=0이면 해당 집합에 원소가 없으므로 minhash에서 제외',
+     why:'집합에 포함된 원소만 permutation에서 의미 있음. 0인 행 처리 시 Pr[h(S1)=h(S2)] ≠ Jaccard(S1,S2)',
+     ifw:'조건 없으면: 집합에 없는 원소도 min 계산에 포함 → Jaccard 성질 파괴'},
+    {t:'      for each hash function h_i:'},
+    {blank:'B3', pre:'        ', ans:'if h_i(r) < M[i, c] then',
+     hint:'현재 hash값 vs 저장된 최솟값: MIN hash를 추적하려면 어떤 방향으로 비교?',
+     role:'현재까지 본 h_i(r) 중 최솟값을 추적. < 방향 = permutation에서 더 앞선 위치',
+     why:'MinHash = 최소 hash value. h_i(r) < M[i,c]이면 더 앞선 순열 위치 → 업데이트 필요',
+     ifw:'>로 쓰면: MAX hash 계산 → valid minhash 아님 → Jaccard 근사 불가'},
+    {blank:'B4', pre:'            ', ans:'M[i, c] ← h_i(r)',
+     hint:'조건 만족 시 슬롯을 무엇으로 갱신? row 번호 r 자체를 쓰면 안 되는 이유는?',
+     role:'hash function h_i 하에서 집합 c의 서명을 현재 최솟값으로 갱신',
+     why:'h_i(r): row r에 hash function 적용 = random permutation 근사. r 자체는 단순 행 번호 → permutation 아님',
+     ifw:'M[i,c] ← r: 행 번호 직접 저장 시 hash를 통한 random permutation 근사 효과 없음'},
+  ]
+},
+{
+  id:'spark', topic:'Spark Quantile Summary', priority:'A', range:'L2-L7',
+  source:'3-spark.pdf (2025 Q6 코드)', examLink:'2025 Q6(e)(f)(g): combine/compress/query 빈칸 10점',
+  hwLink:null,
+  overview:'ε-approximate quantile summary 알고리즘. 여러 partition의 summary를 combine하고, 크기를 줄이기 위해 compress하고, quantile query에 응답.',
+  whyImportant:'2025 기출 Q6에서 직접 10점 출제. 교수 재출제 가능성 높음. rmin/rmax 계산 로직과 조건식이 빈칸.',
+  codeLines:[
+    {t:'# combine(Sj, Sk): Sn에서 z의 이웃을 찾아 rank range 확장'},
+    {blank:'B1', pre:'rmin = ', ans:"z['rmin'] + (prev['rmin'] if prev else 0)",
+     hint:'z보다 작은 Sn 원소들의 최솟값 기여: prev가 있으면 prev의 rmin, 없으면?',
+     role:'합친 집합 X=Xj∪Xk에서 z보다 작거나 같은 원소 수의 하한 추정',
+     why:"prev는 Sn에서 z보다 작은 가장 큰 원소. prev['rmin'] = Sn에서 z 이하인 원소가 최소 이만큼 있음을 보장",
+     ifw:"prev['rmax'] 사용: 하한 과대추정 → ε-approximate 보장 깨짐"},
+    {blank:'B2', pre:'rmax = ', ans:"z['rmax'] + (next['rmax'] if next else Sn[-1]['rmax'])",
+     hint:'z보다 큰 Sn 원소 중 가장 가까운 것(next)이 없으면, Sn 전체가 z 이하이므로?',
+     role:'합친 집합에서 z 이하인 원소 수의 상한 추정',
+     why:"next가 없으면 Sn의 모든 원소가 z 이하 → Sn[-1]['rmax']가 상한. next가 있으면 next['rmax']-1이 실제 상한이나 next['rmax'] 사용",
+     ifw:"next['rmin'] 사용: 상한 과소추정 → 유효한 rank range 놓침"},
+    {t:''},
+    {t:'# compress(S, N, eps): 2εN 간격 조건 유지하며 중간 원소 제거'},
+    {blank:'B3', pre:'if ', ans:"t['rmax'] - prev['rmin'] > T:  # T = 2*eps*N",
+     hint:'현재(t)와 이전(prev)을 합쳐서 제거할 때 간격 불변식이 깨지는 조건: > T이면?',
+     role:'이 조건이 True이면 prev를 반드시 유지해야 함 (제거 불가)',
+     why:"제거 시 t와 prev 앞의 원소가 인접해져 gap이 t['rmax'] - prev_prev['rmin']이 됨. > T이면 불변식 위반",
+     ifw:'< 또는 ≤ 사용: 필요한 원소 제거 or 불필요한 원소 유지 → 정확도 손실 or 미압축'},
+    {t:''},
+    {t:'# query(S, phi, eps): ε-approximate φ-quantile 반환'},
+    {blank:'B4', pre:'if ', ans:"S[i]['rmin'] <= target + tol and S[i]['rmax'] >= target - tol:",
+     hint:'S[i]의 rank range [rmin, rmax]와 허용 범위 [target-tol, target+tol]의 교집합 조건',
+     role:'두 구간이 겹치면 S[i]는 ε-approximate φ-quantile 조건 만족',
+     why:'rmin ≤ rank(x) ≤ rmax이므로 range overlap이 있으면 |rank(x) - φN| ≤ εN 만족 가능',
+     ifw:'strict 포함 (rmin≥target-tol AND rmax≤target+tol): 너무 엄격 → 유효한 quantile 놓침'},
+  ]
+},
+{
+  id:'wordcount', topic:'MapReduce Word Count', priority:'A', range:'L2-L7',
+  source:'2-mapreduce.pdf p18', examLink:'2024 Q2(c): variance by grade MapReduce 설계 (Word Count 응용)',
+  hwLink:null,
+  overview:'MapReduce의 기본 패턴. Map: 단어를 key로 1을 emit. Reduce: 같은 key의 값들을 합산.',
+  whyImportant:'MapReduce 설계 능력의 기본. key 선택 논리를 이해해야 새 문제(variance by grade 등)에 응용 가능.',
+  codeLines:[
+    {t:'# Map function'},
+    {t:'def map(key, value):  # key=문서 ID, value=문서 내용'},
+    {blank:'B1', pre:'    ', ans:'for each word w in value: emit(w, 1)',
+     hint:'Map의 역할: 각 단어를 key로, 몇 번 나왔는지를 value로 emit. key가 왜 단어여야 하는가?',
+     role:'같은 단어가 같은 Reducer로 모이도록 단어를 key로 사용, value=1로 출현 1회 표시',
+     why:'key=단어: groupBy 기준. key=줄번호면 다른 줄의 같은 단어가 다른 Reducer로 → 집계 불가',
+     ifw:'key=line_index: 각 줄이 다른 Reducer로 → 전체 단어 카운트 집계 불가'},
+    {t:''},
+    {t:'# Reduce function'},
+    {t:'def reduce(key, values):  # key=단어, values=[1,1,1,...]'},
+    {blank:'B2', pre:'    ', ans:'result = 0; for each count v in values: result += v',
+     hint:'Reduce: 같은 단어의 모든 1을 합산. 덧셈이 combiner에도 쓸 수 있는 이유는?',
+     role:'같은 단어의 모든 출현 횟수를 누적 합산',
+     why:'덧셈은 commutative(a+b=b+a) + associative((a+b)+c=a+(b+c)) → Combiner 적용 가능',
+     ifw:'result = values[-1]: 마지막 값만 사용 → 합산 아닌 단순 last 값 → 오답'},
+    {blank:'B3', pre:'    ', ans:'emit(key, result)',
+     hint:'Reduce output: key는 무엇? value는 무엇? key를 index로 바꾸면 안 되는 이유?',
+     role:'(단어, 전체 출현 횟수) 쌍을 최종 출력',
+     why:'emit(key): 단어 정체성 유지. emit(index): 어떤 단어인지 알 수 없음',
+     ifw:'emit(count, key): key-value 순서 뒤집힘 → downstream이 잘못된 schema 수신'},
+  ]
+},
+{
+  id:'matmul', topic:'MapReduce Matrix-Vector Mul', priority:'A', range:'L2-L7',
+  source:'2-mapreduce.pdf p32', examLink:'2024 Q2(a): A∈R^{3×6}, v∈R^6 곱셈, combiner 포함',
+  hwLink:null,
+  overview:'행렬-벡터 곱셈 Mv를 MapReduce로 구현. Map에서 각 원소에 해당 v_j를 곱해 row index를 key로 emit. Reduce에서 같은 row의 값을 합산.',
+  whyImportant:'2024 Q2(a) 직접 출제. key=i (row index)의 논리와 combiner 적용 가능 이유를 설명할 수 있어야.',
+  codeLines:[
+    {t:'# M∈R^{m×n}, v∈R^n → Mv∈R^m 계산'},
+    {t:''},
+    {t:'# Map: input ((i,j), m_ij)'},
+    {blank:'B1', pre:'emit(', ans:'i, m_ij * v_j)',
+     hint:'key는 결과 벡터의 어느 원소인지, value는 row i의 j번째 partial product. key가 j이면 안 되는 이유?',
+     role:'row i의 모든 partial product m_ij*v_j가 같은 Reducer(key=i)로 집결',
+     why:'(Mv)_i = Σ_j m_ij*v_j → row i의 모든 곱의 합이 필요 → key=i. key=j이면 column 합 = M^Tv',
+     ifw:'emit(j, m_ij*v_j): column index를 key로 → M^Tv 계산 (다른 결과)'},
+    {t:''},
+    {t:'# Reduce: input (i, [m_i1*v_1, m_i2*v_2, ...])'},
+    {blank:'B2', pre:'emit(', ans:'i, sum(values))  # = (Mv)_i',
+     hint:'Reduce: row i에 온 모든 m_ij*v_j를 합산하면? 결과의 key와 value는?',
+     role:'row i에 대한 Σ_j m_ij*v_j = (Mv)_i를 계산해 출력',
+     why:'Combiner 가능: 합산은 commutative+associative. Map worker에서 미리 partial sum → shuffle 데이터 감소',
+     ifw:'Reduce에서 product: m_ij*v_j를 Reduce에서 계산하려면 v_j가 필요 → v_j 없음'},
+  ]
+},
+{
+  id:'son', topic:'SON Algorithm (MapReduce)', priority:'A', range:'L2-L7',
+  source:'5-itemsets-2.pdf p34', examLink:'2024 Q3: Toivonen 출제 (SON은 병렬 대안, 같은 영역)',
+  hwLink:null,
+  overview:'SON: 데이터를 chunk로 나눠 각 chunk에서 local frequent itemset을 찾고(Pass 1), 전체 데이터에서 실제 support를 카운트(Pass 2). No false negatives 보장.',
+  whyImportant:'SON 4단계의 emit 형식과 threshold 논리(Pass1=p*s, Pass2=s)를 이해해야.',
+  codeLines:[
+    {t:'# Pass 1 — chunk별 local frequent itemset 추출'},
+    {t:'# chunk는 전체 데이터의 fraction p'},
+    {blank:'B1', pre:'Pass1 Map:  ', ans:'emit(F, 1)  for each F locally frequent in chunk (threshold = p*s)',
+     hint:'Pass 1 threshold가 s가 아닌 p*s인 이유: chunk가 전체의 p 비율이므로 비례 조정. emit key는?',
+     role:'각 chunk에서 local frequent itemset F를 전역 candidate로 등록',
+     why:'threshold=p*s: chunk support=전체support×p이므로 p*s가 전체 s에 해당. threshold=s이면 false negative 발생',
+     ifw:'threshold=s: 너무 엄격 → globally frequent이지만 locally 놓치는 경우 → false negatives'},
+    {blank:'B2', pre:'Pass1 Reduce: ', ans:'emit(F) if F appeared in at least one chunk (= union)',
+     hint:'Pass 1 Reduce 논리: "모든 chunk에서 frequent"가 아닌 "적어도 하나"인 이유?',
+     role:'어느 한 chunk에서라도 local frequent → global candidate. False negative 방지',
+     why:'globally frequent F는 반드시 최소 하나의 chunk에서 local frequent. 교집합(intersection)이면 false negative 발생',
+     ifw:'intersection (모든 chunk): 일부 chunk에서만 frequent한 globally frequent itemset 누락'},
+    {t:''},
+    {t:'# Pass 2 — 전체 데이터에서 candidate의 실제 support 집계'},
+    {blank:'B3', pre:'Pass2 Map:  ', ans:'emit(C, count_in_this_chunk)  for each candidate C',
+     hint:'Pass 2에서 각 chunk가 candidate C의 support를 얼마나 기여하는지 emit',
+     role:'전체 데이터에 걸쳐 candidate C의 실제 support를 분산 집계',
+     why:'key=C: 같은 candidate가 같은 Reducer로. value=local count: 합산하면 global support',
+     ifw:'Pass 2에서도 threshold=p*s: 너무 낮은 threshold → false positives 남음'},
+    {blank:'B4', pre:'Pass2 Reduce: ', ans:'emit(C) if sum(counts) >= s  # 전역 support threshold',
+     hint:'Pass 2 Reduce에서 최종 threshold는 p*s가 아닌 s. 왜?',
+     role:'전체 데이터 기준 실제 globally frequent itemset만 최종 출력',
+     why:'Pass 2에서는 전체 데이터 합산이므로 threshold=s (전역 기준). p*s는 Pass 1에서만 사용',
+     ifw:'threshold=p*s in Pass2: 너무 낮아 not globally frequent인 itemset도 출력 → false positives'},
+  ]
+},
+{
+  id:'scurve', topic:'S-Curve: LSH Banding', priority:'A', range:'L2-L7',
+  source:'7-lsh-2.pdf p17,21', examLink:'2025 Q2(d): (r,b)=(1,4),(2,2),(4,1)에서 P_cand 계산',
+  hwLink:null,
+  overview:'LSH banding 기법에서 두 아이템이 candidate pair가 될 확률을 계산하는 S-curve 공식. r개 row로 이루어진 b개 band로 구성.',
+  whyImportant:'2025 Q2(d) 직접 계산 문제 출제. 주어진 r,b,s에서 P_cand를 계산할 수 있어야.',
+  codeLines:[
+    {t:'# Jaccard similarity = s인 두 아이템의 candidate 확률'},
+    {t:''},
+    {blank:'B1', pre:'Pr[same in one band] = ', ans:'s^r',
+     hint:'한 band의 r개 row가 모두 같을 확률. 각 row가 독립적으로 같을 확률이 s이면?',
+     role:'하나의 band 내 r개 row가 전부 일치할 확률',
+     why:'r개 독립 비교, 각 확률=s → 곱 = s^r. s^b가 아님 (b는 band 수, r은 row 수)',
+     ifw:'s^b: band 수와 row 수 혼동 → 잘못된 확률'},
+    {blank:'B2', pre:'Pr[candidate] = ', ans:'1 - (1 - s^r)^b',
+     hint:'b개 band 중 적어도 하나가 일치할 확률. "하나도 일치 안 할" 확률의 여사건?',
+     role:'b개 band 중 적어도 하나에서 모든 row가 일치 → candidate pair',
+     why:'1 - (1-s^r)^b: 모든 band가 불일치할 확률 (1-s^r)^b의 여사건. OR 구조',
+     ifw:'1-(1-s)^{rb}: band 구조 무시, 모든 rb row를 독립적으로 보는 잘못된 식'},
+    {blank:'B3', pre:'Threshold ≈ ', ans:'(1/b)^(1/r)',
+     hint:'S-curve가 가장 가파른 지점, 즉 "effective threshold"의 근사식. b와 r의 관계?',
+     role:'S-curve의 0.5 지점 근사 = 이 s보다 크면 candidate 확률이 급격히 높아짐',
+     why:'1-(1-s^r)^b ≈ 1-e^{-b*s^r} = 0.5 → s^r = ln2/b → s ≈ (ln2/b)^{1/r} ≈ (1/b)^{1/r}',
+     ifw:'(1/r)^(1/b): r과 b 뒤바뀜 → 잘못된 threshold 추정'},
+  ]
+},
+{
+  id:'sgd', topic:'SGD for UV Decomposition', priority:'A', range:'L8-L13',
+  source:'13-recsys-2.pdf p26', examLink:'professor ★★★ 최우선. SGD 1-step 계산 직접 출제 유력',
+  hwLink:'hw2/q3/hw2_q3_cf.py (CF 관련)',
+  overview:'UV분해의 목적함수 J = Σ(r_{xi} - u_x^T v_i)² + λ₁Σ||u||² + λ₂Σ||v||²를 SGD로 최적화. 각 entry (x,i)마다 u_x와 v_i를 순차 업데이트.',
+  whyImportant:'professor_exam_philosophy.txt에서 ★★★ 명시. 슬라이드 p26 코드 그대로 3줄이 빈칸이 될 수 있음. 부호 오류(λ 부호), factor 2 누락이 함정.',
+  codeLines:[
+    {t:'for each r_{x,i} in E:  # E = non-blank entries only'},
+    {blank:'B1', pre:'    eps_xi = ', ans:'2 * (r_xi - u_x.T @ v_i)',
+     hint:'오차 신호: 실제값과 예측값의 차이에 제곱 미분의 상수 factor 포함. 왜 2를 곱하는가?',
+     role:'ε = gradient of squared error w.r.t. u_x. factor 2는 d/du(r-u^Tv)²에서 나옴',
+     why:'d/du_xc (r-u_x^Tv_i)² = -2(r-u_x^Tv_i)·v_ic → ε = 2(r-u^Tv). 부호 주의: 우리는 gradient ascent 방향(minimize이므로 +=)',
+     ifw:'factor 2 없으면: gradient 크기가 절반 → 더 느린 수렴 (기술적으로 틀린 식)'},
+    {blank:'B2', pre:'    u_x += ', ans:'eta * (eps_xi * v_i - lambda1 * u_x)',
+     hint:'u_x 업데이트: 오차방향(ε·v_i) - regularization(λ₁·u_x). 부호가 - 인 이유?',
+     role:'gradient descent 방향으로 u_x 업데이트: fit 항은 + 방향, regularization은 u_x를 0으로 당김',
+     why:'∂J/∂u_xc = -ε·v_ic + 2λ₁·u_xc → update: +ε·v_i - λ₁·u_x (factor 2는 ε에 흡수됨)',
+     ifw:'+lambda1*u_x: u_x가 무한히 커짐 → regularization 효과 반대 → overfitting 악화'},
+    {blank:'B3', pre:'    v_i += ', ans:'eta * (eps_xi * u_x - lambda2 * v_i)',
+     hint:'v_i 업데이트: u_x와 대칭 구조. u_x와 v_i의 역할이 교환됨에 주의',
+     role:'u_x와 같은 구조로 v_i 업데이트. u_x와 v_i는 순차적으로 업데이트됨 (stochastic)',
+     why:'∂J/∂v_ic = -ε·u_xc + 2λ₂·v_ic → update 동일 구조. 동시 업데이트가 아닌 순차 업데이트',
+     ifw:'동시 업데이트 (eps_xi 재계산 없이): u_x가 이미 업데이트된 상태를 v_i가 참조 → 수렴 특성 변경'},
+  ]
+},
+{
+  id:'kmeans', topic:'K-means 2-Step + WCSS', priority:'A', range:'L8-L13',
+  source:'8-clustering-1.pdf p35-36', examLink:'2025 Q3(a): K-means++ 초기화+시뮬레이션. 2024 Q5(a): D(p)² 확률',
+  hwLink:'hw2/q1/hw2_q1_kmeans.py: closest_centroid_index()=Step1, merge_cluster_values()=Step2 집계',
+  overview:'K-means는 cluster assignment와 centroid update를 반복. WCSS 단조 감소로 수렴 보장. K-means++은 D(p)² 비례 확률로 초기 centroid를 분산 배치.',
+  whyImportant:'2024 Q5(a), 2025 Q3(a) 직접 출제. HW2 q1 skeleton 코드에서 직접 구현. Step 1(argmin), Step 2(mean)의 수식과 WCSS 수렴 보장.',
+  codeLines:[
+    {t:'Initialize: pick k centroids (random or K-means++)'},
+    {t:''},
+    {t:'Until convergence:'},
+    {blank:'B1', pre:'  Step 1: ', ans:'c(x) = argmin_k ||x - mu_k||^2  # assign to nearest centroid',
+     hint:'각 점을 가장 가까운 centroid에 배정: argmin을 어떤 거리로?',
+     role:'각 점 x를 가장 가까운 (L2 거리) centroid의 클러스터에 배정',
+     why:'L2 거리(제곱)가 WCSS와 직접 연결. |x-mu| 대신 |x-mu|²: 제곱이어도 argmin 결과 같고 계산 효율적',
+     ifw:'argmax: 가장 먼 centroid에 배정 → clustering 아님'},
+    {blank:'B2', pre:'  Step 2: ', ans:'mu_k = (1/|C_k|) * sum(x for x in C_k)  # update to mean',
+     hint:'centroid를 무엇으로 업데이트? "평균"이 WCSS를 최소화하는 이유?',
+     role:'각 클러스터의 새 centroid = 해당 클러스터 내 점들의 평균',
+     why:'argmin_mu Σ||x-mu||² → dJ/dmu = -2Σ(x-mu) = 0 → mu = (1/|C|)Σx = 평균. 수학적으로 WCSS 최소화',
+     ifw:'median 사용: K-medians 알고리즘 (L1 기반). L2 WCSS 최소화는 mean만 가능'},
+    {t:''},
+    {t:'# K-means++ initialization'},
+    {blank:'B3', pre:'P(select p as next center) = ', ans:'D(p)^2 / sum_q D(q)^2',
+     hint:'D(p)=가장 가까운 기존 center까지의 거리. 왜 D^2 비례인가? (D가 아닌 이유?)',
+     role:'이미 선택된 center에서 멀수록 높은 확률로 다음 center 선택 → 분산 초기화',
+     why:'D² 비례: WCSS 목적함수와 수학적으로 연결 → E[WCSS] ≤ 8(ln k+2) * OPT 이론적 보장',
+     ifw:'D 비례: 이론적 보장 약함. 균등 랜덤: 가까운 center 중복 선택 위험'},
+  ]
+},
+{
+  id:'bfr', topic:'BFR: N/SUM/SUMSQ + Mahalanobis', priority:'A', range:'L8-L13',
+  source:'9-clustering-2.pdf p18-19,31-32', examLink:'2024 Q5(b): BFR 직접 계산 + DS/CS/RS 분류',
+  hwLink:null,
+  overview:'BFR은 대용량 데이터를 디스크에서 chunk씩 읽으며 클러스터링. 각 클러스터를 (N, SUM, SUMSQ)로 요약해 메모리 절약. Mahalanobis distance로 점 배정.',
+  whyImportant:'2024 Q5(b) 직접 계산 문제 출제. N/SUM/SUMSQ로 centroid와 variance 복원, Mahalanobis 계산. 공식을 손으로 계산할 수 있어야.',
+  codeLines:[
+    {t:'# 클러스터 C의 2d+1개 통계량 (d = 차원수)'},
+    {t:'N = 점의 개수'},
+    {t:'SUM_i = Σ_{x∈C} x_i     (i번째 차원 좌표합)'},
+    {t:'SUMSQ_i = Σ_{x∈C} x_i²  (i번째 차원 제곱합)'},
+    {t:''},
+    {blank:'B1', pre:'Centroid_i = ', ans:'SUM_i / N',
+     hint:'평균 = 합 / 개수. 왜 SUM을 직접 저장하는가? (개별 점을 저장하지 않고)',
+     role:'차원 i에서의 클러스터 centroid (평균 좌표)',
+     why:'SUM/N = 평균. 개별 점 저장 불필요 → O(2d+1) 메모리로 O(N·d) 메모리 대체',
+     ifw:'Centroid = SUM (N으로 나누지 않음): 클러스터 크기에 따라 centroid가 잘못 계산됨'},
+    {blank:'B2', pre:'Variance_i = ', ans:'SUMSQ_i/N - (SUM_i/N)^2  # = E[X²] - E[X]²',
+     hint:'분산 = 제곱의 평균 - 평균의 제곱. 이 공식은 어떤 수학적 identity를 사용?',
+     role:'차원 i에서의 분산 σ²_i. 개별 점 없이 SUMSQ와 N으로 계산',
+     why:'Var(X) = E[X²] - E[X]² = SUMSQ/N - (SUM/N)². SUMSQ가 additive이므로 merge도 간단',
+     ifw:'SUM²/N²으로 계산: 수학적으로 같지 않음. SUMSQ 대신 SUM² 저장 시 merge 시 틀린 값'},
+    {blank:'B3', pre:'Mahalanobis(x, C) = ', ans:'sqrt( sum_i ((x_i - mu_i) / sigma_i)^2 )',
+     hint:'각 차원을 표준편차로 정규화한 거리. Euclidean과 달리 각 차원의 분산을 고려',
+     role:'클러스터의 모양(축 방향 분산)을 반영한 거리 → 타원형 클러스터도 올바르게 처리',
+     why:'BFR: 축 정렬 정규분포 가정 → 차원별 독립. σ_i로 나눠서 표준화 → 4σ면 Mahalanobis=4, P<10⁻⁴',
+     ifw:'Euclidean 사용: 차원별 분산 무시 → 납작한 클러스터에서 잘못된 배정'},
+    {blank:'B4', pre:'Merge C1+C2: N=N1+N2, SUM=SUM1+SUM2, ', ans:'SUMSQ=SUMSQ1+SUMSQ2',
+     hint:'두 클러스터를 합칠 때 N, SUM, SUMSQ를 각각 어떻게 합산? 왜 SUMSQ가 additive한가?',
+     role:'두 클러스터의 요약 통계를 단순 덧셈으로 합병',
+     why:'SUMSQ = Σx² → 합집합의 Σx² = Σ_{C1}x² + Σ_{C2}x². SUM² 대신 SUMSQ를 저장하는 핵심 이유',
+     ifw:'SUM² 저장: (SUM1+SUM2)² ≠ SUM1²+SUM2² → merge 시 분산 계산 불가'},
+  ]
+},
+{
+  id:'svd', topic:'SVD + Power Iteration', priority:'A', range:'L8-L13',
+  source:'11-dimred-2.pdf p5, 10-dimred-1.pdf p20', examLink:'2024 Q6, 2025 Q4: SVD 계산 + energy ratio. 2024 T/F: power iteration',
+  hwLink:null,
+  overview:'SVD: M = UΣV^T. 에너지(σ²)를 기준으로 rank r 선택. Power iteration으로 eigenvector 계산. Deflation으로 다음 eigenvector 찾음.',
+  whyImportant:'2024 Q6, 2025 Q4에서 직접 계산. Energy ratio ≥ 90% 조건과 reconstruction error 공식이 핵심.',
+  codeLines:[
+    {t:'# SVD: M = U Σ V^T'},
+    {t:'# U: m×r (user-to-concept), Σ: r×r diag, V: n×r (item-to-concept)'},
+    {blank:'B1', pre:'Total energy = ', ans:'sum_i sigma_i^2  # σ₁² + σ₂² + ... + σ_r²',
+     hint:'SVD에서 각 singular value의 "에너지" 기여. σ_i가 아닌 σ_i²인 이유?',
+     role:'전체 행렬의 정보량(분산) 총합. Frobenius norm² = Σσ_i²',
+     why:'σ_i²: i번째 concept이 설명하는 분산의 양. σ_i가 아닌 제곱 → ||M||_F² = Σσ_i² (Frobenius norm²)',
+     ifw:'Σσ_i: 잘못된 에너지 척도 → rank 선택 기준 틀림'},
+    {blank:'B2', pre:'Retained energy ratio = ', ans:'sum_{i<=r} sigma_i^2 / sum_i sigma_i^2  >= 0.9',
+     hint:'상위 r개 singular value²의 합 / 전체 합. ≥ 90% 조건으로 r 선택',
+     role:'rank-r 근사가 전체 정보의 몇 %를 보존하는지. 90% 기준으로 최소 r 선택',
+     why:'ordered singular values: 상위 r개가 최대 에너지 → greedy가 optimal (Eckart-Young 정리)',
+     ifw:'σ_i 비율로 계산: 제곱 없이 계산 시 잘못된 비율 → 다른 r 선택'},
+    {blank:'B3', pre:'Reconstruction error = ', ans:'sum_{i>r} sigma_i^2  # 버린 singular value²의 합',
+     hint:'rank-r 근사 후 버린 singular value들이 reconstruction error에 기여하는 양',
+     role:'||M - M_r||_F² = 버린 energy의 총합 (Eckart-Young 정리)',
+     why:'M_r = Σ_{i≤r} σ_i u_i v_i^T → M - M_r = Σ_{i>r} σ_i u_i v_i^T → ||M-M_r||_F² = Σ_{i>r} σ_i²',
+     ifw:'보존된 σ_i²의 합: retained energy와 혼동 → opposite'},
+    {t:''},
+    {t:'# Power Iteration for principal eigenvector of M'},
+    {blank:'B4', pre:'x_{k+1} = ', ans:'M @ x_k / ||M @ x_k||  # normalize to prevent overflow',
+     hint:'현재 벡터에 M을 곱한 후 정규화. 왜 정규화하는가?',
+     role:'지배적 eigenvector 방향으로 반복 수렴. 정규화로 overflow/underflow 방지',
+     why:'x_k ∝ λ₁^k(c₁v₁ + (λ₂/λ₁)^k c₂v₂ + ...) → λ₁이 지배. |λ₁|>1이면 overflow → 정규화 필수',
+     ifw:'정규화 없음: |λ₁|>1이면 overflow, <1이면 underflow → 수치 불안정'},
+    {blank:'B5', pre:'Deflation: M* = ', ans:'M - lambda * x * x.T  # lambda = x.T @ M @ x',
+     hint:'찾은 eigenvector의 기여를 M에서 제거. λ는 어떻게 계산?',
+     role:'첫 번째 eigenpair 제거 후 M*에 Power Iteration → 두 번째 eigenvector 찾기',
+     why:'λ = x^T M x (x가 unit vector이면). M* = M - λxx^T → x는 M*의 eigenvalue 0 eigenvector',
+     ifw:'Deflation 없이 반복: 항상 첫 번째 (principal) eigenvector만 찾음'},
+  ]
+},
+];
+
+// ─── LOGIC RECALL DATA ──────────────────────────────────────────────
+const RECALL = [
+{
+  topic:'A-Priori: Monotonicity',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Monotonicity: if I is infrequent,\n  ALL supersets of I are infrequent',
+    'Pass 1: count items (O(n) memory)',
+    'Pass 2: count pairs of FREQUENT items only',
+    'C_k: itemsets where ALL (k-1)-subsets are frequent',
+  ],
+  why:'subset support ≥ superset support → infrequent item이면 포함한 pair도 infrequent. Pass 2 메모리: O(m²) not O(n²)',
+  ifw:'monotonicity 없으면 모든 pair 카운트 → O(n²) memory'
+},
+{
+  topic:'PCY: Hash Buckets + Bitmap',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Pass 1: hash pair (i,j) → bucket, increment count',
+    'Between: convert to bitmap (1 if bucket_count >= s)',
+    'Pass 2 candidate: frequent items AND bucket is frequent',
+    'Bitmap: 1/32 compression (32-bit int → 1 bit)',
+  ],
+  why:'bucket_count < s → no pair hashing there can have support ≥ s (pigeonhole). Frequent bucket: necessary but not sufficient (collisions)',
+  ifw:'bucket 체크 없으면: 더 많은 false positive → Pass 2 더 큰 메모리'
+},
+{
+  topic:'Toivonen Negative Border',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Neg border: NOT frequent in sample,\n  AND all immediate subsets ARE frequent',
+    'Success: no neg border member is\n  frequent in FULL data',
+    'Failure: repeat with new sample\n  (expected O(1) passes)',
+    'No false negatives: if globally frequent S\n  misses sample, some subset in neg border',
+  ],
+  why:'globally frequent S가 sample에서 누락되면 → 어떤 subset이 neg border에 있음 (귀납법). Pass 2에서 neg border 체크로 잡아냄',
+  ifw:'neg border 체크 없으면: false negative 가능'
+},
+{
+  topic:'MinHash: X/Y/Z Row Types + Jaccard Proof',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Type X: both cols = 1  → x = |S1∩S2|',
+    'Type Y: one col 1, one 0  → y = |S1△S2|',
+    'Type Z: both cols = 0  (irrelevant)',
+    'Pr[h(S1)=h(S2)] = x/(x+y) = Jaccard(S1,S2)',
+  ],
+  why:'random permutation에서 첫 번째 non-Z row가 X이면 두 minhash 동일. 각 X,Y row는 equally likely to be first → Pr = x/(x+y)',
+  ifw:'Z 포함: x/(x+y+z) ≠ Jaccard. 틀린 유사도 척도'
+},
+{
+  topic:'MapReduce: Map vs Reduce Failure',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Map failure: ALL tasks re-run (even completed)',
+    'Reduce failure: only IN-PROGRESS tasks reset',
+    'Reason (Map): output on LOCAL DISK → lost',
+    'Reason (Reduce): output in DFS → replicated',
+  ],
+  why:'Map output을 DFS에 저장하면 매 Map task마다 네트워크 I/O → 너무 느림. Reduce output은 최종 결과 → 내구성 필요',
+  ifw:''
+},
+{
+  topic:'Combiner: 적용 가능 조건',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Applicable iff Reduce is commutative AND associative',
+    'sum: OK (a+b=b+a, (a+b)+c=a+(b+c))',
+    'average: NOT OK (group sizes differ)',
+    'System does NOT check this: programmer\'s responsibility',
+  ],
+  why:'combiner는 어떤 순서/부분집합에 적용해도 최종 결과가 같아야 함. 2024 T/F: "MapReduce checks commutativity" → FALSE',
+  ifw:'average에 combiner: 로컬 평균 ≠ 전역 평균 → 잘못된 집계'
+},
+{
+  topic:'Spark: Narrow vs Wide Dependency',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'Narrow: output partition ← at most 1 input\n  (map, filter, flatMap)',
+    'Wide: output ← multiple inputs, SHUFFLE\n  (groupByKey, join, sort, reduceByKey)',
+    'FlatMap: one-to-many BUT single parent → NARROW',
+    'reduceByKey: wide but more efficient (combiner effect)',
+  ],
+  why:'Wide = shuffle 필요 → 네트워크 전송, fault recovery 복잡. FlatMap은 출력이 많지만 각 출력의 부모는 하나 → narrow',
+  ifw:'FlatMap을 wide로 오해: T/F 오답'
+},
+{
+  topic:'LSH AND/OR Construction',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'AND (r funcs): (d1,d2,p1,p2) → (d1,d2,p1^r,p2^r)',
+    'OR  (b funcs): → (d1,d2,1-(1-p1)^b,1-(1-p2)^b)',
+    'AND-OR: 1-(1-p1^r)^b, 1-(1-p2^r)^b → S-curve',
+    'AND: precision↑, recall↓ | OR: recall↑, precision↓',
+  ],
+  why:'AND: 모두 agree해야 → p가 지수적 감소. OR: 하나만 agree → p가 지수적 증가. 올바른 순서: AND→OR (rows→bands)',
+  ifw:'OR-AND 순서: inverted S-curve → LSH에 유용하지 않음'
+},
+{
+  topic:'Random Hyperplanes (Angular Distance)',
+  badge:'B',
+  range:'L2-L7',
+  lines:[
+    'f(x) = sign(v · x)  where v ~ N(0,I)',
+    'f(x)=f(y) iff x,y on same side of hyperplane',
+    'Pr[f(x)=f(y)] = 1 - θ/π',
+    'F is (d1,d2, 1-d1/π, 1-d2/π)-sensitive',
+  ],
+  why:'1-θ/π: 전체 hyperplane 중 x,y를 같은 편에 두는 비율 = (π-θ)/π. θ=0 → 항상 같음(Pr=1). θ=π → 항상 다름(Pr=0)',
+  ifw:'Pr=θ/π: 방향 반대로 → 다른 편 확률 계산'
+},
+{
+  topic:'CURE: Representative Points + Shrinkage',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'First rep: point farthest from centroid',
+    'Next rep: farthest from already-chosen reps',
+    'Shrinkage: rep_new = rep + α*(centroid-rep)\n  α = 0.2 (20% toward centroid)',
+    'Pass 2: assign to CLOSEST REPRESENTATIVE (not centroid)',
+  ],
+  why:'α=0.2: 경험적 최적. α=0이면 outlier가 boundary 왜곡. α=1이면 rep이 centroid로 붕괴. 대표점으로 배정해야 비볼록 클러스터 처리',
+  ifw:'shrinkage 없으면: outlier 지배. centroid로 배정: K-means와 동일 → CURE 장점 없음'
+},
+{
+  topic:'K-means++: D(p)² Probability',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'D(p) = distance from p to nearest chosen center',
+    'P(select p as next) = D(p)² / Σ_q D(q)²',
+    'Far points → higher prob → spread out centers',
+    'Theory: E[WCSS] ≤ 8(ln k+2) × OPT',
+  ],
+  why:'D² (not D): WCSS 목적함수와 직접 연결 → 이론적 보장. 균등 랜덤은 이 보장 없음',
+  ifw:'D 비례: 약한 보장. 균등: 가까운 center 중복 위험'
+},
+{
+  topic:'BFR: DS/CS/RS 분류',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'DS (Discard): Mahalanobis < threshold → add to cluster',
+    'CS (Compressed): small groups, not near centroid',
+    'RS (Retained): isolated, singleton',
+    'Processing: try DS first → cluster RS → ≥2 become CS',
+  ],
+  why:'Mahalanobis threshold (e.g. 4σ): P < 10⁻⁴로 정규분포 가정 하에 안전. CS: 나중에 DS로 흡수될 수 있는 minicluster',
+  ifw:'threshold 너무 작: RS 많아짐 → 메모리 낭비. 너무 크: 부정확한 클러스터'
+},
+{
+  topic:'User-User CF + Item-Item CF',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'Pearson sim(u,v) = Σ_{k∈S}(r_uk-r̄_u)(r_vk-r̄_v)\n               / (||r_u-r̄_u||·||r_v-r̄_v||)',
+    'User-User: r̂(x,i) = r̄_x + Σ sim(x,y)·(r_yi-r̄_y)\n                          / Σ|sim(x,y)|',
+    'Item-Item: r̂(x,i) = Σ_{j∈N(i;x)} sim(i,j)·r_xj\n                      / Σ sim(i,j)',
+  ],
+  why:'r̄ 빼기: rating scale 차이 제거 (엄격한 평가자 vs 관대한 평가자). N\' = x와 유사하면서 item i를 평가한 users만. r̄_x를 baseline으로 더함',
+  ifw:'r̄ 없으면: rating bias 미제거. |N\'| denominator: similarity 강도 무시'
+},
+{
+  topic:'UV Decomposition: Objective + Regularization',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'J = Σ_{(x,i)∈E} (r_xi - u_x^T v_i)²   [non-blank only!]',
+    '  + λ₁Σ||u_x||² + λ₂Σ||v_i||²',
+    'Prediction: r̂(x,i) = u_x^T v_i',
+    'With biases: r̂ = μ + b_x + b_i + u_x^T v_i',
+  ],
+  why:'Non-blank only: blank≠dislike. blank=0으로 처리 시 biased training. λ: u,v를 0으로 shrink → overfitting 방지. 큰 k는 training J 감소, test RMSE 증가',
+  ifw:'regularization이 training error 감소: FALSE. 실제로는 training error 증가 (일부러 fit을 약하게)'
+},
+{
+  topic:'PCA: M^T M + Mean Centering',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'First PC = principal eigenvector of M^T M',
+    'var(t) = t^T M^T M t  (maximized at principal eigenvec)',
+    'Mean centering: each column mean = 0 REQUIRED',
+    'SVD connection: V of M = U Σ V^T = PCA directions',
+  ],
+  why:'Rayleigh quotient: max t^T M^T M t s.t. ||t||=1 = largest eigenvalue, achieved at principal eigenvector. 중심화 없으면 첫 PC가 data mean 방향 가리킴',
+  ifw:'PCA를 비정방 M에 직접 적용: 불가. M^T M 먼저 필요'
+},
+{
+  topic:'CUR Decomposition: Sampling',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'q_k = ||column_k||_F² / ||M||_F²  (column prob)',
+    'p_i = ||row_i||_F² / ||M||_F²     (row prob)',
+    'Scale column k: divide by sqrt(r * q_k)',
+    'U = Y (Σ*)^2 X^T  where W=XΣY^T, W=C∩R',
+  ],
+  why:'norm² 비례 샘플링: 더 "중요한" (norm이 큰) 행/열이 더 자주 선택 → reconstruction error 최소화. CUR 장점: C,R이 실제 데이터 행/열 → 희소하고 해석 가능',
+  ifw:'균등 샘플링: norm 작은 행/열 과대대표 → 더 큰 reconstruction error'
+},
+{
+  topic:'Centroid vs Clustroid',
+  badge:'B',
+  range:'L8-L13',
+  lines:[
+    'Centroid: mean of all points; NOT in dataset; Euclidean only',
+    'Clustroid: actual data point; min rowsum(p)',
+    'rowsum(p) = Σ_{q∈C} d²(p, q)',
+    'Estimation: rowsum(p) ≈ rowsum(c) + N·d²(p,c)',
+  ],
+  why:'비유클리드 공간에서는 두 점의 평균이 정의 안 될 수 있음 → clustroid 사용. rowsum 최소 = 클러스터에서 가장 "중심"에 있는 실제 점',
+  ifw:'clustroid=평균이라고 쓰면: FALSE (centroid와 혼동). centroid가 항상 데이터셋에 있다: FALSE'
+},
+];
+
+// ─── CHECKLIST DATA ─────────────────────────────────────────────────
+const CHECKLISTS = [
+{
+  title:'📡 MapReduce', items:[
+    'Word Count Map:  emit(word, 1)  →  Reduce: result+=v; emit(word, result)',
+    'Matrix-Vec Map:  emit(i, m_ij*v_j)  →  Reduce: emit(i, Σm_ij*v_j)',
+    'Combiner 조건:  commutative + associative (average는 불가)',
+    'Map 실패: 완료 task도 재시작 (local disk) ↔ Reduce 실패: in-progress만 (DFS)',
+    'SON Pass1 Map:   emit(F, 1), threshold = p*s',
+    'SON Pass1 Reduce: emit(F) if appeared at least once',
+    'SON Pass2 Map:   emit(C, local_count)',
+    'SON Pass2 Reduce: emit(C) if Σcount >= s (전역 threshold)',
+  ]
+},
+{
+  title:'⚡ Spark', items:[
+    'Narrow: map, filter, flatMap (FlatMap도 narrow!)',
+    'Wide:   groupByKey, join, sort, reduceByKey (shuffle 발생)',
+    'Quantile combine rmin = z[rmin] + (prev[rmin] if prev else 0)',
+    'Quantile combine rmax = z[rmax] + (next[rmax] if next else Sn[-1][rmax])',
+    'Quantile compress (3): if t[rmax] - prev[rmin] > 2*eps*N → keep prev',
+    'Quantile query (4): S[i][rmin] ≤ target+tol AND S[i][rmax] ≥ target-tol',
+  ]
+},
+{
+  title:'🔗 Frequent Itemsets', items:[
+    'Monotonicity: infrequent → all supersets infrequent (downward closure)',
+    'A-Priori Pass 1: count items; Pass 2: count pairs of frequent items only',
+    'PCY Pass 2 candidate: frequent items + hashed to frequent bucket',
+    'PCY bitmap: 32-bit int → 1-bit: 1/32 메모리',
+    'Toivonen neg border: NOT frequent in sample, BUT all immediate subsets ARE',
+    'Toivonen success: no neg border member is frequent in full data',
+  ]
+},
+{
+  title:'🎯 MinHash + LSH', items:[
+    'MinHash 초기화: M[i,c] ← ∞',
+    'MinHash 조건:   if T[r,c] = 1 then',
+    'MinHash 업데이트: if h_i(r) < M[i,c]: M[i,c] ← h_i(r)',
+    'Pr[h(S1)=h(S2)] = x/(x+y) = Jaccard(S1,S2)',
+    'S-curve: Pr[candidate] = 1 - (1 - s^r)^b',
+    'Threshold ≈ (1/b)^(1/r)',
+    'AND: (d1,d2,p1^r,p2^r)-sensitive → precision↑',
+    'OR:  (d1,d2,1-(1-p1)^b,1-(1-p2)^b)-sensitive → recall↑',
+    'Random hyperplane: f(x)=sign(v·x), Pr[f(x)=f(y)]=1-θ/π',
+  ]
+},
+{
+  title:'🔵 Clustering (K-means / CURE / BFR)', items:[
+    'K-means Step 1: c(x) = argmin_k ||x - μ_k||²',
+    'K-means Step 2: μ_k = mean of points in cluster k',
+    'WCSS 단조 감소 → 항상 수렴 (local minimum, NOT global)',
+    'K-means++: P(p) ∝ D(p)² (nearest center까지 거리 제곱)',
+    'CURE first rep: farthest from centroid',
+    'CURE next rep: farthest from prev reps',
+    'CURE shrinkage: rep += 0.2*(centroid - rep)',
+    'CURE Pass 2: assign to closest REPRESENTATIVE (not centroid)',
+    'BFR summary: N, SUM_i, SUMSQ_i',
+    'BFR centroid: SUM_i / N',
+    'BFR variance: SUMSQ_i/N - (SUM_i/N)²',
+    'BFR Mahalanobis: sqrt(Σ_i ((x_i-μ_i)/σ_i)²)',
+    'BFR add point p: N+=1, SUM_i+=p_i, SUMSQ_i+=p_i²',
+    'BFR merge: N=N1+N2, SUM=SUM1+SUM2, SUMSQ=SUMSQ1+SUMSQ2',
+  ]
+},
+{
+  title:'📐 Dimensionality Reduction', items:[
+    'Power iter: x_{k+1} = M x_k / ||M x_k|| until convergence',
+    'Deflation: M* = M - λ x x^T  (λ = x^T M x)',
+    'PCA: first PC = principal eigenvector of M^T M',
+    'Mean-centering REQUIRED before PCA',
+    'SVD: M = U Σ V^T  (U=user-concept, Σ=strength, V=item-concept)',
+    'Energy ratio: Σ_{i≤r} σ_i² / Σ_i σ_i² ≥ 0.9 → choose r',
+    'Reconstruction error = Σ_{i>r} σ_i² (dropped σ²)',
+    'CUR column prob: q_k = ||col_k||²_F / ||M||²_F; scale 1/√(r·q_k)',
+  ]
+},
+{
+  title:'🎬 Recommender Systems', items:[
+    'User-User: r̂(x,i) = r̄_x + Σ sim(x,y)·(r_yi-r̄_y) / Σ|sim(x,y)|',
+    'Item-Item: r̂(x,i) = Σ_{j∈N(i;x)} sim(i,j)·r_xj / Σ sim(i,j)',
+    'Pearson: Σ(r_uk-r̄_u)(r_vk-r̄_v) / (||r_u-r̄_u||·||r_v-r̄_v||)',
+    'UV: r̂(x,i) = u_x^T v_i',
+    'With biases: r̂ = μ + b_x + b_i + u_x^T v_i',
+    'Objective J = Σ(r-u^Tv)² + λ₁Σ||u||² + λ₂Σ||v||² [non-blank only]',
+    'SGD ε_{x,i} = 2(r_{x,i} - u_x^T v_i)',
+    'SGD u_x += η(ε·v_i - λ₁·u_x)',
+    'SGD v_i += η(ε·u_x - λ₂·v_i)',
+    'λ role: prevent overfitting, shrink u/v toward 0',
+    'Regularization INCREASES training error (intentionally)',
+    'Larger k: training J↓, test RMSE 가능성↑ (overfitting)',
+  ]
+},
+];
+
+
+// ─── RENDER LOGIC + H-2 STATEFUL UX ───────────────────────────────
+let currentFilter = 'all';
+const STORAGE_KEY = 'idm_midterm_master_state_v2';
+
+function defaultState(){
+  return {
+    inputs: {},
+    hints: {},
+    reveals: {},
+    blankStatus: {}, // '', 'ok', 'retry'
+    topicDone: {},
+    checklistChecked: {},
+    checklistOpen: {},
+    activeTopic: null,
+    mainFilter: 'all',
+    blankFilter: 'all'
+  };
+}
+
+let appState = defaultState();
+
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function blankKey(exId, blankId){ return `${exId}::${blankId}`; }
+function blankUid(exId, blankId){ return `${exId}__${blankId}`.replace(/[^a-zA-Z0-9_-]/g,'_'); }
+function getExercise(exId){ return EXERCISES.find(e=>e.id===exId); }
+function getBlankLines(ex){ return (ex.codeLines||[]).filter(l=>l.blank); }
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){ appState = Object.assign(defaultState(), JSON.parse(raw)||{}); }
+  }catch(e){ appState = defaultState(); }
+  currentFilter = appState.mainFilter || 'all';
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); }catch(e){}
+}
+function ensureBool(v){ return !!v; }
+
+function ensureAugmentedUI(){
+  const dash = document.getElementById('dashboard');
+  const dashGrid = dash ? dash.querySelector('.dash-grid') : null;
+  const top5 = dash ? dash.querySelector('.top5-card') : null;
+  if(dashGrid && !document.getElementById('dash-grid-2')){
+    const g2 = document.createElement('div');
+    g2.className = 'dash-grid-2';
+    g2.id = 'dash-grid-2';
+    dashGrid.insertAdjacentElement('afterend', g2);
+  }
+  if(top5 && !document.getElementById('today-panel')){
+    const tp = document.createElement('div');
+    tp.className = 'today-panel';
+    tp.id = 'today-panel';
+    top5.insertAdjacentElement('afterend', tp);
+  }
+
+  const sidebar = document.getElementById('sidebar');
+  if(sidebar && !document.getElementById('quickrun-open-btn')){
+    const sec = document.createElement('div');
+    sec.innerHTML = `
+      <div class="sb-section">셀프체크</div>
+      <button class="qr-open-btn" id="quickrun-open-btn" onclick="openQuickRun()">⚡ 헷갈린 줄 퀵런</button>
+      <button class="reset-all-btn" onclick="resetAllState()">🗑️ 전체 학습 상태 초기화</button>`;
+    sidebar.appendChild(sec);
+  }
+
+  if(!document.getElementById('qr-overlay')){
+    const overlay = document.createElement('div');
+    overlay.className = 'qr-overlay';
+    overlay.id = 'qr-overlay';
+    overlay.innerHTML = `
+      <div class="qr-panel">
+        <div class="qr-header">
+          <h2>헷갈린 줄 퀵런</h2>
+          <button class="qr-close-btn" onclick="closeQuickRun()">닫기</button>
+        </div>
+        <div id="qr-body"></div>
+      </div>`;
+    overlay.addEventListener('click', e=>{ if(e.target.id==='qr-overlay') closeQuickRun(); });
+    document.body.appendChild(overlay);
+  }
+
+  document.querySelectorAll('.sidebar .sb-btn').forEach(btn=>{
+    const oc = btn.getAttribute('onclick')||'';
+    const m = oc.match(/jumpToEx\('([^']+)'\)/);
+    if(m && !btn.querySelector('.sb-done-ind')){
+      const ind = document.createElement('span');
+      ind.className = 'sb-done-ind';
+      ind.textContent = '✓';
+      btn.insertBefore(ind, btn.querySelector('.sb-badge'));
+    }
+  });
+}
+
+function renderExercises(){
+  const tabsEl = document.getElementById('topic-tabs');
+  const panelsEl = document.getElementById('ex-panels');
+  tabsEl.innerHTML=''; panelsEl.innerHTML='';
+
+  EXERCISES.forEach((ex, idx)=>{
+    const isA = ex.priority==='A';
+    const blankIds = getBlankLines(ex).map(b=>b.blank);
+    const done = ensureBool(appState.topicDone[ex.id]);
+
+    const tab = document.createElement('button');
+    tab.className = `ttab${isA?'':' grade-b'}`;
+    tab.dataset.id = ex.id;
+    tab.dataset.range = ex.range;
+    tab.dataset.priority = ex.priority;
+    tab.dataset.label = ex.topic;
+    tab.textContent = `${done ? '✓ ' : ''}${ex.topic}`;
+    tab.onclick = ()=>activateTab(ex.id);
+    tabsEl.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'ex-panel';
+    panel.id = `panel-${ex.id}`;
+    panel.dataset.range = ex.range;
+    panel.dataset.priority = ex.priority;
+
+    panel.innerHTML = `
+      <div class="ex-header">
+        <h2>${escHtml(ex.topic)}</h2>
+        <span class="badge ${isA?'badge-a':'badge-b'}">${ex.priority}등급</span>
+        <span class="badge badge-src">${escHtml(ex.source)}</span>
+        ${ex.examLink?`<span class="badge badge-exam">📋 ${escHtml(ex.examLink)}</span>`:''}
+        <div class="topic-done-wrap">
+          <label class="topic-done-label ${done?'done':''}" id="done-label-${ex.id}">
+            <input type="checkbox" id="done-${ex.id}" ${done?'checked':''} onchange="toggleTopicDone('${ex.id}')">
+            이 topic 복습 완료
+          </label>
+          <span class="progress-badge" id="prog-${ex.id}">빈칸 0/${blankIds.length}</span>
+        </div>
+      </div>
+      <div class="ex-layout">
+        <div class="ex-info">
+          <div class="info-block"><h4>개요</h4><p>${escHtml(ex.overview||'')}</p></div>
+          <div class="info-block"><h4>왜 중요한가</h4><p>${escHtml(ex.whyImportant||'')}</p></div>
+          <div class="info-block"><h4>출처 / 연결</h4>
+            <p>Source: ${escHtml(ex.source||'')}</p>
+            ${ex.examLink?`<p>Exam: ${escHtml(ex.examLink)}</p>`:''}
+            ${ex.hwLink?`<p>HW: ${escHtml(ex.hwLink)}</p>`:''}
+          </div>
+        </div>
+        <div class="ex-right">
+          <div class="blank-filter-row">
+            <span style="font-size:11px;color:var(--muted)">셀프체크 보기:</span>
+            <button class="bfilt-btn" data-bf="all" onclick="setBlankFilter('all')">전체 줄</button>
+            <button class="bfilt-btn" data-bf="retry" onclick="setBlankFilter('retry')">다시 보기만</button>
+            <button class="bfilt-btn" data-bf="hide-ok" onclick="setBlankFilter('hide-ok')">이해한 줄 숨기기</button>
+          </div>
+          ${buildCodeBlock(ex)}
+          <div class="btn-row">
+            <button class="btn btn-reveal" onclick="revealAll('${ex.id}')">전체 정답 보기</button>
+            <button class="btn btn-reset" onclick="resetInputs('${ex.id}')">이 topic 입력 초기화</button>
+            <button class="btn btn-reset" onclick="resetTopicState('${ex.id}')">이 topic 상태 초기화</button>
+          </div>
+        </div>
+      </div>`;
+
+    panelsEl.appendChild(panel);
+  });
+
+  setFilter(currentFilter || 'all');
+  const target = (appState.activeTopic && EXERCISES.some(e=>e.id===appState.activeTopic)) ? appState.activeTopic : (EXERCISES[0]?.id || null);
+  if(target) activateTab(target);
+  syncAllPanels();
+  syncTopicDoneVisuals();
+  updateDashboard();
+}
+
+function buildCodeBlock(ex){
+  let html = '<div class="code-block">';
+  (ex.codeLines||[]).forEach(line=>{
+    if(line.blank){
+      const uid = blankUid(ex.id, line.blank);
+      const key = blankKey(ex.id, line.blank);
+      const st = appState.blankStatus[key] || '';
+      const showHint = ensureBool(appState.hints[key]);
+      const showRev = ensureBool(appState.reveals[key]);
+      const value = escHtml(appState.inputs[key] || '');
+      html += `
+        <div class="blank-row ${st==='ok'?'status-ok':''} ${st==='retry'?'status-retry':''}" id="brow-${uid}" data-ex="${ex.id}" data-key="${key}">
+          <div class="blank-line">
+            ${line.pre?`<span class="blank-prefix">${escHtml(line.pre)}</span>`:''}
+            <input class="blank-input" id="inp-${uid}" value="${value}"
+              data-ex="${ex.id}" data-blank="${line.blank}" data-key="${key}"
+              placeholder="빈칸을 채우세요..."
+              oninput="handleInput('${ex.id}','${line.blank}',this.value)">
+            <button class="hint-btn ${showHint?'open':''}" id="hbtn-${uid}" onclick="toggleHint('${ex.id}','${line.blank}')">힌트</button>
+            <button class="btn btn-reveal" style="font-size:10px;padding:2px 8px" onclick="revealOne('${ex.id}','${line.blank}')">정답</button>
+            <button class="sc-btn sc-ok ${st==='ok'?'active':''}" onclick="setBlankStatus('${ex.id}','${line.blank}','ok')">이해함</button>
+            <button class="sc-btn sc-retry ${st==='retry'?'active':''}" onclick="setBlankStatus('${ex.id}','${line.blank}','retry')">다시 보기</button>
+          </div>
+          <div class="hint-content ${showHint?'open':''}" id="hint-${uid}">${escHtml(line.hint)}</div>
+          <div class="answer-reveal ${showRev?'open':''}" id="rev-${uid}">
+            <div class="answer-code">✓ ${escHtml(line.ans)}</div>
+            <div class="af"><span class="af-label">이 줄의 역할: </span>${escHtml(line.role)}</div>
+            <div class="af"><span class="af-label">왜 이 값인가: </span>${escHtml(line.why)}</div>
+            <div class="af"><span class="af-label">이 줄이 틀리면 어떻게 되는가: </span>${escHtml(line.ifw)}</div>
+          </div>
+        </div>`;
+    } else {
+      html += `<div class="code-line">${escHtml(line.t||'')}</div>`;
+    }
+  });
+  html += '</div>';
+  return html;
+}
+
+function activateTab(id){
+  appState.activeTopic = id;
+  saveState();
+  document.querySelectorAll('.ttab').forEach(t=>t.classList.toggle('active', t.dataset.id===id));
+  document.querySelectorAll('.ex-panel').forEach(p=>{
+    const visible = p.id===`panel-${id}` && p.style.display !== 'none';
+    p.classList.toggle('active', visible);
+  });
+  document.querySelectorAll('.sidebar .sb-btn[onclick]').forEach(b=>{
+    const oc = b.getAttribute('onclick')||'';
+    const active = oc.includes(`'${id}'`);
+    if(oc.includes('jumpToEx(')) b.classList.toggle('active', active);
+  });
+  syncBlankFilterButtons();
+}
+
+function setFilter(f){
+  currentFilter = f;
+  appState.mainFilter = f;
+  saveState();
+  ['fb-all','fb-a','fb-l27','fb-l813'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.remove('fa','fb','fl2'); });
+  ['fl-all','fl-l27','fl-l813'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.remove('active'); });
+
+  const tabs = document.querySelectorAll('.ttab');
+  const panels = document.querySelectorAll('.ex-panel');
+  let firstVisible = null;
+  tabs.forEach(tab=>{
+    const show = f==='all' || f===tab.dataset.priority || f===tab.dataset.range;
+    tab.style.display = show ? '' : 'none';
+    if(show && !firstVisible) firstVisible = tab.dataset.id;
+  });
+  panels.forEach(panel=>{
+    const show = f==='all' || f===panel.dataset.priority || f===panel.dataset.range;
+    panel.style.display = show ? '' : 'none';
+  });
+
+  const btnMap={'all':'fb-all','A':'fb-a','L2-L7':'fb-l27','L8-L13':'fb-l813'};
+  const btnEl = document.getElementById(btnMap[f]);
+  if(btnEl) btnEl.classList.add('fa');
+  const sbMap={'all':'fl-all','L2-L7':'fl-l27','L8-L13':'fl-l813'};
+  const sbEl = document.getElementById(sbMap[f]);
+  if(sbEl) sbEl.classList.add('active');
+
+  if(!firstVisible) return;
+  if(!appState.activeTopic || document.querySelector(`.ttab[data-id="${appState.activeTopic}"]`)?.style.display==='none'){
+    activateTab(firstVisible);
+  } else {
+    activateTab(appState.activeTopic);
+  }
+}
+
+function handleInput(exId, blankId, value){
+  appState.inputs[blankKey(exId, blankId)] = value;
+  saveState();
+  updateProg(exId);
+  updateDashboard();
+}
+
+function toggleHint(exId, blankId){
+  const key = blankKey(exId, blankId);
+  appState.hints[key] = !ensureBool(appState.hints[key]);
+  saveState();
+  const uid = blankUid(exId, blankId);
+  document.getElementById(`hint-${uid}`)?.classList.toggle('open', appState.hints[key]);
+  document.getElementById(`hbtn-${uid}`)?.classList.toggle('open', appState.hints[key]);
+  renderQuickRunIfOpen();
+}
+
+function revealOne(exId, blankId){
+  const key = blankKey(exId, blankId);
+  appState.reveals[key] = !ensureBool(appState.reveals[key]);
+  saveState();
+  const uid = blankUid(exId, blankId);
+  document.getElementById(`rev-${uid}`)?.classList.toggle('open', appState.reveals[key]);
+  const inp = document.getElementById(`inp-${uid}`);
+  if(inp) inp.style.borderColor = appState.reveals[key] ? 'var(--ok)' : '';
+  renderQuickRunIfOpen();
+}
+
+function revealAll(exId){
+  const ex = getExercise(exId); if(!ex) return;
+  getBlankLines(ex).forEach(b=> appState.reveals[blankKey(exId,b.blank)] = true);
+  saveState();
+  syncPanel(exId);
+}
+
+function resetInputs(exId){
+  const ex = getExercise(exId); if(!ex) return;
+  getBlankLines(ex).forEach(b=>{ delete appState.inputs[blankKey(exId,b.blank)]; });
+  saveState();
+  syncPanel(exId);
+  updateDashboard();
+  renderQuickRunIfOpen();
+}
+
+function resetTopicState(exId){
+  const ex = getExercise(exId); if(!ex) return;
+  getBlankLines(ex).forEach(b=>{
+    const key = blankKey(exId,b.blank);
+    delete appState.hints[key];
+    delete appState.reveals[key];
+    delete appState.blankStatus[key];
+  });
+  delete appState.topicDone[exId];
+  saveState();
+  syncPanel(exId);
+  syncTopicDoneVisuals();
+  updateDashboard();
+  renderQuickRunIfOpen();
+}
+
+function setBlankStatus(exId, blankId, status){
+  const key = blankKey(exId, blankId);
+  appState.blankStatus[key] = appState.blankStatus[key]===status ? '' : status;
+  if(!appState.blankStatus[key]) delete appState.blankStatus[key];
+  saveState();
+  syncRow(exId, blankId);
+  syncBlankFilterForPanel(exId);
+  updateDashboard();
+  renderQuickRunIfOpen();
+}
+
+function syncRow(exId, blankId){
+  const uid = blankUid(exId, blankId);
+  const row = document.getElementById(`brow-${uid}`);
+  if(!row) return;
+  const key = blankKey(exId, blankId);
+  const st = appState.blankStatus[key] || '';
+  row.classList.toggle('status-ok', st==='ok');
+  row.classList.toggle('status-retry', st==='retry');
+  row.querySelector('.sc-ok')?.classList.toggle('active', st==='ok');
+  row.querySelector('.sc-retry')?.classList.toggle('active', st==='retry');
+}
+
+function setBlankFilter(mode){
+  appState.blankFilter = mode;
+  saveState();
+  applyBlankFilter();
+}
+
+function applyBlankFilter(){
+  syncBlankFilterButtons();
+  EXERCISES.forEach(ex=>syncBlankFilterForPanel(ex.id));
+  renderQuickRunIfOpen();
+}
+
+function syncBlankFilterButtons(){
+  document.querySelectorAll('.bfilt-btn').forEach(btn=>{
+    const mode = btn.dataset.bf;
+    btn.classList.remove('active','active-retry','active-hide-ok');
+    if(mode===appState.blankFilter){
+      if(mode==='retry') btn.classList.add('active-retry');
+      else if(mode==='hide-ok') btn.classList.add('active-hide-ok');
+      else btn.classList.add('active');
+    }
+  });
+}
+
+function syncBlankFilterForPanel(exId){
+  const panel = document.getElementById(`panel-${exId}`);
+  if(!panel) return;
+  panel.querySelectorAll('.blank-row').forEach(row=>{
+    const key = row.dataset.key;
+    const st = appState.blankStatus[key] || '';
+    let show = true;
+    if(appState.blankFilter==='retry') show = (st==='retry');
+    if(appState.blankFilter==='hide-ok') show = (st!=='ok');
+    row.style.display = show ? '' : 'none';
+  });
+}
+
+function toggleTopicDone(exId){
+  const cb = document.getElementById(`done-${exId}`);
+  appState.topicDone[exId] = !!(cb && cb.checked);
+  saveState();
+  syncTopicDoneVisuals();
+  updateDashboard();
+}
+
+function syncTopicDoneVisuals(){
+  EXERCISES.forEach(ex=>{
+    const done = ensureBool(appState.topicDone[ex.id]);
+    const label = document.getElementById(`done-label-${ex.id}`);
+    const cb = document.getElementById(`done-${ex.id}`);
+    if(label) label.classList.toggle('done', done);
+    if(cb) cb.checked = done;
+    const tab = document.querySelector(`.ttab[data-id="${ex.id}"]`);
+    if(tab) tab.textContent = `${done?'✓ ':''}${tab.dataset.label || ex.topic}`;
+    const sb = Array.from(document.querySelectorAll('.sidebar .sb-btn')).find(b => (b.getAttribute('onclick')||'').includes(`jumpToEx('${ex.id}')`));
+    if(sb){
+      const ind = sb.querySelector('.sb-done-ind');
+      if(ind) ind.style.display = done ? 'inline' : 'none';
+    }
+  });
+}
+
+function syncPanel(exId){
+  const ex = getExercise(exId); if(!ex) return;
+  getBlankLines(ex).forEach(b=>{
+    const uid = blankUid(exId, b.blank);
+    const key = blankKey(exId, b.blank);
+    const inp = document.getElementById(`inp-${uid}`);
+    if(inp) inp.value = appState.inputs[key] || '';
+    const hint = document.getElementById(`hint-${uid}`);
+    const hbtn = document.getElementById(`hbtn-${uid}`);
+    if(hint) hint.classList.toggle('open', ensureBool(appState.hints[key]));
+    if(hbtn) hbtn.classList.toggle('open', ensureBool(appState.hints[key]));
+    const rev = document.getElementById(`rev-${uid}`);
+    if(rev) rev.classList.toggle('open', ensureBool(appState.reveals[key]));
+    if(inp) inp.style.borderColor = ensureBool(appState.reveals[key]) ? 'var(--ok)' : '';
+    syncRow(exId, b.blank);
+  });
+  updateProg(exId);
+  syncBlankFilterForPanel(exId);
+}
+
+function syncAllPanels(){
+  EXERCISES.forEach(ex=>syncPanel(ex.id));
+  syncBlankFilterButtons();
+}
+
+function updateProg(exId){
+  const ex = getExercise(exId); if(!ex) return;
+  const blanks = getBlankLines(ex);
+  const filled = blanks.filter(b=> (appState.inputs[blankKey(exId,b.blank)] || '').trim() !== '').length;
+  const el = document.getElementById(`prog-${exId}`);
+  if(el) el.textContent = `빈칸 ${filled}/${blanks.length}`;
+}
+
+function computeStats(){
+  const aTopics = EXERCISES.filter(e=>e.priority==='A').length;
+  const bTopics = RECALL.length + EXERCISES.filter(e=>e.priority==='B').length;
+  const totalBlanks = EXERCISES.filter(e=>e.priority==='A').reduce((s,e)=>s+getBlankLines(e).length,0);
+  const retryLines = Object.values(appState.blankStatus).filter(v=>v==='retry').length;
+  const doneTopics = Object.values(appState.topicDone).filter(Boolean).length;
+  const filledInputs = Object.values(appState.inputs).filter(v=>String(v||'').trim()!=='').length;
+  return {aTopics,bTopics,totalBlanks,retryLines,doneTopics,filledInputs};
+}
+
+function updateDashboard(){
+  const stats = computeStats();
+  const cards = document.querySelectorAll('#dashboard .dash-grid .stat-card');
+  if(cards[0]) cards[0].innerHTML = `<div class="stat-n a">${stats.aTopics}</div><div class="stat-label">A등급 topics</div>`;
+  if(cards[1]) cards[1].innerHTML = `<div class="stat-n b">${stats.bTopics}</div><div class="stat-label">B등급 로직 카드</div>`;
+  if(cards[2]) cards[2].innerHTML = `<div class="stat-n" style="color:var(--ok)">${stats.totalBlanks}</div><div class="stat-label">총 빈칸 수</div>`;
+  if(cards[3]) cards[3].innerHTML = `<div class="stat-n" style="color:var(--hint)">${stats.doneTopics}</div><div class="stat-label">복습 완료 topics</div>`;
+
+  const g2 = document.getElementById('dash-grid-2');
+  if(g2){
+    g2.innerHTML = `
+      <div class="stat-card"><div class="stat-n" style="font-size:28px;color:var(--a)">${stats.retryLines}</div><div class="stat-label">다시 보기 줄</div></div>
+      <div class="stat-card"><div class="stat-n" style="font-size:28px;color:var(--b)">${stats.filledInputs}</div><div class="stat-label">작성중 입력</div></div>
+      <div class="stat-card"><div class="stat-n" style="font-size:28px;color:var(--ok)">${EXERCISES.length - stats.doneTopics}</div><div class="stat-label">미완료 topics</div></div>`;
+  }
+
+  const today = document.getElementById('today-panel');
+  if(today){
+    const topicRetry = EXERCISES.map(ex=>({
+      id: ex.id,
+      topic: ex.topic,
+      retry: getBlankLines(ex).filter(b=>appState.blankStatus[blankKey(ex.id,b.blank)]==='retry').length,
+      undone: !ensureBool(appState.topicDone[ex.id]),
+      priority: ex.priority
+    }));
+    const retryTop = topicRetry.filter(x=>x.retry>0).sort((a,b)=>b.retry-a.retry).slice(0,5);
+    const undoneA = topicRetry.filter(x=>x.undone && x.priority==='A').slice(0,5);
+    let items = '';
+    if(retryTop.length){
+      items += retryTop.map(x=>`<div class="today-item" onclick="jumpToEx('${x.id}')"><span class="today-tag today-tag-retry">다시 보기 ${x.retry}</span><span>${escHtml(x.topic)}</span></div>`).join('');
+    } else if(undoneA.length){
+      items += undoneA.map(x=>`<div class="today-item" onclick="jumpToEx('${x.id}')"><span class="today-tag today-tag-undone">미완료</span><span>${escHtml(x.topic)}</span></div>`).join('');
+    } else {
+      items = '<div class="no-today">좋습니다. 다시 보기로 남은 줄이 없습니다.</div>';
+    }
+    today.innerHTML = `<h3>오늘 볼 것</h3>${items}`;
+  }
+}
+
+function renderQuickRunIfOpen(){
+  if(document.getElementById('qr-overlay')?.classList.contains('open')) renderQuickRun();
+}
+
+function openQuickRun(){
+  renderQuickRun();
+  document.getElementById('qr-overlay')?.classList.add('open');
+}
+function closeQuickRun(){ document.getElementById('qr-overlay')?.classList.remove('open'); }
+
+function renderQuickRun(){
+  const body = document.getElementById('qr-body');
+  if(!body) return;
+  const retryItems = [];
+  EXERCISES.forEach(ex=>{
+    getBlankLines(ex).forEach(b=>{
+      const key = blankKey(ex.id,b.blank);
+      if(appState.blankStatus[key]==='retry') retryItems.push({ex,b,key});
+    });
+  });
+  if(!retryItems.length){
+    body.innerHTML = '<div class="no-today">다시 보기로 표시된 줄이 없습니다. 각 topic에서 [다시 보기]를 눌러 모아보세요.</div>';
+    return;
+  }
+  body.innerHTML = retryItems.map(({ex,b,key})=>{
+    const uid = blankUid(ex.id,b.blank)+'-qr';
+    const hintOpen = ensureBool(appState.hints[key]);
+    const revOpen = ensureBool(appState.reveals[key]);
+    return `
+      <div class="qr-blank-card">
+        <div class="qr-topic-label">${escHtml(ex.topic)}</div>
+        <div class="logic-code">${escHtml((b.pre||'') + '____')}</div>
+        <input class="blank-input" style="margin:8px 0 8px;width:min(100%,420px)" value="${escHtml(appState.inputs[key]||'')}" placeholder="여기서 다시 풀어보기..."
+          oninput="handleInput('${ex.id}','${b.blank}',this.value)">
+        <div class="btn-row">
+          <button class="hint-btn ${hintOpen?'open':''}" onclick="toggleHint('${ex.id}','${b.blank}')">힌트</button>
+          <button class="btn btn-reveal" style="font-size:11px;padding:4px 10px" onclick="revealOne('${ex.id}','${b.blank}')">정답</button>
+          <button class="sc-btn sc-ok ${(appState.blankStatus[key]||'')==='ok'?'active':''}" onclick="setBlankStatus('${ex.id}','${b.blank}','ok')">이해함</button>
+          <button class="sc-btn sc-retry ${(appState.blankStatus[key]||'')==='retry'?'active':''}" onclick="setBlankStatus('${ex.id}','${b.blank}','retry')">다시 보기</button>
+          <button class="btn btn-reset" style="font-size:11px;padding:4px 10px" onclick="jumpToEx('${ex.id}')">원문으로 이동</button>
+        </div>
+        ${hintOpen?`<div class="qr-hint-text">${escHtml(b.hint)}</div>`:''}
+        ${revOpen?`<div class="qr-ans">✓ ${escHtml(b.ans)}</div><div class="af"><span class="af-label">역할: </span>${escHtml(b.role)}</div>`:''}
+      </div>`;
+  }).join('');
+}
+
+function resetAllState(){
+  if(!confirm('저장된 입력값, 셀프체크 상태, 체크리스트 상태를 모두 초기화할까요?')) return;
+  appState = defaultState();
+  saveState();
+  document.getElementById('checklist-body').innerHTML = '';
+  renderExercises();
+  renderChecklist();
+  if(EXERCISES.length) activateTab(EXERCISES[0].id);
+  updateDashboard();
+  closeQuickRun();
+}
+
+function renderRecall(){
+  const grid = document.getElementById('recall-grid');
+  grid.innerHTML = '';
+  RECALL.forEach(r=>{
+    const card = document.createElement('div');
+    card.className = 'recall-card';
+    const linesHtml = r.lines.map(l=>`<div class="logic-code">${escHtml(l)}</div>`).join('');
+    card.innerHTML = `
+      <h3><span class="badge badge-b" style="font-size:10px">B</span> ${escHtml(r.topic)}</h3>
+      ${linesHtml}
+      ${r.why?`<div class="why-line"><strong>왜:</strong> ${escHtml(r.why)}</div>`:''}
+      ${r.ifw?`<div class="if-wrong">⚠️ 틀리면: ${escHtml(r.ifw)}</div>`:''}`;
+    grid.appendChild(card);
+  });
+}
+
+function renderChecklist(){
+  const body = document.getElementById('checklist-body');
+  body.innerHTML = '';
+  CHECKLISTS.forEach((section, si)=>{
+    const div = document.createElement('div');
+    div.className = 'cl-section';
+    const open = appState.checklistOpen[si] ?? (si < 2);
+    div.innerHTML = `
+      <div class="cl-header" onclick="toggleCl(${si})">
+        <h3>${escHtml(section.title)}</h3>
+        <span class="cl-arrow" id="clarr-${si}" style="transform:${open?'rotate(180deg)':''}">▼</span>
+      </div>
+      <div class="cl-body ${open?'open':''}" id="clbody-${si}">
+        ${section.items.map((item,ii)=>{
+          const key = `${si}-${ii}`;
+          const checked = ensureBool(appState.checklistChecked[key]);
+          return `<div class="cl-item ${checked?'checked':''}" id="cli-${si}-${ii}" onclick="toggleClItem(${si},${ii},event)">
+            <input type="checkbox" id="chk-${si}-${ii}" ${checked?'checked':''} onclick="event.stopPropagation()">
+            <label for="chk-${si}-${ii}">${escHtml(item)}</label>
+          </div>`;
+        }).join('')}
+      </div>`;
+    body.appendChild(div);
+  });
+}
+
+function toggleCl(si){
+  appState.checklistOpen[si] = !ensureBool(appState.checklistOpen[si]);
+  saveState();
+  const body = document.getElementById(`clbody-${si}`);
+  const arrow = document.getElementById(`clarr-${si}`);
+  if(body) body.classList.toggle('open', appState.checklistOpen[si]);
+  if(arrow) arrow.style.transform = appState.checklistOpen[si] ? 'rotate(180deg)' : '';
+}
+
+function toggleClItem(si, ii, ev){
+  if(ev) ev.stopPropagation();
+  const key = `${si}-${ii}`;
+  appState.checklistChecked[key] = !ensureBool(appState.checklistChecked[key]);
+  saveState();
+  const el = document.getElementById(`cli-${si}-${ii}`);
+  const chk = document.getElementById(`chk-${si}-${ii}`);
+  if(chk) chk.checked = ensureBool(appState.checklistChecked[key]);
+  if(el) el.classList.toggle('checked', ensureBool(appState.checklistChecked[key]));
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  loadState();
+  ensureAugmentedUI();
+  renderExercises();
+  renderRecall();
+  renderChecklist();
+  applyBlankFilter();
+  updateDashboard();
+  if(EXERCISES.length){
+    const first = appState.activeTopic && EXERCISES.some(e=>e.id===appState.activeTopic) ? appState.activeTopic : EXERCISES[0].id;
+    activateTab(first);
+  }
+});
+</script>
+</body>
+</html>

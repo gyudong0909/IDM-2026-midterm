@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDM 2026 Midterm Study Guide - A1a (L1-L5)</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{--bg:#f8f9fa;--sidebar-w:220px;--card-radius:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:#1a1a2e;line-height:1.7;padding-left:var(--sidebar-w)}
+/* Sidebar */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:#1a1a2e;color:#ccc;overflow-y:auto;padding:18px 12px;z-index:100}
+#sidebar h2{color:#fff;font-size:15px;margin-bottom:14px;border-bottom:1px solid #333;padding-bottom:8px}
+#sidebar a{display:block;color:#aab;text-decoration:none;padding:6px 10px;border-radius:6px;font-size:13px;margin-bottom:2px;transition:.2s}
+#sidebar a:hover,#sidebar a.active{background:#2d2d5e;color:#7ecfff}
+/* Main */
+main{max-width:960px;margin:0 auto;padding:30px 24px 80px}
+h1{font-size:28px;margin-bottom:6px;color:#1a1a2e}
+h2.section-title{font-size:22px;margin:40px 0 14px;padding:10px 16px;background:linear-gradient(135deg,#1a1a2e,#2d2d5e);color:#fff;border-radius:var(--card-radius)}
+h3{font-size:17px;margin:18px 0 8px;color:#1a1a2e;border-left:4px solid #4361ee;padding-left:10px}
+h4{font-size:15px;margin:12px 0 6px;color:#333}
+/* Tags */
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700;margin:4px 4px 4px 0;vertical-align:middle}
+.tag-intuition{background:#fff3cd;color:#856404;border:1px solid #ffc107}
+.tag-theory{background:#cce5ff;color:#004085;border:1px solid #4361ee}
+.tag-example{background:#d4edda;color:#155724;border:1px solid #28a745}
+.tag-exam{background:#f8d7da;color:#721c24;border:1px solid #dc3545}
+/* Cards */
+.card{background:#fff;border-radius:var(--card-radius);padding:18px 20px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.card.intuition{border-left:4px solid #ffc107}
+.card.theory{border-left:4px solid #4361ee}
+.card.example{border-left:4px solid #28a745}
+.card.exam{border-left:4px solid #dc3545}
+/* Code */
+pre{background:#1e1e2e;color:#cdd6f4;padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.6;margin:10px 0}
+code{font-family:'Cascadia Code','Fira Code',monospace}
+.code-comment{color:#6c7086;font-style:italic}
+/* Table */
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th{background:#1a1a2e;color:#fff;padding:8px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid #e9ecef}
+tr:nth-child(even){background:#f1f3f5}
+/* Inline items */
+.inline-items{margin:10px 0}
+.inline-item{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:14px 16px;margin:8px 0}
+.inline-item h5{font-size:14px;color:#4361ee;margin-bottom:6px}
+.inline-item .meta{font-size:12px;color:#6c757d;margin-bottom:6px}
+.inline-item .q{font-weight:600;margin-bottom:4px}
+.inline-item .a{color:#155724;margin-top:4px}
+.inline-item .sol{color:#333;margin-top:4px;font-size:13px}
+/* Misc */
+blockquote{border-left:3px solid #ffc107;background:#fff8e1;padding:10px 16px;margin:10px 0;font-style:italic;border-radius:0 8px 8px 0}
+.formula-box{background:#eef;border:1px solid #99b;border-radius:8px;padding:12px 16px;margin:10px 0;text-align:center}
+.warn{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:10px 14px;margin:8px 0;font-size:13px}
+ul,ol{padding-left:22px;margin:6px 0}
+li{margin:3px 0}
+.compare-table th{font-size:13px}
+.compare-table td{font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<nav id="sidebar">
+<h2>IDM 2026 Midterm</h2>
+<a href="#meta">Meta Analysis</a>
+<a href="#L1">L1 Introduction</a>
+<a href="#L2">L2 MapReduce</a>
+<a href="#L3">L3 Spark</a>
+<a href="#L4">L4 Frequent Itemsets 1</a>
+<a href="#L5">L5 Frequent Itemsets 2</a>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<main>
+<h1>IDM 2026 Midterm Study Guide</h1>
+<p style="color:#6c757d;margin-bottom:30px">Lectures 1-5 | Prof. Jaemin Yoo | SNU CSE | Closed-book 2026</p>
+
+<!-- ============================================== -->
+<!--        JavaScript Data Layer                   -->
+<!-- ============================================== -->
+<script>
+// ========== pastExams_a ==========
+const pastExams_a = [
+  // ---- 2024 Midterm ----
+  {id:"2024-1a",year:2024,qnum:"1(a)",type:"TF",lectures:["L2"],question:"A good MapReduce programmer is recommended to write a GroupByKey function as well as Map and Reduce.",answer:"FALSE",solution:"GroupByKey is handled automatically by the MapReduce framework. The programmer only writes Map and Reduce functions.",concept:"MapReduce components"},
+  {id:"2024-1b",year:2024,qnum:"1(b)",type:"TF",lectures:["L2"],question:"The MapReduce framework explicitly checks whether the Reduce function is commutative and associative before applying a Combiner.",answer:"FALSE",solution:"The framework does not verify commutativity/associativity. It is the programmer's responsibility to ensure the Reduce function satisfies these properties before using a combiner.",concept:"Combiner conditions"},
+  {id:"2024-1c",year:2024,qnum:"1(c)",type:"TF",lectures:["L3"],question:"Spark outperforms MapReduce even when the intermediate data is too large to fit in memory.",answer:"FALSE",solution:"Spark's main advantage is in-memory caching. When intermediate data exceeds memory, Spark may lose its advantage and MapReduce (which always writes to disk) can be comparable or better.",concept:"Spark vs MapReduce"},
+  {id:"2024-1d",year:2024,qnum:"1(d)",type:"TF",lectures:["L3"],question:"In Spark, suppose that there is a sort operation that shuffles the order of all elements in several RDDs. Does it have a wide dependency?",answer:"TRUE",solution:"Sort requires comparing elements across all partitions, creating a wide (shuffle) dependency.",concept:"Wide vs Narrow dependency"},
+  {id:"2024-1e",year:2024,qnum:"1(e)",type:"TF",lectures:["L4"],question:"All maximal frequent itemsets are closed.",answer:"TRUE",solution:"By definition, if an itemset is maximal (no immediate superset is frequent), then no immediate superset can have the same support (since they are not even frequent). Hence maximal implies closed.",concept:"Maximal vs Closed itemsets"},
+  {id:"2024-1f",year:2024,qnum:"1(f)",type:"TF",lectures:["L4"],question:"A-priori aims to find all interesting rules.",answer:"FALSE",solution:"A-Priori finds frequent itemsets. Interest is computed separately after finding association rules. A-Priori uses support threshold, not interest.",concept:"A-Priori goal"},
+  {id:"2024-1g",year:2024,qnum:"1(g)",type:"TF",lectures:["L5"],question:"In the multistage algorithm, we can further reduce false positives by increasing the number of hash tables when finding frequent itemsets.",answer:"TRUE",solution:"More hash table passes create additional independent conditions. Each bitmap filters more candidate pairs, reducing false positives (pairs that pass all conditions but are not truly frequent).",concept:"Multistage algorithm"},
+  {id:"2024-1h",year:2024,qnum:"1(h)",type:"TF",lectures:["L5"],question:"In Toivonen's algorithm, we need to check if the frequent itemsets in the sample are truly frequent in the full data to avoid false negatives.",answer:"FALSE",solution:"Checking sample itemsets in full data eliminates false POSITIVES. To avoid false negatives, Toivonen uses the negative border concept. The statement confuses the two error types.",concept:"Toivonen's algorithm errors"},
+  {id:"2024-2a",year:2024,qnum:"2(a)",type:"calculation",lectures:["L2"],question:"Compute Av using MapReduce with restricted memory (can store only 6 numbers). v in R^6, A in R^{3x6}. Describe MapReduce process including combiner usage.",answer:"Av = [91, 217, 343]",solution:"Since v fits in memory (6 numbers), use standard MV multiplication in MapReduce. Map: input ((i,j), m_ij), output (i, m_ij * v_j). Reduce: sum values per key i. With combiner, partial sums can be done locally. Row 1: 1*1+2*2+3*3+4*4+5*5+6*6 = 91. Row 2: 7+16+27+40+55+72 = 217. Row 3: 13+28+45+64+85+108 = 343.",concept:"Matrix-vector multiplication in MapReduce"},
+  {id:"2024-2b",year:2024,qnum:"2(b)",type:"explanation",lectures:["L2"],question:"In MapReduce, when a Map worker fails, all tasks assigned to that worker need to be re-executed. When a Reduce worker fails, only in-progress tasks need to be re-executed. Explain why this difference exists.",answer:"Map outputs are stored on local disk of the map worker; if it fails, outputs are lost. Reduce outputs are stored in DFS, so completed reduce tasks survive failure.",solution:"Map task outputs are stored on the local disk of the Map worker node. When the Map worker fails, these local files become inaccessible, so all map tasks (even completed ones) must be redone. Reduce task outputs are written to DFS (distributed file system) which is replicated. So if a Reduce worker fails, completed reduce outputs are still available in DFS; only in-progress tasks need restart.",concept:"Node failure handling in MapReduce"},
+  {id:"2024-2c",year:2024,qnum:"2(c)",type:"coding",lectures:["L2"],question:"Using MapReduce, write pseudocode to calculate the variance of scores for each grade. Input: (Student ID, Grade, Score). Output: (Grade, Variance).",answer:"Map: emit(Grade, Score). Reduce: for each grade, compute variance from value list.",solution:"Map(key, value): parse (StudentID, Grade, Score) from value; emit(Grade, Score). Reduce(Grade, scores): compute mean = sum(scores)/len(scores); variance = sum((s - mean)^2 for s in scores)/len(scores); emit(Grade, variance). Note: Cannot use a simple combiner here since variance is not decomposable with a single pass combiner (need sum, sum of squares, and count).",concept:"MapReduce pseudocode writing"},
+  {id:"2024-3a",year:2024,qnum:"3(a)",type:"calculation",lectures:["L4","L5"],question:"Given 8 transactions (T1-T8) with items {A,B,C,D,E}, support threshold s=3. Use Toivonen's algorithm with sample {T1,T2,T4,T5} and s'=1. (i) Find frequent itemsets in sample and construct negative border. (ii) Prove no false negatives. (iii) Find T9,T10 that make algorithm not terminate.",answer:"See solution for detailed computation.",solution:"(i) Sample = {T1:{A,B,D}, T2:{A,C,D,E}, T4:{A,B,E}, T5:{A,B,C}}. With s'=1, every itemset appearing at least once is frequent. Frequent singletons: {A},{B},{C},{D},{E}. Frequent pairs: {A,B},{A,C},{A,D},{A,E},{B,D},{B,E},{C,D},{C,E},{D,E},{B,C}. Frequent triples from sample: {A,B,D}(T1),{A,B,E}(T4),{A,B,C}(T5),{A,C,D}(T2),{A,C,E}(T2),{A,D,E}(T2),{C,D,E}(T2),{B,C,?}... etc. Negative border: itemsets NOT frequent in sample but all immediate subsets are frequent. (ii) For no false negatives: if any itemset S is frequent in full data but not in sample, then S or some subset must be in the negative border. Since we check the border in pass 2, we detect holes. (iii) To make algorithm not terminate: add transactions that make a negative border item frequent in full data, e.g., T9={B,C,D}, T10={B,D,E} could make certain border items frequent.",concept:"Toivonen's algorithm - negative border"},
+  {id:"2024-3b-i",year:2024,qnum:"3(b)(i)",type:"calculation",lectures:["L4"],question:"Identify all strong association rules from frequent itemsets (confidence >= 70%). Calculate confidence as percentage.",answer:"Rules with conf >= 70% from frequent itemsets with s=3.",solution:"First find all frequent itemsets with s=3 from the 8 transactions. Then for each frequent itemset I, generate all rules A -> I\\A and check if conf = support(I)/support(A) >= 0.7.",concept:"Association rules - confidence"},
+  {id:"2024-3b-ii",year:2024,qnum:"3(b)(ii)",type:"calculation",lectures:["L4"],question:"Determine all closed frequent itemsets in the dataset with support at least s=3.",answer:"Closed frequent itemsets: those where no immediate superset has the same support.",solution:"An itemset is closed if no immediate superset has the same support count. Enumerate all frequent itemsets and check the closed condition.",concept:"Closed frequent itemsets"},
+
+  // ---- 2025 Midterm ----
+  {id:"2025-1a",year:2025,qnum:"1(a)",type:"TF",lectures:["L2"],question:"In a distributed computing cluster, each node typically shares the same CPU and memory with other nodes on the rack.",answer:"FALSE",solution:"Each node has its own CPU, memory, and disk. Nodes are independent computers connected by network.",concept:"Distributed computing architecture"},
+  {id:"2025-1b",year:2025,qnum:"1(b)",type:"TF",lectures:["L2"],question:"If a Map Worker fails, all tasks it has completed must be redone, because its output is stored locally and not in the distributed file system.",answer:"TRUE",solution:"Map outputs are stored on local disk. If the worker fails, those files are inaccessible, requiring all assigned map tasks to be re-executed.",concept:"MapReduce fault tolerance"},
+  {id:"2025-1c",year:2025,qnum:"1(c)",type:"TF",lectures:["L3"],question:"In Spark, the GroupByKey transformation creates a wide dependency because each output partition may depend on multiple input partitions.",answer:"TRUE",solution:"GroupByKey requires shuffling data across partitions so that all values with the same key end up in the same partition. This is a wide dependency.",concept:"Spark wide dependency"},
+  {id:"2025-1d",year:2025,qnum:"1(d)",type:"TF",lectures:["L3"],question:"RDDs in Spark can be updated in place to modify existing records.",answer:"FALSE",solution:"RDDs are read-only (immutable). New RDDs are created through transformations. This immutability is key to Spark's fault tolerance via lineage.",concept:"RDD immutability"},
+  {id:"2025-1e",year:2025,qnum:"1(e)",type:"TF",lectures:["L4"],question:"The interest of an association rule is always positive.",answer:"FALSE",solution:"Interest = conf(I->J) - P(J) = P(J|I) - P(J). This can be negative if the items are negatively correlated. Example from lecture: {m,b}->c had interest = 0.5 - 5/8 = -1/8.",concept:"Interest of association rules"},
+  {id:"2025-1f",year:2025,qnum:"1(f)",type:"TF",lectures:["L4"],question:"Market-basket analysis can be applied only to retail data and not to other domains such as student-club relationships.",answer:"FALSE",solution:"Market-basket model is an abstract many-to-many mapping. It applies to topic discovery (words/documents), plagiarism detection, biomarkers, and many other domains.",concept:"Market-basket model abstraction"},
+  {id:"2025-1g",year:2025,qnum:"1(g)",type:"TF",lectures:["L5"],question:"The PCY algorithm can efficiently use the triangular-matrix method to count frequent pairs.",answer:"FALSE",solution:"PCY utilizes sparsity of candidate pairs (some pairs are eliminated by the bitmap condition). The triangular matrix method stores ALL pairs densely and cannot exploit this sparsity. PCY must use the triples method.",concept:"PCY - triples method requirement"},
+  {id:"2025-1h",year:2025,qnum:"1(h)",type:"TF",lectures:["L5"],question:"In the multistage algorithm, truly frequent pairs will always hash to frequent buckets across all stages.",answer:"TRUE",solution:"A truly frequent pair has support >= s. Its count alone exceeds the threshold, so any bucket it hashes to must have count >= s. This holds regardless of the hash function used in each stage.",concept:"Multistage correctness guarantee"},
+  {id:"2025-2a",year:2025,qnum:"2(a)",type:"calculation",lectures:["L4","L5"],question:"[15 Points] Finding Similar Items: Create characteristic matrix for 3 documents using 6-shingles, compute minhash signatures, compute Jaccard similarities, and LSH banding.",answer:"See detailed solution.",solution:"(a) Normalize documents to lowercase, remove punctuation, create 6-character shingles. Map shingles to indices using indexing function f. Build characteristic matrix with 1/0 for each document-shingle pair. (b) Apply hash functions g1-g4 to row indices, compute minhash signatures. (c) Compute true Jaccard = |intersection|/|union| for each pair. Estimate from signatures = fraction of matching rows. (d) For LSH banding with m=4: P_cand = 1-(1-s^r)^b for each (r,b) configuration.",concept:"Shingling, MinHash, LSH"},
+  {id:"2025-3a",year:2025,qnum:"3(a)",type:"calculation",lectures:["L4","L5"],question:"[20 Points] Clustering: Simulate CURE algorithm with 2 clusters, find centroids, select representatives, move toward centroid, assign new point.",answer:"See detailed solution.",solution:"(i) C1 centroid = (-2, 2), C2 centroid = (2, -3). (ii) Select farthest from centroid, then farthest from first rep. (iii) Move 50% toward centroid. (iv) Assign P9 to cluster whose moved representative is closest.",concept:"CURE algorithm"},
+  {id:"2025-3b",year:2025,qnum:"3(b)",type:"calculation",lectures:["L4","L5"],question:"A-CURE (Adjusted CURE): variant where shrinkage ratio alpha_i = 1/d_i. Compute moved representatives.",answer:"See solution.",solution:"alpha_i = 1/d_i where d_i is distance from representative to centroid. P'_i = (1-alpha_i)*P_i + alpha_i * c. Farther points shrink less, closer points shrink more.",concept:"Novel variant: A-CURE"}
+];
+
+// ========== mmdsExamples_early ==========
+const mmdsExamples_early = [
+  {id:"ch1-ex1",chapter:1,exNum:"1.1",lectures:["L1"],title:"TF-IDF Computation",problem:"Given documents, compute TF-IDF for specific terms.",solution:"TF(i,j) = count of term i in doc j. IDF(i) = log(N / n_i) where N = total docs, n_i = docs containing term i. TF-IDF = TF * IDF.",concept:"TF-IDF"},
+  {id:"ch1-ex2",chapter:1,exNum:"1.2",lectures:["L1"],title:"Hash Function Example",problem:"Hash the value 17 into a table of size 7.",solution:"h(17) = 17 mod 7 = 3. The value 17 goes to bucket 3.",concept:"Hash functions"},
+  {id:"ch1-ex3",chapter:1,exNum:"1.3",lectures:["L1"],title:"Power Law Verification",problem:"Verify if data follows power law by checking log-log linearity.",solution:"Plot log(y) vs log(x). If linear, then y = cx^a where a is the slope.",concept:"Power law"},
+  {id:"ch2-ex1",chapter:2,exNum:"2.1",lectures:["L2"],title:"Word Count MapReduce",problem:"Implement word counting using MapReduce.",solution:"Map(key, line): for each word w in line, emit(w, 1). Reduce(w, [1,1,...,1]): emit(w, sum).",concept:"MapReduce word counting"},
+  {id:"ch2-ex2",chapter:2,exNum:"2.2",lectures:["L2"],title:"Matrix-Vector Multiplication",problem:"Compute Mv using MapReduce where M is n x n and v fits in memory.",solution:"Map: input ((i,j), m_ij), output (i, m_ij * v_j). Reduce: (i, [values]) -> (i, sum(values)).",concept:"MV multiplication in MapReduce"},
+  {id:"ch2-ex3",chapter:2,exNum:"2.3",lectures:["L2","L3"],title:"MapReduce vs Spark Comparison",problem:"Compare MapReduce and Spark for iterative algorithms.",solution:"MapReduce: writes intermediate results to disk/HDFS after each iteration. Spark: caches RDDs in memory, avoids disk I/O between iterations. Spark can be 100x faster for iterative jobs.",concept:"Framework comparison"},
+  {id:"ch6-ex1",chapter:6,exNum:"6.1",lectures:["L4"],title:"Support and Confidence Calculation",problem:"Given baskets, compute support, confidence, and interest for rules.",solution:"Support({I,J}) = # baskets containing both I and J. Confidence(I->J) = support(I union J) / support(I). Interest = confidence - P(J).",concept:"Association rule metrics"},
+  {id:"ch6-ex2",chapter:6,exNum:"6.2",lectures:["L4"],title:"A-Priori Algorithm Example",problem:"Apply A-Priori with s=3 on given baskets.",solution:"Pass 1: Count individual items, identify frequent items. Pass 2: Count pairs of frequent items only. Monotonicity: if item i is infrequent, no pair containing i can be frequent.",concept:"A-Priori algorithm"},
+  {id:"ch6-ex3",chapter:6,exNum:"6.3",lectures:["L4"],title:"Triangular vs Triples Method",problem:"Compare memory usage: n=10000 items, density p=0.2.",solution:"Triangular: 4 * n(n-1)/2 = 4 * 49,995,000 ~= 200MB. Triples: 12 * p * n(n-1)/2 = 12 * 0.2 * 49,995,000 ~= 120MB. Since p < 1/3, triples is better.",concept:"Counting pairs memory"},
+  {id:"ch6-ex4",chapter:6,exNum:"6.4",lectures:["L5"],title:"PCY Algorithm Example",problem:"Apply PCY with 3 buckets, hash h(i,j) = (i*j) mod 3, s=2.",solution:"Pass 1: Count items AND hash all pairs to buckets. Between passes: convert bucket counts to bitmap (1 if count >= s, else 0). Pass 2: Count only pairs where both items frequent AND hash to frequent bucket.",concept:"PCY algorithm"},
+  {id:"ch6-ex5",chapter:6,exNum:"6.5",lectures:["L5"],title:"SON Algorithm with MapReduce",problem:"Describe SON algorithm's two MapReduce passes.",solution:"Pass 1 Map: take chunk, run A-Priori with threshold ps, return (F,1) for each frequent itemset. Pass 1 Reduce: output itemsets appearing at least once. Pass 2 Map: count support of candidate itemsets in each portion. Pass 2 Reduce: sum supports, output if >= s.",concept:"SON algorithm"}
+];
+
+// ========== renderInlineItems ==========
+function renderInlineItems(){
+  document.querySelectorAll('.inline-items').forEach(function(div){
+    var lecFilter = div.getAttribute('data-lecture');
+    var dataType = div.getAttribute('data-type');
+    var html = '';
+    if(dataType === 'exam'){
+      var items = pastExams_a.filter(function(e){return e.lectures && e.lectures.some(function(l){return l.toLowerCase().replace(/\s/g,'') === lecFilter.toLowerCase().replace(/\s/g,'')})});
+      items.forEach(function(e){
+        html += '<div class="inline-item"><h5>['+e.year+'] Q'+e.qnum+' ('+e.type+')</h5>';
+        html += '<div class="q">'+e.question+'</div>';
+        html += '<div class="a"><strong>Answer:</strong> '+e.answer+'</div>';
+        html += '<div class="sol"><strong>Solution:</strong> '+e.solution+'</div></div>';
+      });
+    } else if(dataType === 'mmds'){
+      var lec = lecFilter.toLowerCase().replace(/\s/g,'');
+      var items = mmdsExamples_early.filter(function(e){return e.lectures && e.lectures.some(function(l){return l.toLowerCase().replace(/\s/g,'') === lec})});
+      items.forEach(function(e){
+        html += '<div class="inline-item"><h5>[Ch'+e.chapter+'] Ex'+e.exNum+': '+e.title+'</h5>';
+        html += '<div class="q">'+e.problem+'</div>';
+        html += '<div class="sol"><strong>Solution:</strong> '+e.solution+'</div></div>';
+      });
+    }
+    if(html) div.innerHTML = html; else div.innerHTML = '<p style="color:#999;font-size:13px">No items for this lecture.</p>';
+  });
+}
+</script>
+
+<!-- ====================================================== -->
+<!--        Section 0: Meta Analysis                        -->
+<!-- ====================================================== -->
+<section id="meta">
+<h2 class="section-title">Past Exam Meta Analysis</h2>
+
+<div class="card">
+<h3>2024 vs 2025 Comparison</h3>
+<table class="compare-table">
+<tr><th>Category</th><th>2024 Midterm</th><th>2025 Midterm</th></tr>
+<tr><td>T/F Questions</td><td>20 items (a~t), 1pt each, -1 penalty</td><td>20 items (a~t), 1pt each, -1 penalty</td></tr>
+<tr><td>T/F - L2 MapReduce</td><td>2 questions (a,b)</td><td>2 questions (a,b)</td></tr>
+<tr><td>T/F - L3 Spark</td><td>2 questions (c,d)</td><td>2 questions (c,d)</td></tr>
+<tr><td>T/F - L4-5 Itemsets</td><td>4 questions (e,f,g,h)</td><td>4 questions (e,f,g,h)</td></tr>
+<tr><td>Calculation Problems</td><td>Q2: MapReduce+Spark (20pt), Q3: Freq Itemsets (20pt)</td><td>Q2: Finding Similar Items (15pt), Q3: Clustering (20pt)</td></tr>
+<tr><td>Exam Format</td><td>Open-book (2024, KAIST)</td><td>Open-book (2025, SNU first year)</td></tr>
+<tr><td>Novel Variant</td><td>None in L1-L5 range</td><td>A-CURE (Adjusted CURE) - distance-based shrinkage</td></tr>
+<tr><td>Code Writing</td><td>MapReduce pseudocode (variance)</td><td>None in L1-L5 range</td></tr>
+</table>
+</div>
+
+<div class="card exam">
+<h3>2026 Predictions (Closed-book Change)</h3>
+<span class="tag tag-exam">2026 Closed-book</span>
+<ul>
+<li><strong>T/F:</strong> Expect 20 items with -1 penalty. L1-L5 range should have ~8 items (same pattern as 2024/2025). Must memorize subtle distinctions.</li>
+<li><strong>Formulas to memorize:</strong> TF-IDF, Support/Confidence/Interest, Triangular vs Triples memory formula, A-Priori pipeline (C_k -> L_k), PCY bitmap 1/32 reduction, SON no-false-negative proof.</li>
+<li><strong>Closed-book impact:</strong> More emphasis on understanding over lookup. Professor says "I want to ask your understanding skills." Expect conceptual questions that test WHY algorithms work, not just HOW.</li>
+<li><strong>Novel Variant pattern:</strong> 2024 had A-CURE. 2025 had A-CURE in clustering. Expect a novel twist on an existing algorithm (e.g., modified PCY, weighted SON, etc.).</li>
+<li><strong>MapReduce pseudocode:</strong> Highly likely. Practice writing Map/Reduce functions by hand for: word count, matrix-vector, variance, mutual friends.</li>
+</ul>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L1: Introduction                                -->
+<!-- ====================================================== -->
+<section id="L1">
+<h2 class="section-title">L1: Introduction to Data Mining</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition</span>
+<h3>Why Data Mining?</h3>
+<blockquote>"Data creates value only when it can be turned into decisions. The amount of data itself does not mean anything." - Prof. Yoo</blockquote>
+<blockquote>"Data mining is not about memorizing the specific details. You just have to be sure about the intuition and the core assumption." - Prof. Yoo</blockquote>
+<p>Data Mining = process of transforming <strong>raw data</strong> into <strong>insights</strong>. Three stages: (1) Store data, (2) Manage data, (3) Analyze data.</p>
+<p>Data Mining &#8776; Data Science &#8776; Data-Centric AI</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory</span>
+<h3>Key Concepts</h3>
+
+<h4>TF-IDF (Term Frequency - Inverse Document Frequency)</h4>
+<div class="formula-box">
+\[\text{TF-IDF}(i, j) = \text{TF}(i, j) \times \text{IDF}(i)\]
+\[\text{TF}(i, j) \propto \text{# occurrences of term } i \text{ in document } j\]
+\[\text{IDF}(i) \propto \frac{1}{\text{# documents where term } i \text{ appears}}\]
+</div>
+<p><strong>Intuition:</strong> High TF-IDF = term appears often in THIS document but rarely across ALL documents. Words like "the" have high TF but low IDF. Rare jargon has low TF but high IDF. Topical keywords have both high.</p>
+
+<h4>Bonferroni's Principle</h4>
+<p>When looking for patterns in data, compare with random data of the same size. If the expected number of occurrences in random data is large, the pattern is likely meaningless (bogus).</p>
+<p><strong>Birthday Problem:</strong> With 23 people, P(shared birthday) > 0.5. Seems surprising but is statistically expected.</p>
+
+<h4>Hash Functions</h4>
+<p>A hash function \(h\) maps a key to a bucket number \(\in [0, B-1]\). Enables O(1) data structure for big data. Collisions are inevitable when \(B < \#\text{unique keys}\).</p>
+
+<h4>Power Laws</h4>
+<div class="formula-box">
+\[\log y = a \log x + b \quad \Leftrightarrow \quad y = c \cdot x^a\]
+</div>
+<p>Linear in log-log scale. Examples: sales of products, sizes of websites, wealth of people (80/20 rule).</p>
+
+<h4>Memory Hierarchy</h4>
+<p>L0 Registers > L1 Cache (SRAM) > L2/L3 Cache > L3 Main Memory (DRAM) > L4 Local Storage (SSD/HDD) > L5 Remote/Cloud Storage (DFS). Higher = faster but smaller/costlier. Algorithm design depends on where data is stored.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example</span>
+<h3>When is ML Useful?</h3>
+<ul>
+<li><strong>ML useful:</strong> When we know WHAT we want but not HOW (recommendation, forecasting, embedding)</li>
+<li><strong>ML not necessary:</strong> When we can describe the goal directly (locating resumes on the web, parsing HTML)</li>
+</ul>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points</span>
+<h3>Must-Know for L1</h3>
+<ul>
+<li>TF-IDF formula and meaning of each component</li>
+<li>Bonferroni's principle: why patterns in random data are meaningless</li>
+<li>Hash function: key -> bucket, collisions inevitable</li>
+<li>Power law: log-log linear relationship</li>
+<li>Memory hierarchy: what bottleneck changes at each level</li>
+<li><strong>T/F Trap:</strong> "Data mining is all about machine learning" -> FALSE (it's about using ML as a tool)</li>
+</ul>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L1" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L1" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L2: MapReduce                                   -->
+<!-- ====================================================== -->
+<section id="L2">
+<h2 class="section-title">L2: MapReduce</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition</span>
+<h3>Why Distributed Computing?</h3>
+<blockquote>"We need to bring computation to data. These chunk servers store the data, we distribute our algorithm to all these chunk servers, so we don't exchange data." - Prof. Yoo</blockquote>
+<blockquote>"MapReduce is basically a style of programming. It is not a solution to every problem." - Prof. Yoo</blockquote>
+<p><strong>Key insight:</strong> 1000 servers -> expect 1 failure/day. With 1M machines, 1000 fail daily. Need systematic fault tolerance.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory</span>
+<h3>Distributed File System (DFS)</h3>
+<ul>
+<li><strong>Chunk nodes (data nodes):</strong> Store data in chunks (16-64 MB), replicated 2-3x at different nodes (different racks)</li>
+<li><strong>Master node (name node):</strong> Manages metadata, has backup</li>
+<li><strong>Usage pattern:</strong> Huge files, reads/appends common, data rarely updated in place</li>
+</ul>
+
+<h3>MapReduce Components</h3>
+<div class="formula-box">
+\[\text{Map}: (k, v) \to \{(k_i, v_i)\}_i\]
+\[\text{Group by Key}: \{(k, v)\} \to (k, [v_1, v_2, \ldots, v_n])\]
+\[\text{Reduce}: (k, [v_1, \ldots, v_n]) \to (k, v)\]
+</div>
+
+<h4>Three Steps:</h4>
+<ol>
+<li><strong>Map:</strong> User-written function applied to each input element. Output: set of key-value pairs. Fully parallelizable.</li>
+<li><strong>Group by Key:</strong> System gathers all pairs with same key (conceptual step, done via hash-based shuffling).</li>
+<li><strong>Reduce:</strong> User-written function applied to each key-value list pair. Aggregates values.</li>
+</ol>
+
+<h4>Combiner Optimization</h4>
+<p>If Reduce function is <strong>commutative</strong> (\(a+b = b+a\)) and <strong>associative</strong> (\((a+b)+c = a+(b+c)\)), then values can be combined in any order. Reducer's work can be pushed to Map tasks, producing \((w, m)\) instead of \((w,1),(w,1),\ldots\). Greatly reduces shuffling.</p>
+
+<h4>Node Failure Handling</h4>
+<table>
+<tr><th>Failure Type</th><th>Action</th><th>Reason</th></tr>
+<tr><td>Master failure</td><td>Entire job restarts</td><td>Too expensive to replicate master state</td></tr>
+<tr><td>Map worker failure</td><td>ALL tasks (even completed) must redo</td><td>Map outputs on local disk, inaccessible after failure</td></tr>
+<tr><td>Reduce worker failure</td><td>Only in-progress tasks restart</td><td>Completed reduce outputs stored in DFS (replicated)</td></tr>
+</table>
+
+<h4>Matrix-Vector Multiplication in MapReduce</h4>
+<p><strong>Case 1: v fits in memory</strong></p>
+<pre><code><span class="code-comment">// Map: input key=(i,j), value=m_ij</span>
+map((i,j), m_ij):
+    emit(i, m_ij * v[j])     <span class="code-comment">// v is available in memory</span>
+
+<span class="code-comment">// Reduce: sum all values for same row i</span>
+reduce(i, values):
+    emit(i, sum(values))
+</code></pre>
+<p><strong>Case 2: v does not fit in memory</strong> -- Divide M into vertical stripes, v into horizontal stripes. Each Map task takes one stripe of M and corresponding stripe of v.</p>
+
+<h4>Number of Reduce Tasks</h4>
+<p>Rule of thumb: # nodes &lt; # Reduce tasks &lt; # keys. One Reduce task per key is theoretically max parallel but impractical.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example</span>
+<h3>Word Count - Complete Flow</h3>
+<pre><code><span class="code-comment">// Map function</span>
+map(key, value):                <span class="code-comment">// key: line index, value: line text</span>
+    for each word w in value:
+        emit(w, 1)
+
+<span class="code-comment">// Reduce function</span>
+reduce(key, values):           <span class="code-comment">// key: word, values: [1, 1, ..., 1]</span>
+    result = 0
+    for each count v in values:
+        result += v
+    emit(key, result)
+</code></pre>
+<p><strong>With Combiner:</strong> Each Map task locally combines (w,1),(w,1),(w,1) -> (w,3) before shuffling.</p>
+
+<h3>Mutual Friends (Pop Quiz from Lecture)</h3>
+<pre><code><span class="code-comment">// Input: A -> B, C, D (A is friends with B, C, D)</span>
+map(key, friends):             <span class="code-comment">// key: person, friends: friend list</span>
+    for each pair (w, v) in friends:
+        emit((w,v), key)       <span class="code-comment">// pair of friends -> original person</span>
+
+<span class="code-comment">// Reduce: identity (just collect)</span>
+reduce((w,v), values):
+    emit((w,v), values)        <span class="code-comment">// output mutual friends list</span>
+</code></pre>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points</span>
+<h3>Must-Memorize for L2</h3>
+<ul>
+<li><strong>Map/Reduce function signatures:</strong> Map: (k,v) -> {(k_i,v_i)}, Reduce: (k,[v1,...,vn]) -> (k,v)</li>
+<li><strong>Combiner condition:</strong> Reduce must be commutative AND associative</li>
+<li><strong>Why Map failure redoes ALL tasks:</strong> outputs on LOCAL disk</li>
+<li><strong>Why Reduce failure redoes only in-progress:</strong> outputs on DFS</li>
+<li><strong>Group by Key is conceptual:</strong> no explicit GBK worker exists</li>
+<li><strong>MV multiplication map function:</strong> ((i,j), m_ij) -> (i, m_ij * v_j)</li>
+</ul>
+<div class="warn"><strong>T/F Traps:</strong><br>
+- "Programmer writes GroupByKey function" -> FALSE (system handles it)<br>
+- "Framework checks commutativity/associativity" -> FALSE (programmer's responsibility)<br>
+- "MapReduce is suitable for ML training" -> FALSE (not good for frequent data updates)</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L2" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L2" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L3: Spark                                       -->
+<!-- ====================================================== -->
+<section id="L3">
+<h2 class="section-title">L3: Spark</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition</span>
+<h3>Why Spark over MapReduce?</h3>
+<blockquote>"MapReduce creates a chain of tasks. Let's extend it into a directed acyclic graph (DAG) of tasks." - Prof. Yoo</blockquote>
+<blockquote>"Spark is more flexible framework compared to MapReduce. It is much easier for a programmer to write Spark." - Prof. Yoo</blockquote>
+<p><strong>MapReduce limitations:</strong> (1) Stores intermediate files on disk always (2) Substantial overhead for complex/iterative jobs due to HDFS writes between iterations (3) Many algorithms hard to express as Map+Reduce</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory</span>
+<h3>Spark Core Concepts</h3>
+
+<h4>Hadoop Stack</h4>
+<p>Database (HDFS) -> Resource Management (YARN) -> Processing Engine (MapReduce/Spark) -> Libraries (SparkSQL, MLlib, GraphX)</p>
+
+<h4>RDD (Resilient Distributed Dataset)</h4>
+<ul>
+<li>Partitioned collection of records of <strong>one type</strong> (generalizes MapReduce key-value pairs)</li>
+<li>Spread across cluster (chunks), <strong>read-only</strong> (immutable)</li>
+<li>Can be <strong>cached in memory</strong></li>
+<li>Created from DFS or by transforming other RDDs</li>
+</ul>
+
+<h4>Operations: Transformations vs Actions</h4>
+<table>
+<tr><th>Transformations (RDD -> RDD)</th><th>Actions (RDD -> Value)</th></tr>
+<tr><td>map, flatMap, filter, join, union, distinct, groupByKey, reduceByKey, sortByKey</td><td>count, collect, reduce, save, take</td></tr>
+<tr><td><strong>Lazy:</strong> not executed until action</td><td>Forces computation</td></tr>
+</table>
+
+<h4>Key Operations Detail</h4>
+<table>
+<tr><th>Operation</th><th>Type</th><th>Description</th><th>Dependency</th></tr>
+<tr><td>flatMap</td><td>Transformation</td><td>1 element -> 0 or more elements, flattened</td><td>Narrow</td></tr>
+<tr><td>map</td><td>Transformation</td><td>1 element -> exactly 1 element</td><td>Narrow</td></tr>
+<tr><td>filter</td><td>Transformation</td><td>Keep elements satisfying predicate</td><td>Narrow</td></tr>
+<tr><td>groupByKey</td><td>Transformation</td><td>Groups values by key (shuffle)</td><td><strong>Wide</strong></td></tr>
+<tr><td>reduceByKey</td><td>Transformation</td><td>groupByKey + reduce (optimized)</td><td><strong>Wide</strong></td></tr>
+<tr><td>join</td><td>Transformation</td><td>Merges two RDDs on key</td><td><strong>Wide</strong></td></tr>
+<tr><td>reduce</td><td>Action</td><td>Aggregates all elements to single value</td><td>-</td></tr>
+<tr><td>collect</td><td>Action</td><td>Returns RDD to local program</td><td>-</td></tr>
+</table>
+
+<h4>Wide vs Narrow Dependency</h4>
+<ul>
+<li><strong>Narrow:</strong> Each partition depends on at most one parent partition (parallelizable, fast)</li>
+<li><strong>Wide:</strong> Each partition depends on multiple parent partitions (requires shuffling, slow)</li>
+<li><strong>flatMap is Narrow:</strong> Even though it can create multiple partitions from one, each output partition still comes from only one input partition</li>
+</ul>
+
+<h4>Blocking Property (DAG Fault Tolerance)</h4>
+<p>Operation runs only after all predecessors complete. If task fails, no successor started -> master controller knows exactly what to restart.</p>
+
+<h4>Two Key Improvements over MapReduce</h4>
+<ol>
+<li><strong>Lazy Evaluation:</strong> Spark doesn't apply transformations until an action is called. Allows optimization of execution plans, combining transformations, in-memory passing.</li>
+<li><strong>Lineage:</strong> Each RDD tracks its parent RDD. If a chunk is lost, trace back through lineage to reconstruct from predecessor. Lineage is at chunk level.</li>
+</ol>
+
+<h4>MapReduce vs Spark Comparison</h4>
+<table>
+<tr><th></th><th>MapReduce</th><th>Spark</th></tr>
+<tr><td>Speed</td><td>Faster than traditional</td><td>Up to 100x faster</td></tr>
+<tr><td>Language</td><td>Java</td><td>Scala (Python API available)</td></tr>
+<tr><td>Processing</td><td>Batch only</td><td>Batch/real-time/iterative/interactive</td></tr>
+<tr><td>Caching</td><td>None</td><td>In-memory caching</td></tr>
+<tr><td>Ease of Use</td><td>Complex, verbose</td><td>Compact, easier</td></tr>
+<tr><td>Best For</td><td>Linear processing, simple batch</td><td>Interactive, iterative (ML), real-time</td></tr>
+</table>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example</span>
+<h3>Average Word Length by Letter (Spark)</h3>
+<pre><code>avglens = sc.textFile(file) \
+    .flatMap(lambda line: line.split()) \        <span class="code-comment"># lines -> words (narrow)</span>
+    .map(lambda word: (word[0], len(word))) \     <span class="code-comment"># word -> (first_letter, length) (narrow)</span>
+    .groupByKey() \                               <span class="code-comment"># group by letter (WIDE - shuffle!)</span>
+    .map(lambda (k, values): \                    <span class="code-comment"># compute average (narrow)</span>
+        (k, sum(values) / len(values)))
+</code></pre>
+
+<h3>Word Count using reduceByKey (Pop Quiz)</h3>
+<pre><code>counts = sc.textFile(file) \
+    .flatMap(lambda line: line.split()) \         <span class="code-comment"># split lines into words</span>
+    .map(lambda w: (w, 1)) \                     <span class="code-comment"># each word -> (word, 1)</span>
+    .reduceByKey(lambda a, b: a + b)             <span class="code-comment"># sum counts per key</span>
+</code></pre>
+<p><strong>Key insight from lecture:</strong> Reduce in MapReduce = reduceByKey in Spark. Map in MapReduce = flatMap in Spark. They have different names!</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points</span>
+<h3>Must-Memorize for L3</h3>
+<ul>
+<li>RDD = partitioned, immutable, distributed collection of one type</li>
+<li>Transformation vs Action distinction; Lazy evaluation meaning</li>
+<li>Wide dependency: groupByKey, join, sort. Narrow: map, flatMap, filter</li>
+<li>flatMap is NARROW even though it creates variable output sizes</li>
+<li>Lineage for fault recovery (trace back to reconstruct lost RDD)</li>
+<li>reduceByKey is better than groupByKey + reduce (gives system more optimization room)</li>
+</ul>
+<div class="warn"><strong>T/F Traps:</strong><br>
+- "RDDs can be updated in place" -> FALSE (immutable)<br>
+- "Spark always outperforms MapReduce" -> FALSE (not when data exceeds memory)<br>
+- "flatMap creates wide dependency" -> FALSE (narrow)<br>
+- "sort creates wide dependency" -> TRUE</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L3" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L3" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L4: Frequent Itemsets 1                         -->
+<!-- ====================================================== -->
+<section id="L4">
+<h2 class="section-title">L4: Frequent Itemsets 1</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition</span>
+<h3>Why Frequent Itemsets?</h3>
+<blockquote>"In a supermarket, the manager wants to find patterns of items. If someone buys diaper and milk, he is likely to buy beer. Don't be surprised if you find six-packs next to diapers!" - Prof. Yoo</blockquote>
+<blockquote>"Market-basket model is an abstract of various data. Items do not have to be 'in' baskets!" - Prof. Yoo</blockquote>
+<p><strong>Core problem:</strong> Finding frequent itemsets is HARDER than finding association rules. Once we have frequent itemsets, rules are easy to generate.</p>
+<p><strong>Why pairs are hardest:</strong> As itemset size grows, probability of being frequent drops exponentially. Frequent pairs are common, triples are rare.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory</span>
+<h3>Market-Basket Model</h3>
+<ul>
+<li><strong>Items:</strong> Set of all things (e.g., products in store)</li>
+<li><strong>Baskets:</strong> Subsets of items (e.g., one customer's purchase)</li>
+<li><strong>Abstract:</strong> Any many-to-many mapping. Topic discovery (items=words, baskets=docs), plagiarism (items=docs, baskets=sentences), biomarkers (items=drugs, baskets=patients)</li>
+</ul>
+
+<h3>Key Definitions</h3>
+<div class="formula-box">
+\[\text{Support}(I) = \text{# baskets containing all items in } I\]
+\[\text{Itemset } I \text{ is frequent if } \text{Support}(I) \geq s\]
+</div>
+
+<h4>Association Rules: \(I \to J\) where \(I \cap J = \emptyset\)</h4>
+<div class="formula-box">
+\[\text{Support}(I \to J) = \text{Support}(I \cup J)\]
+\[\text{Confidence}(I \to J) = \frac{\text{Support}(I \cup J)}{\text{Support}(I)} = P(J|I)\]
+\[\text{Interest}(I \to J) = \text{Confidence}(I \to J) - P(J) = P(J|I) - P(J)\]
+</div>
+<p><strong>Interest interpretation:</strong> Close to 0 = rule is not interesting (J appears frequently regardless of I). Positive = positive correlation. Negative = negative correlation. Goal: find rules with support >= s AND confidence >= c.</p>
+
+<h4>Mining Association Rules (Two Steps)</h4>
+<ol>
+<li><strong>Step 1:</strong> Find all frequent itemsets I (the hard part)</li>
+<li><strong>Step 2:</strong> For every subset \(A \subset I\), generate rule \(A \to I \setminus A\). Check confidence. Confidence can only decrease when moving items from LHS to RHS (because numerator stays same, denominator can only decrease). Use this to prune.</li>
+</ol>
+
+<h4>Closed vs Maximal Frequent Itemsets</h4>
+<table>
+<tr><th>Concept</th><th>Definition</th><th>Pros</th><th>Cons</th></tr>
+<tr><td><strong>Closed</strong></td><td>No immediate superset has the same support</td><td>Safe compaction, preserves support info</td><td>Still numerous</td></tr>
+<tr><td><strong>Maximal</strong></td><td>No immediate superset is frequent</td><td>More aggressive pruning</td><td>Loses support details of subsets</td></tr>
+</table>
+<p><strong>All maximal are closed, but not all closed are maximal.</strong></p>
+
+<h3>Counting Pairs in Memory</h3>
+<table>
+<tr><th>Method</th><th>Memory</th><th>When Better</th></tr>
+<tr><td>Triangular Matrix</td><td>\(4 \times \frac{n(n-1)}{2}\) bytes</td><td>Dense data (p > 1/3)</td></tr>
+<tr><td>Triples (i, j, count)</td><td>\(12 \times p \times \frac{n(n-1)}{2}\) bytes</td><td>Sparse data (p &lt; 1/3)</td></tr>
+</table>
+
+<h3>A-Priori Algorithm</h3>
+<p><strong>Key idea: Monotonicity</strong> -- If an itemset I appears >= s times, so does every subset J of I. Contrapositive: if item i is infrequent, no pair containing i can be frequent.</p>
+
+<h4>Two-Pass Algorithm:</h4>
+<ol>
+<li><strong>Pass 1:</strong> Read baskets, count occurrences of each item. Memory: O(n). Mark items with count >= s as frequent.</li>
+<li><strong>Between passes:</strong> Create new numbering 1..m for frequent items. Non-frequent items get index 0.</li>
+<li><strong>Pass 2:</strong> Read baskets again. For each basket, look at only frequent items. Count all pairs of frequent items. Memory: O(m^2).</li>
+</ol>
+
+<h4>Generalization Pipeline:</h4>
+<div class="formula-box">
+\[C_1 \xrightarrow{\text{Filter}} L_1 \xrightarrow{\text{Construct}} C_2 \xrightarrow{\text{Filter}} L_2 \xrightarrow{\text{Construct}} C_3 \xrightarrow{\text{Filter}} L_3 \to \cdots\]
+</div>
+<p>\(C_k\) = candidate k-tuples, \(L_k\) = truly frequent k-tuples. Each Filter requires a disk pass. Each Construct does not.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example</span>
+<h3>Complete A-Priori Example</h3>
+<p>Items = {milk, coke, pepsi, beer, juice}, s = 3, 8 baskets:</p>
+<p>B1={m,c,b}, B2={m,p,j}, B3={m,b}, B4={c,j}, B5={m,p,b}, B6={m,c,b,j}, B7={c,b,j}, B8={b,c}</p>
+<p><strong>Pass 1:</strong> Count items: m=5, c=5, p=2, b=6, j=4. Frequent (>=3): m, c, b, j. Pepsi eliminated.</p>
+<p><strong>Pass 2:</strong> Count pairs of {m,c,b,j} only:</p>
+<table>
+<tr><th>Pair</th><td>{m,c}</td><td>{m,b}</td><td>{m,j}</td><td>{c,b}</td><td>{c,j}</td><td>{b,j}</td></tr>
+<tr><th>Count</th><td>3</td><td>4</td><td>2</td><td>4</td><td>3</td><td>2</td></tr>
+</table>
+<p>Frequent pairs (>=3): {m,c}, {m,b}, {c,b}, {c,j}</p>
+
+<h3>Support/Confidence/Interest Example</h3>
+<p>Rule: {m,b} -> c. Support({m,b,c}) = 2. Support({m,b}) = 4.</p>
+<p>Confidence = 2/4 = 0.5. P(c) = 5/8. Interest = 0.5 - 5/8 = -1/8 (negative!).</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points</span>
+<h3>Must-Memorize for L4</h3>
+<ul>
+<li><strong>Formulas:</strong> Support, Confidence, Interest definitions</li>
+<li><strong>A-Priori monotonicity:</strong> If I is frequent, all subsets of I are frequent</li>
+<li><strong>Contrapositive:</strong> If item i infrequent, no superset containing i is frequent</li>
+<li><strong>Triangular vs Triples:</strong> Triples better when p &lt; 1/3</li>
+<li><strong>Closed vs Maximal:</strong> All maximal are closed. Maximal loses support info.</li>
+<li><strong>Finding rules is easy AFTER finding frequent itemsets</strong></li>
+<li><strong>Cost measured by # disk passes, not algorithmic complexity</strong></li>
+</ul>
+<div class="warn"><strong>T/F Traps:</strong><br>
+- "A-Priori finds interesting rules" -> FALSE (finds frequent itemsets, uses support not interest)<br>
+- "Interest is always positive" -> FALSE (can be negative)<br>
+- "Market-basket applies only to retail" -> FALSE (abstract model)<br>
+- "All closed itemsets are maximal" -> FALSE (reverse is true)</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L4" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L4" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L5: Frequent Itemsets 2                         -->
+<!-- ====================================================== -->
+<section id="L5">
+<h2 class="section-title">L5: Frequent Itemsets 2</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition</span>
+<h3>Why Improve A-Priori?</h3>
+<blockquote>"The A-Priori algorithm is fine as long as counting candidate pairs can be done in main memory. What if the memory is not enough?" - Prof. Yoo</blockquote>
+<blockquote>"In many data mining algorithms, we care about the trade-off between accuracy or approximation and speed, unlike a theoretical algorithm class." - Prof. Yoo</blockquote>
+<p><strong>Problem:</strong> Even after A-Priori's Pass 1 filtering, candidate pairs C_2 may still exceed memory. Need algorithms to cut down |C_2| further.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory</span>
+
+<h3>1. PCY (Park-Chen-Yu) Algorithm</h3>
+<p><strong>Motivation:</strong> In Pass 1 of A-Priori, most memory is idle (only storing item counts). Use idle memory for a hash table of pairs.</p>
+<h4>How it works:</h4>
+<ol>
+<li><strong>Pass 1:</strong> Count items (same as A-Priori) AND hash every pair {i,j} to a bucket, incrementing bucket count.</li>
+<li><strong>Between passes:</strong> Replace hash table with bit-vector (bitmap). 1 = bucket count >= s ("frequent bucket"), 0 = not. Reduces space by 1/32 (integer -> 1 bit).</li>
+<li><strong>Pass 2:</strong> Candidate pair {i,j} must satisfy TWO conditions:
+  <ul>
+    <li>(1) Both i and j are frequent items</li>
+    <li>(2) {i,j} hashes to a frequent bucket in bitmap</li>
+  </ul>
+</li>
+</ol>
+<p><strong>PCY must use triples method</strong> (not triangular matrix) because it exploits sparsity of candidate pairs.</p>
+
+<h3>2. Multistage Algorithm</h3>
+<p><strong>Idea:</strong> Create successive hash tables with different hash functions in multiple passes.</p>
+<ol>
+<li><strong>Pass 1:</strong> Same as PCY -> produces Bitmap 1</li>
+<li><strong>Pass 2:</strong> Using Bitmap 1 + frequent items, create second hash table (only hash pairs satisfying conditions 1+2). Second table has 31/32 of original buckets (due to Bitmap 1 memory). -> produces Bitmap 2</li>
+<li><strong>Pass 3:</strong> Count pairs satisfying ALL three conditions:
+  <ul>
+    <li>(1) Both items frequent</li>
+    <li>(2) Hash to frequent bucket in Bitmap 1</li>
+    <li>(3) Hash to frequent bucket in Bitmap 2</li>
+  </ul>
+</li>
+</ol>
+<div class="warn"><strong>Critical subtlety (exam favorite):</strong> Condition 2 (Bitmap 1) CANNOT be dropped even though we have Bitmap 2! Because a pair not counted in Pass 2 (due to failing condition 2) may still hash to a frequent bucket in Bitmap 2 by coincidence. The conditions are INDEPENDENT.</div>
+<p><strong>Truly frequent pairs always hash to frequent buckets</strong> (no matter how many passes).</p>
+
+<h3>3. Multihash Algorithm</h3>
+<p><strong>Idea:</strong> Create multiple hash tables in a SINGLE pass (parallel, not sequential).</p>
+<ul>
+<li>Each table uses different hash function but shares the same pass</li>
+<li>Pair {i,j} is candidate if: both items frequent AND pair hashes to frequent bucket in ALL hash tables</li>
+<li>Trade-off: More tables -> more conditions but smaller tables -> higher collision</li>
+<li>Optimal number of tables: minimize \(p^n\) where p = prob of infrequent pair hashing to frequent bucket</li>
+</ul>
+<div class="formula-box">
+\[P(\text{infrequent pair in } C_2) = p^n\]
+\[\text{Increasing } n \text{ increases both } n \text{ and } p. \text{ Optimal } n \text{ exists.}\]
+</div>
+
+<h3>4. Limited-Pass Algorithms</h3>
+
+<h4>Random Sampling</h4>
+<ul>
+<li>Sample fraction p of baskets, run A-Priori in memory with threshold ps</li>
+<li><strong>False positives:</strong> Eliminable with one full pass (verify in full data)</li>
+<li><strong>False negatives:</strong> Hard to eliminate. Can reduce by lowering threshold to 0.9ps</li>
+</ul>
+
+<h4>Toivonen's Algorithm</h4>
+<ul>
+<li>Pass 1: Sample, find frequent itemsets (threshold < ps, e.g., 0.9ps). Construct <strong>negative border</strong>.</li>
+<li><strong>Negative border:</strong> Collection of itemsets NOT frequent in sample but ALL immediate subsets ARE frequent in sample.</li>
+<li>Pass 2: Check sample-frequent itemsets AND negative border items in full data.</li>
+<li>If NO border item is frequent in full data -> done (no false positives, no false negatives).</li>
+<li>If ANY border item is frequent -> algorithm fails, must restart with new sample.</li>
+<li><strong>No false negatives guarantee:</strong> If S is frequent in whole data but not in sample, then either S is in the negative border, or S has an immediate subset T that is frequent in whole but not sample. Recurse until reaching border.</li>
+<li>Average number of passes is constant, but not deterministic.</li>
+</ul>
+
+<h4>SON (Savasere, Omiecinski, Navathe) Algorithm</h4>
+<ul>
+<li><strong>Pass 1:</strong> Divide data into 1/p chunks. Run A-Priori on each chunk with threshold ps.</li>
+<li><strong>Pass 2:</strong> Take union of all frequent itemsets from chunks. Verify in full data with threshold s.</li>
+<li><strong>No false negatives:</strong> If itemset has global support >= s, it must have support >= ps in at least one chunk (by pigeonhole principle: if support < ps in every chunk, total support < (1/p) * ps = s, contradiction).</li>
+<li><strong>No false positives:</strong> Verified in Pass 2.</li>
+</ul>
+
+<h4>SON with MapReduce</h4>
+<pre><code><span class="code-comment">// Pass 1: Find candidate itemsets</span>
+map(chunk):                              <span class="code-comment">// each mapper gets one chunk</span>
+    run A-Priori on chunk with threshold ps
+    for each frequent itemset F:
+        emit(F, 1)
+
+reduce(F, counts):                       <span class="code-comment">// collect all candidates</span>
+    if F appears at least once:
+        output F as candidate
+
+<span class="code-comment">// Pass 2: Find true frequent itemsets</span>
+map(candidates, data_portion):           <span class="code-comment">// each mapper gets candidates + data chunk</span>
+    for each candidate C:
+        count support of C in this portion
+        emit(C, local_support)
+
+reduce(C, supports):                     <span class="code-comment">// sum supports across all portions</span>
+    if sum(supports) >= s:
+        output C as truly frequent
+</code></pre>
+<div class="warn"><strong>SON MapReduce code is exam-likely blank-fill target (L5 slide p34):</strong><br>
+Likely blanks: "emit(F, 1)" in Pass 1 Map, "sum(supports) >= s" in Pass 2 Reduce</div>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example</span>
+<h3>PCY Pop Quiz (from lecture)</h3>
+<p>Baskets: {1,2,3}, {3,4,5}, {2,4,5}. s=2. Hash table with 3 buckets: h(i,j) = (i*j) mod 3.</p>
+<p><strong>Pass 1 item counts:</strong> 1:1, 2:2, 3:2, 4:2, 5:2. Frequent items (>=2): {2,3,4,5}. Item 1 is eliminated.</p>
+<p><strong>Hash all pairs to buckets:</strong></p>
+<table>
+<tr><th>Pair</th><th>i*j mod 3</th><th>Bucket</th></tr>
+<tr><td>{1,2}</td><td>2</td><td>2</td></tr>
+<tr><td>{1,3}</td><td>0</td><td>0</td></tr>
+<tr><td>{2,3}</td><td>0</td><td>0</td></tr>
+<tr><td>{3,4}</td><td>0</td><td>0</td></tr>
+<tr><td>{3,5}</td><td>0</td><td>0</td></tr>
+<tr><td>{4,5}</td><td>2</td><td>2</td></tr>
+<tr><td>{2,4}</td><td>2</td><td>2</td></tr>
+<tr><td>{2,5}</td><td>1</td><td>1</td></tr>
+<tr><td>{4,5}</td><td>2</td><td>2 (again)</td></tr>
+</table>
+<p>Bucket counts: [0]=4, [1]=1, [2]=4. Bitmap: [0]=1, [1]=0, [2]=1.</p>
+<p><strong>Pass 2 candidates:</strong> Both items frequent AND hash to frequent bucket. Pair {2,5} hashes to bucket 1 (infrequent) -> eliminated. All other pairs of frequent items are candidates.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points</span>
+<h3>Must-Memorize for L5</h3>
+<ul>
+<li><strong>PCY:</strong> Use idle memory in Pass 1 for hash table. Bitmap replaces hash table (1/32 space). Must use triples method.</li>
+<li><strong>Multistage:</strong> Sequential hash tables. Bitmap 1 CANNOT be dropped (conditions are independent).</li>
+<li><strong>Multihash:</strong> Parallel hash tables in single pass. Optimal n minimizes p^n.</li>
+<li><strong>Random Sampling:</strong> FP eliminable (full pass), FN hard to eliminate (reduce threshold)</li>
+<li><strong>Toivonen:</strong> Negative border = not frequent in sample but all immediate subsets are. If border item frequent in full data -> restart.</li>
+<li><strong>SON:</strong> No false negatives (pigeonhole proof). No false positives (Pass 2 verification). Compatible with MapReduce.</li>
+<li><strong>SON MapReduce pseudocode:</strong> Know both passes' map and reduce functions.</li>
+</ul>
+<div class="warn"><strong>T/F Traps:</strong><br>
+- "PCY can use triangular matrix" -> FALSE (needs triples for sparsity)<br>
+- "Truly frequent pairs always hash to frequent buckets" -> TRUE<br>
+- "In Toivonen, checking sample in full data avoids false negatives" -> FALSE (that avoids false POSITIVES; negative border avoids false negatives)<br>
+- "Multistage can drop earlier bitmaps" -> FALSE (conditions are independent)<br>
+- "SON has false negatives" -> FALSE (guaranteed no FN by pigeonhole)</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L5" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L5" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        DOMContentLoaded                                -->
+<!-- ====================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Render inline items
+  renderInlineItems();
+
+  // Sidebar scroll-linked active state
+  var links = document.querySelectorAll('#sidebar a');
+  var sections = [];
+  links.forEach(function(a){
+    var id = a.getAttribute('href');
+    if(id && id.startsWith('#')){
+      var el = document.querySelector(id);
+      if(el) sections.push({link:a, el:el});
+    }
+  });
+  function updateActive(){
+    var scrollY = window.scrollY + 120;
+    var active = sections[0];
+    sections.forEach(function(s){
+      if(s.el.offsetTop <= scrollY) active = s;
+    });
+    links.forEach(function(a){a.classList.remove('active')});
+    if(active) active.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive);
+  updateActive();
+});
+</script>
+
+</main>
+</body>
+</html>

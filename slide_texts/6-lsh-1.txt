@@ -1,0 +1,427 @@
+Finding Similar Items 1
+     Introduction to Data Mining
+      Seoul National University
+            Spring 2026
+
+
+
+
+               Jaemin Yoo          1
+Announcements
+• Assignments:
+  • HW1 will be posted today (deadline: April 9).
+
+
+
+
+                                   Jaemin Yoo       2
+Recap: Frequent Itemsets
+• A-Priori algorithm
+• PCY algorithm and extensions
+  • Multistage algorithm
+  • Multihash algorithm
+• Limited-pass algorithms
+  • Random sampling
+  • Toivonen’s algorithm
+  • SON algorithm
+
+
+
+                                 Jaemin Yoo   3
+Outline
+1. Finding Similar Items
+2. Shingling
+3. Minhashing
+4. More on Minhashing
+
+
+
+
+                           Jaemin Yoo   4
+Finding Similar Items
+• Example: Looking at web pages and finding near-duplicate pages.
+• Challenge: What if 𝑂 𝑛! is infeasible due to too many pages?
+
+
+
+
+                              Jaemin Yoo                        5
+Application 1: Finding Similar Documents
+• Example: Finding textually similar documents in a large corpus.
+   • In terms of character-level similarity instead of similar meaning.
+   • E.g., web, news articles, etc.
+• Many documents overlap significantly, but are not identical.
+   • Plagiarism: Two homeworks overlap by 50%.
+   • Mirror sites: Pages of mirror sites contain similar information.
+   • Similar articles: Articles of “same story” in many newspapers.
+
+
+
+
+                                     Jaemin Yoo                           6
+Application 2: Collaborative Filtering
+• Example: Recommend items liked by others with similar tastes.
+• Online purchases (e.g., Amazon):
+   • Two customers are similar if they have similar purchased items.
+• Movie ratings (e.g., Netflix):
+   • Similar to Amazon, but customers watch and rate movies or series.
+
+
+
+
+                                    Jaemin Yoo                           7
+Locality-Sensitivity
+• Typical hash functions are random uniform mappings.
+  • Let ℎ be a hash function, and 𝐷! and 𝐷" be two documents.
+  • ℎ 𝐷! and ℎ 𝐷" are independent of their actual similarity.
+• What if we have the locality-sensitive property?
+  • 𝑃(ℎ 𝐷! = ℎ 𝐷" ) is large if 𝐷! and 𝐷" are similar.
+• Hashing can be used for finding similar documents!
+
+
+
+
+                                   Jaemin Yoo                   8
+Locality-Sensitive Hashing
+• Locality-sensitive hashing (LSH):
+  • Finds pairs of similar items in a large set without the quadratic cost.
+• Basic idea:
+  • Throw items into buckets using several different hash functions.
+  • Examine only the item pairs that share a bucket for at least one time.
+• Upside: Only a small fraction of pairs are examined.
+• Downside: False negatives – some pairs never get considered.
+
+
+
+                                     Jaemin Yoo                               9
+The Big Picture
+1. Shingling:
+  • Create a characteristic matrix that summarizes all documents.
+2. Minhashing:
+  • Create a signature matrix that reduces the size of the matrix.
+  • It effectively approximates the distances between documents.
+3. Locality-sensitive hashing (in Part 2):
+  • Approximate all-pair comparisons in linear time.
+
+
+
+
+                                   Jaemin Yoo                        10
+The Big Picture: Illustration
+                                                                                  Candidate
+                                                                                  Pairs:
+                                                                      Locality-
+                                       Min                                        Those pairs
+ Document   Shingling                                                 Sensitive
+                                      Hashing                                     of signatures
+                                                                      Hashing
+                                                                                  that we need
+                                                                                  to test for
+                        The set                   Signatures:                     similarity
+                        of strings                Short integer
+                        of length 𝑘               vectors that
+                        that appear               represent the
+                        in the                    sets, and
+                        document                  reflect their
+                                                  similarity
+                                      Source: Stanford CS246 (2018)
+
+
+
+                                               Jaemin Yoo                                         11
+Outline
+1. Finding Similar Items
+2. Shingling
+3. Minhashing
+4. More on Minhashing
+
+
+
+
+                           Jaemin Yoo   12
+Shingling of Documents
+• 𝒌-Shingles: Represent a document as a set of length-𝑘 strings.
+   • E.g., for “abcdabd” and 𝑘 = 2, the 2-shingles are {ab, bc, cd, da, bd}.
+   • Good for identifying lexically similar documents.
+• Several options for handling white space (blank, tab, newline):
+   • E.g., replace any sequence of whitespaces with a single blank.
+
+                           k=9
+
+ The   plane was ready             {The plane, he plane , e plane w, plane wa,
+ for touch down                     plane was, lane was , ane was r, ne was re,
+                                    ...}
+
+
+
+
+                                     Jaemin Yoo                                   13
+Jaccard Similarity between Sets
+• Similarity measure of sets based on relative size of intersection.
+• Jaccard similarity between 𝑆 and 𝑇 is 𝑆 ∩ 𝑇 / |𝑆 ∪ 𝑇|.
+• In the example below, sim 𝑆, 𝑇 = 3/8.
+
+
+
+                   S                             T
+
+
+
+
+                                Jaemin Yoo                             14
+Shingles as Tokens
+• Idea: Hash shingles to (say) 4-byte integers (called tokens).
+   • Document is now a set of bucket indices of the shingles.
+• Hashing 9-shingles to 4 bytes is better than using 4-shingles.
+   • Most sequences of 4 characters are not found in typical documents.
+      • # of distinct shingles ≪ 2!"
+   • If we hash down 9-shingles to 4 bytes, almost all 4 bytes are used.
+
+
+
+
+                                       Jaemin Yoo                          15
+Matrix Representation of Sets
+• Characteristic matrix: Rows are elements, columns are sets.
+  • 1 is in row 𝑒 and column 𝑆 if and only if 𝑒 ∈ 𝑆.
+  • Jaccard similarity can be computed by the column similarity.
+  • Warning: Not the actual way how data is stored (due to sparsity).
+                Row
+                         Element          S1       S2   S3
+              (Token)
+                0       “The plane”        1       0    0
+
+                1       “The cow j”        0       0    1
+                                                             sim 𝑆# , 𝑆! = ?
+
+                2       “Alice and”        0       1    0
+
+                3       “Roses are”        1       0    1
+
+                                      Jaemin Yoo                               16
+Outline
+1. Finding Similar Items
+2. Shingling
+3. Minhashing
+4. More on Minhashing
+
+
+
+
+                           Jaemin Yoo   17
+Similarity-Preserving Summaries of Sets
+• For millions of documents, the characteristic matrix is too large.
+• Goal: Replace each set by a signature (smaller representation).
+   • Compare signatures of two sets to estimate the Jaccard similarity.
+   • The larger the signatures, the more accurate the estimate.
+
+
+                                                                       Magnitude 6.8
+
+         Magnitude 6.8    [110, 70, 93]                [110, 70, 93]   earthquake ...
+
+         earthquake ...
+
+
+
+
+                                          Jaemin Yoo                                    18
+Minhashing
+• Minhashing creates signatures from the characteristic matrix.
+   • Applies several random permutations of the rows.
+   • For each permutation, the minhash value of each set (or column) is
+     defined as the index of the first row that has 1.
+• The result is a signature matrix.
+   • Columns are sets, and rows are minhash values.
+   • Normally much smaller than the characteristic matrix.
+
+
+
+
+                                   Jaemin Yoo                             19
+Example: Minhashing
+
+
+
+
+                Source: Stanford CS246 (2022)
+
+
+                         Jaemin Yoo             20
+Example: Minhashing
+
+
+
+
+                Source: Stanford CS246 (2022)
+
+
+                         Jaemin Yoo             21
+Example: Minhashing
+
+
+
+
+                Source: Stanford CS246 (2022)
+
+
+                         Jaemin Yoo             22
+Subtle Point
+• People ask whether the minhash value should be:
+   • The original number of the row, or
+   • The number in the permuted order (as we did in our example).
+• Answer: It doesn’t matter.
+   • You only need to be consistent.
+   • Assure that two columns get the same value if and only if
+      • Their first 1’s in the permuted order are in the same row.
+
+
+
+
+                                           Jaemin Yoo                23
+Minhashing and Jaccard Similarity
+• Surprising property:
+   • Probability that minhash values are same = Jaccard similarity of sets.
+• Proof:
+   • Given columns 𝑆! and 𝑆", three classes of rows exist:
+      • Type X: 1 in both columns.
+      • Type Y: 1, 0 (or 0, 1) in columns.
+      • Type Z: 0 in both columns.
+   • If there are 𝑥 rows of Type X and 𝑦 rows of Type Y,
+      • sim 𝑆# , 𝑆" = 𝑥/ 𝑥 + 𝑦 .
+      • Pr(ℎ 𝑆# = ℎ 𝑆" ) = Pr meeting type X before type Y = 𝑥/ 𝑥 + 𝑦 .
+
+
+
+                                             Jaemin Yoo                       24
+Similarity of Signatures
+• The similarity of signatures is the fraction of the same rows.
+   • The expected similarity of two signatures equals
+   • The Jaccard similarity of the sets that the signatures represent.
+• The longer the signatures, the smaller will be the expected error.
+
+
+
+
+                                     Jaemin Yoo                          25
+Example: Similarity
+
+
+
+
+                  Source: Stanford CS246 (2022)
+
+                           Jaemin Yoo             26
+Outline
+1. Finding Similar Items
+2. Shingling
+3. Minhashing
+4. More on Minhashing
+
+
+
+
+                           Jaemin Yoo   27
+Implementation of Minhashing
+• Explicit permutation is infeasible in a large characteristic matrix.
+   • Suppose 1 billion rows.
+• Idea to approximate permutation:
+   • Apply a random hash function ℎ to row indices 𝑟 = 1, … , 𝑛.
+   • Sort the rows in order of their hash values ℎ 𝑟 .
+   • The result is considered as random permutation.
+• Idea to implement:
+   • Create a “slot” matrix, and initialize all elements to ∞.
+   • Update each element as we encounter smaller values.
+
+
+                                     Jaemin Yoo                          28
+Example: Implementation
+
+
+
+
+                Source: Stanford CS246 (2022)
+
+                         Jaemin Yoo             29
+Algorithm
+1. let 𝑇 be a characteristic matrix
+2. initialize a slot matrix 𝑀
+3. for each hash function ℎ$ and column 𝑐
+4.      𝑀 𝑖, 𝑐 ← ∞
+5. for each row 𝑟 and column 𝑐
+6.      if 𝑇 𝑟, 𝑐 = 1 then
+7.               for each hash function ℎ$
+8.                      if ℎ$ 𝑟 < 𝑀 𝑖, 𝑐 then
+9.                              𝑀 𝑖, 𝑐 ← ℎ$ 𝑟
+
+                                      Jaemin Yoo   30
+Pop Quiz
+• Quiz: Let’s compute the signature matrix in this case.
+                      Row       S1        S2        S3   g1: x + 1 mod 4   g2: 3x + 1 mod 4
+
+                       0        1         0         0          1                  1
+
+                       1        0         0         1          2                  0
+     Characteristic
+     matrix            2        0         1         0          3                  3
+
+                       3        1         0         1          0                  2
+
+
+                      Hash fn        S1        S2        S3
+     Signature
+     matrix             g1           ∞         ∞         ∞
+
+                        g2           ∞         ∞         ∞
+                                                                                              31
+Other Ways to Vectorize Documents
+• TF-IDF is a popular way to create (a different type of) signatures.
+   • Let 𝑀 be the number of unique words in the corpus.
+   • TF-IDF creates a length-𝑀 real-valued signature for each document.
+• The 𝑖-th element of signature for document 𝑘 is TF@A × IDF@ :
+   • TF$% = 𝑓$% / max 𝑓&% where 𝑓&% is the frequency of term 𝑡 in document 𝑘.
+                  &
+   • IDF$ = log(𝑁/𝑛$ ) where term 𝑖 appears in 𝑛$ of 𝑁 documents.
+
+
+
+
+                                     Jaemin Yoo                                 32
+Different Properties of Signatures
+• The minhashed signatures are integer vectors.
+  • We measure the similarity by # of the same integer elements.
+• The TF-IDF signatures are real-valued vectors.
+  • Two document signatures will not share any same elements.
+  • We measure the real-valued distance between signatures.
+  • Then, we need a different locality-sensitive hash function!
+
+
+
+
+                                  Jaemin Yoo                       33
+What are Good Signatures?
+• Recently, machine learning (ML) is used to create signatures.
+  • This topic is called representation learning.
+  • These signatures are more commonly called embeddings.
+  • All language models like ChatGPT work on embeddings.
+• ML is powerful, but LLMs are even more powerful.
+  • You may study natural language processing (NLP) more for this topic.
+
+
+
+
+                                   Jaemin Yoo                              34
+Summary
+1. Finding Similar Items
+2. Shingling
+  • Jaccard similarity
+  • Characteristic matrix
+3. Minhashing
+  • Signature matrix
+  • Property of Minhashing
+4. More on Minhashing
+  • Simulating permutation
+
+
+                             Jaemin Yoo   35
+

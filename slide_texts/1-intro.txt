@@ -1,0 +1,469 @@
+Introduction
+Introduction to Data Mining
+ Seoul National University
+       Spring 2026
+
+
+
+
+          Jaemin Yoo          1
+Outline
+1. Introduction
+2. Course logistics
+3. Basic concepts
+
+
+
+
+                      Jaemin Yoo   2
+Data is Power
+
+
+
+
+                Source: Popular Science
+
+
+
+
+                      Jaemin Yoo          3
+Data Mining
+• Data creates value only when it can be turned into decisions.
+• Data mining is a process of transforming raw data to insights.
+  1. Storing data (in memory, on disk, or in the cloud)
+  2. Managing data (using proper data structures)
+  3. Analyzing data (using proper algorithms for specific purposes)
+
+
+     Data Mining ≈ Data Science ≈ Data-Centric AI
+
+
+                                   Jaemin Yoo                         4
+Data Mining Pipeline
+• Industrial data-processing pipelines are incredibly complex.
+   • Real-world data is large, heterogeneous, and often streaming.
+
+
+
+
+                            Source: Shankar and Parameswaran (2021)
+                                                                      5
+What This Course is About
+• Goal: Extraction of actionable information from large datasets.
+• It’s not all about machine learning, but most of it is!
+• We emphasize algorithms that scale, often with parallelization.
+
+
+
+
+                              Source: Medium
+
+                                Jaemin Yoo                          6
+What We Cover
+• Combines the best of algorithms,            Algorithms,        Machine
+  machine learning, and systems.              Theory             Learning
+
+• No specific prerequisites, but                        Data
+• Will challenge a variety of skills:                  Mining
+   • Mathematical intuition.
+   • Problem-solving ability.
+                                                    Data Processing
+   • Implementation skills.                            Systems
+
+
+
+
+                                 Jaemin Yoo                                 7
+What Will We Learn?
+• We will learn to analyze different types of data:
+   • High-dimensional tabular data
+   • Graph-structured data
+   • Streaming (never-ending) data
+• We will learn to use different models of computation:
+   • Distributed computing
+   • Single machine in-memory
+   • Streams and online algorithms
+
+
+
+
+                                     Jaemin Yoo           8
+What Will We Learn?
+• We will learn to solve real-world problems:
+  • Recommender systems
+  • Market basket analysis
+  • Filtering and clustering
+• We will learn various tools and techniques:
+  • Linear algebra (SVD, recommender systems)
+  • Optimization (stochastic gradient descent)
+  • Dynamic programming (frequent itemsets)
+  • Hashing (LSH, bloom filters)
+
+
+                                 Jaemin Yoo      9
+Outline
+1. Introduction
+2. Course logistics
+3. Basic concepts
+
+
+
+
+                      Jaemin Yoo   10
+Staff
+• Lectures: Tue/Thu 9:30 – 11:00
+• Location: 302-107
+• Instructor: Jaemin Yoo (301-406)
+• Teaching assistants:
+  • Jinmo Lee, Doyun Choi, Hak-Beom Kim, Minho Jeong
+• Contact: snucse.idm@gmail.com
+
+
+
+
+                                Jaemin Yoo             11
+Course Materials
+• Textbook: Mining of Massive Datasets
+  • Available online: http://mmds.org.
+  • Some lecture topics are not in the textbook.
+• Lecture slides:
+  • Will be uploaded to ETL prior to class.
+• Lecture videos (TBD):
+  • Will be recorded and upload to ETL after class.
+
+
+
+
+                                    Jaemin Yoo        12
+Communication
+• ETL:
+   • For lecture slides, videos, and assignments.
+• Classum (TBD):
+   • For all questions and public communication.
+   • For official course announcements.
+• Emails:
+   • Always use snucse.idm@gmail.com.
+   • Only ask questions not suitable for Classum.
+
+
+
+                                    Jaemin Yoo      13
+Course Work and Grading
+• Assignments (40%)
+• Midterm (30%)
+• Final exam (30%)
+• Participation (up to extra 2%)
+
+
+
+
+                                   Jaemin Yoo   14
+Assignments
+• 4 assignments on Python and Apache Spark programming.
+• Due at 11:59pm.
+• HW0 will be posted next week.
+• HW0 is mostly a tutorial for Apache Spark (no evaluation).
+• Each assignment will have specific instructions of what to do.
+
+
+
+
+                                Jaemin Yoo                         15
+Tentative Class Schedule
+            Homework   Date Out               Date In
+
+              HW0      Week 2                    -
+
+              HW1      Week 3                 Week 6
+
+              HW2      Week 6                 Week 9
+
+            Midterm             Week 7 or 8
+
+              HW3      Week 9                 Week 12
+
+              HW4      Week 12                Week 15
+
+              Final                 Week 15
+
+
+
+                       Jaemin Yoo                       16
+Late Day Policies for Assignments
+• Assignments 0 – 3:
+  • 3 late days (in 24-hour chunks) can be used for any of these assignments.
+  • Once the late days are exhausted, a score is reduced by 20% per late day.
+  • No assignment will be accepted more than 4 days after its due date.
+• Assignment 4:
+  • No late submission is allowed as we need to submit grades to the system.
+
+
+
+
+                                   Jaemin Yoo                               17
+Exams
+• Midterm:
+  • Covers the first half of course
+  • Other details (including the date) TBD
+• Final exam:
+  • Covers the second half of course
+  • Other details (including the date) TBD
+
+
+
+
+                                   Jaemin Yoo   18
+Tentative Course Outline
+• Midterm:                            • Final:
+  • MapReduce and Spark                     • Link analysis
+  • Frequent itemsets                       • Neural nets and deep learning
+  • Finding similar items                   • Graph representation learning
+  • Clustering                              • Graph neural networks
+  • Dimensionality reduction                • Mining data streams
+  • Recommender systems
+
+
+
+
+                               Jaemin Yoo                                     19
+Class Participation
+• We will not check attendance.
+• Instead, we encourage you to answer questions on Classum.
+   • We will give credit to both the # of answers and # of likes you receive.
+• You also can get credit by reporting bugs in course materials.
+
+
+
+
+                                      Jaemin Yoo                                20
+Prerequisites
+• Programming (in Python)
+• Data structures and algorithms
+• Linear algebra
+• Basic probability theory
+• Familiarity with writing proofs
+
+
+
+
+                               Jaemin Yoo   21
+What If I Don’t Know All This Stuff?
+• Each topic is important for a small part of the course.
+   • If you are missing an item, you can learn the material as you go:
+      • Linear algebra: https://web.stanford.edu/class/cs246/handouts/CS246_LinAlg_review.pdf
+      • Probability: https://web.stanford.edu/class/cs246/handouts/CS246_Proof_Probability.pdf
+• The exception is programming.
+   • To do well in this course, you need to be comfortable with writing code.
+
+
+
+
+                                          Jaemin Yoo                                         22
+Course Policy
+• Please use AI to support your learning and understanding.
+  • AI can be a better teacher than almost any expert.
+• However, using AI for programming is not recommended.
+  • You will eventually use AI as a programmer.
+  • But if you don’t know how to code, you can’t debug AI’s code.
+  • This course is where you practice and develop your own skills.
+
+
+
+
+                                   Jaemin Yoo                        23
+Course Policy
+• Nevertheless, you are free to use AI for any purpose.
+   • Please explain how you used AI and what help it provided.
+   • No deduction in points as long as you are transparent.
+• You may also discuss assignments with others.
+   • As long as you include their name(s) on the work you submit.
+
+
+
+
+                                    Jaemin Yoo                      24
+Workload
+• This course will be fast-paced to many students.
+   • We will cover a lot of topics for various problems.
+• Course time commitment:
+   • You may need to review the content after each lecture.
+   • Each assignment may take >20 hours towards the end.
+• You may consider dropping this course if not ready.
+
+
+
+
+                                     Jaemin Yoo               25
+Programming Environment
+• Your own computer.
+• Lab machines in the department (TBA).
+
+
+
+
+                              Jaemin Yoo   26
+Acknowledgements
+• Some slides of this course are adapted from or inspired by:
+   • [CS246] Mining Massive Datasets from Stanford CS.
+   • [EE412] Foundation of Big Data Analytics from KAIST EE.
+
+
+
+
+                                   Jaemin Yoo                   27
+Outline
+1. Introduction
+2. Course logistics
+3. Basic concepts
+
+
+
+
+                      Jaemin Yoo   28
+Statistical Limits on Data Mining
+• An analyst can always discover patterns that are meaningless.
+• Bonferroni’s principle:
+  • You look for events of a certain type within a certain amount of data.
+  • Assume random data of the same size.
+  • Calculate the expected number 𝑁 of occurrences in the random data.
+  • If 𝑁 is large, then you must expect almost anything to be bogus.
+
+
+
+
+                                   Jaemin Yoo                                29
+Example: Birthday Problem
+• There are 23 people in the room.
+• Surprisingly, two share the same birthday!
+• Seems like a surprising pattern … but is it?
+• In fact, not really, since the probability is quite high (> 0.5).
+• Almost half of all such groups will show the same pattern.
+
+
+
+
+                                   Jaemin Yoo                         30
+When Machine Learning is Useful
+• Not all data mining algorithms use machine learning (ML).
+• ML is useful when we are not sure what we are looking for.
+   • Examples: recommendation, forecasting, and embedding.
+• ML is not necessary when we can describe the goal directly.
+   • Examples: locating people’s resumes on the web.
+
+
+
+
+                                  Jaemin Yoo                    31
+Importance of Words in Documents
+• Problem: Categorizing documents by their topic.
+  • Document is a sequence of words.
+• Assumption: Topics are identified by special words:
+  • Baseball: “ball,” “bat,” “pitch,” “run,” and so on.
+• Observations:
+  • Frequency ≠ significance (e.g., “the” or “and”).
+  • Rarity ≠ significance (e.g., “notwithstanding” or “albeit”).
+
+
+
+
+                                      Jaemin Yoo                   32
+Importance of Words in Documents
+• Idea: Concentration of useful words in just a few documents.
+• TF-IDF (Term Frequency times Inverse Document Frequency).
+  • We are given a term 𝑖 in a document 𝑗.
+  • TF_IDF 𝑖, 𝑗 = TF 𝑖, 𝑗 × IDF 𝑖 .
+  • TF 𝑖, 𝑗 ∝ The number of occurrences of a term 𝑖 in a document 𝑗.
+  • IDF 𝑖 ∝ 1 / The number of documents where a term 𝑖 appears.
+
+
+
+
+                                  Jaemin Yoo                           33
+Hash Functions
+• Hash functions are one of the most important concepts in CS.
+• A hash function ℎ takes a key and produces a bucket number.
+   • The bucket number is an integer, say from 0 to 𝐵 − 1.
+   • Normally, a hash key is an integer, and 𝐵 is a prime number.
+• Enables us to build a constant-time data structure for big data.
+
+
+                            key                  h(key)
+
+
+                                    Jaemin Yoo                       34
+Indices
+• An index is a data structure for retrieving records efficiently.
+• E.g., a hash table where phone numbers are hashed to buckets.
+
+
+
+
+                               Jaemin Yoo                            35
+Hash Functions: Questions
+• Q1: What if hash keys are not integers?
+   • All data types have values that are composed of bits.
+   • For strings, there are many ways to convert them to integers.
+   • For complex types, recursively convert values to integers.
+• Q2: Can we avoid collisions at all?
+   • No, there always can be collisions.
+   • There are many techniques to reduce collisions though.
+
+
+
+
+                                    Jaemin Yoo                       36
+Power Laws
+• Many two variables are related by a power law.
+  • That is, a linear relationship between the logarithms of the variables.
+  • General form: log 𝑦 = 𝑎 log 𝑥 + 𝑏
+• Examples:
+  • Sales of products.
+  • Sizes of websites.
+  • Wealth of people.
+                                                                  In the linear scale
+
+
+
+
+                                    Jaemin Yoo                                      37
+Memory Hierarchy
+                                                                CPU registers hold words retrieved
+                                                L0:             from L1 cache
+                                                  Registers
+    Smaller, faster,
+      and costlier                        L1:     L1 cache            L1 cache holds cache lines retrieved
+                                                                      from the L2 cache memory
+       (per byte)                                  (SRAM)
+    storage devices                                                         L2 cache holds cache retrieved from
+                                    L2:          L2, L3 cache               main memory, L3 cache is typically
+                                                (shared SRAM)               shared across CPU cores
+
+
+                              L3:               Main memory                       Main memory holds pages
+                                                  (DRAM)                          retrieved from local storage
+
+
+     Larger, slower,                                                                     Local storage holds files
+      and cheaper      L4:                      Local storage                            retrieved from remote
+       (per byte)                                (SSD/HDD)                               network servers
+    Storage devices
+
+                                        Remote/cloud storage
+                L5:          (distributed file systems, web servers, etc.)
+
+
+                                                  Jaemin Yoo                                                         38
+Summary
+1. Introduction
+2. Course logistics
+  • Course materials
+  • Communication
+  • Course work and grading
+  • Prerequisites
+3. Basic concepts
+  • Statistical limits
+  • Basic knowledge of CS
+
+
+                              Jaemin Yoo   39
+

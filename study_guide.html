@@ -1,0 +1,3998 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDM 2026 Midterm Study Guide — L1~L13 (Closed-book)</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{--bg:#f8f9fa;--sidebar-w:220px;--card-radius:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:#1a1a2e;line-height:1.7;padding-left:var(--sidebar-w)}
+/* Sidebar */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:#1a1a2e;color:#ccc;overflow-y:auto;padding:18px 12px;z-index:100}
+#sidebar h2{color:#fff;font-size:15px;margin-bottom:14px;border-bottom:1px solid #333;padding-bottom:8px}
+#sidebar a{display:block;color:#aab;text-decoration:none;padding:6px 10px;border-radius:6px;font-size:13px;margin-bottom:2px;transition:.2s}
+#sidebar a:hover,#sidebar a.active{background:#2d2d5e;color:#7ecfff}
+/* Main */
+main{max-width:960px;margin:0 auto;padding:30px 24px 80px}
+h1{font-size:28px;margin-bottom:6px;color:#1a1a2e}
+h2.section-title{font-size:22px;margin:40px 0 14px;padding:10px 16px;background:linear-gradient(135deg,#1a1a2e,#2d2d5e);color:#fff;border-radius:var(--card-radius)}
+h3{font-size:17px;margin:18px 0 8px;color:#1a1a2e;border-left:4px solid #4361ee;padding-left:10px}
+h4{font-size:15px;margin:12px 0 6px;color:#333}
+/* Tags */
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700;margin:4px 4px 4px 0;vertical-align:middle}
+.tag-intuition{background:#fff3cd;color:#856404;border:1px solid #ffc107}
+.tag-theory{background:#cce5ff;color:#004085;border:1px solid #4361ee}
+.tag-example{background:#d4edda;color:#155724;border:1px solid #28a745}
+.tag-exam{background:#f8d7da;color:#721c24;border:1px solid #dc3545}
+/* Cards */
+.card{background:#fff;border-radius:var(--card-radius);padding:18px 20px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.card.intuition{border-left:4px solid #ffc107}
+.card.theory{border-left:4px solid #4361ee}
+.card.example{border-left:4px solid #28a745}
+.card.exam{border-left:4px solid #dc3545}
+/* Code */
+pre{background:#1e1e2e;color:#cdd6f4;padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.6;margin:10px 0}
+code{font-family:'Cascadia Code','Fira Code',monospace}
+.code-comment{color:#6c7086;font-style:italic}
+/* Table */
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th{background:#1a1a2e;color:#fff;padding:8px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid #e9ecef}
+tr:nth-child(even){background:#f1f3f5}
+/* Inline items */
+.inline-items{margin:10px 0}
+.inline-item{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:14px 16px;margin:8px 0}
+.inline-item h5{font-size:14px;color:#4361ee;margin-bottom:6px}
+.inline-item .meta{font-size:12px;color:#6c757d;margin-bottom:6px}
+.inline-item .q{font-weight:600;margin-bottom:4px}
+.inline-item .a{color:#155724;margin-top:4px}
+.inline-item .sol{color:#333;margin-top:4px;font-size:13px}
+/* Misc */
+blockquote{border-left:3px solid #ffc107;background:#fff8e1;padding:10px 16px;margin:10px 0;font-style:italic;border-radius:0 8px 8px 0}
+.formula-box{background:#eef;border:1px solid #99b;border-radius:8px;padding:12px 16px;margin:10px 0;text-align:center}
+.warn{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:10px 14px;margin:8px 0;font-size:13px}
+ul,ol{padding-left:22px;margin:6px 0}
+li{margin:3px 0}
+.compare-table th{font-size:13px}
+.compare-table td{font-size:13px}
+
+/* ===== 유형별 기출 풀이 섹션 전용 스타일 ===== */
+.problem-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;margin:16px 0;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.problem-card .problem-header{background:linear-gradient(135deg,#1a1a2e,#3a3a6e);color:#fff;padding:10px 16px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.problem-card .problem-header .badge{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700}
+.problem-card .problem-header .badge-official{background:#28a745;color:#fff}
+.problem-card .problem-header .badge-mine{background:#ffc107;color:#333}
+.problem-card .problem-header .badge-score{background:rgba(255,255,255,.25);color:#fff}
+.problem-card .problem-header .badge-priority{background:#dc3545;color:#fff}
+.problem-card .problem-body{padding:14px 18px}
+.problem-card .problem-section{margin:12px 0}
+.problem-card .problem-label{font-size:12px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.problem-original{background:#f8f9fa;border-left:4px solid #6c757d;padding:12px 16px;border-radius:0 6px 6px 0;font-family:'Segoe UI',system-ui;font-size:14px;line-height:1.6;white-space:pre-wrap}
+.problem-answer{background:#d4edda;border-left:4px solid #28a745;padding:12px 16px;border-radius:0 6px 6px 0;font-size:14px;line-height:1.6}
+.problem-answer strong{color:#155724}
+.problem-solution{background:#e7f1ff;border-left:4px solid #4361ee;padding:12px 16px;border-radius:0 6px 6px 0;font-size:13px;line-height:1.7}
+.problem-solution strong{color:#1a1a2e}
+
+/* 유형 패턴 박스 */
+.pattern-box{background:linear-gradient(135deg,#fff5f5,#fff);border:2px solid #ffc107;border-radius:10px;padding:14px 18px;margin:12px 0}
+.pattern-box h4{color:#856404;margin-top:0;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pattern-box pre{background:#fff8e1;border:1px solid #ffe082;margin:8px 0}
+
+.type-title{font-size:20px;color:#1a1a2e;border-bottom:3px solid var(--accent);padding:10px 0 8px;margin:20px 0 12px;display:flex;align-items:center;gap:10px}
+.type-title .star{color:#dc3545;font-size:16px}
+
+.freq-high{color:#dc3545;font-weight:700}
+.freq-med{color:#f57c00;font-weight:700}
+.freq-low{color:#757575;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<nav id="sidebar">
+<h2>IDM 2026 Midterm</h2>
+<a href="master_guide.html" style="color:#ff9a6b;font-weight:bold;background:#2d2d5e">🔥 마스터 가이드 v2</a>
+<a href="tf_quiz.html" style="color:#7ecfff;font-weight:bold;background:#2d2d5e">📝 T/F 퀴즈 v3</a>
+<div style="border-bottom:1px solid #333;margin:8px 4px 10px"></div>
+<a href="#meta">Meta Analysis</a>
+<a href="#types" style="color:#ffd166;font-weight:bold">🎯 유형별 기출 풀이</a>
+<a href="#schedule" style="color:#ff9a9a;font-weight:bold">🗓️ 5일 공부 순서</a>
+<a href="#mmds" style="color:#a8e6cf;font-weight:bold">📖 MMDS 연습문제</a>
+<a href="#L1">L1 Introduction</a>
+<a href="#L2">L2 MapReduce</a>
+<a href="#L3">L3 Spark</a>
+<a href="#L4">L4 Frequent Itemsets 1</a>
+<a href="#L5">L5 Frequent Itemsets 2</a>
+<a href="#L6">L6 LSH 1 (Shingling/MinHash)</a>
+<a href="#L7">L7 LSH 2 (Banding/Distance)</a>
+<a href="#L8">L8 Clustering 1 (k-means)</a>
+<a href="#L9">L9 Clustering 2 (BFR/CURE)</a>
+<a href="#L10">L10 DimRed 1 (SVD)</a>
+<a href="#L11">L11 DimRed 2 (CUR)</a>
+<a href="#L12">L12 RecSys 1 (CF)</a>
+<a href="#L13">L13 RecSys 2 (UV/SGD/BPR)</a>
+<a href="#tf-trainer" style="color:#7ecfff;font-weight:bold">⚡ T/F 트레이너</a>
+<a href="#formulas" style="color:#7ecfff;font-weight:bold">📋 공식 카드</a>
+<a href="#checklist" style="color:#7ecfff;font-weight:bold">✅ 체크리스트</a>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<main>
+<h1>IDM 2026 Midterm Study Guide</h1>
+<p style="color:#6c757d;margin-bottom:8px">Lectures 1~13 | Prof. Jaemin Yoo | SNU CSE | <strong>Closed-book, 2026-04-23</strong></p>
+<p style="color:#6c757d;margin-bottom:30px;font-size:13px">범위: L1~L13 전체. KAIST EE412 기출(2019~2025)은 참고용 — 동일 교수·유사 범위이나 출제 스타일은 다를 수 있음. T/F는 오답 -1점, 모르면 비워둘 것.</p>
+
+<!-- ============================================== -->
+<!--        JavaScript Data Layer                   -->
+<!-- ============================================== -->
+<script>
+// ========== pastExams_a ==========
+const pastExams_a = [
+  // ---- 2024 Midterm ----
+  {id:"2024-1a",year:2024,qnum:"1(a)",type:"TF",lectures:["L2"],question:"A good MapReduce programmer is recommended to write a GroupByKey function as well as Map and Reduce.",answer:"FALSE",solution:"GroupByKey is handled automatically by the MapReduce framework. The programmer only writes Map and Reduce functions.",concept:"MapReduce components"},
+  {id:"2024-1b",year:2024,qnum:"1(b)",type:"TF",lectures:["L2"],question:"The MapReduce framework explicitly checks whether the Reduce function is commutative and associative before applying a Combiner.",answer:"FALSE",solution:"The framework does not verify commutativity/associativity. It is the programmer's responsibility to ensure the Reduce function satisfies these properties before using a combiner.",concept:"Combiner conditions"},
+  {id:"2024-1c",year:2024,qnum:"1(c)",type:"TF",lectures:["L3"],question:"Spark outperforms MapReduce even when the intermediate data is too large to fit in memory.",answer:"FALSE",solution:"Spark's main advantage is in-memory caching. When intermediate data exceeds memory, Spark may lose its advantage and MapReduce (which always writes to disk) can be comparable or better.",concept:"Spark vs MapReduce"},
+  {id:"2024-1d",year:2024,qnum:"1(d)",type:"TF",lectures:["L3"],question:"In Spark, suppose that there is a sort operation that shuffles the order of all elements in several RDDs. Does it have a wide dependency?",answer:"TRUE",solution:"Sort requires comparing elements across all partitions, creating a wide (shuffle) dependency.",concept:"Wide vs Narrow dependency"},
+  {id:"2024-1e",year:2024,qnum:"1(e)",type:"TF",lectures:["L4"],question:"All maximal frequent itemsets are closed.",answer:"TRUE",solution:"By definition, if an itemset is maximal (no immediate superset is frequent), then no immediate superset can have the same support (since they are not even frequent). Hence maximal implies closed.",concept:"Maximal vs Closed itemsets"},
+  {id:"2024-1f",year:2024,qnum:"1(f)",type:"TF",lectures:["L4"],question:"A-priori aims to find all interesting rules.",answer:"FALSE",solution:"A-Priori finds frequent itemsets. Interest is computed separately after finding association rules. A-Priori uses support threshold, not interest.",concept:"A-Priori goal"},
+  {id:"2024-1g",year:2024,qnum:"1(g)",type:"TF",lectures:["L5"],question:"In the multistage algorithm, we can further reduce false positives by increasing the number of hash tables when finding frequent itemsets.",answer:"TRUE",solution:"More hash table passes create additional independent conditions. Each bitmap filters more candidate pairs, reducing false positives (pairs that pass all conditions but are not truly frequent).",concept:"Multistage algorithm"},
+  {id:"2024-1h",year:2024,qnum:"1(h)",type:"TF",lectures:["L5"],question:"In Toivonen's algorithm, we need to check if the frequent itemsets in the sample are truly frequent in the full data to avoid false negatives.",answer:"FALSE",solution:"Checking sample itemsets in full data eliminates false POSITIVES. To avoid false negatives, Toivonen uses the negative border concept. The statement confuses the two error types.",concept:"Toivonen's algorithm errors"},
+  {id:"2024-2a",year:2024,qnum:"2(a)",type:"calculation",lectures:["L2"],question:"Compute Av using MapReduce with restricted memory (can store only 6 numbers). v in R^6, A in R^{3x6}. Describe MapReduce process including combiner usage.",answer:"Av = [91, 217, 343]",solution:"Since v fits in memory (6 numbers), use standard MV multiplication in MapReduce. Map: input ((i,j), m_ij), output (i, m_ij * v_j). Reduce: sum values per key i. With combiner, partial sums can be done locally. Row 1: 1*1+2*2+3*3+4*4+5*5+6*6 = 91. Row 2: 7+16+27+40+55+72 = 217. Row 3: 13+28+45+64+85+108 = 343.",concept:"Matrix-vector multiplication in MapReduce"},
+  {id:"2024-2b",year:2024,qnum:"2(b)",type:"explanation",lectures:["L2"],question:"In MapReduce, when a Map worker fails, all tasks assigned to that worker need to be re-executed. When a Reduce worker fails, only in-progress tasks need to be re-executed. Explain why this difference exists.",answer:"Map outputs are stored on local disk of the map worker; if it fails, outputs are lost. Reduce outputs are stored in DFS, so completed reduce tasks survive failure.",solution:"Map task outputs are stored on the local disk of the Map worker node. When the Map worker fails, these local files become inaccessible, so all map tasks (even completed ones) must be redone. Reduce task outputs are written to DFS (distributed file system) which is replicated. So if a Reduce worker fails, completed reduce outputs are still available in DFS; only in-progress tasks need restart.",concept:"Node failure handling in MapReduce"},
+  {id:"2024-2c",year:2024,qnum:"2(c)",type:"coding",lectures:["L2"],question:"Using MapReduce, write pseudocode to calculate the variance of scores for each grade. Input: (Student ID, Grade, Score). Output: (Grade, Variance).",answer:"Map: emit(Grade, Score). Reduce: for each grade, compute variance from value list.",solution:"Map(key, value): parse (StudentID, Grade, Score) from value; emit(Grade, Score). Reduce(Grade, scores): compute mean = sum(scores)/len(scores); variance = sum((s - mean)^2 for s in scores)/len(scores); emit(Grade, variance). Note: Cannot use a simple combiner here since variance is not decomposable with a single pass combiner (need sum, sum of squares, and count).",concept:"MapReduce pseudocode writing"},
+  {id:"2024-3a",year:2024,qnum:"3(a)",type:"calculation",lectures:["L4","L5"],question:"Given 8 transactions (T1-T8) with items {A,B,C,D,E}, support threshold s=3. Use Toivonen's algorithm with sample {T1,T2,T4,T5} and s'=1. (i) Find frequent itemsets in sample and construct negative border. (ii) Prove no false negatives. (iii) Find T9,T10 that make algorithm not terminate.",answer:"See solution for detailed computation.",solution:"(i) Sample = {T1:{A,B,D}, T2:{A,C,D,E}, T4:{A,B,E}, T5:{A,B,C}}. With s'=1, every itemset appearing at least once is frequent. Frequent singletons: {A},{B},{C},{D},{E}. Frequent pairs: {A,B},{A,C},{A,D},{A,E},{B,D},{B,E},{C,D},{C,E},{D,E},{B,C}. Frequent triples from sample: {A,B,D}(T1),{A,B,E}(T4),{A,B,C}(T5),{A,C,D}(T2),{A,C,E}(T2),{A,D,E}(T2),{C,D,E}(T2),{B,C,?}... etc. Negative border: itemsets NOT frequent in sample but all immediate subsets are frequent. (ii) For no false negatives: if any itemset S is frequent in full data but not in sample, then S or some subset must be in the negative border. Since we check the border in pass 2, we detect holes. (iii) To make algorithm not terminate: add transactions that make a negative border item frequent in full data, e.g., T9={B,C,D}, T10={B,D,E} could make certain border items frequent.",concept:"Toivonen's algorithm - negative border"},
+  {id:"2024-3b-i",year:2024,qnum:"3(b)(i)",type:"calculation",lectures:["L4"],question:"Identify all strong association rules from frequent itemsets (confidence >= 70%). Calculate confidence as percentage.",answer:"Rules with conf >= 70% from frequent itemsets with s=3.",solution:"First find all frequent itemsets with s=3 from the 8 transactions. Then for each frequent itemset I, generate all rules A -> I\\A and check if conf = support(I)/support(A) >= 0.7.",concept:"Association rules - confidence"},
+  {id:"2024-3b-ii",year:2024,qnum:"3(b)(ii)",type:"calculation",lectures:["L4"],question:"Determine all closed frequent itemsets in the dataset with support at least s=3.",answer:"Closed frequent itemsets: those where no immediate superset has the same support.",solution:"An itemset is closed if no immediate superset has the same support count. Enumerate all frequent itemsets and check the closed condition.",concept:"Closed frequent itemsets"},
+
+  // ---- 2025 Midterm ----
+  {id:"2025-1a",year:2025,qnum:"1(a)",type:"TF",lectures:["L2"],question:"In a distributed computing cluster, each node typically shares the same CPU and memory with other nodes on the rack.",answer:"FALSE",solution:"Each node has its own CPU, memory, and disk. Nodes are independent computers connected by network.",concept:"Distributed computing architecture"},
+  {id:"2025-1b",year:2025,qnum:"1(b)",type:"TF",lectures:["L2"],question:"If a Map Worker fails, all tasks it has completed must be redone, because its output is stored locally and not in the distributed file system.",answer:"TRUE",solution:"Map outputs are stored on local disk. If the worker fails, those files are inaccessible, requiring all assigned map tasks to be re-executed.",concept:"MapReduce fault tolerance"},
+  {id:"2025-1c",year:2025,qnum:"1(c)",type:"TF",lectures:["L3"],question:"In Spark, the GroupByKey transformation creates a wide dependency because each output partition may depend on multiple input partitions.",answer:"TRUE",solution:"GroupByKey requires shuffling data across partitions so that all values with the same key end up in the same partition. This is a wide dependency.",concept:"Spark wide dependency"},
+  {id:"2025-1d",year:2025,qnum:"1(d)",type:"TF",lectures:["L3"],question:"RDDs in Spark can be updated in place to modify existing records.",answer:"FALSE",solution:"RDDs are read-only (immutable). New RDDs are created through transformations. This immutability is key to Spark's fault tolerance via lineage.",concept:"RDD immutability"},
+  {id:"2025-1e",year:2025,qnum:"1(e)",type:"TF",lectures:["L4"],question:"The interest of an association rule is always positive.",answer:"FALSE",solution:"Interest = conf(I->J) - P(J) = P(J|I) - P(J). This can be negative if the items are negatively correlated. Example from lecture: {m,b}->c had interest = 0.5 - 5/8 = -1/8.",concept:"Interest of association rules"},
+  {id:"2025-1f",year:2025,qnum:"1(f)",type:"TF",lectures:["L4"],question:"Market-basket analysis can be applied only to retail data and not to other domains such as student-club relationships.",answer:"FALSE",solution:"Market-basket model is an abstract many-to-many mapping. It applies to topic discovery (words/documents), plagiarism detection, biomarkers, and many other domains.",concept:"Market-basket model abstraction"},
+  {id:"2025-1g",year:2025,qnum:"1(g)",type:"TF",lectures:["L5"],question:"The PCY algorithm can efficiently use the triangular-matrix method to count frequent pairs.",answer:"FALSE",solution:"PCY utilizes sparsity of candidate pairs (some pairs are eliminated by the bitmap condition). The triangular matrix method stores ALL pairs densely and cannot exploit this sparsity. PCY must use the triples method.",concept:"PCY - triples method requirement"},
+  {id:"2025-1h",year:2025,qnum:"1(h)",type:"TF",lectures:["L5"],question:"In the multistage algorithm, truly frequent pairs will always hash to frequent buckets across all stages.",answer:"TRUE",solution:"A truly frequent pair has support >= s. Its count alone exceeds the threshold, so any bucket it hashes to must have count >= s. This holds regardless of the hash function used in each stage.",concept:"Multistage correctness guarantee"},
+  {id:"2025-2a",year:2025,qnum:"2(a)",type:"calculation",lectures:["L4","L5"],question:"[15 Points] Finding Similar Items: Create characteristic matrix for 3 documents using 6-shingles, compute minhash signatures, compute Jaccard similarities, and LSH banding.",answer:"See detailed solution.",solution:"(a) Normalize documents to lowercase, remove punctuation, create 6-character shingles. Map shingles to indices using indexing function f. Build characteristic matrix with 1/0 for each document-shingle pair. (b) Apply hash functions g1-g4 to row indices, compute minhash signatures. (c) Compute true Jaccard = |intersection|/|union| for each pair. Estimate from signatures = fraction of matching rows. (d) For LSH banding with m=4: P_cand = 1-(1-s^r)^b for each (r,b) configuration.",concept:"Shingling, MinHash, LSH"},
+  {id:"2025-3a",year:2025,qnum:"3(a)",type:"calculation",lectures:["L4","L5"],question:"[20 Points] Clustering: Simulate CURE algorithm with 2 clusters, find centroids, select representatives, move toward centroid, assign new point.",answer:"See detailed solution.",solution:"(i) C1 centroid = (-2, 2), C2 centroid = (2, -3). (ii) Select farthest from centroid, then farthest from first rep. (iii) Move 50% toward centroid. (iv) Assign P9 to cluster whose moved representative is closest.",concept:"CURE algorithm"},
+  {id:"2025-3b",year:2025,qnum:"3(b)",type:"calculation",lectures:["L4","L5"],question:"A-CURE (Adjusted CURE): variant where shrinkage ratio alpha_i = 1/d_i. Compute moved representatives.",answer:"See solution.",solution:"alpha_i = 1/d_i where d_i is distance from representative to centroid. P'_i = (1-alpha_i)*P_i + alpha_i * c. Farther points shrink less, closer points shrink more.",concept:"Novel variant: A-CURE"}
+];
+
+// ========== mmdsExamples_early ==========
+const mmdsExamples_early = [
+  {id:"ch1-ex1",chapter:1,exNum:"1.1",lectures:["L1"],title:"TF-IDF Computation",problem:"Given documents, compute TF-IDF for specific terms.",solution:"TF(i,j) = count of term i in doc j. IDF(i) = log(N / n_i) where N = total docs, n_i = docs containing term i. TF-IDF = TF * IDF.",concept:"TF-IDF"},
+  {id:"ch1-ex2",chapter:1,exNum:"1.2",lectures:["L1"],title:"Hash Function Example",problem:"Hash the value 17 into a table of size 7.",solution:"h(17) = 17 mod 7 = 3. The value 17 goes to bucket 3.",concept:"Hash functions"},
+  {id:"ch1-ex3",chapter:1,exNum:"1.3",lectures:["L1"],title:"Power Law Verification",problem:"Verify if data follows power law by checking log-log linearity.",solution:"Plot log(y) vs log(x). If linear, then y = cx^a where a is the slope.",concept:"Power law"},
+  {id:"ch2-ex1",chapter:2,exNum:"2.1",lectures:["L2"],title:"Word Count MapReduce",problem:"Implement word counting using MapReduce.",solution:"Map(key, line): for each word w in line, emit(w, 1). Reduce(w, [1,1,...,1]): emit(w, sum).",concept:"MapReduce word counting"},
+  {id:"ch2-ex2",chapter:2,exNum:"2.2",lectures:["L2"],title:"Matrix-Vector Multiplication",problem:"Compute Mv using MapReduce where M is n x n and v fits in memory.",solution:"Map: input ((i,j), m_ij), output (i, m_ij * v_j). Reduce: (i, [values]) -> (i, sum(values)).",concept:"MV multiplication in MapReduce"},
+  {id:"ch2-ex3",chapter:2,exNum:"2.3",lectures:["L2","L3"],title:"MapReduce vs Spark Comparison",problem:"Compare MapReduce and Spark for iterative algorithms.",solution:"MapReduce: writes intermediate results to disk/HDFS after each iteration. Spark: caches RDDs in memory, avoids disk I/O between iterations. Spark can be 100x faster for iterative jobs.",concept:"Framework comparison"},
+  {id:"ch6-ex1",chapter:6,exNum:"6.1",lectures:["L4"],title:"Support and Confidence Calculation",problem:"Given baskets, compute support, confidence, and interest for rules.",solution:"Support({I,J}) = # baskets containing both I and J. Confidence(I->J) = support(I union J) / support(I). Interest = confidence - P(J).",concept:"Association rule metrics"},
+  {id:"ch6-ex2",chapter:6,exNum:"6.2",lectures:["L4"],title:"A-Priori Algorithm Example",problem:"Apply A-Priori with s=3 on given baskets.",solution:"Pass 1: Count individual items, identify frequent items. Pass 2: Count pairs of frequent items only. Monotonicity: if item i is infrequent, no pair containing i can be frequent.",concept:"A-Priori algorithm"},
+  {id:"ch6-ex3",chapter:6,exNum:"6.3",lectures:["L4"],title:"Triangular vs Triples Method",problem:"Compare memory usage: n=10000 items, density p=0.2.",solution:"Triangular: 4 * n(n-1)/2 = 4 * 49,995,000 ~= 200MB. Triples: 12 * p * n(n-1)/2 = 12 * 0.2 * 49,995,000 ~= 120MB. Since p < 1/3, triples is better.",concept:"Counting pairs memory"},
+  {id:"ch6-ex4",chapter:6,exNum:"6.4",lectures:["L5"],title:"PCY Algorithm Example",problem:"Apply PCY with 3 buckets, hash h(i,j) = (i*j) mod 3, s=2.",solution:"Pass 1: Count items AND hash all pairs to buckets. Between passes: convert bucket counts to bitmap (1 if count >= s, else 0). Pass 2: Count only pairs where both items frequent AND hash to frequent bucket.",concept:"PCY algorithm"},
+  {id:"ch6-ex5",chapter:6,exNum:"6.5",lectures:["L5"],title:"SON Algorithm with MapReduce",problem:"Describe SON algorithm's two MapReduce passes.",solution:"Pass 1 Map: take chunk, run A-Priori with threshold ps, return (F,1) for each frequent itemset. Pass 1 Reduce: output itemsets appearing at least once. Pass 2 Map: count support of candidate itemsets in each portion. Pass 2 Reduce: sum supports, output if >= s.",concept:"SON algorithm"}
+];
+
+// ========== renderInlineItems ==========
+function renderInlineItems(){
+  document.querySelectorAll('.inline-items').forEach(function(div){
+    var lecFilter = div.getAttribute('data-lecture');
+    var dataType = div.getAttribute('data-type');
+    var html = '';
+    if(dataType === 'exam'){
+      var items = pastExams_a.filter(function(e){return e.lectures && e.lectures.some(function(l){return l.toLowerCase().replace(/\s/g,'') === lecFilter.toLowerCase().replace(/\s/g,'')})});
+      items.forEach(function(e){
+        html += '<div class="inline-item"><h5>['+e.year+'] Q'+e.qnum+' ('+e.type+')</h5>';
+        html += '<div class="q">'+e.question+'</div>';
+        html += '<div class="a"><strong>Answer:</strong> '+e.answer+'</div>';
+        html += '<div class="sol"><strong>Solution:</strong> '+e.solution+'</div></div>';
+      });
+    } else if(dataType === 'mmds'){
+      var lec = lecFilter.toLowerCase().replace(/\s/g,'');
+      var items = mmdsExamples_early.filter(function(e){return e.lectures && e.lectures.some(function(l){return l.toLowerCase().replace(/\s/g,'') === lec})});
+      items.forEach(function(e){
+        html += '<div class="inline-item"><h5>[Ch'+e.chapter+'] Ex'+e.exNum+': '+e.title+'</h5>';
+        html += '<div class="q">'+e.problem+'</div>';
+        html += '<div class="sol"><strong>Solution:</strong> '+e.solution+'</div></div>';
+      });
+    }
+    if(html) div.innerHTML = html; else div.innerHTML = '<p style="color:#999;font-size:13px">No items for this lecture.</p>';
+  });
+}
+</script>
+
+<!-- ====================================================== -->
+<!--        Section 0: Meta Analysis                        -->
+<!-- ====================================================== -->
+<section id="meta">
+<h2 class="section-title">기출 메타 분석 (Past Exam Meta Analysis)</h2>
+
+<div class="card">
+<h3>2024 vs 2025 기출 비교</h3>
+<table class="compare-table">
+<tr><th>카테고리</th><th>2024 Midterm</th><th>2025 Midterm</th></tr>
+<tr><td>T/F 문항</td><td>20문항 (a~t), 각 1점, 오답 −1</td><td>20문항 (a~t), 각 1점, 오답 −1</td></tr>
+<tr><td>T/F · L2 MapReduce</td><td>2문항 (a,b)</td><td>2문항 (a,b)</td></tr>
+<tr><td>T/F · L3 Spark</td><td>2문항 (c,d)</td><td>2문항 (c,d)</td></tr>
+<tr><td>T/F · L4-5 Itemsets</td><td>4문항 (e,f,g,h)</td><td>4문항 (e,f,g,h)</td></tr>
+<tr><td>계산 문제</td><td>Q2: MapReduce+Spark (20pt), Q3: Freq Itemsets (20pt)</td><td>Q2: Finding Similar Items (15pt), Q3: Clustering (20pt)</td></tr>
+<tr><td>시험 형식</td><td>Open-book (2024, KAIST)</td><td>Open-book (2025, SNU 첫 해)</td></tr>
+<tr><td>Novel Variant</td><td>L1-L5 범위에선 없음</td><td>A-CURE (거리 기반 shrinkage)</td></tr>
+<tr><td>코드 작성</td><td>MapReduce pseudocode (variance)</td><td>L1-L5 범위에선 없음</td></tr>
+</table>
+</div>
+
+<div class="card exam">
+<h3>2026 Predictions (Closed-book, Range L1~L13)</h3>
+<span class="tag tag-exam">2026 Closed-book</span>
+<ul>
+<li><strong>T/F 20점:</strong> 20문항 (-1 패널티). 범위 확장으로 L1~L13 전체에서 고르게 출제 예상. 모호한 개념 경계 주의 (closed vs maximal, narrow vs wide, FP vs FN 등).</li>
+<li><strong>계산 문제 가능 영역:</strong>
+  <ul>
+    <li>MapReduce pseudocode (variance, matrix-vector, mutual friends)</li>
+    <li>A-Priori / PCY / Toivonen 수동 실행</li>
+    <li>MinHash 서명 계산 + LSH banding 확률</li>
+    <li>k-means++ 확률, BFR sufficient stats 업데이트, CURE 시뮬레이션</li>
+    <li>SVD 에너지 계산, CUR 샘플링 확률</li>
+    <li>Pearson similarity, UV-SGD 업데이트 한 step</li>
+  </ul>
+</li>
+<li><strong>Novel Variant 가능성:</strong> 2024 A-CURE 등 전례 있음. 시험장에서 알고리즘 변형이 정의되고 풀라는 문제 대비.</li>
+<li><strong>Closed-book 핵심:</strong> 공식 암기 + WHY 이해. 교수 "I want to ask your understanding skills." 예: triangular vs triples의 경계 p=1/3이 왜 나오는지 손으로 유도 가능해야 함.</li>
+<li><strong>2024/2025 KAIST 기출 범위 주의:</strong> 그 해 midterm은 L1~L9 정도 (itemsets + LSH + clustering). SNU 2026은 L10-L13 (DimRed, RecSys)도 포함 → 이 부분은 기출 선례 없음. Lecture script 중심으로 철저히 학습 필요.</li>
+</ul>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        유형별 기출 풀이 패턴 (재구성 v2)            -->
+<!-- ====================================================== -->
+<section id="types">
+<h2 class="section-title">🎯 유형별 기출 풀이 패턴 (Problem-Type Playbook)</h2>
+
+<div class="card intuition">
+<p><b>사용법:</b> 각 유형별로 (1) <b>해결 패턴 (공식/절차)</b> 를 먼저 익히고, (2) 그 유형의 <b>기출 문제 원문</b>을 직접 풀어본 뒤, (3) <b>모범답안·풀이</b>와 비교하세요.</p>
+<p><b>배지 범례:</b> <span class="badge badge-official" style="padding:2px 6px;border-radius:3px;font-size:11px">📘 공식 모범답안</span> (2025 solution PDF에서 검증) · <span class="badge badge-mine" style="padding:2px 6px;border-radius:3px;font-size:11px">📝 내 풀이</span> (블랭크 기출, Claude 풀이) · <span class="badge badge-score" style="padding:2px 6px;border-radius:3px;font-size:11px;background:#ccc;color:#333">Npt</span> 배점</p>
+<p><b>별점:</b> ★★★ = 2026 출제 확률 매우 높음 · ★★ = 가능성 있음 · ★ = 참고용</p>
+<p><b>제외:</b> T/F 유형은 <a href="#tf-trainer" style="color:#4361ee;font-weight:bold">⚡ T/F 트레이너</a>에서 66문항 연습.</p>
+</div>
+
+<!-- ================= 유형 1: MapReduce Pseudocode ================= -->
+<h3 class="type-title">📝 유형 1: MapReduce Pseudocode 작성 <span class="star">★★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-high">매년 (closed-book 2026 거의 확실)</span> · <b>관련 강의:</b> L2 · <b>무엇을 묻나:</b> 주어진 계산 작업을 Map / Reduce 함수로 직접 손코딩. Combiner 활용 여부도.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 해결 패턴</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+<b>기본 signature:</b><br>
+<code>Map(key, value)</code> → <code>emit(k', v')</code> 여러 개<br>
+<code>Reduce(k', [v', ...])</code> → <code>emit(k', result)</code>
+</div>
+<p><b>Combiner 조건:</b> Reduce 함수가 <b>commutative + associative</b>일 때만 적용 가능</p>
+
+<h4 style="margin-top:14px">📚 정석 4가지 패턴 (암기 필수)</h4>
+<pre style="background:#fff8e1;color:#333;font-size:12px;margin:8px 0"><b>1. Word Count</b>
+Map(key, line):
+    for word in line.split():
+        emit(word, 1)
+Reduce(word, counts):
+    emit(word, sum(counts))
+# Combiner OK (sum = comm + assoc)
+
+<b>2. Matrix × Vector (v가 메모리에 들어감)</b>
+Map((i,j), m_ij):
+    emit(i, m_ij * v[j])     # v는 broadcast
+Reduce(i, values):
+    emit(i, sum(values))
+
+<b>3. Variance by Grade</b>
+Map(key, (sid, grade, score)):
+    emit(grade, score)
+Reduce(grade, scores):
+    n    = len(scores)
+    mean = sum(scores) / n
+    var  = sum((s - mean)**2 for s in scores) / n
+    emit(grade, var)
+# Combiner 불가 — variance는 mean 의존
+
+<b>4. Mutual Friends (공통 친구)</b>
+Map(user, friends):
+    for pair (u, v) in friends:
+        emit(sorted((u, v)), user)
+Reduce((u, v), mutuals):
+    emit((u, v), mutuals)   # 공통 친구</pre>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📘 공식</span>
+<span class="badge badge-score">20pt</span>
+<span>[2024 Midterm Q2(a)] Matrix-Vector with 6-number memory limit</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문 (as given on exam)</div>
+<div class="problem-original">Compute Av using MapReduce, where v ∈ ℝ⁶ and A ∈ ℝ^(3×6). The memory can store only 6 numbers at a time. Describe the MapReduce process including use of a Combiner.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 모범답안</div>
+<div class="problem-answer">
+v(6개)가 메모리에 들어감 → <b>Case 1 (정석 패턴 2번)</b>.
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">Map((i,j), m_ij):
+    emit(i, m_ij * v[j])
+Reduce(i, values):
+    emit(i, sum(values))</pre>
+<b>Combiner 활용:</b> sum = commutative + associative → Map에서 local partial sum 수행 → shuffle 데이터 대폭 감소.
+<br><b>예시:</b> A=[[1..6],[7..12],[13..18]], v=[1..6] → <b>Av = [91, 217, 343]</b>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+• 핵심: v를 모든 Mapper에 <b>broadcast</b>해서 메모리에 올려둠<br>
+• 각 Map은 m_ij와 대응 v[j]를 곱해 row i로 emit<br>
+• Reduce에서 같은 row 곱들을 sum<br>
+• <b>Combiner 없으면</b> (i, val) 모두 shuffle → 네트워크 부하 큼<br>
+• Combiner 적용 시 row당 1개 값만 shuffle
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📘 공식</span>
+<span class="badge badge-score">5pt</span>
+<span>[2024 Midterm Q2(c)] Variance of Scores by Grade</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Using MapReduce, write pseudocode to calculate the variance of scores for each grade.
+Input:  (Student ID, Grade, Score).
+Output: (Grade, Variance).</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 모범답안</div>
+<div class="problem-answer">
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">Map(_, (sid, grade, score)):
+    emit(grade, score)
+
+Reduce(grade, scores):
+    n    = len(scores)
+    mean = sum(scores) / n
+    var  = sum((s - mean)**2 for s in scores) / n
+    emit(grade, var)</pre>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>⚠️ "Combiner 쓸 수 있나?" 물으면 답: NO</b><br>
+• variance 계산은 mean 의존 → 모든 score를 모아야 함<br>
+• 일반 combiner는 (grade, score) 쌍을 합치는 게 의미 없음<br>
+• <b>단, 변형 combiner:</b> (N, SUM, SUMSQ)를 분리 전달하면 가능 (BFR 스타일)
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📘 공식</span>
+<span class="badge badge-score">10pt</span>
+<span>[2024 Midterm Q2(b)] Why Map failure re-runs ALL, Reduce only in-progress?</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">In MapReduce, when a Map worker fails, all tasks assigned to that worker need to be re-executed (including completed ones).
+When a Reduce worker fails, only in-progress tasks need to be re-executed.
+Explain why this difference exists.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 모범답안</div>
+<div class="problem-answer">
+<ul>
+<li><b>Map 출력</b>은 worker 노드의 <b>로컬 디스크</b>에 저장 → 노드 실패 시 파일 접근 불가 → 완료된 task까지 전부 재실행.</li>
+<li><b>Reduce 출력</b>은 <b>DFS (distributed file system, replicated)</b>에 저장 → 노드 실패해도 출력 살아남음 → 진행 중 task만 재실행.</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+핵심: <b>두 출력의 저장 위치 차이</b>.<br>
+• Map 중간결과 DFS에 저장하면 안정적이지만 I/O 폭증 → <b>로컬 디스크 선택</b> (성능 최적화)<br>
+• Reduce 최종결과는 durability 중요 → <b>DFS</b>에 저장 (안정성 최적화)<br>
+• 이 trade-off가 fault-tolerance 정책을 결정.
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 2: Spark Code ================= -->
+<h3 class="type-title">⚡ 유형 2: Spark 코드 빈칸 / 작성 <span class="star">★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-med">2021, 2024 Final 출제 (midterm은 가능성)</span> · <b>관련 강의:</b> L3 · <b>무엇을 묻나:</b> Spark API 기초 활용 (transformation chain 복원).</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 주요 Spark API</h4>
+<table style="font-size:13px">
+<tr><th>Operation</th><th>Type</th><th>Dep</th><th>용도</th></tr>
+<tr><td><code>map(f)</code></td><td>Trans</td><td>Narrow</td><td>1:1 변환</td></tr>
+<tr><td><code>flatMap(f)</code></td><td>Trans</td><td>Narrow</td><td>1:N 변환 (flatten)</td></tr>
+<tr><td><code>flatMapValues(f)</code></td><td>Trans</td><td>Narrow</td><td>(k,v)에서 v만 flatMap, k 유지</td></tr>
+<tr><td><code>filter(p)</code></td><td>Trans</td><td>Narrow</td><td>predicate 만족만</td></tr>
+<tr><td><code>groupByKey()</code></td><td>Trans</td><td><b>Wide</b></td><td>같은 키로 모으기</td></tr>
+<tr><td><code>reduceByKey(f)</code></td><td>Trans</td><td><b>Wide</b></td><td>groupBy + reduce</td></tr>
+<tr><td><code>join(rdd2)</code></td><td>Trans</td><td><b>Wide</b></td><td>두 RDD 키로 병합</td></tr>
+<tr><td><code>intersection(rdd2)</code></td><td>Trans</td><td><b>Wide</b></td><td>공통 원소</td></tr>
+<tr><td><code>collect()</code></td><td>Action</td><td>-</td><td>드라이버로 가져오기</td></tr>
+</table>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">3pt</span>
+<span>[2021 Final Q2(a)] flatMapValues 복원</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Suppose you are given the following Spark program along with its output. Please fill in one missing line so that the code prints the output.
+
+rdd1 = sc.parallelize([("1,2","a,b"), ("3,4","b,c"), ("5,6","d,e")])
+rdd2 = ____________________________
+print(rdd2.collect())
+
+Expected output:
+[("1,2","a"), ("1,2","b"), ("3,4","b"), ("3,4","c"), ("5,6","d"), ("5,6","e")]</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답</div>
+<div class="problem-answer">
+<code style="font-size:14px">rdd2 = rdd1.flatMapValues(lambda s: s.split(","))</code>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+• Key는 그대로, value만 "a,b" → ["a","b"]로 flatten<br>
+• <code>flatMapValues</code>는 key 유지 + value만 flatMap — 이 패턴의 정확한 용도<br>
+• 일반 <code>flatMap</code>은 (key,value) 전체 튜플로 다룸 → 다른 결과
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">5pt</span>
+<span>[2021 Final Q2(b)] intersection + join 조합</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">rdd1 = sc.parallelize(["a", "a", "b", "c", "d"])
+rdd2 = sc.parallelize(["a", "a", "c", "d", "d"])
+rdd3 = sc.parallelize(["b", "c", "d"])
+rdd4 = rdd1.intersection(rdd2)
+___________________________
+___________________________
+___________________________
+print(rdd_final.collect())
+
+Expected output: [("d", (0, 1)), ("c", (0, 1))]</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답 (추정)</div>
+<div class="problem-answer">
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">rdd5 = rdd4.map(lambda x: (x, 0))      # [("a",0),("c",0),("d",0)]
+rdd6 = rdd3.map(lambda x: (x, 1))      # [("b",1),("c",1),("d",1)]
+rdd_final = rdd5.join(rdd6)            # [("c",(0,1)),("d",(0,1))]</pre>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+• rdd4 = rdd1∩rdd2 = ["a","c","d"] (중복 제거됨)<br>
+• 출력 형태 <code>(key, (0, 1))</code>을 보면 <b>join</b> 사용 힌트<br>
+• 각 RDD를 (원소, 태그) 쌍으로 변환 → join으로 공통 원소만 남음<br>
+• 결과: rdd4와 rdd3의 공통 원소 {c, d}만 (0,1)로 출력<br>
+• <b>주의:</b> Spark join은 순서 보장 안 함 → output 순서는 다를 수 있음
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 3: Frequent Itemsets ================= -->
+<h3 class="type-title">🛒 유형 3: Frequent Itemsets 시뮬레이션 <span class="star">★★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-high">매년 (계산+증명 결합)</span> · <b>관련 강의:</b> L4, L5 · <b>무엇을 묻나:</b> A-Priori / PCY / Toivonen 손으로 실행.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 해결 패턴</h4>
+<p><b>A-Priori 손풀이 순서:</b></p>
+<ol>
+<li><b>Pass 1:</b> 각 item support 카운트 → support ≥ s인 item = L₁</li>
+<li><b>Between:</b> frequent item을 1..m으로 재번호</li>
+<li><b>Pass 2:</b> frequent item끼리 pair만 카운트 → L₂</li>
+<li><b>일반:</b> L_{k-1} → C_k 구성 → support 카운트 → L_k 반복</li>
+</ol>
+<p><b>PCY 추가:</b> Pass 1 여유 메모리 → pair hash table → bitmap (1/32 공간) → Pass 2는 두 조건 (frequent items + frequent bucket)</p>
+<p><b>Toivonen 추가:</b> 샘플 + negative border → 전체 검증 → border가 frequent면 재시도</p>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📘 공식</span>
+<span class="badge badge-score">20pt</span>
+<span>[2024 Midterm Q3] Toivonen with Sample + Negative Border</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Given 8 transactions T1–T8 with items {A, B, C, D, E}, support threshold s = 3.
+Use Toivonen's algorithm with sample {T1, T2, T4, T5} and s' = 1.
+
+(i)  Find frequent itemsets in the sample and construct the negative border.
+(ii) Prove there are no false negatives.
+(iii) Find T9, T10 that make the algorithm fail to terminate.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 모범답안</div>
+<div class="problem-answer">
+<b>(i)</b> s'=1이면 샘플에 1번 이상 등장한 모든 itemset이 frequent.
+<br>Sample: T1={A,B,D}, T2={A,C,D,E}, T4={A,B,E}, T5={A,B,C}.
+<br>• Singletons: {A},{B},{C},{D},{E} 모두 frequent
+<br>• Pairs: {A,B},{A,C},{A,D},{A,E},{B,C},{B,D},{B,E},{C,D},{C,E},{D,E} 대부분 frequent
+<br>• Triples in sample: {A,B,D}(T1), {A,B,E}(T4), {A,B,C}(T5), {A,C,D}(T2), {A,C,E}(T2), {A,D,E}(T2), {C,D,E}(T2)
+<br>• <b>Negative border:</b> 샘플에 없지만 모든 immediate subset은 frequent. 예: <code>{B,C,D}</code> — 2-subset {B,C},{B,D},{C,D} 모두 frequent이나 실제 샘플에선 미출현.
+
+<br><br><b>(ii) No false negative:</b> 전체에서 frequent인 itemset S가 있다면,
+<ul>
+<li>S의 모든 subset도 전체에서 frequent (monotonicity)</li>
+<li>S가 샘플에서 frequent 아니라면, S 또는 S의 어떤 subset이 negative border에 있음</li>
+<li>Pass 2에서 border까지 전체 데이터로 체크 → 놓친 S 발견</li>
+</ul>
+
+<br><b>(iii) 실패 시나리오:</b> negative border 원소가 전체에서 frequent이 되어야 함. 예: {B,C,D}가 border인데 T6={B,C,D} 이미 존재하고 T9={B,C,D}, T10={B,C,D} 추가하면 support ≥ 3 → 실패.
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>Toivonen의 핵심 아이디어:</b> 샘플에서 놓친 frequent itemset은 반드시 negative border에 걸림. 이걸 전체 데이터로 검증하면 false negative 없음.<br>
+<b>단점:</b> border 원소가 실제 frequent이면 알고리즘 실패 → 재샘플링. 최악의 경우 수렴 보장 없음 (평균 상수 패스).
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">10pt</span>
+<span>[2021 Final Q3] Divisor Example — Frequent Items & Pairs ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Suppose there are 50 items numbered 1 to 50. Also say there are 50 baskets numbered 1 to 50. Item i is in basket b if and only if i divides b without a remainder. As a result, item 1 is in all baskets, item 2 is in the 25 even-number baskets, and so on. Basket 6 consists of the items (1, 2, 3, 6) as these are the integers that divide 6. Answer the following.
+
+(a) If the support threshold is 5, which items are frequent?
+(b) If the support threshold is 5, which pairs of items are frequent?
+(c) What is the sum of the sizes of all the baskets?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답</div>
+<div class="problem-answer">
+<b>(a)</b> 10개 items: <b>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}</b>
+<br><b>(b)</b> 19개 pairs (아래 풀이)
+<br><b>(c)</b> <b>207</b>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>(a)</b> item i의 support = |{b : i|b, 1≤b≤50}| = ⌊50/i⌋. 5 이상 ⇔ i ≤ 10.
+<br><br><b>(b)</b> pair {i,j}의 support = basket b가 i,j 둘 다의 배수인 개수 = ⌊50/lcm(i,j)⌋. 5 이상 ⇔ lcm(i,j) ≤ 10.
+<br>• {1, *}: 모두 OK (9개)
+<br>• {2,3}(lcm6), {2,4}(4), {2,5}(10), {2,6}(6), {2,8}(8), {2,10}(10) → 6개
+<br>• {3,6}(6), {3,9}(9) → 2개
+<br>• {4,8}(8) → 1개
+<br>• {5,10}(10) → 1개
+<br>⇒ 합 <b>19</b>
+<br><br><b>(c)</b> sum = Σ_b |divisors(b)| = Σ_{i=1}^{50} ⌊50/i⌋ (재배열 trick).
+<br>= 50+25+16+12+10+8+7+6+5+5 + 2·4 + 4·3 + 9·2 + 25·1 = <b>207</b>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 4: MinHash + LSH ================= -->
+<h3 class="type-title">🔍 유형 4: MinHash 서명 + LSH Banding 계산 <span class="star">★★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-high">2025 midterm 출제, 2026 범위 포함</span> · <b>관련 강의:</b> L6, L7 · <b>무엇을 묻나:</b> 서명 계산 + Jaccard 추정 + S-curve 튜닝.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 MinHash 서명 알고리즘</h4>
+<pre style="background:#fff8e1;color:#333;font-size:12px;margin:8px 0">sig[i][c] = ∞ for all hash i, column c
+for each row r with value(c, r) = 1:
+    for each hash i:
+        sig[i][c] = min(sig[i][c], h_i(r))
+</pre>
+
+<p><b>근본 항등식 (증명 가능해야):</b> P(h(C₁)=h(C₂)) = Jaccard(C₁, C₂).<br>
+증명: permutation 후 "첫 active row(둘 중 하나라도 1)"가 둘 다 1일 확률 = |∩|/|∪|.</p>
+
+<h4 style="margin-top:14px">🔑 LSH Banding 공식</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+P(candidate pair) = 1 - (1 - s^r)^b<br>
+Threshold t ≈ (1/b)^(1/r)<br>
+(k=r·b 고정) r↑: steep, precision↑ recall↓ | b↑: 완만, recall↑ precision↓
+</div>
+
+<h4 style="margin-top:14px">🔑 AND/OR Construction</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+AND (모두 일치): p_new = p^k<br>
+OR (하나라도): p_new = 1 - (1-p)^k
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📘 공식</span>
+<span class="badge badge-score">15pt</span>
+<span>[2025 Midterm Q2] Full LSH Pipeline — Finding Similar Items</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문 (요약)</div>
+<div class="problem-original">3 documents, 6-character shingles, indexing function f → characteristic matrix.
+Apply 4 hash functions g1-g4 → compute minhash signatures.
+Compute true Jaccard and estimated Jaccard (from signatures) for each pair.
+Apply LSH banding with m=4 for various (r, b) configurations.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 모범답안 (풀이 과정)</div>
+<div class="problem-answer">
+<ol>
+<li><b>Normalize</b> 문서: lowercase, 구두점 제거</li>
+<li><b>6-character shingle</b> 추출, f(shingle) → row index</li>
+<li><b>Characteristic matrix</b>: row=shingle idx, col=doc</li>
+<li><b>Hash 적용:</b> g_i(r) → col별 min 유지 → signature</li>
+<li><b>True Jaccard</b> = |∩|/|∪| (실제 shingle 집합)</li>
+<li><b>Estimated Jaccard</b> = signature 일치 row 비율</li>
+<li><b>LSH banding (m=4):</b> 예 r=2,b=2 → P(cand) = 1-(1-s²)²</li>
+</ol>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+전형적 파이프라인 문제. 각 단계를 순서대로 따라가며 표를 채우면 됨. <b>함정:</b> signature 길이가 작으면(m=4) 추정 오차 큼 → true와 estimated Jaccard가 다르게 나올 수 있음.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">8pt</span>
+<span>[2021 Final Q4] LSH AND/OR Construction + Fixed Point ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Suppose we have an LSH family F of (d1, d2, 0.6, 0.4) hash functions.
+
+(a) Suppose we use two member functions from F and the AND-construction to form a (d1, d2, w, x) family. Calculate w and x.
+(b) Suppose we use two member functions from F and the OR-construction to form a (d1, d2, y, z) family. Calculate y and z.
+(c) Suppose we perform cascading where we do the OR-construction described in (b) and then the AND-construction described in (a). What is the fixedpoint p?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답</div>
+<div class="problem-answer">
+<b>(a) AND:</b> w = 0.6² = <b>0.36</b>, x = 0.4² = <b>0.16</b>
+<br><b>(b) OR:</b> y = 1 − (1−0.6)² = <b>0.84</b>, z = 1 − (1−0.4)² = <b>0.64</b>
+<br><b>(c) Cascade fixed point:</b> p ≈ <b>0.38</b> (p = p²(2−p)² 만족)
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>(a) AND:</b> 두 member 모두 충돌해야 → 확률 제곱<br>
+<b>(b) OR:</b> 하나라도 충돌 → 1 − (1 − p)²<br>
+<b>(c) Cascade OR → AND:</b>
+<br>• 입력 p → OR 후: p₁ = 1 − (1−p)² = p(2−p)
+<br>• AND 후: p₂ = p₁² = p²(2−p)²
+<br>• Fixed point: p = p²(2−p)². p≠0이면 1 = p(2−p)². 수치해 p ≈ 0.38.
+<br><b>의미:</b> cascading으로 S-curve 더 가팔라짐 → 0.38 아래는 더 낮게, 위는 더 높게 → amplification.
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 5: Clustering Simulation ================= -->
+<h3 class="type-title">🎯 유형 5: Clustering 시뮬레이션 <span class="star">★★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-high">2025 midterm CURE+A-CURE 출제</span> · <b>관련 강의:</b> L8, L9 · <b>무엇을 묻나:</b> k-means++ 확률 / BFR Mahalanobis / CURE 시뮬. Novel Variant 대비 필수.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 k-means++ D² 확률</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+Pr[pick p] = D(p)² / Σ_q D(q)²
+</div>
+<p>D(p) = 이미 선택된 centroid와의 최소 거리. <b>제곱</b>이 핵심 (outlier 가중치↑).</p>
+
+<h4 style="margin-top:14px">🔑 BFR Sufficient Statistics</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+N, SUM_d = Σ x_d, SUMSQ_d = Σ x_d²<br>
+centroid_d = SUM_d / N<br>
+σ_d² = SUMSQ_d / N − (SUM_d / N)²<br>
+mahal = √Σ_d ((x_d − c_d) / σ_d)² &lt; 2√D → DS 배정
+</div>
+
+<h4 style="margin-top:14px">🔑 CURE 5단계</h4>
+<ol>
+<li>sample 추출 → 메모리 내 hierarchical clustering</li>
+<li>각 cluster에서 대표점 k개 선택 (centroid에서 가장 먼 점 → 그 다음 기존 rep에서 가장 먼 점)</li>
+<li><b>Shrink:</b> p' = (1−α)p + αc (α ≈ 0.2)</li>
+<li>나머지 점을 shrunk rep 기준 가장 가까운 cluster에 배정</li>
+</ol>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📘 공식</span>
+<span class="badge badge-score">20pt</span>
+<span>[2025 Midterm Q3] CURE Simulation + A-CURE Novel Variant ★★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문 (요약)</div>
+<div class="problem-original">(a) Given 2 clusters with points P1-P8.
+    (i)   Compute centroid of each cluster.
+    (ii)  Select 2 representative points per cluster.
+    (iii) Shrink representatives 50% toward centroid.
+    (iv)  Assign new point P9 to a cluster.
+
+(b) A-CURE (Adjusted CURE): novel variant where shrinkage ratio α_i = 1/d_i.
+    Compute moved representatives.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 모범답안</div>
+<div class="problem-answer">
+<b>(a) 표준 CURE:</b>
+<ol>
+<li>C1 centroid = (−2, 2), C2 centroid = (2, −3)</li>
+<li>각 cluster에서 centroid에서 가장 먼 점 → 첫 rep. 첫 rep에서 가장 먼 점 → 두 번째 rep.</li>
+<li>Shrink 50%: p' = 0.5·p + 0.5·c (α = 0.5)</li>
+<li>P9와 모든 shrunk rep의 거리 계산 → 최소 거리의 cluster로 배정</li>
+</ol>
+
+<b>(b) A-CURE:</b> α_i = 1/d_i → <b>가까운 rep은 더 많이 shrink, 먼 rep은 덜 shrink.</b>
+<br>p'_i = (1 − α_i)p_i + α_i·c = (1 − 1/d_i)p_i + (1/d_i)c
+<br>• 먼 rep (큰 d_i): α_i 작음 → 거의 이동 안 함, 원래 위치 유지
+<br>• 가까운 rep (작은 d_i): α_i 큼 → centroid 방향으로 많이 이동
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>Novel Variant 푸는 요령:</b>
+<br>1. 원본 CURE의 shrink 공식을 새 α 정의로 대체
+<br>2. 새 공식 계산 (cluster별로)
+<br>3. 효과를 <b>정성적으로</b> 설명 (outlier 효과 변화 등)
+<br>
+<br><b>2026 대비:</b> 비슷한 "시험장 정의" 변형 대비. 각 알고리즘 파라미터 역할 이해 필수.
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 6: SVD Computation ================= -->
+<h3 class="type-title">📐 유형 6: SVD 계산 (Projection, Energy) <span class="star">★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-med">2021 final 출제, 2026 midterm 신규 범위(L10)</span> · <b>관련 강의:</b> L10 · <b>무엇을 묻나:</b> SVD 명시적 계산 + projection + 유사도.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 SVD 공식들</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+M_{m×n} = U_{m×r} Σ_{r×r} V^T_{r×n}<br>
+Energy total = Σ σ_i² = ||M||_F²<br>
+Retained by top-k = Σ_{i≤k} σ_i² / Σ σ_i²<br>
+||M − M_k||_F² = Σ_{i>k} σ_i²<br>
+new user q의 concept projection = <b>q · V</b>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">8pt</span>
+<span>[2021 Final Q5] SVD Projection + Cosine Similarity ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Suppose we have user ratings of movies as shown in Table 1 (M: 4×4 matrix).
+U1 = [1,1,0,0], U2 = [2,2,0,0], U3 = [0,0,3,0], U4 = [0,0,0,4].
+Its SVD: UΣV^T = (given)
+
+Suppose new user U5 has: 1 for M1, 2 for M3, 3 for M4. So U5 = [1, 0, 2, 3].
+
+(a) What is the representation of U5 in the concept space?
+(b) Which user among U1-U4 is most similar to U5 in cosine distance in concept space?
+(c) Calculate cosine of the angle between U5 and the closest user in concept space.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답</div>
+<div class="problem-answer">
+<b>(a)</b> U5 in concept space = <b>[3, √2/2, 2]</b>
+<br><b>(b)</b> 가장 유사: <b>U4</b>
+<br><b>(c)</b> cos(U5, U4) = <b>12 / (4√13.5)</b> = <b>3/√13.5 ≈ 0.816</b>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>(a)</b> concept space projection = q · V.
+<br>V의 각 column (V^T의 row를 전치):
+<br>• V col1 = [0, 0, 0, 1]^T
+<br>• V col2 = [√2/2, √2/2, 0, 0]^T
+<br>• V col3 = [0, 0, 1, 0]^T
+<br>U5 · V:
+<br>• entry 1: 1·0 + 0·0 + 2·0 + 3·1 = <b>3</b>
+<br>• entry 2: 1·(√2/2) + 0·(√2/2) + 2·0 + 3·0 = <b>√2/2</b>
+<br>• entry 3: 1·0 + 0·0 + 2·1 + 3·0 = <b>2</b>
+
+<br><br><b>(b)</b> 모든 user를 concept space로 projection:
+<br>• U1·V = [0, √2, 0], U2·V = [0, 2√2, 0] (같은 방향)
+<br>• U3·V = [0, 0, 3]
+<br>• U4·V = [4, 0, 0]
+<br>• U5·V = [3, √2/2, 2]
+<br>각 cosine similarity 계산 (내적 / 노름 곱):
+<br>• sim(U5, U4) = (3·4)/(√13.5 · 4) = 3/√13.5 ≈ <b>0.816</b> ← 최대
+<br>• sim(U5, U3) = (2·3)/(√13.5 · 3) ≈ 0.544
+<br>• sim(U5, U1) ≈ sim(U5, U2) ≈ 0.193 (방향 같아 동일)
+<br>⇒ U4가 가장 유사.
+
+<br><br><b>(c)</b> cos(U5, U4) = 12 / (4√13.5) = 3/√13.5 ≈ <b>0.816</b>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 7: CF ================= -->
+<h3 class="type-title">👥 유형 7: Collaborative Filtering 계산 <span class="star">★★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-med">2022, 2024 final 출제</span> · <b>관련 강의:</b> L12 · <b>무엇을 묻나:</b> 시간복잡도 / Pearson / 추천 설계.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 Pearson Correlation</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+sim(x,y) = Σ(r_xi − r̄_x)(r_yi − r̄_y) / √[Σ(r_xi − r̄_x)²] √[Σ(r_yi − r̄_y)²]<br>
+(공통 평가 아이템 S_xy에 대해서만)
+</div>
+<h4 style="margin-top:10px">🔑 예측 (k-NN weighted)</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+r̂_xi = r̄_x + Σ sim(x,y)·(r_yi − r̄_y) / Σ |sim(x,y)|
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">6pt</span>
+<span>[2022 Final Q2(a,b)] CF 시간복잡도</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Given a utility matrix with N users and M items:
+
+(a) In terms of N and M, what is the time complexity of predicting the ratings of a customer using user-user collaborative filtering?
+(b) What is the time complexity of predicting the ratings of a customer using item-item collaborative filtering?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답 (추정)</div>
+<div class="problem-answer">
+<b>(a) User-user:</b> <b>O(NM)</b>
+<br><b>(b) Item-item:</b> online <b>O(kM)</b> (pre-compute 전제), offline pre-compute는 O(M²N)
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>(a) User-user:</b>
+<ul>
+<li>target user x에 대해 모든 N−1 유저와 similarity 계산. 각 similarity는 M 아이템 비교 → O(NM).</li>
+<li>그 후 M 아이템 예측, 각 예측에 top-k 유저 참조 → O(kM).</li>
+<li>총 <b>O(NM + kM) ≈ O(NM)</b>.</li>
+</ul>
+<b>(b) Item-item:</b>
+<ul>
+<li>예측할 아이템 i마다, x가 평가한 아이템(~M)과 similarity 계산. 각 sim은 N 유저 비교 → O(M·N) per prediction.</li>
+<li>M 아이템 예측 시 O(M²N) — 하지만 item similarity는 <b>오프라인 pre-compute</b> 가능.</li>
+<li>온라인만: <b>O(kM)</b> (pre-compute된 similarity로 top-k 참조).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 풀이</span>
+<span class="badge badge-score">12pt</span>
+<span>[2024 Final Q2] Diversity-aware Recommender (open-ended)</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제 원문</div>
+<div class="problem-original">Diversity is an important aspect to evaluate a recommender system. That is, we want each user to get a list of recommendation consisting of diverse items (e.g., we don't want the list to be filled with all horror movies).
+
+Suppose that we are given only the utility matrix R ∈ [1,5]^(N×M), where N is the number of users and M is the number of items. Describe your own way to create a recommender system that supports high diversity, with your own definition of diversity.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 내 풀이 (예시 답안)</div>
+<div class="problem-answer">
+<b>Diversity 정의:</b> 추천 리스트 S에 대해 <br>
+<code>diversity(S) = (1 / |S|(|S|-1)) · Σ_{i,j ∈ S, i≠j} (1 − sim(i, j))</code>
+<br>(리스트 내 모든 pair의 평균 <b>item-item cosine distance</b>)
+
+<br><br><b>추천 알고리즘 — Greedy MMR (Maximal Marginal Relevance):</b>
+<ol>
+<li>user 평점 → SVD/Pearson으로 item-item similarity 행렬 S 오프라인 구축</li>
+<li>user u의 각 item i에 relevance(u, i) 예측 (item-item CF)</li>
+<li>추천 리스트 L은 greedy하게 선택:
+<br><code>score(i) = λ·relevance(u, i) − (1−λ)·max_{j ∈ L} sim(i, j)</code></li>
+<li>최초 가장 relevant item 선택, 이후 score(i) 최대화 — 기존 선택과 덜 유사한 걸 선호</li>
+<li>λ = 0.7 (trade-off 파라미터)</li>
+</ol>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>Open-ended이므로 설득력 있는 자신만의 정의 + 구체 알고리즘 필요.</b><br>
+<b>핵심 포인트:</b> (1) diversity를 수식으로 정의 (2) relevance vs diversity trade-off (λ) (3) item-item similarity 재사용
+<br>다른 접근: Determinantal Point Process (DPP), clustering 기반 분산 등도 OK.
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 유형 8: UV + SGD ================= -->
+<h3 class="type-title">🧮 유형 8: UV Decomposition + SGD Update <span class="star">★</span></h3>
+<div class="card">
+<p><b>출제 빈도:</b> <span class="freq-low">T/F 위주, 직접 계산은 드묾</span> · <b>관련 강의:</b> L13 · <b>무엇을 묻나:</b> SGD 1-step 업데이트 + BPR.</p>
+</div>
+
+<div class="pattern-box">
+<h4>🔑 암기 필수 공식</h4>
+<div class="formula-box" style="text-align:left;margin:8px 0">
+r̂ = u_x^T v_i &nbsp;(bias 포함: r̂ = μ + b_x + b_i + u^T v)<br>
+SSE = Σ_{(x,i) ∈ obs} (r_xi − u_x^T v_i)² + λ(||U||² + ||V||²)<br><br>
+<b>SGD update 3줄:</b><br>
+ε = 2(r − u^T v)<br>
+u ← u + η(ε·v − λ·u)<br>
+v ← v + η(ε·u − λ·v)<br><br>
+<b>BPR pairwise loss:</b> Σ_{(x,i,j)} −log σ(u_x^T v_i − u_x^T v_j)
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-mine">📝 내 연습문제</span>
+<span class="badge badge-score">5pt</span>
+<span>연습: SGD 1-step (practice problem)</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 연습 문제</div>
+<div class="problem-original">u = [1, 0.5], v = [2, -1], observed rating r = 3, learning rate η = 0.1, regularization λ = 0.01.
+Perform one SGD step. What are u_new and v_new?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 정답</div>
+<div class="problem-answer">
+u_new = <b>[1.599, 0.1995]</b>
+<br>v_new = <b>[2.298, -0.849]</b>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💭 풀이 해설</div>
+<div class="problem-solution">
+<b>1. 예측값 계산:</b>
+<br>û = u^T v = 1·2 + 0.5·(−1) = <b>1.5</b>
+
+<br><br><b>2. 오차 ε:</b>
+<br>ε = 2(r − û) = 2(3 − 1.5) = <b>3</b>
+
+<br><br><b>3. u 업데이트:</b>
+<br>u_new = u + η(ε·v − λ·u)
+<br>= [1, 0.5] + 0.1·(3·[2,−1] − 0.01·[1, 0.5])
+<br>= [1, 0.5] + 0.1·([6, −3] − [0.01, 0.005])
+<br>= [1, 0.5] + [0.599, −0.3005]
+<br>= <b>[1.599, 0.1995]</b>
+
+<br><br><b>4. v 업데이트:</b>
+<br>v_new = v + η(ε·u − λ·v)
+<br>= [2, −1] + 0.1·(3·[1, 0.5] − 0.01·[2, −1])
+<br>= [2, −1] + 0.1·[2.98, 1.51]
+<br>= <b>[2.298, −0.849]</b>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= 2026 출제 예측 ================= -->
+<div class="card exam" style="margin-top:24px">
+<span class="tag tag-exam">🔮 2026 Midterm 출제 예측</span>
+<h3>유형별 2026 출제 확률</h3>
+<table>
+<tr><th>유형</th><th>예상 확률</th><th>근거</th></tr>
+<tr><td>📝 T/F (범위 전체)</td><td class="freq-high">🔥 100%</td><td>매년 Q1, 20문항 (-1 패널티)</td></tr>
+<tr><td>📝 MapReduce Pseudocode</td><td class="freq-high">🔥 90%</td><td>2024, 2025 모두 출제. closed-book 2026 매우 높음</td></tr>
+<tr><td>🛒 Frequent Itemsets 시뮬</td><td class="freq-high">🔥 85%</td><td>2024 Toivonen, 2021 약수예제. L4-L5 핵심</td></tr>
+<tr><td>🔍 MinHash/LSH 계산</td><td class="freq-high">🔥 85%</td><td>2025 midterm 직접 출제. L6-L7 확정 범위</td></tr>
+<tr><td>🎯 Clustering 시뮬</td><td class="freq-med">⚠️ 75%</td><td>2025 CURE+A-CURE. Novel Variant 대비</td></tr>
+<tr><td>📐 SVD 계산</td><td class="freq-med">⚠️ 60%</td><td>2021 final 출제. L10은 midterm 신규 범위</td></tr>
+<tr><td>👥 CF 시간복잡도/Pearson</td><td class="freq-med">⚠️ 50%</td><td>L12. 2022 final 선례</td></tr>
+<tr><td>⚡ Spark Code Blank</td><td class="freq-low">⚠️ 35%</td><td>2021, 2024 final. closed-book엔 드물 수도</td></tr>
+<tr><td>🧮 UV/SGD 계산</td><td class="freq-low">⚠️ 40%</td><td>L13 신규. T/F 가능성 더 높음</td></tr>
+<tr><td>📐 CUR 계산</td><td class="freq-low">⚠️ 30%</td><td>L11, 기출 드뭄</td></tr>
+</table>
+</div>
+
+</section>
+
+
+<!-- ====================================================== -->
+<!--        5일 공부 순서 (Study Schedule)              -->
+<!-- ====================================================== -->
+<section id="schedule">
+<h2 class="section-title">🗓️ 5일 공부 순서 (2026-04-18 ~ 04-23)</h2>
+
+<div class="card intuition">
+<p><b>핵심 원칙:</b></p>
+<ol>
+<li>매일 <b>강의 이해 → 유형별 기출 풀이 → T/F 트레이너</b> 순</li>
+<li>계산형 유형 (MapReduce, LSH, SVD)은 <b>손으로 직접 풀어보기</b> (closed-book 대비)</li>
+<li>공식은 <b>유도 과정 이해 후 암기</b> (단순 외우기 X)</li>
+<li>매일 공부 끝날 때 <b>그날 배운 T/F</b>는 즉시 풀어볼 것</li>
+</ol>
+<p style="color:#666;font-size:13px;margin-top:10px">※ 각 날짜는 <b>학습 시간 기준 3~5시간</b> 가정. 여유 있으면 교재 MMDS 챕터 병행.</p>
+</div>
+
+<!-- ====== Day 1 (04-18 금) ====== -->
+<div class="problem-card">
+<div class="problem-header" style="background:linear-gradient(135deg,#1a1a2e,#dc3545)">
+<span class="badge" style="background:#fff;color:#dc3545">Day 1</span>
+<span class="badge badge-score">오늘 (04-18 금)</span>
+<span>Foundation + MapReduce/Spark</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📚 학습 내용</div>
+<div class="problem-original">
+• L1 Introduction (Bonferroni, TF-IDF, Hash, Power law, Memory hierarchy)
+• L2 MapReduce (분산 컴퓨팅, Map/Reduce, Combiner 조건, Node failure 처리)
+• L3 Spark (RDD, Transformation/Action, Wide/Narrow, Lazy evaluation, Lineage)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💪 풀어볼 문제</div>
+<div class="problem-answer">
+<ul>
+<li><b>유형 1 MapReduce Pseudocode</b> — 2024 Midterm Q2(a), Q2(b), Q2(c) 3문제 전부</li>
+<li><b>유형 2 Spark 코드</b> — 2021 Final Q2(a) flatMapValues, Q2(b) join</li>
+<li><b>MMDS Ch 2</b> — Ex 2.3.1, 2.3.2 직접 풀기</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">⚡ T/F 트레이너</div>
+<div class="problem-solution">
+"MapReduce" + "Spark" 필터 (총 ~15문항). 모르면 비워두기 연습.
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 오늘의 체크포인트</div>
+<div class="problem-original" style="background:#fff8e1;border-left-color:#ffc107">
+☐ MapReduce 3가지 정석 pseudocode 외워 쓸 수 있나? (word count, matrix-vector, variance)
+☐ Combiner 조건 (commutative + associative) 이유 설명 가능한가?
+☐ Map worker 실패 시 <b>전부 재실행</b>, Reduce는 <b>진행 중만</b> 이유?
+☐ Wide vs Narrow dependency 구분 (flatMap = Narrow 주의!)
+</div>
+</div>
+</div>
+</div>
+
+<!-- ====== Day 2 (04-19 토) ====== -->
+<div class="problem-card">
+<div class="problem-header" style="background:linear-gradient(135deg,#1a1a2e,#f57c00)">
+<span class="badge" style="background:#fff;color:#f57c00">Day 2</span>
+<span class="badge badge-score">04-19 토</span>
+<span>Frequent Itemsets Deep Dive</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📚 학습 내용</div>
+<div class="problem-original">
+• L4 A-Priori (Market-basket, Support/Confidence/Interest, Triangular vs Triples, Monotonicity)
+• L5 개선 알고리즘 (PCY, Multistage, Multihash, Random sampling, Toivonen, SON)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💪 풀어볼 문제</div>
+<div class="problem-answer">
+<ul>
+<li><b>유형 3 Frequent Itemsets ★★★</b>:
+  <ul>
+    <li>2024 Midterm Q3 Toivonen with Sample (모범답안 있음)</li>
+    <li>2021 Final Q3 약수 예제 (items/pairs/basket-size 모두)</li>
+    <li>MMDS Ch 6 Ex 6.1.1, 6.3.1 (PCY 적용)</li>
+  </ul>
+</li>
+<li>Toivonen의 <b>No FN 증명</b>과 SON의 <b>pigeonhole 증명</b> 직접 써보기</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">⚡ T/F 트레이너</div>
+<div class="problem-solution">
+"Itemsets" + "PCY/Toivonen" 필터 (~10문항). 특히 <b>"PCY uses triangular"</b>, <b>"truly frequent pair always hashes to frequent bucket"</b> 같은 함정 주의.
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 오늘의 체크포인트</div>
+<div class="problem-original" style="background:#fff8e1;border-left-color:#ffc107">
+☐ A-Priori pipeline <b>C_k → L_k → C_{k+1}</b> 그려서 설명 가능?
+☐ Triangular vs Triples: <b>p &lt; 1/3이면 triples 유리</b> 공식 유도?
+☐ PCY가 <b>왜 triples 필수</b>인지?
+☐ Multistage에서 <b>Bitmap 1 버릴 수 없는 이유</b>?
+☐ Toivonen negative border 정의 + 역할?
+☐ SON MapReduce 4개 함수 (Pass 1 Map/Reduce, Pass 2 Map/Reduce) 쓸 수 있나?
+</div>
+</div>
+</div>
+</div>
+
+<!-- ====== Day 3 (04-20 일) ====== -->
+<div class="problem-card">
+<div class="problem-header" style="background:linear-gradient(135deg,#1a1a2e,#28a745)">
+<span class="badge" style="background:#fff;color:#28a745">Day 3</span>
+<span class="badge badge-score">04-20 일</span>
+<span>LSH + k-means</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📚 학습 내용</div>
+<div class="problem-original">
+• L6 Shingling + MinHash (k-shingle, Jaccard, 핵심 항등식 P(h(C1)=h(C2))=Jaccard)
+• L7 LSH Banding (S-curve, threshold, 거리 metric, AND/OR construction)
+• L8 Clustering 1 (Hierarchical, k-means, k-means++)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💪 풀어볼 문제</div>
+<div class="problem-answer">
+<ul>
+<li><b>유형 4 MinHash/LSH ★★★</b>:
+  <ul>
+    <li>2025 Midterm Q2 Full Pipeline (모범답안 있음 — 매우 중요!)</li>
+    <li>2021 Final Q4 AND/OR Construction + Fixed Point</li>
+  </ul>
+</li>
+<li><b>유형 5 Clustering 시뮬</b> 준비:
+  <ul>
+    <li>MMDS Ch 3 Ex 3.3.3, 3.4.1, 3.5.1, 3.6.1</li>
+    <li>MMDS Ch 7 Ex 7.2.1, 7.3.1</li>
+  </ul>
+</li>
+<li><b>MinHash 항등식 증명</b> "first active row" 직접 써보기</li>
+<li>S-curve 공식 <b>P = 1 − (1 − s^r)^b</b> 유도</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">⚡ T/F 트레이너</div>
+<div class="problem-solution">
+"MinHash" + "LSH" + "k-means" 필터 (~15문항). 특히 <b>r↑이 recall↓</b>, <b>Edit distance has no simple LSH family</b> 등.
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 오늘의 체크포인트</div>
+<div class="problem-original" style="background:#fff8e1;border-left-color:#ffc107">
+☐ MinHash 서명 계산 알고리즘 (streaming) 손으로 실행?
+☐ S-curve threshold <b>t ≈ (1/b)^(1/r)</b> 외웠나?
+☐ r↑ (b↓ 고정 k) 시 <b>precision↑ recall↓</b> 이유?
+☐ 거리 metric 4공리 + 각 거리별 LSH family 매칭?
+☐ k-means++ <b>D² 확률 공식</b>?
+☐ Silhouette 공식 <b>(b − a) / max(a, b)</b>?
+</div>
+</div>
+</div>
+</div>
+
+<!-- ====== Day 4 (04-21 월) ====== -->
+<div class="problem-card">
+<div class="problem-header" style="background:linear-gradient(135deg,#1a1a2e,#0066cc)">
+<span class="badge" style="background:#fff;color:#0066cc">Day 4</span>
+<span class="badge badge-score">04-21 월</span>
+<span>BFR + SVD/CUR</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📚 학습 내용</div>
+<div class="problem-original">
+• L9 Clustering 2 (BFR N/SUM/SUMSQ, Mahalanobis, CURE 5-step, shrink)
+• L10 Dim Reduction 1 (Eigenvalue, Power Iteration, PCA)
+• L11 Dim Reduction 2 (SVD = UΣV^T, Energy, CUR sampling)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💪 풀어볼 문제</div>
+<div class="problem-answer">
+<ul>
+<li><b>유형 5 Clustering 시뮬 ★★</b>:
+  <ul>
+    <li>2025 Midterm Q3 CURE + A-CURE (모범답안 있음 — Novel Variant 연습 필수!)</li>
+  </ul>
+</li>
+<li><b>유형 6 SVD ★</b>:
+  <ul>
+    <li>2021 Final Q5 SVD Projection + Cosine Similarity (전체 단계)</li>
+    <li>MMDS Ch 11 Ex 11.2.1, 11.3.1, 11.4.1</li>
+  </ul>
+</li>
+<li><b>직접 해보기:</b>
+  <ul>
+    <li>BFR의 sufficient statistics 계산 (3개 점으로 N, SUM, SUMSQ, variance)</li>
+    <li>Mahalanobis distance 손계산</li>
+    <li>CURE shrink 공식 <b>p' = (1-α)p + αc</b> 적용</li>
+  </ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">⚡ T/F 트레이너</div>
+<div class="problem-solution">
+"BFR/CURE" + "SVD" + "CUR" 필터 (~12문항). 특히 <b>"CURE uses one centroid"</b>, <b>"SVD is unique"</b>, <b>"CUR samples uniformly"</b> 함정.
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 오늘의 체크포인트</div>
+<div class="problem-original" style="background:#fff8e1;border-left-color:#ffc107">
+☐ BFR의 DS/CS/RS 역할 차이?
+☐ <b>Mahalanobis 공식</b> + <b>threshold 2√D</b> 이유?
+☐ <b>A-CURE같은 Novel Variant 문제 풀이 전략</b>?
+☐ SVD의 <b>U(m×r), Σ(r×r), V^T(r×n)</b> 크기 암기?
+☐ <b>Frobenius 오차 = Σ_{i&gt;k} σ_i²</b>?
+☐ Energy 유지 <b>90% rule</b>?
+☐ CUR <b>column 확률 p_j = ||m_j||² / ||M||_F²</b>?
+</div>
+</div>
+</div>
+</div>
+
+<!-- ====== Day 5 (04-22 화) ====== -->
+<div class="problem-card">
+<div class="problem-header" style="background:linear-gradient(135deg,#1a1a2e,#6a1b9a)">
+<span class="badge" style="background:#fff;color:#6a1b9a">Day 5</span>
+<span class="badge badge-score">04-22 화 (시험 전날)</span>
+<span>RecSys + 전체 복습 + 기출 Full Run</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📚 학습 내용</div>
+<div class="problem-original">
+• L12 RecSys 1 (Long tail, Utility matrix, Content-based, CF, Pearson)
+• L13 RecSys 2 (UV decomposition, SGD 3줄 update, Bias 모델, BPR pairwise loss)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💪 풀어볼 문제</div>
+<div class="problem-answer">
+<b>오전 (2-3시간):</b>
+<ul>
+<li>L12-L13 강의 번역 + 정리 빠르게 훑기</li>
+<li><b>유형 7 CF</b> (2022 Final Q2 시간복잡도, 2024 Final Q2 Diversity)</li>
+<li><b>유형 8 UV/SGD</b> SGD 1-step 연습문제</li>
+</ul>
+<b>오후 (3-4시간) — 기출 FULL RUN:</b>
+<ul>
+<li><b>2024 KAIST Midterm 전체</b> 풀기 (20분 T/F + Q2 MapReduce + Q3 Toivonen)</li>
+<li><b>2025 KAIST Midterm 전체</b> 풀기 (20분 T/F + Q2 LSH + Q3 Clustering)</li>
+<li>솔루션과 맞춰보기 → 틀린 부분 그 자리에서 교정</li>
+</ul>
+<b>저녁 (1-2시간) — 마무리:</b>
+<ul>
+<li><b>T/F 트레이너 66문항 전체</b> shuffle로 풀기 (오답 &lt; 5개 되도록)</li>
+<li><b>📋 Formula Card</b> 전체 암송</li>
+<li><b>✅ Checklist "공식 없이 손으로 풀 수 있는가?"</b> 17개 전부 체크</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 시험 전날 최종 체크</div>
+<div class="problem-original" style="background:#ffebee;border-left-color:#dc3545">
+☐ <b>L1~L13 핵심 공식 전부 손으로 써보기</b> (formula card)
+☐ <b>MapReduce 4가지 정석 pseudocode</b> (word count, matrix-vector, variance, mutual friends)
+☐ <b>A-Priori 파이프라인</b> C_k↔L_k 그림 + SON pigeonhole 증명
+☐ <b>MinHash 항등식 P(h=h)=Jaccard</b> 증명 (first active row)
+☐ <b>S-curve 유도</b> 1 − (1−s^r)^b
+☐ <b>k-means++ D²</b>, <b>BFR stats</b>, <b>Mahalanobis</b>, <b>CURE shrink</b>
+☐ <b>SVD U·Σ·V^T, Eckart-Young, 90% energy</b>
+☐ <b>Pearson, item-item prediction, UV SGD 3줄</b>
+☐ <b>BPR pairwise loss</b>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">😴 취침 전</div>
+<div class="problem-solution">
+• <b>밤 늦게까지 새로운 내용 안 공부</b> — 정리된 것만 복습<br>
+• 최소 <b>6시간 수면</b> 확보<br>
+• 시험장 준비: 필기구, 학생증, 시계, 물
+</div>
+</div>
+</div>
+</div>
+
+<!-- ====== 시험 당일 ====== -->
+<div class="problem-card">
+<div class="problem-header" style="background:linear-gradient(135deg,#dc3545,#f57c00)">
+<span class="badge" style="background:#fff;color:#dc3545">🎯 Day 6</span>
+<span class="badge badge-score">04-23 수 9:30~10:45 (75분)</span>
+<span>시험 당일</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">🌅 시험 전 1시간</div>
+<div class="problem-answer">
+<ul>
+<li><b>📋 Formula Card 3번 훑기</b> — 손 풀기</li>
+<li>T/F 트레이너 shuffle 10문항만 — warm-up</li>
+<li>혼란스러운 공식 2-3개만 재암기 (<b>Mahalanobis</b>, <b>SGD update</b>, <b>BPR</b> 등 선택)</li>
+<li><b>302-208 또는 302-209</b> 교실 확인</li>
+</ul>
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">📝 시험장 전략 (75분 closed-book)</div>
+<div class="problem-original" style="background:#e7f1ff;border-left-color:#0066cc">
+<b>시간 배분 (가정 Q1 T/F 20점, Q2 15-20점, Q3 20-25점):</b>
+• <b>첫 5분:</b> 전체 훑어보고 난이도 파악, 쉬운 것부터 찜
+• <b>T/F 20문항 (목표 15분):</b>
+  - <b>확실한 것만 답 ×</b> (-1 패널티!)
+  - 애매하면 <b>반드시 비워두기</b>
+  - 목표: 15개 확답 + 5개 blank (+15점) vs 20개 찍기 기댓값 0
+• <b>계산 문제 1개 (목표 25분):</b>
+  - 문제 원문 꼼꼼히 읽기
+  - <b>가정(assumption) 명시</b>
+  - 풀이 과정 자세히 (부분점수)
+  - <b>Novel Variant 나와도 당황 X</b> — 원본 공식을 새 정의로 대체
+• <b>계산 문제 2개 (목표 25분):</b> 동일
+• <b>남은 10분:</b> 검산. T/F 중 비워둔 것에 자신 있으면 답
+</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">💡 시험 직전 명심할 것</div>
+<div class="problem-solution">
+<ul>
+<li>✅ <b>closed-book</b>이라 공식 기억 안 나면 <b>유도 시도</b> (S-curve, BFR variance 등)</li>
+<li>⚠️ <b>MapReduce pseudocode 나오면</b> 정석 4패턴 중 하나를 변형하는 문제일 가능성 큼</li>
+<li>⚠️ <b>Novel Variant (A-CURE 같은)</b> → 당황 말고 주어진 정의로 계산</li>
+<li>❌ 계산기 없음 — 분수·제곱근 그대로 표현 OK</li>
+<li>📝 <b>답은 명확히 박스로 표시</b></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ====== 요약 ====== -->
+<div class="card exam">
+<span class="tag tag-exam">🎯 5일 플랜 요약</span>
+<h3>한눈에 보기</h3>
+<table>
+<tr><th>날짜</th><th>요일</th><th>핵심 주제</th><th>우선 유형</th></tr>
+<tr><td>04-18</td><td>금</td><td>L1 Intro + L2 MapReduce + L3 Spark</td><td>유형 1, 2</td></tr>
+<tr><td>04-19</td><td>토</td><td>L4 A-Priori + L5 PCY/Toivonen/SON</td><td>유형 3</td></tr>
+<tr><td>04-20</td><td>일</td><td>L6 MinHash + L7 LSH + L8 k-means</td><td>유형 4, 5</td></tr>
+<tr><td>04-21</td><td>월</td><td>L9 BFR/CURE + L10 PCA + L11 SVD/CUR</td><td>유형 5, 6</td></tr>
+<tr><td>04-22</td><td>화</td><td>L12-L13 RecSys + 기출 Full Run + T/F 전체</td><td>유형 7, 8 + 종합</td></tr>
+<tr><td><b>04-23</b></td><td><b>수</b></td><td><b>🎯 시험 (9:30-10:45)</b></td><td>-</td></tr>
+</table>
+<p style="margin-top:10px"><b>⭐ 팁:</b> 이 일정이 빡빡하면 <b>우선순위 높은 유형 1, 3, 4</b>에 시간 더 배분. RMSE가 높은 문제는 T/F (무조건 출제) + MapReduce 코딩 (매우 높은 확률).</p>
+</div>
+
+</section>
+
+
+<!-- ====================================================== -->
+<!--        MMDS 교재 연습문제 풀이                         -->
+<!-- ====================================================== -->
+<section id="mmds">
+<h2 class="section-title">📖 MMDS 교재 연습문제 풀이 (Official Textbook Solutions)</h2>
+
+<div class="card intuition">
+<p><b>자료 출처:</b> <code>데이터마이닝개론/mmds_exercises.pdf</code> — Mining of Massive Datasets 교재의 연습문제 공식 풀이집.</p>
+<p><b>활용 팁:</b> 교재 저자 직접 풀이라 <b>기출급 퀄리티</b>. 각 챕터 = midterm 강의 범위:</p>
+<ul>
+<li>Ch 1 → L1 (Data Mining 개론)</li>
+<li>Ch 2 → L2, L3 (MapReduce, Spark)</li>
+<li>Ch 3 → L6, L7 (Finding Similar Items)</li>
+<li>Ch 6 → L4, L5 (Frequent Itemsets)</li>
+<li>Ch 7 → L8, L9 (Clustering)</li>
+<li>Ch 9 → L12, L13 (Recommender Systems)</li>
+<li>Ch 11 → L10, L11 (Dimensionality Reduction)</li>
+</ul>
+</div>
+
+<!-- =============== Ch 1: Data Mining =============== -->
+<h3 class="type-title">📘 Ch 1: Data Mining 개론 (L1)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 1.2.1 — Bonferroni 원칙 변형</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">원본 문제: N명의 사람, D일간 호텔 방문 패턴. 같은 호텔에 같은 날 있었던 pair 추정 (원본 ≈ 250,000).
+(a) 일수 D가 1000 → 2000으로 증가하면?
+(b) 인구 10억 → 20억, 호텔 10만 → 20만이면?
+(c) 기준이 "최소 3일" 같은 호텔로 강화되면?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>(a)</b> D² / D = D 비례 → <b>2배 ≈ 500,000</b>. day-pair 수는 C(D,2) ∝ D²로 증가, 분모도 D로 증가.
+<br><b>(b)</b> N² 4배 × (호텔 2배로 확률 1/2) = <b>2배 ≈ 500,000</b>.
+<br><b>(c)</b> 3일 매칭 확률 p³ = 10⁻⁹. 기대 pair수 ≈ <b>0.08 ≈ 0</b>. Bonferroni 원칙: 플래그 안 해야.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 1.2.2 — Market-basket Bonferroni</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">1000 items, 10⁹ baskets (각 크기 10). 1% 이상 basket에 공동 등장하는 item pair를 찾음. 이 기준이 의미 있는가?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+• 랜덤 basket에 특정 item 포함 확률 = 10/1000 = 1/100
+<br>• 특정 pair {i,j} 공동 등장 확률 = (1/100)² = 10⁻⁴
+<br>• 기대 basket 수 = 10⁹ × 10⁻⁴ = 10⁵
+<br>• threshold = 10⁹ × 1% = 10⁷
+<br>• 10⁵ ≪ 10⁷ → <b>랜덤으론 threshold 못 넘음 → frequent pair는 의미 있음</b> ✓
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 1.3.1 — IDF 계산</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">검색 엔진에 10⁷개 문서 인덱싱됨. IDF(w) = log₂(N/n_w).
+(a) 단어 w가 40개 문서에 나옴 → IDF?
+(b) 단어 w가 10,000개 문서에 나옴 → IDF?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>(a)</b> IDF = log₂(10⁷/40) = log₂(2.5×10⁵) ≈ <b>18</b>
+<br><b>(b)</b> IDF = log₂(10⁷/10⁴) = log₂(1000) ≈ <b>10</b>
+<br>→ 자주 등장하는 단어일수록 IDF 낮음 (정보량 적음)
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 1.3.3 — Hash 함수가 permutation이 되는 조건</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">h(x) = cx mod 15 가 {0,...,14}의 bijection이 되는 c 값들을 찾아라.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<code>gcd(c, 15) = 1</code> 이어야 함. 15 = 3×5이므로 c가 3이나 5의 배수면 안 됨.
+<br><b>유효 c:</b> {1, 2, 4, 7, 8, 11, 13, 14}
+<br><b>일반화:</b> h(x) = cx mod m 이 permutation ⇔ gcd(c, m) = 1.
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== Ch 2: MapReduce =============== -->
+<h3 class="type-title">📘 Ch 2: MapReduce (L2, L3)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 2.2.1 — Word-count에서 Load Balance</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">(a) 10 reducers — 어떻게 skew가 발생?
+(b) 10,000 reducers — skew 줄어드나?
+(c) Combiner를 쓰면 어떻게 바뀌나?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>(a)</b> 단어 빈도는 Zipf 법칙 (power law). "the", "a" 같은 고빈도 단어 담당 reducer는 훨씬 많은 KV pair 처리 → 심각한 skew.
+<br><b>(b)</b> 각 reducer가 담당하는 vocabulary 비율은 작아지지만, 고빈도 단어의 reducer는 여전히 불균형. 절대적으론 나아지나 완전 해결 X.
+<br><b>(c)</b> Combiner는 Mapper output에서 단어별 local count 집계. 각 reducer가 단어당 받는 값 수 = Mapper 수로 bounded. <b>고빈도 단어도 최대 1값/mapper</b> → skew 대폭 감소.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 2.3.1 — 기본 연산의 MapReduce 구현</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">MapReduce로 구현: (a) 최댓값 (b) 평균 (c) 중복 제거 (d) distinct 개수</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px"><b>(a) 최댓값</b>
+Map(k, v): emit(k, v)
+Reduce(k, values): emit(k, max(values))
+
+<b>(b) 평균</b>
+Map(_, x): emit(1, (x, 1))        # 단일 키로
+Reduce(1, pairs):
+    total, count = sum of first, sum of second
+    emit(1, total/count)
+# Combiner 가능: (partial_sum, partial_count) 쌍 전달
+
+<b>(c) 중복 제거</b>
+Map(_, x): emit(x, null)
+Reduce(x, _): emit(x, null)       # 같은 키가 여러 번 와도 1번만
+
+<b>(d) distinct 개수</b>
+# 2-pass 필요
+Pass 1: (c)와 동일 → distinct values
+Pass 2: Map(x, _): emit(1, 1) / Reduce(1, values): emit(1, sum)</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 2.3.2 — Matrix × Vector (MapReduce 핵심)</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">M = r×c 행렬, v = 길이 c 벡터. Mv를 MapReduce로 계산.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">Map: 각 m_ij에 대해 emit(i, m_ij · v_j)
+Reduce: 행 i마다 값들 합산 → emit(i, sum)</pre>
+결과: (i, (Mv)_i = Σ_j m_ij v_j). <b>v는 모든 Mapper에 broadcast 필요</b> (메모리에 들어가는 경우).
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 2.3.3 — Bag에서 관계대수 (Union, Intersection, Difference)</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">Bag(multiset) R, S에 대해 R∪S, R∩S, R-S를 MapReduce로.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+Map 공통: R의 tuple t → (t, 'R'), S의 tuple t → (t, 'S'). <br>
+같은 tuple이 R에 m_R번, S에 m_S번 등장 가정.
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">Union:       Reduce → output t 총 (m_R + m_S) 번
+Intersection: Reduce → output t 총 min(m_R, m_S) 번
+Difference:   Reduce → output t 총 max(0, m_R - m_S) 번</pre>
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== Ch 3: Finding Similar Items =============== -->
+<h3 class="type-title">📘 Ch 3: Finding Similar Items (L6, L7)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 3.1.1 — Jaccard 계산</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">S1 = {1,2,3,4}, S2 = {2,3,5,7}, S3 = {2,4,6}.
+J(S1,S2), J(S1,S3), J(S2,S3) 계산.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+J(S1,S2) = |{2,3}| / |{1,2,3,4,5,7}| = <b>2/6 = 1/3</b>
+<br>J(S1,S3) = |{2,4}| / |{1,2,3,4,6}| = <b>2/5</b>
+<br>J(S2,S3) = |{2}| / |{2,3,4,5,6,7}| = <b>1/6</b>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 3.2.1 — 3-shingle 추출</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">문자열 "the most efficient"의 문자 3-shingle은?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+길이-3 overlapping window 추출:
+<br><code>"the", "he ", "e m", " mo", "mos", "ost", "st ", "t e", " ef", "eff", "ffi", "fic", "ici", "cie", "ien", "ent"</code> (16개)
+<br><b>최대 개수 공식:</b> 길이 n 문자열의 k-shingle 최대 개수 = n - k + 1.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 3.3.3 — Hash 함수가 진짜 permutation인지 ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">x ∈ {0,1,2,3,4,5} 에 대해 다음 hash 함수가 permutation인가?
+h1(x) = (x+1) mod 6
+h2(x) = (2x+1) mod 6
+h3(x) = (5x+2) mod 6</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<table style="font-size:12px">
+<tr><th>x</th><th>h1</th><th>h2</th><th>h3</th></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>2</td></tr>
+<tr><td>1</td><td>2</td><td>3</td><td>1</td></tr>
+<tr><td>2</td><td>3</td><td>5</td><td>0</td></tr>
+<tr><td>3</td><td>4</td><td>1</td><td>5</td></tr>
+<tr><td>4</td><td>5</td><td>3</td><td>4</td></tr>
+<tr><td>5</td><td>0</td><td>5</td><td>3</td></tr>
+</table>
+<b>h1:</b> {1,2,3,4,5,0} — <b>permutation ✓</b> (gcd(1,6)=1)
+<br><b>h2:</b> {1,3,5,1,3,5} — <b>NOT permutation ✗</b> (gcd(2,6)=2)
+<br><b>h3:</b> {2,1,0,5,4,3} — <b>permutation ✓</b> (gcd(5,6)=1)
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 3.4.1 — S-curve 계산 ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">LSH banding: p(s) = 1 - (1 - s^r)^b. 다양한 (r, b)에 대해 s = 0.1, 0.2, ..., 0.9에서의 p 값 계산.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이 (주요 값)</div>
+<div class="problem-answer">
+<table style="font-size:11px">
+<tr><th>s</th><th>(r=3, b=10)</th><th>(r=6, b=20)</th><th>(r=5, b=50)</th><th>(r=2, b=100)</th></tr>
+<tr><td>0.1</td><td>~0.010</td><td>~0.0001</td><td>~0.005</td><td>~0.180</td></tr>
+<tr><td>0.3</td><td>~0.119</td><td>~0.0001</td><td>~0.490</td><td>~0.960</td></tr>
+<tr><td>0.5</td><td>~0.740</td><td>~0.013</td><td>~0.990</td><td>~1.000</td></tr>
+<tr><td>0.7</td><td>~0.998</td><td>~0.740</td><td>~1.000</td><td>~1.000</td></tr>
+<tr><td>0.9</td><td>~1.000</td><td>~1.000</td><td>~1.000</td><td>~1.000</td></tr>
+</table>
+<b>Threshold</b> (inflection point): s* ≈ <b>(1/b)^(1/r)</b>.
+<br>r=3,b=10 → t ≈ 0.46 / r=6,b=20 → t ≈ 0.58 / r=2,b=100 → t ≈ 0.10.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 3.5.1 — 거리 함수 체크 ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">다음 중 어느 것이 distance measure인가? (metric 공리 4개 확인)
+(a) d(x,y) = max(x, y) (비음수 실수)
+(b) d(x,y) = |x-y| (실수)
+(c) d(x,y) = x + y (비음수 실수)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>(a) max(x,y): NOT distance</b>
+<br>→ d(3,3) = 3 ≠ 0. 공리 (2) 위배 (자기 자신과의 거리는 0).
+<br><br><b>(b) |x-y|: Valid distance ✓</b>
+<br>→ 4가지 공리 모두 만족 (절대값의 삼각부등식).
+<br><br><b>(c) x+y: NOT distance</b>
+<br>→ d(1,1) = 2 ≠ 0. 공리 (2) 위배.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 3.6.1 — AND/OR Construction 조합</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">확률 p로 accept하는 family에서 시작:
+- AND of r, 그 후 OR of b → S-curve?
+- OR of b, 그 후 AND of r → S-curve?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>Case 1: AND(r) → OR(b) — 표준 LSH banding</b>
+<br>• AND 후: p^r
+<br>• OR 후: 1 - (1 - p^r)^b
+<br>→ 표준 S-curve <b>p(s) = 1 - (1 - s^r)^b</b>
+<br><br><b>Case 2: OR(b) → AND(r)</b>
+<br>• OR 후: 1 - (1 - p)^b
+<br>• AND 후: [1 - (1 - p)^b]^r
+<br>→ 다른 S-curve
+<br><br><b>비교:</b> Case 1 (AND→OR)이 보통 더 가파른 threshold. LSH banding 표준 선택.
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== Ch 6: Frequent Itemsets =============== -->
+<h3 class="type-title">📘 Ch 6: Frequent Itemsets (L4, L5)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 6.1.1 — 약수 기반 synthetic 데이터 ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">100 items {1,...,100}, 100 baskets. basket i에 item j가 포함 iff j | i. support threshold s=5.
+(a) frequent items?
+(b) frequent pairs?
+(c) 모든 frequent pair의 총 support?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>(a)</b> item j의 support = ⌊100/j⌋. ≥ 5 ⇔ j ≤ 20. → <b>{1, 2, ..., 20}</b> (20개)
+<br><br><b>(b)</b> pair {j,k}의 support = ⌊100/lcm(j,k)⌋. ≥ 5 ⇔ lcm(j,k) ≤ 20.
+<br>• {1, j}: 19개 (j = 2..20)
+<br>• {2, k}: k ∈ {4,6,8,10,...,20} 같은 k에 따라 lcm ≤ 20 조건
+<br>• 구체: {2,4}(4), {2,6}(6), {2,8}(8), {2,10}(10), {2,12}(12), {2,14}(14), {2,16}(16), {2,18}(18), {2,20}(20), {2,3}(6), {2,5}(10), {2,7}(14), {2,9}(18)
+<br>• 다른 pair들도 비슷하게 점검
+<br><br><b>(c)</b> 총 support ≈ <b>482</b> (각 basket에 포함된 frequent pair 수 합).
+<br>basket i의 frequent pair 수 = C(d_i, 2), d_i = ≤20인 i의 약수 수.
+<br><br><b>🔑 midterm에 중요:</b> 2021 final Q3가 <b>같은 원리 문제</b> (50×50 버전).
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 6.2.1 — Triangular Matrix 인덱싱</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">n=20 items. pair {i,j} (i<j)의 count를 1D triangular array에 저장. {13,14}의 위치는?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+공식: <code>a[i,j] = (i-1)(2n-i)/2 + (j-i)</code>
+<br>i=13, j=14, n=20:
+<br>position = (12 × 27)/2 + 1 = 162 + 1 = <b>163</b>
+<br><br><b>메모리:</b> 4 × n(n-1)/2 bytes (int 4바이트 가정). p > 1/3이면 triangular가 triples보다 유리.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 6.3.1 — PCY 알고리즘 적용</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">12 baskets, hash 함수 h(i,j) = (i×j) mod 11, support threshold 4. PCY 알고리즘 적용.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>Pass 1:</b>
+<br>1. 각 item의 count 집계
+<br>2. 각 basket의 모든 pair를 bucket에 해시, bucket count 증가
+<br>→ frequent items (count ≥ 4) + frequent buckets (count ≥ 4) 식별
+<br>→ frequent buckets를 bitmap으로 변환 (1/32 공간)
+<br><br><b>Pass 2:</b>
+<br>Candidate pair {i,j} 조건:
+<br>• (1) i, j 둘 다 frequent item
+<br>• (2) h(i,j)가 frequent bucket (bitmap의 1)
+<br>→ 이 조건 통과한 pair만 카운트 → count ≥ 4이면 frequent pair.
+<br><br><b>A-Priori 대비 이점:</b> Pass 2의 메모리 사용량 대폭 감소 (sparsity 활용).
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 6.4.1 — Negative Border 정의</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">Negative border란 무엇인가? Toivonen 알고리즘에서 역할?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>정의:</b> frequent itemset 집합 C의 negative border = 다음 조건을 만족하는 itemset I의 집합:
+<br>1. I ∉ C (I 자체는 infrequent / C에 없음)
+<br>2. I의 모든 <b>proper subset</b>은 C에 있음 (모두 frequent)
+<br><br><b>예시:</b> {A,B}, {B,C}는 frequent, {A,B,C}는 아닐 때:
+<br>→ 만약 {A},{B},{C},{A,B},{A,C},{B,C}가 모두 frequent이면, {A,B,C}는 negative border에 속함.
+<br><br><b>Toivonen에서 역할:</b>
+<br>• 샘플에서 negative border 구성 → Pass 2에서 전체 데이터로 검증
+<br>• border 원소 중 전체에서 frequent인 게 있으면 → <b>알고리즘 실패 (재샘플링)</b>
+<br>• 이게 "조기 경보" 역할 → false negative 방지 보장.
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== Ch 7: Clustering =============== -->
+<h3 class="type-title">📘 Ch 7: Clustering (L8, L9)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 7.1.1 — 균등 분포의 기대 거리</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">X, Y ~ Uniform[0,1] 독립. E[|X - Y|] = ?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">E[|X-Y|] = ∫∫ |x-y| dx dy (대칭성)
+        = 2 ∫₀¹ ∫₀ˣ (x-y) dy dx
+        = 2 ∫₀¹ [xy - y²/2]₀ˣ dx
+        = 2 ∫₀¹ (x² - x²/2) dx
+        = 2 ∫₀¹ x²/2 dx
+        = ∫₀¹ x² dx = 1/3</pre>
+<b>결과:</b> E[|X-Y|] = <b>1/3</b>.
+<br>고차원 일반화: 차원 ↑ → 평균 거리 ↑, 하지만 상대적 거리 차이 줄어듦 (curse of dimensionality).
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 7.2.1 — 완전제곱수 Hierarchical Clustering</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">데이터: {1, 4, 9, 16, 25, 36, 49, 64, 81}. single-linkage hierarchical clustering.
+결과 dendrogram 설명.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+연속 완전제곱수 간격: k²와 (k+1)² 사이는 2k+1로 <b>단조 증가</b>.
+<br>Single-link이므로 매번 가장 가까운 pair 병합:
+<br>1. (1, 4) 병합 (거리 3) → {1,4}
+<br>2. (4, 9) 병합 → {1,4,9}
+<br>3. (9, 16) 병합 → {1,4,9,16}
+<br>... 순차적으로 왼쪽부터 확장
+<br>→ <b>체인형 dendrogram</b> (왼쪽에서 오른쪽으로 한 점씩 붙음)
+<br><br><b>함의:</b> single-link는 "chaining" 현상 발생 — 기다란 cluster 형성 경향.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 7.3.1 — CURE의 Farthest-Point 초기화</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">centroid (3,4)에서 시작. 데이터셋의 farthest-point 방식으로 초기 centers 선택.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>Step 1:</b> 첫 center = (3, 4) (또는 랜덤)
+<br><b>Step 2:</b> (3,4)에서 Euclidean 거리 최대인 점 → 두 번째 center
+<br><b>Step 3:</b> 기존 center 집합에서 가장 먼 점 (즉, <b>min 거리 to 어떤 center</b>를 <b>최대화</b>) → 다음 center
+<br><b>반복</b>까지 원하는 k개 centers 선택.
+<br><br><b>효과:</b> k-means의 random 초기화 대비 더 퍼진 centers → 분리된 cluster에서 더 좋은 local minimum.
+<br><b>k-means++</b>: farthest-point의 확률적 버전 (D² 가중 sampling).
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 7.4.1 — CURE Merging 조건</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">CURE에서 두 cluster C_i, C_j를 언제 merge?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+각 cluster를 k개 <b>representative points</b>로 표현 (shrunk toward centroid).
+<br><b>merge 조건:</b> C_i, C_j의 representative 간 최소 거리가 threshold d 이내:
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">min_{p, q} ||r_{ip} - r_{jq}|| ≤ d</pre>
+<b>representative 계산:</b>
+<br>1. cluster에서 k개 well-scattered 점 선택 (farthest-point 방식)
+<br>2. centroid c 방향으로 shrink: <code>r' = (1-α)r + αc</code>
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== Ch 9: Recommendation =============== -->
+<h3 class="type-title">📘 Ch 9: Recommendation Systems (L12, L13)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 9.2.1 — Cosine Distance with Feature Scaling</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">item features: disk size (GB), memory (GB).
+u = (500 GB disk, 8 GB RAM), v = (1000 GB disk, 4 GB RAM).
+스케일링 없을 때 / 있을 때 cosine similarity 비교.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>스케일링 없이:</b>
+<br>cos(u, v) = (500·1000 + 8·4) / (√(500² + 8²) · √(1000² + 4²)) ≈ <b>1.000</b>
+<br>→ disk feature가 지배. memory 기여 거의 0.
+<br><br><b>Min-Max 정규화 후</b> (disk 0-2000, memory 0-64):
+<br>u' = (0.25, 0.125), v' = (0.5, 0.0625)
+<br>cos(u', v') = (0.125 + 0.0078)/(||u'||·||v'||) ≈ 더 낮은 값
+<br><br><b>교훈:</b> 스케일이 다른 feature는 반드시 정규화 필요. 안 하면 큰 값 feature가 유사도 독점.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 9.3.1 — Collaborative Filtering (Pearson)</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">user × movie rating 행렬 (1~5, 일부 누락). 세 가지 유사도 계산:
+(a) Jaccard (이진 — 평가 여부만)
+(b) Cosine (raw rating)
+(c) Pearson correlation (centered cosine)</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>(a) Jaccard:</b> 평가한 아이템을 집합으로 보고 |교집합|/|합집합|. <b>rating 값 무시</b>.
+<br><br><b>(b) Cosine:</b> rating 벡터 (누락 = 0 처리). cos(r_u1, r_u2) = 내적 / (노름·노름).
+<br>• 단점: 누락을 0으로 간주 → "싫어함"과 혼동. 너그러운 user와 짠내 user 구분 못함.
+<br><br><b>(c) Pearson correlation = centered cosine:</b>
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">r̂_ui = r_ui - r̄_u
+sim(u1, u2) = r̂_u1 · r̂_u2 / (||r̂_u1|| · ||r̂_u2||)</pre>
+→ 사용자 평균을 빼서 <b>rating 스케일 차이 보정</b>.
+<br><br><b>예측:</b>
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">r̂_ui = r̄_u + Σ_{v∈N(u)} sim(u,v) · r̂_vi / Σ |sim(u,v)|</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 9.4.1 — UV Decomposition by Gradient Descent ★</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">rating matrix M ≈ UV^T (U: m×r, V: n×r). 목적함수 + gradient descent update rule.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>목적함수:</b> 관측된 entry에 대해서만 SSE 최소화
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">L = Σ_{(i,j) known} (m_ij - (UV^T)_ij)²
+  = Σ (m_ij - Σ_k u_ik v_jk)²</pre>
+
+<b>Gradient 계산 (single entry):</b>
+<br>e_ij = m_ij - Σ_k u_ik v_jk (error)
+<br>∂L/∂u_ik = -2 e_ij v_jk
+<br>∂L/∂v_jk = -2 e_ij u_ik
+
+<b>Update rule (learning rate α):</b>
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">u_ik ← u_ik + 2α · e_ij · v_jk
+v_jk ← v_jk + 2α · e_ij · u_ik</pre>
+
+<b>단계:</b>
+<br>1. 현재 예측 (UV^T)_ij 계산
+<br>2. error e_ij 계산
+<br>3. 모든 k에 대해 u_ik, v_jk 업데이트
+<br>4. 수렴까지 반복
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== Ch 11: Dimensionality Reduction =============== -->
+<h3 class="type-title">📘 Ch 11: Dimensionality Reduction (L10, L11)</h3>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 11.1.1 — 단위 eigenvector 계산</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">eigenvector (1, 2, 3)^T를 unit 벡터로 정규화.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+||(1,2,3)^T|| = √(1 + 4 + 9) = √14
+<br>Unit eigenvector: <b>e = (1/√14, 2/√14, 3/√14)^T</b>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 11.2.1 — M^T M과 M M^T (SVD 기초)</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">M = [[1,1],[2,4],[3,9],[4,16]] (4×2). M^T M과 M M^T 계산. eigenvalue는?</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<pre style="background:#f5f5f5;color:#333;margin:8px 0;font-size:12px">M^T M = [[30, 100], [100, 354]]  (2×2)
+M M^T = 4×4 matrix (row i, j = <M_i, M_j>)</pre>
+<b>eigenvalue:</b> det(M^T M - λI) = 0
+<br>(30-λ)(354-λ) - 100² = 0
+<br>λ² - 384λ + 620 = 0
+<br>λ = (384 ± √(384² - 2480))/2 ≈ (384 ± 380.76)/2
+<br>λ₁ ≈ <b>382.38</b>, λ₂ ≈ <b>1.62</b>
+<br><br>M M^T의 non-zero eigenvalue도 동일 (λ₁, λ₂).
+<br>singular values: σ_i = √λ_i → σ₁ ≈ 19.55, σ₂ ≈ 1.27.
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 11.3.1 — SVD Rank-2 계산 단계</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">rank-2 5×3 행렬 M의 SVD 구하는 절차.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<ol>
+<li>M^T M (3×3)과 M M^T (5×5) 계산</li>
+<li>M^T M의 eigenvalue λ₁ ≥ λ₂ > 0, λ₃ = 0 (rank 2이므로)</li>
+<li>M^T M의 unit eigenvector v₁, v₂ 찾기 (오른쪽 singular vectors, V의 columns)</li>
+<li>singular values: σ_i = √λ_i</li>
+<li>Left singular vectors: u_i = M v_i / σ_i (U의 columns)</li>
+<li>M = U Σ V^T (Σ = diag(σ₁, σ₂), 0 padding 5×3)</li>
+</ol>
+<b>Best rank-1 approximation:</b> M_1 = σ_1 u_1 v_1^T
+<br><b>Frobenius 오차:</b> ||M - M_1||_F = σ_2
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-card">
+<div class="problem-header">
+<span class="badge badge-official">📖 MMDS</span>
+<span>Ex 11.4.1 — Pseudoinverse via SVD</span>
+</div>
+<div class="problem-body">
+<div class="problem-section">
+<div class="problem-label">📋 문제</div>
+<div class="problem-original">M = [[48, 14], [14, -48]]. SVD M = U Σ V^T 이용해 Moore-Penrose pseudoinverse M^+ 구하기.</div>
+</div>
+<div class="problem-section">
+<div class="problem-label">✅ 풀이</div>
+<div class="problem-answer">
+<b>Pseudoinverse 공식:</b> M^+ = V Σ^+ U^T (Σ^+는 non-zero diagonal entries를 1/σ_i로 대체)
+<br><br>M^T M = [[48² + 14², 0], [0, 14² + 48²]] = <b>2500 I</b> (identity의 2500배)
+<br>→ 모든 unit vector가 eigenvector → σ_1 = σ_2 = <b>50</b>
+<br><br>M = U · 50I · V^T → U V^T = M/50
+<br>M^+ = V · (1/50)I · U^T = (1/50) V U^T = (1/50)(U V^T)^T = M^T/2500
+<br><br><b>M^+ = (1/2500) × [[48, 14], [14, -48]]</b>
+<br>(M이 symmetric 비슷한 구조라 결과도 심플)
+</div>
+</div>
+</div>
+</div>
+
+<!-- =============== 요약 =============== -->
+<div class="card exam" style="margin-top:24px">
+<span class="tag tag-exam">📖 MMDS 연습문제 통합 현황</span>
+<h3>총 28개 연습문제 풀이 수록</h3>
+<table>
+<tr><th>챕터</th><th>연습문제 수</th><th>관련 강의</th><th>midterm 중요도</th></tr>
+<tr><td>Ch 1</td><td>4</td><td>L1</td><td>⚠️ 중간 (T/F 중심)</td></tr>
+<tr><td>Ch 2</td><td>4</td><td>L2, L3</td><td>🔥 매우 높음</td></tr>
+<tr><td>Ch 3</td><td>6</td><td>L6, L7</td><td>🔥 매우 높음</td></tr>
+<tr><td>Ch 6</td><td>4</td><td>L4, L5</td><td>🔥 매우 높음</td></tr>
+<tr><td>Ch 7</td><td>4</td><td>L8, L9</td><td>🔥 매우 높음</td></tr>
+<tr><td>Ch 9</td><td>3</td><td>L12, L13</td><td>⚠️ 중간</td></tr>
+<tr><td>Ch 11</td><td>4</td><td>L10, L11</td><td>⚠️ 중간</td></tr>
+</table>
+<p style="margin-top:10px"><b>원본 PDF:</b> <a href="../mmds_exercises.pdf" target="_blank" style="color:#4361ee;font-weight:bold">mmds_exercises.pdf</a> (데이터마이닝개론 폴더)</p>
+</div>
+
+</section>
+
+
+<!-- ====================================================== -->
+<!--        L1: Introduction                                -->
+<!-- ====================================================== -->
+<section id="L1">
+<h2 class="section-title">L1: Introduction to Data Mining (데이터 마이닝 개론)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 Data Mining인가?</h3>
+<blockquote>"Data creates value only when it can be turned into decisions. The amount of data itself does not mean anything."<br><em>데이터는 의사결정으로 바뀔 때만 가치를 만듭니다. 데이터 양 자체는 아무 의미 없어요.</em> — Prof. Yoo</blockquote>
+<blockquote>"Data mining is not about memorizing the specific details. You just have to be sure about the intuition and the core assumption."<br><em>데이터 마이닝은 세부사항 암기가 아닙니다. 직관과 핵심 가정에 확신이 있으면 됩니다.</em> — Prof. Yoo</blockquote>
+<p><b>Data Mining</b> = <b>raw data</b>를 <b>insights</b>로 변환하는 과정. 3단계: (1) 데이터 저장, (2) 관리, (3) 분석.</p>
+<p>Data Mining ≈ Data Science ≈ Data-Centric AI (요즘은 거의 같은 말)</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+<h3>핵심 개념 (Key Concepts)</h3>
+
+<h4>TF-IDF (Term Frequency - Inverse Document Frequency)</h4>
+<div class="formula-box">
+\[\text{TF-IDF}(i, j) = \text{TF}(i, j) \times \text{IDF}(i)\]
+\[\text{TF}(i, j) \propto \text{# occurrences of term } i \text{ in document } j\]
+\[\text{IDF}(i) \propto \frac{1}{\text{# documents where term } i \text{ appears}}\]
+</div>
+<p><b>직관:</b> TF-IDF가 높음 = 단어 i가 <b>이 문서</b>에는 자주 나오지만 <b>전체 문서</b>에선 드묾. "the" 같은 단어는 TF↑ IDF↓. 전문 jargon은 TF↓ IDF↑. 주제어는 둘 다 ↑.</p>
+
+<h4>Bonferroni's Principle (본페로니 원칙)</h4>
+<p>데이터에서 패턴을 찾을 때, <b>같은 크기의 랜덤 데이터</b>와 비교하라. 랜덤에서도 예상되는 횟수가 크다면 그 패턴은 의미 없음 (bogus).</p>
+<p><b>생일 문제:</b> 23명이 모여도 생일이 겹칠 확률 &gt; 0.5. 신기해 보이지만 통계적으로 자연스러움.</p>
+
+<h4>Hash Functions (해시 함수)</h4>
+<p>해시 함수 \(h\)는 key를 bucket \(\in [0, B-1]\)로 매핑. 대용량 데이터에서 O(1) 자료구조 가능. \(B < \text{unique keys 수}\)이면 <b>충돌 불가피</b>.</p>
+
+<h4>Power Laws (멱법칙)</h4>
+<div class="formula-box">
+\[\log y = a \log x + b \quad \Leftrightarrow \quad y = c \cdot x^a\]
+</div>
+<p>log-log 스케일에서 선형. 예: 상품 판매량, 웹사이트 크기, 부의 분포 (80/20 법칙).</p>
+
+<h4>Memory Hierarchy (메모리 계층)</h4>
+<p>L0 Register &gt; L1 Cache (SRAM) &gt; L2/L3 Cache &gt; Main Memory (DRAM) &gt; Local Storage (SSD/HDD) &gt; Remote/Cloud Storage (DFS). 위로 갈수록 빠르지만 작고 비쌈. <b>데이터가 어느 계층에 있느냐가 알고리즘 병목을 결정</b>.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example · 예시</span>
+<h3>ML이 언제 유용한가?</h3>
+<ul>
+<li><strong>ML 유용:</strong> 무엇(WHAT)을 원하는지는 알지만 어떻게(HOW) 할지 모를 때 — 추천, 예측, 임베딩</li>
+<li><strong>ML 불필요:</strong> 목표를 직접 기술할 수 있을 때 — 웹에서 이력서 위치 찾기, HTML 파싱</li>
+</ul>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L1 필수 암기</h3>
+<ul>
+<li>TF-IDF 공식과 각 항의 의미</li>
+<li>Bonferroni's principle — 왜 랜덤 데이터 속 패턴은 의미 없는지</li>
+<li>Hash function: key → bucket, 충돌 불가피</li>
+<li>Power law: log-log 선형 관계</li>
+<li>Memory hierarchy: 각 계층에서 병목이 뭐가 되는지</li>
+<li><strong>T/F 함정:</strong> "Data mining is all about machine learning" → FALSE (ML은 도구일 뿐)</li>
+</ul>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L1" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L1" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L2: MapReduce                                   -->
+<!-- ====================================================== -->
+<section id="L2">
+<h2 class="section-title">L2: MapReduce (분산 컴퓨팅)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 분산 컴퓨팅이 필요한가?</h3>
+<blockquote>"We need to bring computation to data."<br><em>연산을 데이터가 있는 곳으로 가져갑니다. chunk server에 알고리즘을 분산시켜서 데이터를 주고받지 않아요.</em> — Prof. Yoo</blockquote>
+<blockquote>"MapReduce is basically a style of programming. It is not a solution to every problem."<br><em>MapReduce는 프로그래밍 스타일이지, 모든 문제의 해결책이 아닙니다.</em> — Prof. Yoo</blockquote>
+<p><strong>핵심 통찰:</strong> 서버 1000대 → 하루 1개 실패 예상. 100만 대면 하루 1000개 실패. <b>체계적 fault tolerance</b> 필수.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+<h3>Distributed File System (DFS, 분산 파일 시스템)</h3>
+<ul>
+<li><strong>Chunk nodes (data nodes):</strong> chunk 단위 (16-64 MB)로 저장, 2-3배 복제 (<b>다른 rack</b>의 노드에)</li>
+<li><strong>Master node (name node):</strong> 메타데이터 관리, 백업 있음</li>
+<li><strong>사용 패턴:</strong> 거대한 파일, 읽기·append 주로, 제자리 수정은 드묾</li>
+</ul>
+
+<h3>MapReduce 구성 요소</h3>
+<div class="formula-box">
+\[\text{Map}: (k, v) \to \{(k_i, v_i)\}_i\]
+\[\text{Group by Key}: \{(k, v)\} \to (k, [v_1, v_2, \ldots, v_n])\]
+\[\text{Reduce}: (k, [v_1, \ldots, v_n]) \to (k, v)\]
+</div>
+
+<h4>3단계:</h4>
+<ol>
+<li><strong>Map:</strong> 사용자가 작성한 함수를 각 입력 원소에 적용. 출력: key-value 쌍들. 완전 병렬 가능.</li>
+<li><strong>Group by Key:</strong> 시스템이 같은 key끼리 모음 (개념적 단계, hash 기반 shuffling으로 수행). <b>프로그래머가 쓰지 않음</b>.</li>
+<li><strong>Reduce:</strong> 사용자 함수를 (key, value list) 쌍에 적용. 값을 집계.</li>
+</ol>
+
+<h4>Combiner 최적화</h4>
+<p>Reduce 함수가 <strong>commutative</strong> (\(a+b=b+a\)) <strong>AND associative</strong> (\((a+b)+c=a+(b+c)\))일 때만. 값들을 어느 순서로든 합칠 수 있음 → Map 단계에서 local 집계 가능 → shuffle 대폭 감소. <b>프레임워크는 이 조건을 자동으로 확인하지 않음 (프로그래머 책임)</b>.</p>
+
+<h4>노드 실패 처리</h4>
+<table>
+<tr><th>실패 유형</th><th>조치</th><th>이유</th></tr>
+<tr><td>Master 실패</td><td>전체 job 재시작</td><td>master 상태 복제 너무 비쌈</td></tr>
+<tr><td>Map worker 실패</td><td><b>완료된 task 포함 전부 재실행</b></td><td>Map 출력은 로컬 디스크 → 노드 실패 시 접근 불가</td></tr>
+<tr><td>Reduce worker 실패</td><td>진행 중 task만 재실행</td><td>완료된 reduce 출력은 DFS (복제됨)에 저장</td></tr>
+</table>
+
+<h4>Matrix-Vector 곱 in MapReduce</h4>
+<p><strong>Case 1: v가 메모리에 들어감</strong></p>
+<pre><code><span class="code-comment">// Map: input key=(i,j), value=m_ij</span>
+map((i,j), m_ij):
+    emit(i, m_ij * v[j])     <span class="code-comment">// v는 메모리에 있음 (broadcast)</span>
+
+<span class="code-comment">// Reduce: 같은 row i의 모든 값을 합</span>
+reduce(i, values):
+    emit(i, sum(values))
+</code></pre>
+<p><strong>Case 2: v가 메모리에 안 들어감</strong> — M을 세로 stripe로, v를 가로 stripe로 나눔. 각 Map task가 M의 한 stripe와 그에 맞는 v의 stripe를 처리.</p>
+
+<h4>Reduce task 개수</h4>
+<p>경험칙: # 노드 &lt; # Reduce task &lt; # key. 이론상 key당 1개 Reduce가 최대 병렬이지만 비현실적.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example · 예시</span>
+<h3>Word Count — 전체 흐름</h3>
+<pre><code><span class="code-comment">// Map function</span>
+map(key, value):                <span class="code-comment">// key: line index, value: line text</span>
+    for each word w in value:
+        emit(w, 1)
+
+<span class="code-comment">// Reduce function</span>
+reduce(key, values):           <span class="code-comment">// key: word, values: [1, 1, ..., 1]</span>
+    result = 0
+    for each count v in values:
+        result += v
+    emit(key, result)
+</code></pre>
+<p><strong>Combiner 적용:</strong> 각 Map task가 local에서 (w,1),(w,1),(w,1) → (w,3)으로 합친 뒤 shuffle. shuffle 양 급감.</p>
+
+<h3>Mutual Friends (수업 퀴즈)</h3>
+<pre><code><span class="code-comment">// Input: A -> B, C, D (A is friends with B, C, D)</span>
+map(key, friends):             <span class="code-comment">// key: person, friends: friend list</span>
+    for each pair (w, v) in friends:
+        emit((w,v), key)       <span class="code-comment">// pair of friends -> original person</span>
+
+<span class="code-comment">// Reduce: identity (just collect)</span>
+reduce((w,v), values):
+    emit((w,v), values)        <span class="code-comment">// output mutual friends list</span>
+</code></pre>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L2 필수 암기</h3>
+<ul>
+<li><strong>Map/Reduce 시그니처:</strong> Map: (k,v) → {(k_i, v_i)}, Reduce: (k,[v1,...,vn]) → (k,v)</li>
+<li><strong>Combiner 조건:</strong> Reduce가 commutative <b>AND</b> associative일 때만</li>
+<li><strong>Map 실패 시 전부 재실행 이유:</strong> 출력이 <b>로컬 디스크</b>에</li>
+<li><strong>Reduce 실패 시 진행 중만 재실행 이유:</strong> 출력이 <b>DFS</b>에</li>
+<li><strong>Group by Key는 개념적:</strong> 명시적 GBK worker 없음</li>
+<li><strong>MV 곱 map:</strong> ((i,j), m_ij) → (i, m_ij × v_j)</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "프로그래머가 GroupByKey 작성" → FALSE (시스템이 처리)<br>
+- "프레임워크가 commutativity/associativity 체크" → FALSE (프로그래머 책임)<br>
+- "MapReduce가 ML 학습에 적합" → FALSE (잦은 데이터 업데이트에 부적합)</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L2" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L2" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L3: Spark                                       -->
+<!-- ====================================================== -->
+<section id="L3">
+<h2 class="section-title">L3: Spark (스파크)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 MapReduce 대신 Spark를?</h3>
+<blockquote>"MapReduce creates a chain of tasks. Let's extend it into a directed acyclic graph (DAG) of tasks."<br><em>MapReduce는 task 체인을 만듭니다. 이걸 DAG(방향성 비순환 그래프)로 확장합시다.</em> — Prof. Yoo</blockquote>
+<blockquote>"Spark is more flexible framework compared to MapReduce. It is much easier for a programmer to write Spark."<br><em>Spark는 더 유연한 프레임워크이고, 작성하기 훨씬 쉽습니다.</em> — Prof. Yoo</blockquote>
+<p><strong>MapReduce의 한계:</strong> (1) 중간 파일을 항상 디스크에 저장 (2) iterative job에선 HDFS 쓰기 때문에 오버헤드 큼 (3) Map+Reduce로 표현 어려운 알고리즘 많음</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+<h3>Spark 핵심 개념</h3>
+
+<h4>Hadoop Stack</h4>
+<p>Database (HDFS) → Resource Management (YARN) → Processing Engine (MapReduce / Spark) → Libraries (SparkSQL, MLlib, GraphX)</p>
+
+<h4>RDD (Resilient Distributed Dataset, 분산 데이터셋)</h4>
+<ul>
+<li><strong>한 타입</strong>의 records를 파티션 단위로 나눈 컬렉션 (MapReduce의 key-value를 일반화)</li>
+<li>클러스터 전체에 분산 (chunks), <strong>읽기 전용 (immutable)</strong></li>
+<li><strong>메모리 캐싱 가능</strong> → iterative 알고리즘에서 100배 속도</li>
+<li>DFS에서 만들거나 다른 RDD를 변환해서 생성</li>
+</ul>
+
+<h4>Operation: Transformation vs Action</h4>
+<table>
+<tr><th>Transformations (RDD → RDD)</th><th>Actions (RDD → 값)</th></tr>
+<tr><td>map, flatMap, filter, join, union, distinct, groupByKey, reduceByKey, sortByKey</td><td>count, collect, reduce, save, take</td></tr>
+<tr><td><strong>Lazy (지연):</strong> action 호출 전엔 실행 안 됨</td><td>계산을 강제 실행</td></tr>
+</table>
+
+<h4>주요 연산 상세</h4>
+<table>
+<tr><th>Operation</th><th>Type</th><th>설명</th><th>Dependency</th></tr>
+<tr><td>flatMap</td><td>Transformation</td><td>1 element → 0+개, flattened</td><td>Narrow</td></tr>
+<tr><td>map</td><td>Transformation</td><td>1 element → 정확히 1 element</td><td>Narrow</td></tr>
+<tr><td>filter</td><td>Transformation</td><td>predicate 만족하는 것만 유지</td><td>Narrow</td></tr>
+<tr><td>groupByKey</td><td>Transformation</td><td>키별로 값 그룹 (shuffle)</td><td><strong>Wide</strong></td></tr>
+<tr><td>reduceByKey</td><td>Transformation</td><td>groupByKey + reduce (최적화됨)</td><td><strong>Wide</strong></td></tr>
+<tr><td>join</td><td>Transformation</td><td>두 RDD를 key로 병합</td><td><strong>Wide</strong></td></tr>
+<tr><td>reduce</td><td>Action</td><td>모든 원소를 하나의 값으로 집계</td><td>-</td></tr>
+<tr><td>collect</td><td>Action</td><td>RDD를 드라이버로 가져옴</td><td>-</td></tr>
+</table>
+
+<h4>Wide vs Narrow Dependency</h4>
+<ul>
+<li><strong>Narrow (좁음):</strong> 각 파티션이 최대 1개 부모 파티션에 의존 → 병렬 빠름</li>
+<li><strong>Wide (넓음):</strong> 각 파티션이 여러 부모 파티션에 의존 → shuffle 필요, 느림</li>
+<li><strong>flatMap은 Narrow:</strong> 한 입력에서 여러 출력이 나와도, 각 출력 파티션은 단일 입력 파티션에만 의존</li>
+</ul>
+
+<h4>Blocking Property (DAG의 fault tolerance)</h4>
+<p>연산은 모든 선행이 끝난 뒤에만 실행. task 실패 시 후속이 시작 안 됐으므로 master가 정확히 뭘 재시작할지 앎.</p>
+
+<h4>MapReduce 대비 두 가지 개선</h4>
+<ol>
+<li><strong>Lazy Evaluation (지연 평가):</strong> action 호출 전엔 transformation 적용 안 함. 실행 계획 최적화, transformation 합성, 인메모리 전달 가능.</li>
+<li><strong>Lineage (계통):</strong> 각 RDD가 부모 RDD를 기록. chunk 유실 시 lineage를 따라 올라가 재계산. chunk 단위로 추적.</li>
+</ol>
+
+<h4>MapReduce vs Spark 비교</h4>
+<table>
+<tr><th></th><th>MapReduce</th><th>Spark</th></tr>
+<tr><td>속도</td><td>전통 방식보다 빠름</td><td>최대 100배 빠름</td></tr>
+<tr><td>언어</td><td>Java</td><td>Scala (Python API 있음)</td></tr>
+<tr><td>처리</td><td>Batch 전용</td><td>Batch / real-time / iterative / interactive</td></tr>
+<tr><td>캐싱</td><td>없음</td><td>인메모리 캐싱</td></tr>
+<tr><td>사용성</td><td>복잡, 장황</td><td>간결, 쉬움</td></tr>
+<tr><td>적합</td><td>선형 처리, 단순 batch</td><td>interactive, iterative (ML), real-time</td></tr>
+</table>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example · 예시</span>
+<h3>알파벳별 평균 단어 길이 (Spark)</h3>
+<pre><code>avglens = sc.textFile(file) \
+    .flatMap(lambda line: line.split()) \        <span class="code-comment"># lines -> words (narrow)</span>
+    .map(lambda word: (word[0], len(word))) \     <span class="code-comment"># word -> (first_letter, length) (narrow)</span>
+    .groupByKey() \                               <span class="code-comment"># group by letter (WIDE - shuffle!)</span>
+    .map(lambda (k, values): \                    <span class="code-comment"># compute average (narrow)</span>
+        (k, sum(values) / len(values)))
+</code></pre>
+
+<h3>Word Count via reduceByKey (수업 퀴즈)</h3>
+<pre><code>counts = sc.textFile(file) \
+    .flatMap(lambda line: line.split()) \         <span class="code-comment"># 줄 → 단어들</span>
+    .map(lambda w: (w, 1)) \                     <span class="code-comment"># 각 단어 → (word, 1)</span>
+    .reduceByKey(lambda a, b: a + b)             <span class="code-comment"># 키별 count 합</span>
+</code></pre>
+<p><strong>핵심 매핑:</strong> MR의 Reduce = Spark의 <code>reduceByKey</code>. MR의 Map = Spark의 <code>flatMap</code>. 이름이 다름에 주의!</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L3 필수 암기</h3>
+<ul>
+<li>RDD = 파티션 분산, immutable, 한 타입의 컬렉션</li>
+<li>Transformation vs Action 구분; Lazy evaluation 의미</li>
+<li>Wide: groupByKey, join, sort. Narrow: map, flatMap, filter.</li>
+<li><b>flatMap은 Narrow</b> — 출력 크기 변동 있어도 각 출력 파티션은 단일 입력에 의존</li>
+<li>Lineage로 fault recovery (잃은 RDD를 부모로부터 재계산)</li>
+<li>reduceByKey &gt; groupByKey + reduce (시스템 최적화 여지 더 큼)</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "RDDs can be updated in place" → FALSE (immutable)<br>
+- "Spark always outperforms MapReduce" → FALSE (메모리 초과 시 아님)<br>
+- "flatMap creates wide dependency" → FALSE (narrow)<br>
+- "sort creates wide dependency" → TRUE</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L3" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L3" data-type="mmds"></div>
+
+<div class="card exam">
+<span class="tag tag-exam">Past Finals</span>
+<h3>기출 (L3 관련, 2021 Final Q2 — Spark 코드 빈칸 채우기) ★</h3>
+<div class="inline-item" style="background:#fff8e1">
+<h5>[2021 Final] Q2(a) · flatMapValues 복원 (3 pts)</h5>
+<div class="q"><strong>Given:</strong>
+<pre style="background:#f4f4f4;color:#333;font-size:12px">
+rdd1 = sc.parallelize([("1,2","a,b"), ("3,4","b,c"), ("5,6","d,e")])
+rdd2 = ________________________________
+print(rdd2.collect())
+
+# Expected output:
+# [("1,2","a"), ("1,2","b"), ("3,4","b"), ("3,4","c"), ("5,6","d"), ("5,6","e")]</pre></div>
+<div class="a"><strong>정답:</strong> <code>rdd2 = rdd1.flatMapValues(lambda s: s.split(","))</code></div>
+<div class="sol"><strong>풀이:</strong> 각 (key, value)에서 value를 쉼표로 분할해 여러 개의 (key, subvalue)로 확장. <code>flatMapValues</code>는 key를 유지하고 value만 flatMap — 이 패턴의 정확한 용도. 일반 flatMap은 (key,value) 전체 튜플로 다룸.</div>
+</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L4: Frequent Itemsets 1                         -->
+<!-- ====================================================== -->
+<section id="L4">
+<h2 class="section-title">L4: Frequent Itemsets 1 (빈발 아이템셋, A-Priori)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 Frequent Itemsets를 찾는가?</h3>
+<blockquote>"In a supermarket, the manager wants to find patterns of items. If someone buys diaper and milk, he is likely to buy beer."<br><em>슈퍼마켓에서 매니저가 아이템 패턴을 찾고 싶어합니다. 기저귀+우유를 사면 맥주도 살 가능성이 높아요. 기저귀 옆에 맥주 6-pack을 둬도 놀라지 마세요!</em> — Prof. Yoo</blockquote>
+<blockquote>"Market-basket model is an abstract of various data. Items do not have to be 'in' baskets!"<br><em>Market-basket 모델은 다양한 데이터의 추상화입니다. 아이템이 '바구니 안에' 있을 필요는 없어요.</em> — Prof. Yoo</blockquote>
+<p><strong>핵심 문제:</strong> Frequent itemset을 찾는 게 association rule 찾는 것보다 <b>더 어려움</b>. Itemset만 찾으면 rule 생성은 쉬움.</p>
+<p><strong>왜 pair가 가장 어려운가:</strong> itemset 크기가 커질수록 frequent일 확률이 exponentially 감소. Frequent pair는 많고, triple은 드묾.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+<h3>Market-Basket Model (장바구니 모델)</h3>
+<ul>
+<li><strong>Items:</strong> 모든 대상의 집합 (예: 가게의 상품들)</li>
+<li><strong>Baskets:</strong> items의 subset (예: 한 고객의 구매 내역)</li>
+<li><strong>추상화:</strong> 모든 many-to-many 매핑에 적용. 주제 발견 (items=단어, baskets=문서), 표절 탐지 (items=문서, baskets=문장), 바이오마커 (items=약물, baskets=환자)</li>
+</ul>
+
+<h3>Key Definitions</h3>
+<div class="formula-box">
+\[\text{Support}(I) = \text{# baskets containing all items in } I\]
+\[\text{Itemset } I \text{ is frequent if } \text{Support}(I) \geq s\]
+</div>
+
+<h4>Association Rules: \(I \to J\) where \(I \cap J = \emptyset\)</h4>
+<div class="formula-box">
+\[\text{Support}(I \to J) = \text{Support}(I \cup J)\]
+\[\text{Confidence}(I \to J) = \frac{\text{Support}(I \cup J)}{\text{Support}(I)} = P(J|I)\]
+\[\text{Interest}(I \to J) = \text{Confidence}(I \to J) - P(J) = P(J|I) - P(J)\]
+</div>
+<p><strong>Interest 해석:</strong> 0에 가까움 = 규칙이 흥미롭지 않음 (I와 상관없이 J가 자주 나타남). 양수 = 양의 상관. 음수 = 음의 상관. 목표: support ≥ s AND confidence ≥ c인 rule.</p>
+
+<h4>Association Rule 탐색 (2단계)</h4>
+<ol>
+<li><strong>Step 1:</strong> 모든 frequent itemset I 찾기 (어려운 부분)</li>
+<li><strong>Step 2:</strong> 각 subset \(A \subset I\)에 대해 \(A \to I \setminus A\) 규칙 생성. Confidence 체크. <b>LHS에서 RHS로 아이템을 옮기면 confidence는 감소만 함</b> (분자 고정, 분모는 감소만). 이걸로 prune.</li>
+</ol>
+
+<h4>Closed vs Maximal Frequent Itemsets</h4>
+<table>
+<tr><th>개념</th><th>정의</th><th>장점</th><th>단점</th></tr>
+<tr><td><strong>Closed</strong></td><td>즉시 superset 중 같은 support를 가진 게 없음</td><td>안전한 압축, support 정보 유지</td><td>여전히 많음</td></tr>
+<tr><td><strong>Maximal</strong></td><td>즉시 superset 중 frequent가 없음</td><td>더 공격적 pruning</td><td>subset의 support 정보 손실</td></tr>
+</table>
+<p><strong>모든 maximal은 closed지만, 역은 성립하지 않음.</strong></p>
+
+<h3>Pair를 메모리에서 카운팅</h3>
+<table>
+<tr><th>방식</th><th>메모리</th><th>유리한 경우</th></tr>
+<tr><td>Triangular Matrix</td><td>\(4 \times \frac{n(n-1)}{2}\) bytes</td><td>Dense data (p &gt; 1/3)</td></tr>
+<tr><td>Triples (i, j, count)</td><td>\(12 \times p \times \frac{n(n-1)}{2}\) bytes</td><td>Sparse data (p &lt; 1/3)</td></tr>
+</table>
+
+<h3>A-Priori 알고리즘</h3>
+<p><strong>핵심 아이디어: Monotonicity (단조성)</strong> — itemset I가 ≥ s번 나타나면 모든 subset J도 ≥ s번 나타남. <b>대우:</b> item i가 infrequent면 i를 포함하는 어떤 pair도 frequent일 수 없음.</p>
+
+<h4>2-Pass 알고리즘:</h4>
+<ol>
+<li><strong>Pass 1:</strong> basket을 읽고 각 item의 발생 횟수 카운트. 메모리 O(n). ≥ s인 item을 frequent로 표시.</li>
+<li><strong>Between passes:</strong> frequent item을 1..m으로 재번호. non-frequent는 0.</li>
+<li><strong>Pass 2:</strong> basket 다시 읽음. 각 basket에서 frequent item만 봄. frequent item 사이의 모든 pair 카운트. 메모리 O(m²).</li>
+</ol>
+
+<h4>일반화 파이프라인:</h4>
+<div class="formula-box">
+\[C_1 \xrightarrow{\text{Filter}} L_1 \xrightarrow{\text{Construct}} C_2 \xrightarrow{\text{Filter}} L_2 \xrightarrow{\text{Construct}} C_3 \xrightarrow{\text{Filter}} L_3 \to \cdots\]
+</div>
+<p>\(C_k\) = candidate k-tuple, \(L_k\) = 실제로 frequent인 k-tuple. 각 Filter는 디스크 패스 필요. Construct는 필요 없음.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example · 예시</span>
+<h3>A-Priori 완전한 예시</h3>
+<p>Items = {milk, coke, pepsi, beer, juice}, s = 3, 8 baskets:</p>
+<p>B1={m,c,b}, B2={m,p,j}, B3={m,b}, B4={c,j}, B5={m,p,b}, B6={m,c,b,j}, B7={c,b,j}, B8={b,c}</p>
+<p><strong>Pass 1:</strong> item 카운트: m=5, c=5, p=2, b=6, j=4. Frequent (≥3): m, c, b, j. Pepsi 제거.</p>
+<p><strong>Pass 2:</strong> {m,c,b,j}의 pair만 카운트:</p>
+<table>
+<tr><th>Pair</th><td>{m,c}</td><td>{m,b}</td><td>{m,j}</td><td>{c,b}</td><td>{c,j}</td><td>{b,j}</td></tr>
+<tr><th>Count</th><td>3</td><td>4</td><td>2</td><td>4</td><td>3</td><td>2</td></tr>
+</table>
+<p>Frequent pairs (≥3): {m,c}, {m,b}, {c,b}, {c,j}</p>
+
+<h3>Support / Confidence / Interest 예시</h3>
+<p>Rule: {m,b} → c. Support({m,b,c}) = 2. Support({m,b}) = 4.</p>
+<p>Confidence = 2/4 = 0.5. P(c) = 5/8. Interest = 0.5 − 5/8 = <b>−1/8 (음수!)</b></p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L4 필수 암기</h3>
+<ul>
+<li><strong>공식:</strong> Support, Confidence, Interest 정의</li>
+<li><strong>A-Priori monotonicity:</strong> I가 frequent이면 모든 subset도 frequent</li>
+<li><strong>대우:</strong> item i가 infrequent면 i를 포함하는 어떤 superset도 frequent 아님</li>
+<li><strong>Triangular vs Triples:</strong> p &lt; 1/3이면 Triples 유리</li>
+<li><strong>Closed vs Maximal:</strong> 모든 maximal은 closed. Maximal은 support 정보 손실.</li>
+<li><strong>Frequent itemset만 찾으면 rule은 쉽게 생성</strong></li>
+<li><strong>비용은 disk pass 수로 측정, 알고리즘 복잡도 아님</strong></li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "A-Priori finds interesting rules" → FALSE (frequent itemset 찾음, interest 아닌 support 사용)<br>
+- "Interest is always positive" → FALSE (음수 가능)<br>
+- "Market-basket applies only to retail" → FALSE (추상 모델)<br>
+- "All closed itemsets are maximal" → FALSE (역만 성립)</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L4" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L4" data-type="mmds"></div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L5: Frequent Itemsets 2                         -->
+<!-- ====================================================== -->
+<section id="L5">
+<h2 class="section-title">L5: Frequent Itemsets 2 (PCY, Multistage, Toivonen, SON)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 A-Priori를 개선하는가?</h3>
+<blockquote>"The A-Priori algorithm is fine as long as counting candidate pairs can be done in main memory. What if the memory is not enough?"<br><em>A-Priori는 candidate pair 카운팅이 메인 메모리에 들어가면 괜찮은데, 메모리가 부족하면요?</em> — Prof. Yoo</blockquote>
+<blockquote>"In many data mining algorithms, we care about the trade-off between accuracy or approximation and speed."<br><em>많은 데이터 마이닝 알고리즘에서 정확도/근사 vs 속도 trade-off가 중요합니다.</em> — Prof. Yoo</blockquote>
+<p><strong>문제:</strong> A-Priori Pass 1 필터링 후에도 candidate pair C₂가 메모리 초과 가능. |C₂|를 더 줄이는 알고리즘 필요.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>1. PCY (Park-Chen-Yu) Algorithm</h3>
+<p><strong>동기:</strong> A-Priori Pass 1에서 대부분 메모리가 놀고 있음 (item count만 저장). 이 <b>유휴 메모리</b>를 pair hash table에 활용.</p>
+<h4>동작 방식:</h4>
+<ol>
+<li><strong>Pass 1:</strong> item 카운트 (A-Priori 동일) <b>AND</b> 모든 pair {i,j}를 bucket에 해시, bucket count 증가.</li>
+<li><strong>Between passes:</strong> hash table을 <b>bit-vector (bitmap)</b>로 변환. 1 = bucket count ≥ s ("frequent bucket"), 0 = 아님. <b>1/32로 공간 절약</b> (integer → 1 bit).</li>
+<li><strong>Pass 2:</strong> Candidate pair {i,j}는 <b>두 조건</b> 모두 만족해야:
+  <ul>
+    <li>(1) i, j 둘 다 frequent item</li>
+    <li>(2) {i,j}가 bitmap의 frequent bucket으로 해시</li>
+  </ul>
+</li>
+</ol>
+<p><strong>PCY는 triples method 필수</strong> (triangular matrix 아님) — candidate pair의 sparsity를 활용하기 위해.</p>
+
+<h3>2. Multistage Algorithm</h3>
+<p><strong>아이디어:</strong> 여러 패스에 걸쳐 <b>서로 다른 hash 함수</b>로 연쇄적인 hash table 생성.</p>
+<ol>
+<li><strong>Pass 1:</strong> PCY와 동일 → Bitmap 1 생성</li>
+<li><strong>Pass 2:</strong> Bitmap 1 + frequent item 사용. 조건 (1)+(2) 만족하는 pair만 새 hash table에 해시. 두 번째 table은 Bitmap 1이 공간 차지하므로 31/32 bucket. → Bitmap 2 생성</li>
+<li><strong>Pass 3:</strong> <b>세 조건</b> 모두 만족하는 pair만 카운트:
+  <ul>
+    <li>(1) 두 item 모두 frequent</li>
+    <li>(2) Bitmap 1의 frequent bucket에 해시</li>
+    <li>(3) Bitmap 2의 frequent bucket에 해시</li>
+  </ul>
+</li>
+</ol>
+<div class="warn"><strong>결정적 함정 (시험 출제 단골):</strong> 조건 2 (Bitmap 1)를 <b>버릴 수 없음</b> — Bitmap 2가 있어도 불가. Pass 2에서 조건 2 때문에 카운트 안 된 pair가 Bitmap 2에선 우연히 frequent bucket에 갈 수도 있음. <b>조건들이 독립적</b>.</div>
+<p><strong>Truly frequent pair는 항상 frequent bucket에 해시</strong> (몇 패스든).</p>
+
+<h3>3. Multihash Algorithm</h3>
+<p><strong>아이디어:</strong> <b>단일 패스</b>에서 여러 hash table 동시 생성 (순차가 아닌 병렬).</p>
+<ul>
+<li>각 table은 다른 hash 함수 사용, 같은 패스 공유</li>
+<li>Pair {i,j} candidate 조건: 두 item 모두 frequent AND 모든 hash table에서 frequent bucket에 해시</li>
+<li>Trade-off: table 많을수록 조건 많지만 각 table 작아 충돌↑</li>
+<li>최적 table 수: \(p^n\) 최소화 (p = infrequent pair가 frequent bucket에 해시될 확률)</li>
+</ul>
+<div class="formula-box">
+\[P(\text{infrequent pair in } C_2) = p^n\]
+\[\text{Increasing } n \text{ increases both } n \text{ and } p. \text{ Optimal } n \text{ exists.}\]
+</div>
+
+<h3>4. Limited-Pass 알고리즘 (샘플링 기법)</h3>
+
+<h4>Random Sampling</h4>
+<ul>
+<li>basket을 p 비율로 샘플링, threshold ps로 메모리 내 A-Priori 실행</li>
+<li><strong>False positive:</strong> full pass 한 번 (전체에서 검증)으로 제거 가능</li>
+<li><strong>False negative:</strong> 제거 어려움. threshold를 0.9ps로 낮춰 줄일 수 있음</li>
+</ul>
+
+<h4>Toivonen's Algorithm</h4>
+<ul>
+<li>Pass 1: 샘플에서 frequent itemset 찾기 (threshold &lt; ps, 예: 0.9ps). <strong>Negative border</strong> 구성.</li>
+<li><strong>Negative border:</strong> 샘플에서 <b>frequent 아니지만 모든 immediate subset은 frequent</b>인 itemset 집합.</li>
+<li>Pass 2: (샘플-frequent + negative border)를 전체 데이터에서 검증.</li>
+<li>border item 중 전체에서 frequent인 게 없으면 → 완료 (no FP, no FN).</li>
+<li>border item 중 하나라도 전체에서 frequent면 → <b>실패, 재샘플링</b>.</li>
+<li><strong>No false negative 증명:</strong> S가 전체에서 frequent인데 샘플에선 아니라면, S가 negative border에 있거나, S의 immediate subset T가 "전체에선 frequent, 샘플에선 아님"이어야 함. 재귀적으로 border에 도달.</li>
+<li>평균 패스 수는 상수지만 deterministic 아님.</li>
+</ul>
+
+<h4>SON (Savasere, Omiecinski, Navathe) Algorithm</h4>
+<ul>
+<li><strong>Pass 1:</strong> 데이터를 1/p 청크로 나눔. 각 청크에서 threshold ps로 A-Priori 실행.</li>
+<li><strong>Pass 2:</strong> 모든 청크의 frequent itemset 합집합. threshold s로 전체에서 검증.</li>
+<li><strong>No false negative (pigeonhole 증명):</strong> global support ≥ s라면 최소 한 청크에서 support ≥ ps. (모든 청크에서 &lt; ps라면 총 &lt; (1/p)·ps = s 모순.)</li>
+<li><strong>No false positive:</strong> Pass 2에서 검증.</li>
+</ul>
+
+<h4>SON with MapReduce</h4>
+<pre><code><span class="code-comment">// Pass 1: Find candidate itemsets</span>
+map(chunk):                              <span class="code-comment">// each mapper gets one chunk</span>
+    run A-Priori on chunk with threshold ps
+    for each frequent itemset F:
+        emit(F, 1)
+
+reduce(F, counts):                       <span class="code-comment">// collect all candidates</span>
+    if F appears at least once:
+        output F as candidate
+
+<span class="code-comment">// Pass 2: Find true frequent itemsets</span>
+map(candidates, data_portion):           <span class="code-comment">// each mapper gets candidates + data chunk</span>
+    for each candidate C:
+        count support of C in this portion
+        emit(C, local_support)
+
+reduce(C, supports):                     <span class="code-comment">// sum supports across all portions</span>
+    if sum(supports) >= s:
+        output C as truly frequent
+</code></pre>
+<div class="warn"><strong>SON MapReduce 코드는 빈칸 출제 유력 (L5 슬라이드 p34):</strong><br>
+예상 빈칸: Pass 1 Map의 "emit(F, 1)", Pass 2 Reduce의 "sum(supports) &gt;= s"</div>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example · 예시</span>
+<h3>PCY 수업 퀴즈</h3>
+<p>Baskets: {1,2,3}, {3,4,5}, {2,4,5}. s=2. Hash table 3개 bucket: h(i,j) = (i×j) mod 3.</p>
+<p><strong>Pass 1 item count:</strong> 1:1, 2:2, 3:2, 4:2, 5:2. Frequent items (≥2): {2,3,4,5}. Item 1은 제거.</p>
+<p><strong>모든 pair를 bucket에 해시:</strong></p>
+<table>
+<tr><th>Pair</th><th>i*j mod 3</th><th>Bucket</th></tr>
+<tr><td>{1,2}</td><td>2</td><td>2</td></tr>
+<tr><td>{1,3}</td><td>0</td><td>0</td></tr>
+<tr><td>{2,3}</td><td>0</td><td>0</td></tr>
+<tr><td>{3,4}</td><td>0</td><td>0</td></tr>
+<tr><td>{3,5}</td><td>0</td><td>0</td></tr>
+<tr><td>{4,5}</td><td>2</td><td>2</td></tr>
+<tr><td>{2,4}</td><td>2</td><td>2</td></tr>
+<tr><td>{2,5}</td><td>1</td><td>1</td></tr>
+<tr><td>{4,5}</td><td>2</td><td>2 (again)</td></tr>
+</table>
+<p>Bucket count: [0]=4, [1]=1, [2]=4. Bitmap: [0]=1, [1]=0, [2]=1.</p>
+<p><strong>Pass 2 candidate:</strong> 두 item 모두 frequent AND frequent bucket으로 해시. Pair {2,5}는 bucket 1 (infrequent)로 해시 → 제거. 다른 frequent pair는 모두 candidate.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L5 필수 암기</h3>
+<ul>
+<li><strong>PCY:</strong> Pass 1 유휴 메모리를 hash table에 활용. Bitmap으로 1/32 공간. <b>Triples method 필수</b>.</li>
+<li><strong>Multistage:</strong> 순차 hash table. <b>Bitmap 1을 버릴 수 없음</b> (조건 독립).</li>
+<li><strong>Multihash:</strong> 단일 패스에서 병렬 hash table. 최적 n은 p^n 최소화.</li>
+<li><strong>Random Sampling:</strong> FP 제거 가능 (full pass), FN 제거 어려움 (threshold 낮춤)</li>
+<li><strong>Toivonen:</strong> Negative border = 샘플에서 frequent 아니지만 모든 immediate subset은 frequent. border item이 전체에서 frequent면 → 재시작.</li>
+<li><strong>SON:</strong> No FN (pigeonhole 증명). No FP (Pass 2 검증). MapReduce 호환.</li>
+<li><strong>SON MapReduce pseudocode:</strong> 두 pass의 map/reduce 함수 외워둘 것.</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "PCY can use triangular matrix" → FALSE (sparsity 위해 triples 필수)<br>
+- "Truly frequent pairs always hash to frequent buckets" → TRUE<br>
+- "Toivonen에서 샘플을 전체에서 체크해 false negative 회피" → FALSE (그건 false POSITIVE 회피; negative border가 false negative 회피)<br>
+- "Multistage can drop earlier bitmaps" → FALSE (조건 독립)<br>
+- "SON has false negatives" → FALSE (pigeonhole로 FN 없음 보장)</div>
+</div>
+
+<h3>Exam Problems for This Lecture</h3>
+<div class="inline-items" data-lecture="L5" data-type="exam"></div>
+<h3>MMDS Examples for This Lecture</h3>
+<div class="inline-items" data-lecture="L5" data-type="mmds"></div>
+
+<div class="card exam">
+<span class="tag tag-exam">Past Finals</span>
+<h3>기출 (L4-L5 관련, 2021 Final Q3 — divisor example) ★</h3>
+<div class="inline-item" style="background:#fff8e1">
+<h5>[2021 Final] Q3 · Frequent Items & Pairs (10 points)</h5>
+<div class="q"><strong>Given:</strong> 50개 items (1~50), 50개 baskets (1~50). Item i는 basket b에 있음 iff i가 b의 약수. 즉 basket 6 = {1, 2, 3, 6}. Support threshold s=5.
+<br><br>(a) 어느 items가 frequent인가?
+<br>(b) 어느 pairs of items가 frequent인가?
+<br>(c) 모든 basket 크기의 합은?</div>
+<div class="a"><strong>정답:</strong><br>
+(a) items = {<strong>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</strong>} (10개)
+<br>(b) 19개 pairs (아래 풀이)
+<br>(c) <strong>207</strong></div>
+<div class="sol"><strong>풀이:</strong>
+<br><strong>(a)</strong> item i의 support = # baskets containing i = # multiples of i in [1,50] = ⌊50/i⌋. support ≥ 5 ⇔ ⌊50/i⌋ ≥ 5 ⇔ i ≤ 10. → {1~10}.
+<br><br><strong>(b)</strong> pair {i,j}의 support = # baskets b에서 i,j 둘 다 b의 약수 ⇔ lcm(i,j) | b. 따라서 support = ⌊50/lcm(i,j)⌋. ≥ 5 ⇔ lcm(i,j) ≤ 10. frequent items(1~10) 내에서 lcm ≤ 10인 pair:
+<br>• {1, *} 모두 OK: {1,2}..{1,10} → 9개
+<br>• {2,3} lcm=6, {2,4} lcm=4, {2,5} lcm=10, {2,6} lcm=6, {2,8} lcm=8, {2,10} lcm=10 → 6개
+<br>• {3,6} lcm=6, {3,9} lcm=9 → 2개
+<br>• {4,8} lcm=8 → 1개
+<br>• {5,10} lcm=10 → 1개
+<br>총 <strong>9+6+2+1+1 = 19개</strong>
+<br><br><strong>(c)</strong> sum = Σ_b |divisors(b)| = Σ_{i=1}^{50} ⌊50/i⌋ (각 (i,b) 페어 카운트를 i 기준으로 재배열).
+<br>= 50+25+16+12+10+8+7+6+5+5 + (4+4) + (3+3+3+3) + (2×9) + (1×25) = <strong>207</strong>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L6: LSH Part 1 — Shingling & MinHashing         -->
+<!-- ====================================================== -->
+<section id="L6">
+<h2 class="section-title">L6: Finding Similar Items 1 — Shingling & MinHash</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 LSH인가?</h3>
+<blockquote>"Comparing every pair is O(N²). For 1B documents, impossible. Trade a small amount of accuracy for huge speedup."<br><em>모든 pair 비교는 O(N²). 10억 문서에선 불가능. 정확도 조금 희생하고 대폭 속도 향상.</em></blockquote>
+<p><strong>목표:</strong> 많은 문서 중 Jaccard 유사도가 threshold s를 넘는 pair를 찾되 — <b>모든 pair 비교 없이</b>.</p>
+<p><strong>3단계 파이프라인:</strong> Shingling → Min-Hashing → LSH (banding).</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>Step 1: Shingling</h3>
+<ul>
+<li><strong>k-shingle:</strong> 문서 안의 길이 k인 부분문자열 (character 또는 word 단위)</li>
+<li>문서 → shingle 집합 → 집합 기반 유사도 가능</li>
+<li>경험칙: 짧은 문서(이메일)는 k=5, 큰 코퍼스는 k=9</li>
+<li>선택: shingle을 integer로 해시 (공간 절약, 각 4 bytes)</li>
+</ul>
+
+<h3>Jaccard Similarity</h3>
+<div class="formula-box">
+\[\text{sim}(C_1, C_2) = \frac{|C_1 \cap C_2|}{|C_1 \cup C_2|}\]
+</div>
+<p>여기서 \(C_1, C_2\)는 shingle 집합. 범위 \([0, 1]\).</p>
+
+<h3>Characteristic Matrix (특성 행렬)</h3>
+<p>Row = shingle (universe), Column = 문서. \(M_{ij} = 1\) iff shingle \(i\)가 문서 \(j\)에 있음. 일반적으로 매우 sparse. <b>실제로 저장하지 않음</b> — minhash signature로 대체.</p>
+
+<h3>Step 2: Min-Hashing (확률적 압축)</h3>
+<p><strong>단일 min-hash:</strong> row의 랜덤 permutation \(\pi\) 선택. \(h_\pi(C)\) = (permuted 순서에서) column \(C\)가 1인 <b>첫 번째 row</b>의 index.</p>
+
+<div class="formula-box">
+\[\Pr[h_\pi(C_1) = h_\pi(C_2)] = \text{sim}(C_1, C_2)\]
+</div>
+
+<h4>왜 성립하는가 (증명):</h4>
+<p>permuted 순서에서 <em>\(C_1\) 또는 \(C_2\)</em>가 1인 <b>첫 번째 "active row"</b>를 생각하자. active row들 중 정확히 \(|C_1 \cap C_2|\)개가 둘 다 1, 총 \(|C_1 \cup C_2|\)개. 첫 active row가 "둘 다 1" row일 확률 = Jaccard.</p>
+
+<h4>실제로는 permutation 안 씀</h4>
+<p>대신 hash 함수 사용: \(h_i(r) = (a_i \cdot r + b_i) \bmod p\). \(n\)개 선택 (예: \(n=100\)). Column \(C\)의 <strong>signature</strong>는 \([h_1, h_2, \ldots, h_n]\)의 벡터 (C=1인 row들에 대한 최솟값).</p>
+
+<h4>알고리즘 (streaming 구성)</h4>
+<pre><code><span class="code-comment"># 초기화: sig[i][c] = ∞ (모든 i, c)</span>
+for each row r with value(c,r) = 1:
+    for each hash i:
+        sig[i][c] = min(sig[i][c], h_i(r))
+</code></pre>
+<p>\(C_1, C_2\)의 추정 Jaccard = signature가 일치하는 위치 비율.</p>
+</div>
+
+<div class="card example">
+<span class="tag tag-example">Example · 예시</span>
+<h3>Signature 계산 (2025 midterm 스타일)</h3>
+<p>특성 행렬 (4 row × 2 doc):</p>
+<table>
+<tr><th>Row r</th><th>C1</th><th>C2</th><th>h1=2r+1 mod 5</th><th>h2=3r+2 mod 5</th></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>2</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>3</td><td>0</td></tr>
+<tr><td>2</td><td>1</td><td>1</td><td>0</td><td>3</td></tr>
+<tr><td>3</td><td>1</td><td>0</td><td>2</td><td>1</td></tr>
+</table>
+<p>C1의 1-row: {0,2,3}. min h1 = min(1,0,2) = 0. min h2 = min(2,3,1) = 1. ⇒ sig(C1) = [0, 1].</p>
+<p>C2의 1-row: {1,2}. min h1 = min(3,0) = 0. min h2 = min(0,3) = 0. ⇒ sig(C2) = [0, 0].</p>
+<p>추정 Jaccard = 1/2 (2개 중 1개 일치). 실제 Jaccard = |{2}|/|{0,1,2,3}| = 1/4. 작은 n에서 estimate는 noisy.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L6 필수 암기</h3>
+<ul>
+<li>Jaccard 공식; signature = minhash 값의 벡터</li>
+<li><strong>핵심 항등식: P(h(C1)=h(C2)) = Jaccard(C1,C2)</strong> — "first active row" 증명 필수</li>
+<li>Signature 구성 알고리즘 (row 순차, min 업데이트)</li>
+<li>실제로는 permutation 대신 hash 함수</li>
+<li>Signature 길이 = 선택한 hash 함수 수 (n)</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "MinHash signatures exactly equal Jaccard similarity" → FALSE (unbiased estimator, variance ~ 1/n)<br>
+- "Need to store full characteristic matrix" → FALSE (signature로 streaming)<br>
+- "k-shingle 길이는 저장량만 영향, 유사도 탐지엔 영향 없음" → partially true; k가 너무 작으면 spurious similarity 발생</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L7: LSH Part 2 — Banding & Distances            -->
+<!-- ====================================================== -->
+<section id="L7">
+<h2 class="section-title">L7: Finding Similar Items 2 — LSH Banding & Distance Measures</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>Signature에서 Candidate Pair로</h3>
+<blockquote>"We want to be hashed together only if we are likely similar."<br><em>유사할 가능성이 있을 때만 같이 해시되길 원함.</em> Signature를 b개 band × r rows로 나눔 — 한 band이라도 같은 bucket이면 candidate.</blockquote>
+<p><strong>핵심 트릭:</strong> 독립적인 hash table을 band마다 유지. 한 pair가 한 band이라도 같은 bucket에 들면 candidate. precision/recall 튜닝 가능.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>LSH Banding</h3>
+<p>Signature 길이 \(n = b \cdot r\). \(b\)개 band로 나누고 각 band는 \(r\) rows.</p>
+<ul>
+<li>각 band마다 \(r\)개 값을 bucket에 해시 (band별 별도 hash table)</li>
+<li>Candidate pair = 어느 한 band이라도 같은 bucket에 든 pair</li>
+</ul>
+
+<h3>S-Curve (Candidate Pair 확률)</h3>
+<div class="formula-box">
+\[P(\text{candidate pair}) = 1 - (1 - s^r)^b\]
+</div>
+<p>\(s\) = 실제 Jaccard similarity.</p>
+<ul>
+<li>\(s^r\) = 단일 band가 일치할 확률</li>
+<li>\((1-s^r)^b\) = 모든 band가 불일치할 확률</li>
+<li>\(1 - (1-s^r)^b\) = 적어도 한 band가 일치할 확률</li>
+</ul>
+
+<h4>Threshold 근사</h4>
+<div class="formula-box">
+\[t \approx \left(\frac{1}{b}\right)^{1/r}\]
+</div>
+<p>S-curve가 \(t\) 근처에서 급격히 상승. 튜닝:</p>
+<table>
+<tr><th>조절 (r×b=n 고정)</th><th>t 변화</th><th>S-curve</th><th>결과</th></tr>
+<tr><td>↑ r, ↓ b</td><td>t 상승</td><td>가파름</td><td><strong>precision↑, recall↓</strong></td></tr>
+<tr><td>↓ r, ↑ b</td><td>t 하강</td><td>완만</td><td><strong>recall↑, precision↓</strong></td></tr>
+</table>
+<p><strong>외워둘 예:</strong> n=20, r=5, b=4. t ≈ (1/4)^(1/5) ≈ 0.76. s ≳ 0.76인 pair만 candidate.</p>
+
+<h3>False Positive / False Negative</h3>
+<ul>
+<li><strong>False positive:</strong> 유사하지 않은 pair가 candidate → banding 후 직접 유사도 체크로 제거 가능</li>
+<li><strong>False negative:</strong> 유사한 pair를 놓침 → 추가 hash family 없이는 제거 불가</li>
+</ul>
+
+<h3>Distance Measure (거리 공리, 암기 필수)</h3>
+<p>\(d(x,y)\)가 metric이려면: (1) \(d \ge 0\), (2) \(d(x,y)=0 \iff x=y\), (3) symmetric, (4) triangle inequality.</p>
+
+<table>
+<tr><th>측도</th><th>공식</th><th>적합</th><th>LSH family</th></tr>
+<tr><td>Jaccard distance</td><td>\(1 - J(A,B)\)</td><td>집합</td><td>min-hash</td></tr>
+<tr><td>Hamming</td><td>다른 위치 수</td><td>binary string</td><td>bit sampling</td></tr>
+<tr><td>Euclidean (L2)</td><td>\(\sqrt{\sum (x_i-y_i)^2}\)</td><td>vector</td><td>random projection</td></tr>
+<tr><td>L_p norm</td><td>\((\sum |x_i-y_i|^p)^{1/p}\)</td><td>vector</td><td>stable distribution</td></tr>
+<tr><td>Cosine</td><td>\(1 - \frac{x\cdot y}{\|x\|\|y\|}\)</td><td>방향</td><td>random hyperplane</td></tr>
+<tr><td>Edit distance</td><td>삽입+삭제 수</td><td>string</td><td>(단순 LSH family 없음)</td></tr>
+</table>
+
+<h3>Locality-Sensitive Hash Family</h3>
+<p>Family \(\mathcal{H}\)가 \((d_1, d_2, p_1, p_2)\)-sensitive 이려면, \(\mathcal{H}\)에서 랜덤 선택한 \(h\)에 대해:</p>
+<ul>
+<li>\(d(x,y) \le d_1\)이면: \(\Pr[h(x)=h(y)] \ge p_1\)</li>
+<li>\(d(x,y) \ge d_2\)이면: \(\Pr[h(x)=h(y)] \le p_2\)</li>
+</ul>
+<p>의미 있으려면 \(d_1 &lt; d_2\) AND \(p_1 &gt; p_2\). AND/OR amplification = banding의 일반화.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L7 필수 암기</h3>
+<ul>
+<li><strong>S-curve 공식: \(1 - (1-s^r)^b\)</strong> — 무작정 외우지 말고 <b>유도할 수 있어야</b></li>
+<li>Threshold \(t \approx (1/b)^{1/r}\); 각 조절의 방향 숙지</li>
+<li>거리 metric 공리 4개</li>
+<li>어느 LSH family가 어느 거리와 매칭되는지 (Jaccard→minhash, Cosine→hyperplane, Euclidean→random projection)</li>
+<li>False positive 제거 가능, false negative 불가 (추가 hash 없이)</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "Increasing r always increases recall" → FALSE (r↑ → S-curve 가팔라지고 threshold↑, recall↓)<br>
+- "Cosine distance satisfies triangle inequality" → TRUE (angle distance로 정의하면)<br>
+- "Edit distance has a simple LSH family" → FALSE<br>
+- "Banding eliminates all false positives" → FALSE (일부만 제거, 직접 비교로 verify 필요)</div>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Past Finals</span>
+<h3>기출 (L7 관련, 2021 Final Q4 — AND/OR construction) ★</h3>
+<div class="inline-item" style="background:#fff8e1">
+<h5>[2021 Final] Q4 · LSH AND/OR Construction (8 points)</h5>
+<div class="q"><strong>Given:</strong> LSH family F가 \((d_1, d_2, 0.6, 0.4)\)-sensitive. 즉 두 점이 가까우면 (\(d \le d_1\)) 충돌 확률 ≥ 0.6, 멀면 (\(d \ge d_2\)) ≤ 0.4.
+<br>(a) F의 member 2개로 <strong>AND-construction</strong>. \((d_1, d_2, w, x)\)의 w, x 계산.
+<br>(b) F의 member 2개로 <strong>OR-construction</strong>. \((d_1, d_2, y, z)\)의 y, z 계산.
+<br>(c) (b)의 OR 후 (a)의 AND로 cascading. fixed point p는?</div>
+<div class="a"><strong>정답:</strong><br>
+(a) w = 0.36, x = 0.16
+<br>(b) y = 0.84, z = 0.64
+<br>(c) p = 1/(2-p)² 의 해, <strong>약 0.38</strong> (nontrivial fixedpoint)</div>
+<div class="sol"><strong>풀이:</strong>
+<br><strong>(a) AND-construction:</strong> 두 member 모두 충돌해야 함.
+<br>• 가까운 경우: \(w = 0.6^2 = 0.36\)
+<br>• 먼 경우: \(x = 0.4^2 = 0.16\)
+<br><br><strong>(b) OR-construction:</strong> 적어도 하나 충돌하면 됨.
+<br>• 가까운 경우: \(y = 1 - (1-0.6)^2 = 1 - 0.16 = 0.84\)
+<br>• 먼 경우: \(z = 1 - (1-0.4)^2 = 1 - 0.36 = 0.64\)
+<br><br><strong>(c) Cascading OR → AND:</strong> 입력 확률 p에 대해
+<br>• OR 후: \(p_1 = 1 - (1-p)^2 = 2p - p^2 = p(2-p)\)
+<br>• AND 후: \(p_2 = p_1^2 = p^2(2-p)^2\)
+<br>Fixed point: \(p = p^2(2-p)^2\). p ≠ 0이면 \(1 = p(2-p)^2\).
+<br>수치 해: p = 0.38에서 \(0.38 \times 1.62^2 \approx 0.997 \approx 1\) ⇒ <strong>p ≈ 0.38</strong>.
+<br><br><strong>의미:</strong> cascading으로 두 확률 구간 모두 변함 — 이것이 LSH amplification의 핵심. 0.38 아래는 더 낮추고, 위는 더 높이는 효과.</div>
+</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L8: Clustering 1 — Hierarchical & k-means       -->
+<!-- ====================================================== -->
+<section id="L8">
+<h2 class="section-title">L8: Clustering 1 — Hierarchical & k-means (계층적 + k-평균)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>두 가지 flavor</h3>
+<blockquote>"Hierarchical builds a tree of merges — expressive but O(N³). Partitional picks k directly — fast but depends on k."<br><em>Hierarchical은 병합 트리를 만듦 — 표현력 있지만 O(N³). Partitional은 k를 직접 정함 — 빠르지만 k에 의존.</em></blockquote>
+<p>Clustering = 유사도 기반 비지도 그룹핑. <b>차원의 저주:</b> 고차원에선 모든 점이 등거리로 보임.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>Hierarchical Clustering (Agglomerative, 병합형)</h3>
+<ol>
+<li>시작: 각 점이 자기 cluster</li>
+<li>반복: 가장 가까운 두 cluster 병합</li>
+<li>원하는 cluster 수에 도달하면 중단 (또는 단일 cluster까지)</li>
+</ol>
+
+<h4>Cluster 간 거리 정의</h4>
+<table>
+<tr><th>Metric</th><th>정의</th><th>성질</th></tr>
+<tr><td>Single link</td><td>최소 pairwise distance</td><td>길게 늘어진 체인</td></tr>
+<tr><td>Complete link</td><td>최대 pairwise distance</td><td>compact한 둥근 cluster</td></tr>
+<tr><td>Average link</td><td>평균 pairwise distance</td><td>균형</td></tr>
+<tr><td>Centroid / Ward</td><td>centroid 간 거리 (또는 variance)</td><td>Euclidean 공간에서만</td></tr>
+</table>
+
+<h3>k-means (Lloyd's Algorithm)</h3>
+<ol>
+<li>초기 k개 centroid 선택</li>
+<li>각 점을 가장 가까운 centroid에 배정</li>
+<li>centroid를 배정된 점들의 평균으로 재계산</li>
+<li>배정이 안 바뀔 때까지 2-3 반복</li>
+</ol>
+<p>SSE \(\sum_{i}\sum_{x\in C_i}\|x-\mu_i\|^2\)의 <b>local minimum</b>에 수렴. Global optimum 보장 안 됨.</p>
+
+<h3>k-means++ (똑똑한 초기화)</h3>
+<p>목표: 초기 centroid를 퍼뜨려 나쁜 local min 회피.</p>
+<ol>
+<li>첫 centroid \(c_1\)을 uniform random으로 선택</li>
+<li>각 남은 점 \(p\)에 대해 \(D(p) = \min_{c_i} \|p - c_i\|\) 계산 (이미 선택된 centroid까지의 최소 거리)</li>
+<li>다음 centroid를 확률 \(\frac{D(p)^2}{\sum_q D(q)^2}\)로 선택</li>
+<li>k개 centroid 고르고 standard k-means 실행</li>
+</ol>
+<div class="formula-box">
+\[\Pr[\text{pick } p] = \frac{D(p)^2}{\sum_{q} D(q)^2}\]
+</div>
+<p><strong>정리:</strong> k-means++는 기대값 기준 O(log k)-approximation to optimal.</p>
+
+<h3>k 선택</h3>
+<ul>
+<li><strong>Elbow method:</strong> WSS (within-cluster sum of squares) vs k 플롯. k 더 늘려도 개선 안 되는 "팔꿈치"점.</li>
+<li><strong>Silhouette:</strong> 각 점 \(i\)에 대해 \(s_i = (b_i - a_i) / \max(a_i, b_i)\). \(a_i\) = 자기 cluster 평균 거리, \(b_i\) = 가장 가까운 다음 cluster 평균 거리. 높을수록 좋음.</li>
+</ul>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L8 필수 암기</h3>
+<ul>
+<li><strong>k-means++ 확률 공식</strong> (D²-weighted)</li>
+<li>Lloyd's algorithm 단계; local min에만 수렴</li>
+<li>Hierarchical: 4가지 link 타입 + 각각 언제 유리한지</li>
+<li>Silhouette 공식: \((b-a)/\max(a,b)\)</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "k-means always finds global optimum" → FALSE (local min)<br>
+- "k-means++ guarantees optimal result" → FALSE (기대값 O(log k)-approx)<br>
+- "Single-link and complete-link give the same dendrogram" → FALSE</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L9: Clustering 2 — BFR & CURE                   -->
+<!-- ====================================================== -->
+<section id="L9">
+<h2 class="section-title">L9: Clustering 2 — BFR & CURE (대용량 데이터용)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>데이터가 메모리에 안 들어갈 때</h3>
+<p><b>BFR:</b> Gaussian 가정 하의 streaming k-means. cluster를 sufficient statistics (N, SUM, SUMSQ)로 요약.</p>
+<p><b>CURE:</b> 비구형 cluster를 여러 "representative point"로 표현.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>BFR (Bradley-Fayyad-Reina)</h3>
+<p><strong>가정:</strong> cluster는 axis-aligned Gaussian. 데이터를 청크 단위 로드.</p>
+
+<h4>3개 집합 유지:</h4>
+<table>
+<tr><th>Set</th><th>무엇</th><th>저장 형태</th></tr>
+<tr><td>DS (Discard)</td><td>cluster에 확실히 배정된 점들</td><td>요약 통계 (N, SUM, SUMSQ)</td></tr>
+<tr><td>CS (Compression)</td><td>미배정 점 중 dense 서브클러스터</td><td>요약 통계 (N, SUM, SUMSQ)</td></tr>
+<tr><td>RS (Retained)</td><td>아웃라이어, 아직 클러스터링 안 됨</td><td>실제 점</td></tr>
+</table>
+
+<h4>cluster당 sufficient statistics (d 차원)</h4>
+<div class="formula-box">
+\[N: \text{count}, \quad \mathbf{SUM}_d: \sum x_d, \quad \mathbf{SUMSQ}_d: \sum x_d^2\]
+\[\text{centroid}_d = \frac{\text{SUM}_d}{N}, \quad \sigma_d^2 = \frac{\text{SUMSQ}_d}{N} - \left(\frac{\text{SUM}_d}{N}\right)^2\]
+</div>
+
+<h4>Mahalanobis 거리 (배정용)</h4>
+<div class="formula-box">
+\[\text{mahal}(x, c) = \sqrt{\sum_{d=1}^{D} \left(\frac{x_d - c_d}{\sigma_d}\right)^2}\]
+</div>
+<p>규칙: 점 \(x\)의 mahal \(&lt; \alpha \cdot \sqrt{D}\)이면 그 cluster에 배정 (흔한 threshold: α=2, 즉 mahal &lt; 2√D). 아니면 RS로.</p>
+
+<h4>청크 하나 처리:</h4>
+<ol>
+<li>각 점: 어느 DS cluster의 Mahalanobis threshold 안이면 배정 + (N, SUM, SUMSQ) 업데이트. 아니면 RS로.</li>
+<li>RS의 점들 (이전 RS 포함) 에 k-means 적용; 작은 dense 서브클러스터 → CS, singleton은 RS 유지.</li>
+<li>결합 variance가 작은 CS cluster끼리 merge.</li>
+<li>마지막 청크: CS와 RS를 가장 가까운 DS cluster에 merge.</li>
+</ol>
+
+<h3>CURE (Clustering Using REpresentatives)</h3>
+<p><strong>비구형 cluster 처리</strong> (예: 길쭉한 두 모양).</p>
+<ol>
+<li>메모리에 들어가는 양을 샘플링</li>
+<li>샘플에 hierarchical clustering 적용</li>
+<li>각 cluster에서 <strong>k개 representative point</strong> 선택 — cluster 내부에 퍼뜨림 (첫 번째: centroid에서 가장 먼 점, 그 다음: 이미 선택된 rep에서 가장 먼 점)</li>
+<li><strong>Shrink</strong>: rep을 centroid 방향으로 α배만큼 이동 (흔히 α = 0.2):
+<div class="formula-box">
+\[p'_i = p_i + \alpha(c - p_i) = (1 - \alpha) p_i + \alpha c\]
+</div>
+</li>
+<li>샘플에 안 뽑힌 점은 가장 가까운 shrunk rep의 cluster에 배정</li>
+</ol>
+<p><strong>Shrink 이유:</strong> 원본 rep이 outlier일 수 있음 → 안쪽으로 이동시켜 robustness. cluster가 주변 점까지 탐욕스럽게 먹지 않도록.</p>
+
+<h3>Novel Variant 경고: A-CURE (2025 출제)</h3>
+<p>A-CURE: shrinkage \(\alpha_i = 1/d_i\) (rep \(i\)에서 centroid까지 거리의 역수). <b>멀리 있는 rep은 덜 shrink, 가까운 rep은 더 shrink</b> (극단적 역전). 비슷한 "시험 당일 정의되는" 변형 문제에 대비.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L9 필수 암기</h3>
+<ul>
+<li><strong>BFR sufficient stats: N, SUM, SUMSQ</strong> 와 파생값 centroid/σ²</li>
+<li><strong>Mahalanobis distance 공식</strong> (차원별 σ 사용)</li>
+<li>DS/CS/RS 역할</li>
+<li>CURE 5단계; shrink 공식 \(p' = (1-α)p + αc\)</li>
+<li>왜 shrink? outlier에 robust</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "BFR requires all data in memory" → FALSE (streaming 청크)<br>
+- "BFR assumes spherical clusters" → 부분 TRUE (axis-aligned Gaussian, 차원별 다른 σ 가능)<br>
+- "CURE uses one centroid per cluster" → FALSE (여러 rep)<br>
+- "Shrink moves toward nearest point" → FALSE (centroid 방향)</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L10: Dimensionality Reduction 1 — SVD           -->
+<!-- ====================================================== -->
+<section id="L10">
+<h2 class="section-title">L10: Dimensionality Reduction 1 — SVD (특이값 분해)</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 SVD인가?</h3>
+<p>고차원 데이터는 보통 저차원 subspace에 있음. SVD는 Frobenius norm 기준 <b>최적</b>의 low-rank 근사를 찾음.</p>
+<blockquote>"Columns of U = concepts in user space. Columns of V = concepts in item space. Σ = strength of each concept."<br><em>U의 column = 사용자 공간의 concept. V의 column = 아이템 공간의 concept. Σ = 각 concept의 강도.</em></blockquote>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>SVD 정의</h3>
+<div class="formula-box">
+\[M_{m \times n} = U_{m \times r} \, \Sigma_{r \times r} \, V^T_{r \times n}\]
+</div>
+<ul>
+<li>\(r\) = rank of \(M\)</li>
+<li>\(U\): orthonormal columns (left singular vectors)</li>
+<li>\(V\): orthonormal columns (right singular vectors)</li>
+<li>\(\Sigma\): diagonal, 양수 내림차순 (singular value \(\sigma_1 \ge \sigma_2 \ge \cdots \ge 0\))</li>
+</ul>
+
+<h3>해석</h3>
+<p>\(M = \sum_{i=1}^{r} \sigma_i \, u_i \, v_i^T\) — 중요도 순 rank-1 matrix의 합.</p>
+<p><strong>Concept:</strong> 각 rank-1 항이 잠재 factor. 예: 영화 평점 → factor 1 = SF 좋아함, factor 2 = 로맨스 좋아함.</p>
+
+<h3>최적 Low-Rank 근사 (Eckart-Young)</h3>
+<p>상위 \(k\)개 singular value만 유지: \(M_k = \sum_{i=1}^{k} \sigma_i u_i v_i^T\). 그러면:</p>
+<div class="formula-box">
+\[\|M - M_k\|_F^2 = \sum_{i=k+1}^{r} \sigma_i^2\]
+\[M_k = \arg\min_{\text{rank}(B)=k} \|M - B\|_F\]
+</div>
+
+<h3>Energy</h3>
+<div class="formula-box">
+\[\text{Total energy} = \sum_{i=1}^{r} \sigma_i^2 = \|M\|_F^2\]
+\[\text{Top-k 유지 에너지 비율} = \frac{\sum_{i=1}^{k} \sigma_i^2}{\sum_{i=1}^{r} \sigma_i^2}\]
+</div>
+<p><strong>경험칙:</strong> ≥ 90% energy 유지하도록 \(k\) 선택.</p>
+
+<h3>Eigendecomposition과의 관계</h3>
+<p>\(M^T M = V \Sigma^2 V^T\). V의 column = \(M^T M\)의 eigenvector. Eigenvalue = \(\sigma_i^2\).</p>
+
+<h3>계산 (2D worked example)</h3>
+<p>\(M\) (m×n) 주어지면, \(M^T M\) (n×n) 계산. Eigendecompose: \(M^T M = V \Lambda V^T\), \(\lambda_i = \sigma_i^2\). 그 후 \(U = M V \Sigma^{-1}\).</p>
+
+<h3>SVD로 쿼리·추천</h3>
+<p>user row \(q\)를 concept space로 projection: \(q_{\text{concept}} = q V\). \(U\Sigma\) 공간에서 가장 가까운 user 찾기. 해당 concept 차원에서 값 높은 아이템 추천.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L10 필수 암기</h3>
+<ul>
+<li><strong>SVD factorization shape: U (m×r), Σ (r×r), V^T (r×n)</strong></li>
+<li>\(M_k\)가 Frobenius norm 기준 최적, 오차 = \(\sqrt{\sum_{i&gt;k}\sigma_i^2}\)</li>
+<li>Energy 공식 (\(\sigma^2\) 합) 과 retained energy 비율</li>
+<li>\(V\) = \(M^T M\)의 eigenvector, eigenvalue = \(\sigma_i^2\)</li>
+<li>U와 V는 orthonormal column (row는 일반적으로 아님)</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "SVD is unique" → FALSE (singular vector 부호 뒤집기; 같은 σ 부분공간에서 회전 가능)<br>
+- "Σ is always square" → compact SVD에선 TRUE (r×r); full SVD면 U(m×m), V(n×n), Σ(m×n)로 zero padding<br>
+- "SVD minimizes L1 norm" → FALSE (Frobenius/L2)</div>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Past Finals</span>
+<h3>기출 (L10 관련)</h3>
+<div class="inline-item">
+<h5>[2025 Final] Q1(n) T/F · SVD as autoencoder</h5>
+<div class="q">"An autoencoder is a neural network trained to reconstruct its input, and SVD can be interpreted as a kind of linear autoencoder."</div>
+<div class="a"><strong>정답:</strong> TRUE</div>
+<div class="sol"><strong>풀이:</strong> SVD rank-k 근사 \(M_k = U_k \Sigma_k V_k^T\)는 encoder \(E: x \mapsto \Sigma_k V_k^T x\) + decoder \(D: z \mapsto U_k z\)의 합성으로 볼 수 있음. 선형 autoencoder의 최적해가 SVD.</div>
+</div>
+<div class="inline-item">
+<h5>[2024 Final] Q1(l) T/F · Matrix Sketching vs SVD</h5>
+<div class="q">"Matrix sketching for streaming data cannot be more accurate than SVD."</div>
+<div class="a"><strong>정답:</strong> TRUE (추정)</div>
+<div class="sol"><strong>풀이:</strong> Eckart-Young 정리로 SVD rank-k가 Frobenius norm 기준 최적. Streaming sketching(Frequent Directions 등)은 전체 데이터를 다 못 봐서 근사 — 절대 SVD보다 정확할 수 없음.</div>
+</div>
+<div class="inline-item" style="background:#fff8e1">
+<h5>[2021 Final] Q5 · SVD Projection (계산, 8점) ★</h5>
+<div class="q"><strong>Given:</strong> 4×4 user-movie rating matrix. Its SVD:
+<pre style="background:#f4f4f4;color:#333;font-size:12px">
+      [0  √5/5  0]   [4   0    0]   [0     0     0  1]
+UΣV^T=[0  2√5/5 0] × [0  √10   0] × [√2/2 √2/2  0  0]
+      [0   0    1]   [0   0    3]   [0     0    1  0]
+      [1   0    0]
+</pre>
+New user U5의 rating: [1, 0, 2, 3]. U5를 concept space로 projection하라.</div>
+<div class="a"><strong>정답:</strong> [3, √2/2, 2]</div>
+<div class="sol"><strong>풀이:</strong> concept space projection = q · V (여기서 q는 사용자의 rating row). V는 V^T를 전치한 것이므로:
+<br>• V의 col 1 = V^T의 row 1 = [0, 0, 0, 1]^T
+<br>• V의 col 2 = [√2/2, √2/2, 0, 0]^T
+<br>• V의 col 3 = [0, 0, 1, 0]^T
+<br>U5 · V:
+<br>• entry 1: 1·0 + 0·0 + 2·0 + 3·1 = <strong>3</strong>
+<br>• entry 2: 1·(√2/2) + 0·(√2/2) + 2·0 + 3·0 = <strong>√2/2</strong>
+<br>• entry 3: 1·0 + 0·0 + 2·1 + 3·0 = <strong>2</strong>
+<br>⇒ U5 in concept = <strong>[3, √2/2, 2]</strong>.
+<br><br><strong>후속 (b, c):</strong> U1~U4도 같은 방식으로 concept projection 계산 후 cosine distance로 U5에 가장 가까운 user 찾기. U1=[1,1,0,0]·V=[0, √2, 0], U4=[0,0,0,4]·V=[4,0,0]. U5=[3,√2/2,2]. 코사인은 내적/노름. 직접 계산 필요.</div>
+</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L11: Dimensionality Reduction 2 — CUR           -->
+<!-- ====================================================== -->
+<section id="L11">
+<h2 class="section-title">L11: Dimensionality Reduction 2 — CUR</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>왜 CUR인가?</h3>
+<p>SVD의 문제: (1) \(M\)이 sparse해도 \(U, V\)가 dense → 저장 공간 폭발. (2) \(U, V\)의 column이 row/column의 linear combination → 해석 어려움.</p>
+<p>CUR: \(M \approx C \cdot U \cdot R\)로 근사. \(C\) = \(M\)의 <b>실제 column</b>, \(R\) = <b>실제 row</b>, \(U\) = 작은 중간 행렬. sparsity와 해석성 유지.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>CUR Decomposition</h3>
+<div class="formula-box">
+\[M_{m \times n} \approx C_{m \times r} \cdot U_{r \times r} \cdot R_{r \times n}\]
+</div>
+
+<h3>Sampling 확률</h3>
+<p>column \(j\)를 선택할 확률 (C 구성용):</p>
+<div class="formula-box">
+\[p_j = \frac{\|m_{\cdot j}\|^2}{\|M\|_F^2} = \frac{\sum_i m_{ij}^2}{\sum_{i,k} m_{ik}^2}\]
+</div>
+<p>row에도 동일 방식 (R 구성용).</p>
+
+<h3>Column 스케일링 (매우 중요)</h3>
+<p>column \(j\)를 C에 추가할 때 \(1/\sqrt{r \cdot p_j}\)로 스케일링 — expectation이 원본과 맞도록.</p>
+
+<h3>중간 행렬 U</h3>
+<ol>
+<li>\(W\) = 선택된 row와 column의 교집합 (\(r \times r\))</li>
+<li>SVD: \(W = X \Sigma Y^T\)</li>
+<li>\(U = Y \Sigma^+ X^T\) (\(\Sigma^+\) = Moore-Penrose pseudoinverse, 0이 아닌 항만 역수)</li>
+</ol>
+
+<h3>보장</h3>
+<p>\(r = O(k \log k / \epsilon^2)\) 샘플이면 expectation 기준 \(\|M - CUR\|_F \le (1+\epsilon)\|M - M_k\|_F\). SVD rank-k의 (1+ε)-approximation이지만 해석성 유지.</p>
+
+<h3>SVD vs CUR 비교</h3>
+<table>
+<tr><th></th><th>SVD</th><th>CUR</th></tr>
+<tr><td>정확도</td><td>최적 (rank-k)</td><td>(1+ε) of optimal</td></tr>
+<tr><td>Factor sparsity</td><td>보통 dense</td><td>Sparse (실제 row/col 사용)</td></tr>
+<tr><td>해석성</td><td>Linear combo — 추상</td><td>실제 row/col — 구체</td></tr>
+<tr><td>중복 column</td><td>깔끔하게 처리</td><td>재샘플링 가능 (oversampling)</td></tr>
+</table>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L11 필수 암기</h3>
+<ul>
+<li><strong>Column 확률: \(p_j = \|m_{\cdot j}\|^2 / \|M\|_F^2\)</strong></li>
+<li>샘플 후 스케일링: \(1/\sqrt{r p_j}\)</li>
+<li>U는 W=C∩R의 pseudoinverse로 구성</li>
+<li>CUR은 SVD rank-k의 (1+ε)-approximation</li>
+<li>중복 column 이슈: oversampling으로 처리</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "CUR gives exact equality to M" → FALSE (approximation)<br>
+- "CUR picks columns uniformly at random" → FALSE (column squared norm에 비례)<br>
+- "U in CUR is diagonal like Σ" → FALSE (일반 r×r)</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L12: Recommender Systems 1                      -->
+<!-- ====================================================== -->
+<section id="L12">
+<h2 class="section-title">L12: Recommender Systems 1 — Content & Collaborative Filtering</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>두 가지 접근</h3>
+<p><strong>Content-based:</strong> 아이템 특성 기반 — user가 좋아했던 것과 비슷한 아이템 추천.</p>
+<p><strong>Collaborative Filtering (CF):</strong> 상호작용만 기반 — 당신과 "비슷한" user들이 좋아한 아이템 추천. <b>item feature 불필요</b>.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>Utility Matrix</h3>
+<p>\(R_{ui}\) = user \(u\)가 item \(i\)에 준 rating (또는 implicit feedback). 대부분 매우 sparse (거의 비어있음).</p>
+
+<h3>Content-based</h3>
+<ol>
+<li>item profile = feature 벡터 (예: 텍스트 TF-IDF, 장르 one-hot)</li>
+<li>user profile = 유저가 좋아한 아이템들의 가중 평균</li>
+<li>예측: score = cosine(user profile, item profile)</li>
+</ol>
+<p><strong>장점:</strong> 새 아이템 cold-start OK, 설명 가능. <strong>단점:</strong> feature 필요, over-specialization (serendipity 없음).</p>
+
+<h3>Collaborative Filtering: User-User</h3>
+<h4>User similarity (Pearson correlation)</h4>
+<p>\(S_{xy}\) = x와 y가 둘 다 평가한 아이템. \(\bar r_x, \bar r_y\) = 유저 평균 (\(S_{xy}\) 또는 전체 평가).</p>
+<div class="formula-box">
+\[\text{sim}(x, y) = \frac{\sum_{i \in S_{xy}} (r_{xi} - \bar r_x)(r_{yi} - \bar r_y)}{\sqrt{\sum (r_{xi} - \bar r_x)^2}\sqrt{\sum (r_{yi} - \bar r_y)^2}}\]
+</div>
+<p><strong>평균 빼는 이유:</strong> 유저마다 rating 스케일 다름 (harsh vs lenient). 중심화 후 cosine.</p>
+
+<h4>예측 (k-NN weighted)</h4>
+<div class="formula-box">
+\[\hat r_{xi} = \bar r_x + \frac{\sum_{y \in N(x;i)} \text{sim}(x,y) \cdot (r_{yi} - \bar r_y)}{\sum_{y \in N(x;i)} |\text{sim}(x,y)|}\]
+</div>
+
+<h3>Item-Item CF (보통 더 좋음)</h3>
+<p>같은 수학이지만 item 기준. item i와 비슷하면서 x가 평가한 아이템을 찾아 weighted average.</p>
+<div class="formula-box">
+\[\hat r_{xi} = \bar r_x + \frac{\sum_{j \in N(i;x)} \text{sim}(i,j) \cdot (r_{xj} - \bar r_x)}{\sum |\text{sim}(i,j)|}\]
+</div>
+<p><strong>왜 item-item이 user-user보다 나은가:</strong> item 유사도가 더 안정적 (아이템 특성은 일관됨; 유저는 기분 바뀜).</p>
+
+<h3>평가 (Evaluation)</h3>
+<ul>
+<li>rating을 train/test로 분리; test rating 예측</li>
+<li>RMSE: \(\sqrt{\frac{1}{|T|}\sum (r - \hat r)^2}\)</li>
+<li>MAE: 평균 절대 오차</li>
+<li>Top-k accuracy: 상위 예측 리스트에 test item이 포함되는지?</li>
+</ul>
+
+<h3>Cold Start</h3>
+<ul>
+<li>새 user / 새 item — 이력 없음</li>
+<li>Content-based는 새 item 처리 가능 (feature 있음)</li>
+<li>CF 실패 — hybrid 또는 content fallback 필요</li>
+</ul>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L12 필수 암기</h3>
+<ul>
+<li><strong>Pearson correlation 공식</strong> — 유저 평균으로 중심화</li>
+<li>User-user vs item-item CF 예측 공식</li>
+<li>Content-based vs CF 장단점</li>
+<li>RMSE 정의</li>
+<li>Cold start trade-off</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "Content-based handles cold-start for both users and items" → FALSE (아이템만)<br>
+- "User-user and item-item give identical predictions" → FALSE<br>
+- "Pearson is computed over all items" → FALSE (공통 평가된 아이템만)</div>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Past Finals</span>
+<h3>기출 (L12 관련)</h3>
+<div class="inline-item">
+<h5>[2025 Final] Q1(a) T/F · Long tail</h5>
+<div class="q">"The 'long tail' phenomenon refers to physical stores being able to customize their limited shelf space to each individual customer."</div>
+<div class="a"><strong>정답:</strong> FALSE</div>
+<div class="sol"><strong>풀이:</strong> long tail은 <strong>온라인 스토어</strong>의 이점. 무한에 가까운 재고 공간 덕에 니치 상품 수익 가능. 물리 스토어는 선반 한정 → head만 다룸. 문장은 정반대.</div>
+</div>
+<div class="inline-item">
+<h5>[2025 Final] Q1(b) T/F · Utility matrix density</h5>
+<div class="q">"A utility matrix in recommender systems is usually dense because most users rate most items in the catalog."</div>
+<div class="a"><strong>정답:</strong> FALSE</div>
+<div class="sol"><strong>풀이:</strong> 유저는 카탈로그의 극히 일부만 평가. Netflix 같은 경우 density &lt; 1%. sparsity가 recsys의 핵심 과제.</div>
+</div>
+<div class="inline-item">
+<h5>[2022 Final] Q2(a,b) · CF 시간 복잡도</h5>
+<div class="q">"Given utility matrix with N users and M items, derive time complexity of (a) user-user CF, (b) item-item CF prediction for a single user's ratings."</div>
+<div class="a"><strong>정답(추정):</strong> 둘 다 \(O(NM)\)급; 정확히는 아래 설명.</div>
+<div class="sol"><strong>풀이:</strong>
+<br>(a) <strong>User-user:</strong> target user x에 대해 모든 N-1 유저와 similarity 계산 (각각 M개 아이템 비교) → O(NM). 그 후 k-NN으로 M개 아이템 예측 → O(kM). 총 <strong>O(NM)</strong>.
+<br>(b) <strong>Item-item:</strong> 예측할 아이템 i에 대해 사용자가 평가한 평균 M개 아이템과 similarity (각각 N유저 비교) → O(M²N). 보통 item-item은 <strong>pre-compute</strong>하므로 offline O(M²N), online O(kM). 기출 맥락으론 <strong>O(M²N)</strong> 또는 O(NM) per-prediction.</div>
+</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        L13: Recommender Systems 2                      -->
+<!-- ====================================================== -->
+<section id="L13">
+<h2 class="section-title">L13: Recommender Systems 2 — Latent Factors, SGD, BPR</h2>
+
+<div class="card intuition">
+<span class="tag tag-intuition">Intuition · 직관</span>
+<h3>Neighborhood에서 Latent Factor로</h3>
+<p>CF neighborhood 방식은 local + memory-based. Latent-factor 방식은 user/item의 <strong>k차원 embedding</strong>을 학습: \(r_{ui} \approx u_x \cdot v_i\). 훨씬 scalable하고 보통 더 정확.</p>
+</div>
+
+<div class="card theory">
+<span class="tag tag-theory">Theory · 이론</span>
+
+<h3>UV Decomposition</h3>
+<div class="formula-box">
+\[R \approx U V^T, \quad U \in \mathbb{R}^{m \times k}, \; V \in \mathbb{R}^{n \times k}\]
+\[\hat r_{ui} = u_x^\top v_i\]
+</div>
+<p><strong>목표:</strong> 관측된 entry에 대해서만 SSE 최소화:</p>
+<div class="formula-box">
+\[\text{SSE} = \sum_{(x,i) \in \text{obs}} (r_{xi} - u_x^\top v_i)^2 + \lambda(\|U\|_F^2 + \|V\|_F^2)\]
+</div>
+
+<h3>UV vs SVD — 핵심 차이</h3>
+<table>
+<tr><th>UV</th><th>SVD</th></tr>
+<tr><td>직교성 제약 없음</td><td>U, V orthonormal</td></tr>
+<tr><td><b>blank entry 무시 (sparse-aware)</b></td><td>모든 entry 처리 (0 또는 imputation)</td></tr>
+<tr><td>SGD / ALS로 해결</td><td>linear algebra 정확해</td></tr>
+<tr><td>k는 overfit 회피로 선택</td><td>k는 energy 유지로 선택</td></tr>
+</table>
+
+<h3>Stochastic Gradient Descent (SGD) Update</h3>
+<p>rating \(r\)을 가진 관측된 \((x, i)\) 마다:</p>
+<div class="formula-box">
+\[\varepsilon = 2(r - u_x^\top v_i)\]
+\[u_x \leftarrow u_x + \eta(\varepsilon \, v_i - \lambda \, u_x)\]
+\[v_i \leftarrow v_i + \eta(\varepsilon \, u_x - \lambda \, v_i)\]
+</div>
+<p>\(\eta\) = learning rate, \(\lambda\) = regularization.</p>
+
+<h3>Alternating Least Squares (ALS)</h3>
+<ol>
+<li>\(V\) 고정, \(U\) 해결: 행 단위 ridge regression (closed form)</li>
+<li>\(U\) 고정, \(V\) 해결: 동일</li>
+<li>반복</li>
+</ol>
+<p>row/column 단위 병렬화 가능. implicit feedback (전체 행렬 dense)에 특히 유리.</p>
+
+<h3>Bias Term</h3>
+<div class="formula-box">
+\[\hat r_{xi} = \mu + b_x + b_i + u_x^\top v_i\]
+</div>
+<p>\(\mu\) = global 평균, \(b_x, b_i\) = user/item bias. "user가 harsh" / "영화가 전반적으로 사랑받음"을 latent factor 낭비 없이 포착.</p>
+
+<h3>Implicit Feedback & BPR</h3>
+<p>명시적 rating 없이 click/view/purchase만 있을 때. 관측된 pair를 "positive", 미관측을 "negative but uncertain"으로 취급.</p>
+<p><strong>BPR (Bayesian Personalized Ranking):</strong> user \(x\)가 관측된 item \(i\)를 미관측 \(j\)보다 선호할 가능성을 최대화.</p>
+<div class="formula-box">
+\[J_\text{BPR} = \sum_{(x,i,j)} -\log \sigma(u_x^\top v_i - u_x^\top v_j) + \lambda \|\theta\|^2\]
+</div>
+<p>Pairwise loss: \(r_{xi}\)는 관측되고 \(r_{xj}\)는 미관측일 때 \(i\)를 \(j\) 위로 랭킹. missing-not-at-random 상황 올바르게 처리.</p>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Exam Points · 시험 포인트</span>
+<h3>L13 필수 암기</h3>
+<ul>
+<li><strong>SGD update: ε = 2(r − û); u ← u + η(εv − λu); v ← v + η(εu − λv)</strong></li>
+<li>UV vs SVD 차이 (특히: UV는 blank 무시)</li>
+<li>Bias 모델: \(\mu + b_x + b_i + u^Tv\)</li>
+<li><strong>BPR loss: \(\sum -\log \sigma(u^\top v_i - u^\top v_j)\)</strong></li>
+<li>ALS는 교대 수렴, 각 스텝 closed-form</li>
+</ul>
+<div class="warn"><strong>T/F 함정:</strong><br>
+- "UV decomposition has orthogonal factors" → FALSE<br>
+- "SGD needs full matrix in memory" → FALSE (관측된 entry마다 업데이트)<br>
+- "BPR is pointwise loss" → FALSE (pairwise)<br>
+- "Higher k always improves test error" → FALSE (과적합 위험)</div>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Past Finals</span>
+<h3>기출 (L13 관련)</h3>
+<div class="inline-item">
+<h5>[2025 Final] Q1(c) T/F · UV vs SVD with blanks</h5>
+<div class="q">"In UV decomposition for recommender systems, we can safely apply standard SVD directly to the sparse rating matrix by treating all missing ratings as zeros."</div>
+<div class="a"><strong>정답:</strong> FALSE</div>
+<div class="sol"><strong>풀이:</strong> 핵심 함정. SVD는 blank를 '0점 평가'로 간주하여 factorize → 평가하지 않은 것과 '싫어함(0점)'을 섞어버림 → 왜곡된 결과. UV는 관측된 rating만 SSE에 포함 → 올바른 접근. SVD를 blank→0 imputation으로 쓰는 건 "safely"가 아님.</div>
+</div>
+<div class="inline-item">
+<h5>[2025 Final] Q1(d) T/F · L2 regularization effect</h5>
+<div class="q">"L2 regularization in latent factor models tends to pull user and item vectors toward the origin, so only strong factors remain large."</div>
+<div class="a"><strong>정답:</strong> TRUE</div>
+<div class="sol"><strong>풀이:</strong> 손실 \(\text{SSE} + \lambda(\|U\|_F^2 + \|V\|_F^2)\). gradient에 \(-\lambda u\) 항 → 매 step u가 0 방향으로 수축(shrinkage). 데이터가 충분히 뒷받침하는 factor만 크게 남고 noise factor는 억제됨.</div>
+</div>
+<div class="inline-item">
+<h5>[2022 Final] Q1(a) T/F · UV global minimum</h5>
+<div class="q">"The UV-decomposition algorithm can sometimes return a global minimum solution."</div>
+<div class="a"><strong>정답(추정):</strong> TRUE</div>
+<div class="sol"><strong>풀이:</strong> "sometimes"가 핵심. SGD/ALS는 non-convex이지만 (1) 좋은 초기화 + 운으로 global min 도달 가능, (2) rank=1 케이스는 closed-form global min. 절대 도달 못 한다고 단정할 수 없음.</div>
+</div>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        T/F Trainer                                     -->
+<!-- ====================================================== -->
+<section id="tf-trainer">
+<h2 class="section-title">⚡ T/F Trainer (오답 -1점 룰 반영)</h2>
+
+<div class="card">
+<p>closed-book 환경 대비. <strong>확실한 것만 답하고, 모르면 비워두세요</strong> (-1점 패널티).</p>
+<p style="font-size:13px;color:#666">📌 <b>문제는 영문 원문 그대로</b> (KAIST 기출 형식 그대로 연습). 답변 후 <b>한국어 이유 설명</b>이 공개됩니다 → 실시험 감각 + 학습 효과 동시.</p>
+<div style="display:flex;gap:10px;margin:14px 0;flex-wrap:wrap">
+  <button onclick="tfFilter('all')" class="tf-btn">전체</button>
+  <button onclick="tfFilter('L2')" class="tf-btn">MapReduce</button>
+  <button onclick="tfFilter('L3')" class="tf-btn">Spark</button>
+  <button onclick="tfFilter('L4')" class="tf-btn">Itemsets</button>
+  <button onclick="tfFilter('L5')" class="tf-btn">PCY/Toivonen</button>
+  <button onclick="tfFilter('L6')" class="tf-btn">MinHash</button>
+  <button onclick="tfFilter('L7')" class="tf-btn">LSH</button>
+  <button onclick="tfFilter('L8')" class="tf-btn">k-means</button>
+  <button onclick="tfFilter('L9')" class="tf-btn">BFR/CURE</button>
+  <button onclick="tfFilter('L10')" class="tf-btn">SVD</button>
+  <button onclick="tfFilter('L11')" class="tf-btn">CUR</button>
+  <button onclick="tfFilter('L12')" class="tf-btn">CF</button>
+  <button onclick="tfFilter('L13')" class="tf-btn">UV/BPR</button>
+  <button onclick="tfShuffle()" class="tf-btn" style="background:#ffc107">🔀 Shuffle</button>
+</div>
+<div id="tf-score" style="margin:10px 0;padding:8px 14px;background:#eef;border-radius:6px;font-size:14px">정답: 0 · 오답: 0 · 비워둠: 0 · <strong>순수 점수: 0</strong></div>
+<div id="tf-deck"></div>
+</div>
+
+<style>
+.tf-btn{padding:6px 14px;border:1px solid #4361ee;background:#fff;color:#4361ee;border-radius:6px;cursor:pointer;font-size:13px}
+.tf-btn:hover{background:#4361ee;color:#fff}
+.tf-card{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:14px 18px;margin:10px 0;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tf-q{font-size:14px;margin-bottom:10px;line-height:1.6}
+.tf-meta{font-size:11px;color:#999;margin-bottom:6px}
+.tf-actions button{margin-right:6px;padding:5px 14px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer;font-size:13px}
+.tf-actions .tf-true{color:#155724}
+.tf-actions .tf-false{color:#721c24}
+.tf-actions .tf-skip{color:#666}
+.tf-reveal{margin-top:10px;padding:10px;background:#f8f9fa;border-left:3px solid #4361ee;font-size:13px;display:none}
+.tf-reveal.show{display:block}
+.tf-correct{background:#d4edda;border-color:#28a745}
+.tf-wrong{background:#f8d7da;border-color:#dc3545}
+.tf-skipped{background:#fff3cd;border-color:#ffc107}
+</style>
+
+<script>
+// Curated T/F bank — L1~L13
+const tfBank = [
+  // L2 MapReduce
+  {id:"tf-l2-1",lec:"L2",q:"In a distributed computing cluster, each node typically shares the same CPU and memory with other nodes on the rack.",a:false,why:"각 노드는 독립 컴퓨터. CPU/메모리를 공유하지 않음."},
+  {id:"tf-l2-2",lec:"L2",q:"If a Map Worker fails, all tasks it has completed must be redone, because its output is stored locally and not in the DFS.",a:true,why:"Map 출력은 로컬 디스크에 저장되어 노드 실패 시 접근 불가. 전부 재실행."},
+  {id:"tf-l2-3",lec:"L2",q:"The MapReduce framework explicitly checks whether the Reduce function is commutative and associative before applying a Combiner.",a:false,why:"검사하지 않음. 프로그래머 책임."},
+  {id:"tf-l2-4",lec:"L2",q:"A good MapReduce programmer is recommended to write a GroupByKey function.",a:false,why:"GroupByKey는 시스템이 처리. 사용자는 Map/Reduce만 작성."},
+  {id:"tf-l2-5",lec:"L2",q:"When a Reduce worker fails, only in-progress tasks need to be re-executed.",a:true,why:"완료된 reduce 출력은 DFS에 저장돼 있어 살아남음."},
+  // L3 Spark
+  {id:"tf-l3-1",lec:"L3",q:"In Spark, the GroupByKey transformation creates a wide dependency.",a:true,why:"키별로 셔플 필요 → wide."},
+  {id:"tf-l3-2",lec:"L3",q:"RDDs in Spark can be updated in place to modify existing records.",a:false,why:"RDD는 immutable. 새 RDD를 transformation으로 생성."},
+  {id:"tf-l3-3",lec:"L3",q:"Spark outperforms MapReduce even when the intermediate data is too large to fit in memory.",a:false,why:"in-memory 이점이 사라지면 MR과 비슷하거나 느릴 수 있음."},
+  {id:"tf-l3-4",lec:"L3",q:"flatMap is a narrow dependency even though it can produce variable output sizes.",a:true,why:"출력 파티션이 단일 입력 파티션에만 의존 → narrow."},
+  {id:"tf-l3-5",lec:"L3",q:"Sort in Spark has a wide dependency.",a:true,why:"모든 파티션 비교 필요 → shuffle."},
+  // L4 Frequent Itemsets 1
+  {id:"tf-l4-1",lec:"L4",q:"All maximal frequent itemsets are closed.",a:true,why:"maximal이면 즉시 superset이 frequent가 아님 → support 같을 수 없음 → closed."},
+  {id:"tf-l4-2",lec:"L4",q:"A-Priori aims to find all interesting rules.",a:false,why:"A-Priori는 frequent itemset을 찾음. interest는 별도로 계산."},
+  {id:"tf-l4-3",lec:"L4",q:"The interest of an association rule is always positive.",a:false,why:"음수 가능. e.g., {m,b}→c interest = -1/8."},
+  {id:"tf-l4-4",lec:"L4",q:"Market-basket analysis can be applied only to retail data.",a:false,why:"추상 many-to-many 모델. 단어/문서, 환자/약물 등 다양."},
+  {id:"tf-l4-5",lec:"L4",q:"Triangular matrix method uses less memory than triples when p > 1/3.",a:true,why:"dense data (p>1/3)에서 triangular가 유리."},
+  // L5 PCY/Toivonen
+  {id:"tf-l5-1",lec:"L5",q:"The PCY algorithm can efficiently use the triangular-matrix method to count frequent pairs.",a:false,why:"PCY는 sparsity 이용. triangular는 전부 dense하게 저장 → 못 씀. triples 필요."},
+  {id:"tf-l5-2",lec:"L5",q:"In the multistage algorithm, truly frequent pairs always hash to frequent buckets across all stages.",a:true,why:"truly frequent pair의 count ≥ s → 어느 버킷에 해시되든 버킷 count ≥ s."},
+  {id:"tf-l5-3",lec:"L5",q:"In Toivonen's algorithm, we check if sample-frequent itemsets are truly frequent in full data to avoid FALSE NEGATIVES.",a:false,why:"그건 false POSITIVE 제거. false negative는 negative border로 막음."},
+  {id:"tf-l5-4",lec:"L5",q:"SON algorithm never produces false negatives.",a:true,why:"pigeonhole: global support ≥ s면 최소 한 청크에서 support ≥ ps."},
+  {id:"tf-l5-5",lec:"L5",q:"In multistage, we can drop the earlier bitmap after creating a later one.",a:false,why:"조건들은 독립. 초기 bitmap도 반드시 남겨야 함."},
+  // L6 Shingle/MinHash
+  {id:"tf-l6-1",lec:"L6",q:"P(h(C1) = h(C2)) equals Jaccard(C1, C2) for a random permutation h.",a:true,why:"핵심 항등식. 'first active row' 증명."},
+  {id:"tf-l6-2",lec:"L6",q:"MinHash signatures give the exact Jaccard similarity.",a:false,why:"unbiased estimator. 변동 ~ 1/n (hash 개수)."},
+  {id:"tf-l6-3",lec:"L6",q:"The length of a minhash signature equals the number of hash functions chosen.",a:true,why:"n개 해시 → 길이 n 벡터."},
+  // L7 LSH
+  {id:"tf-l7-1",lec:"L7",q:"P(candidate pair) = 1 - (1 - s^r)^b for LSH banding.",a:true,why:"이 S-curve를 도출할 수 있어야 함."},
+  {id:"tf-l7-2",lec:"L7",q:"Increasing r (while fixing n = r*b) improves recall.",a:false,why:"r↑ → S-curve가 더 steep, threshold↑ → recall↓, precision↑."},
+  {id:"tf-l7-3",lec:"L7",q:"LSH banding can eliminate all false positives.",a:false,why:"일부만 제거. 최종 직접 비교로 verify."},
+  {id:"tf-l7-4",lec:"L7",q:"Edit distance has a simple LSH family.",a:false,why:"없음 (현재까지). Jaccard/Cosine/Euclidean만 좋은 family 있음."},
+  {id:"tf-l7-5",lec:"L7",q:"Cosine distance satisfies the triangle inequality.",a:true,why:"각도 거리로 정의하면 metric."},
+  // L8 k-means
+  {id:"tf-l8-1",lec:"L8",q:"k-means always finds the global optimum.",a:false,why:"로컬 최솟값만 보장. 초기화에 민감."},
+  {id:"tf-l8-2",lec:"L8",q:"k-means++ guarantees the global optimum.",a:false,why:"O(log k)-approximation in expectation. 완벽한 보장 아님."},
+  {id:"tf-l8-3",lec:"L8",q:"In k-means++, next center is picked proportionally to D(p) squared.",a:true,why:"확률 = D(p)² / Σ D(q)²."},
+  {id:"tf-l8-4",lec:"L8",q:"Single-link hierarchical clustering tends to produce elongated 'chain' clusters.",a:true,why:"단일 최근접 거리 기반이라 체이닝 효과."},
+  // L9 BFR/CURE
+  {id:"tf-l9-1",lec:"L9",q:"BFR requires all data to fit in memory.",a:false,why:"streaming 청크 단위 처리가 핵심."},
+  {id:"tf-l9-2",lec:"L9",q:"BFR assumes clusters are axis-aligned Gaussians.",a:true,why:"dim별 σ 사용 → axis-aligned."},
+  {id:"tf-l9-3",lec:"L9",q:"CURE represents each cluster with multiple points.",a:true,why:"k개 representative로 비구형 cluster 표현."},
+  {id:"tf-l9-4",lec:"L9",q:"CURE shrink moves each representative toward the nearest point.",a:false,why:"centroid 방향으로 이동. p' = (1-α)p + αc."},
+  {id:"tf-l9-5",lec:"L9",q:"Mahalanobis distance accounts for the standard deviation in each dimension.",a:true,why:"d = √Σ((x_d - c_d)/σ_d)²."},
+  // L10 SVD
+  {id:"tf-l10-1",lec:"L10",q:"M_k from top-k singular values is the best rank-k approximation in Frobenius norm.",a:true,why:"Eckart-Young 정리."},
+  {id:"tf-l10-2",lec:"L10",q:"The error ||M - M_k||_F^2 equals the sum of squared dropped singular values.",a:true,why:"||M - M_k||² = Σ_{i>k} σ_i²."},
+  {id:"tf-l10-3",lec:"L10",q:"SVD factorization is always unique.",a:false,why:"부호 뒤집기, 중복 σ의 회전 등 다중성 있음."},
+  {id:"tf-l10-4",lec:"L10",q:"Columns of V are eigenvectors of M^T M.",a:true,why:"M^T M = V Σ² V^T → V가 eigenvectors."},
+  // L11 CUR
+  {id:"tf-l11-1",lec:"L11",q:"CUR samples columns uniformly at random.",a:false,why:"p_j = ||m_j||² / ||M||_F² 비례로 샘플링."},
+  {id:"tf-l11-2",lec:"L11",q:"CUR gives the exact matrix M (no approximation error).",a:false,why:"(1+ε)-approx to SVD rank-k."},
+  {id:"tf-l11-3",lec:"L11",q:"CUR preserves the sparsity of M in its factors.",a:true,why:"C, R은 실제 행/열이라 sparsity 유지."},
+  // L12 CF
+  {id:"tf-l12-1",lec:"L12",q:"Content-based recommendation handles cold-start for both new users and new items.",a:false,why:"new item은 OK (feature 있음), new user는 여전히 어려움."},
+  {id:"tf-l12-2",lec:"L12",q:"Pearson correlation centers ratings by subtracting the user's mean.",a:true,why:"사용자별 rating 스케일 보정."},
+  {id:"tf-l12-3",lec:"L12",q:"Item-item CF typically outperforms user-user CF.",a:true,why:"item 유사도가 더 안정적 (사용자 기분 변화 영향 적음)."},
+  {id:"tf-l12-4",lec:"L12",q:"RMSE is an unbiased estimator of user satisfaction.",a:false,why:"수치적 오차만 측정. 실제 만족도와 다를 수 있음."},
+  // L13 UV/BPR
+  {id:"tf-l13-1",lec:"L13",q:"UV decomposition has orthogonal factors like SVD.",a:false,why:"UV는 직교성 없음. gradient descent로 학습."},
+  {id:"tf-l13-2",lec:"L13",q:"UV decomposition ignores blank (unrated) entries during training.",a:true,why:"관측된 항목만 SSE에 포함 — SVD와 결정적 차이."},
+  {id:"tf-l13-3",lec:"L13",q:"SGD update for UV: u ← u + η(εv − λu) where ε = 2(r − û).",a:true,why:"공식 그대로."},
+  {id:"tf-l13-4",lec:"L13",q:"BPR uses a pointwise loss function.",a:false,why:"pairwise: (i preferred over j)."},
+  {id:"tf-l13-5",lec:"L13",q:"Higher latent dimension k always improves test accuracy.",a:false,why:"과적합 위험. validation으로 선택."},
+  // === 과거 Final 기출 (L10-L13 범위 추출) ===
+  {id:"tf-final25-a",lec:"L12",q:"[2025 Final] The \"long tail\" phenomenon refers to physical stores being able to customize their limited shelf space to each individual customer.",a:false,why:"long tail은 온라인 스토어의 이점. 무한 선반 → 니치 상품 판매 가능. 물리 스토어는 반대."},
+  {id:"tf-final25-b",lec:"L12",q:"[2025 Final] A utility matrix in recommender systems is usually dense because most users rate most items in the catalog.",a:false,why:"대부분 매우 sparse. 사용자는 극히 일부 아이템만 평가."},
+  {id:"tf-final25-c",lec:"L13",q:"[2025 Final] In UV decomposition for recsys, we can safely apply standard SVD directly to the sparse rating matrix by treating all missing ratings as zeros.",a:false,why:"SVD는 0을 실제 평점으로 취급 → 왜곡. UV는 blank를 무시해야 정확. 핵심 차이."},
+  {id:"tf-final25-d",lec:"L13",q:"[2025 Final] L2 regularization in latent factor models tends to pull user and item vectors toward the origin, so only strong factors remain large.",a:true,why:"λ||u||² 페널티 → shrinkage. 데이터가 충분히 뒷받침하는 방향만 크게 남음."},
+  {id:"tf-final25-n",lec:"L10",q:"[2025 Final] An autoencoder is a neural network trained to reconstruct its input, and SVD can be interpreted as a kind of linear autoencoder.",a:true,why:"SVD rank-k approximation = 선형 encoder(M→low-D)+decoder(low-D→M). Reconstruction이 최소화됨."},
+  {id:"tf-final24-l",lec:"L10",q:"[2024 Final] Matrix sketching for streaming data cannot be more accurate than SVD.",a:true,why:"SVD는 Frobenius 최적 (Eckart-Young). sketching은 근사. 전체 데이터 사용 가능한 SVD를 streaming 근사가 이길 수 없음."},
+  {id:"tf-final22-a",lec:"L13",q:"[2022 Final] The UV-decomposition algorithm can sometimes return a global minimum solution.",a:true,why:"SGD가 좋은 초기화·운에서 global min 찾을 수 있음. rank-1이면 unique solution도 존재. 'sometimes'가 핵심."},
+  {id:"tf-final21-a",lec:"L3",q:"[2021 Final] Spark is less likely to crash than MapReduce because it runs in memory.",a:false,why:"in-memory라고 crash가 덜 나는 건 아님. 오히려 메모리 부족·노드 실패 시 lineage로 재계산 필요. MR은 매 단계 디스크라 durability 높음. '덜 crash한다'는 논리 근거가 잘못됨."},
+  {id:"tf-final21-b",lec:"L5",q:"[2021 Final] The multistage algorithm for counting frequent pairs cannot use the triangular-matrix method.",a:true,why:"multistage/PCY는 sparsity 이용. triangular matrix는 모든 pair 저장 → 못 씀. triples 필요."},
+  {id:"tf-final21-c",lec:"L6",q:"[2021 Final] The probability of minhash values being the same is equal to the Jaccard similarity regardless of the hash functions.",a:false,why:"'regardless'가 함정. P(h(A)=h(B)) = J(A,B)는 random permutation (또는 random hash family)에 대한 기대값. 임의의 고정된 hash에는 성립 안 함."},
+  {id:"tf-final21-d",lec:"L8",q:"[2021 Final] When performing hierarchical clustering in a non-Euclidean space, we compare the centroids of clusters.",a:false,why:"non-Euclidean에서는 centroid가 잘 정의되지 않음 (평균 개념 없음). clustroid를 쓰거나 single/complete link로 거리 정의."},
+  {id:"tf-final21-e",lec:"L10",q:"[2021 Final] Performing dimensionality reduction using PCA or SVD gives the exact same result.",a:false,why:"PCA = centered data의 SVD. 데이터를 중심화하지 않으면 SVD와 PCA 결과 다름. 둘은 동일 결과 아님 (centering 여부에 따라)."},
+  {id:"tf-final21-f",lec:"L12",q:"[2021 Final] Collaborative filtering does not need to know item features to make recommendations.",a:true,why:"CF는 user-item 상호작용만 사용 → item feature 불필요. 반면 content-based는 feature 필요. 핵심 구분."},
+];
+
+let tfState = {}; // id -> 'correct'|'wrong'|'skipped'|undefined
+let tfCurrentFilter = 'all';
+
+function tfRender(){
+  const deck = document.getElementById('tf-deck');
+  const filtered = tfCurrentFilter === 'all' ? tfBank : tfBank.filter(c => c.lec === tfCurrentFilter);
+  deck.innerHTML = filtered.map(c => `
+    <div class="tf-card" id="${c.id}">
+      <div class="tf-meta">${c.lec} · id=${c.id}</div>
+      <div class="tf-q">${c.q}</div>
+      <div class="tf-actions">
+        <button class="tf-true" onclick="tfAnswer('${c.id}', true)">TRUE</button>
+        <button class="tf-false" onclick="tfAnswer('${c.id}', false)">FALSE</button>
+        <button class="tf-skip" onclick="tfAnswer('${c.id}', null)">비워두기</button>
+      </div>
+      <div class="tf-reveal" id="reveal-${c.id}"></div>
+    </div>`).join('');
+  tfUpdateScore();
+}
+
+function tfAnswer(id, user){
+  const c = tfBank.find(x=>x.id===id);
+  const reveal = document.getElementById('reveal-'+id);
+  const card = document.getElementById(id);
+  card.classList.remove('tf-correct','tf-wrong','tf-skipped');
+  if(user === null){
+    tfState[id] = 'skipped';
+    card.classList.add('tf-skipped');
+    reveal.innerHTML = `<strong>정답:</strong> ${c.a ? 'TRUE' : 'FALSE'}<br><strong>이유:</strong> ${c.why}`;
+  } else if(user === c.a){
+    tfState[id] = 'correct';
+    card.classList.add('tf-correct');
+    reveal.innerHTML = `✅ 정답 — <strong>${c.a ? 'TRUE' : 'FALSE'}</strong><br>${c.why}`;
+  } else {
+    tfState[id] = 'wrong';
+    card.classList.add('tf-wrong');
+    reveal.innerHTML = `❌ 오답 (-1) — 정답은 <strong>${c.a ? 'TRUE' : 'FALSE'}</strong><br>${c.why}`;
+  }
+  reveal.classList.add('show');
+  tfUpdateScore();
+}
+
+function tfUpdateScore(){
+  let c=0,w=0,s=0;
+  Object.values(tfState).forEach(v=>{
+    if(v==='correct')c++; else if(v==='wrong')w++; else if(v==='skipped')s++;
+  });
+  document.getElementById('tf-score').innerHTML =
+    `정답: ${c} · 오답: ${w} · 비워둠: ${s} · <strong>순수 점수: ${c - w}</strong>  <span style="color:#999">(규칙: 정답 +1, 오답 -1, 비워둠 0)</span>`;
+}
+
+function tfFilter(lec){
+  tfCurrentFilter = lec;
+  tfState = {};
+  tfRender();
+}
+
+function tfShuffle(){
+  for(let i=tfBank.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [tfBank[i],tfBank[j]] = [tfBank[j],tfBank[i]];
+  }
+  tfState = {};
+  tfRender();
+}
+</script>
+</section>
+
+<!-- ====================================================== -->
+<!--        Formula Card                                    -->
+<!-- ====================================================== -->
+<section id="formulas">
+<h2 class="section-title">📋 핵심 공식 카드 (Formula Quick-Reference)</h2>
+
+<div class="card">
+<h3>L1 — TF-IDF / Hash / Power Law</h3>
+<ul>
+<li>\(\text{TF-IDF}(i,j) = \text{TF}(i,j) \cdot \log(N/n_i)\)</li>
+<li>Hash: \(h(k) = k \bmod B\) maps key → bucket</li>
+<li>Power law: \(y = c x^a \iff \log y = a \log x + \log c\)</li>
+</ul>
+
+<h3>L2 — MapReduce</h3>
+<ul>
+<li>Map: \((k,v) \to \{(k_i,v_i)\}\); Reduce: \((k,[v_1,\ldots]) \to (k,v)\)</li>
+<li>MV multiplication: map \(((i,j), m_{ij}) \to (i, m_{ij} v_j)\)</li>
+<li>Combiner condition: commutative AND associative</li>
+</ul>
+
+<h3>L4-L5 — Itemsets</h3>
+<ul>
+<li>Support(I) = # baskets with I; Confidence(I→J) = supp(I∪J)/supp(I); Interest = Conf − P(J)</li>
+<li>Triangular memory: \(4 \cdot n(n-1)/2\); Triples: \(12 p \cdot n(n-1)/2\); triples better if p &lt; 1/3</li>
+<li>A-Priori: \(C_k \to L_k \to C_{k+1}\) pipeline</li>
+<li>PCY: Pass1 uses bitmap (1/32 space). Must use triples.</li>
+<li>SON correctness: pigeonhole → if \(\text{supp}(S) \ge s\), some chunk has \(\text{supp}(S) \ge ps\)</li>
+</ul>
+
+<h3>L6-L7 — LSH</h3>
+<ul>
+<li>Jaccard: \(J(A,B) = |A \cap B|/|A \cup B|\)</li>
+<li>MinHash identity: \(\Pr[h(C_1)=h(C_2)] = J(C_1,C_2)\)</li>
+<li>S-curve: \(P = 1 - (1-s^r)^b\); Threshold: \(t \approx (1/b)^{1/r}\)</li>
+<li>r↑ (b↓): steeper curve, precision↑ recall↓</li>
+</ul>
+
+<h3>L8-L9 — Clustering</h3>
+<ul>
+<li>k-means++ prob: \(D(p)^2 / \sum D(q)^2\)</li>
+<li>BFR stats: \(N, \text{SUM}_d, \text{SUMSQ}_d\); centroid=SUM/N, \(\sigma^2 = \text{SUMSQ}/N - (\text{SUM}/N)^2\)</li>
+<li>Mahalanobis: \(\sqrt{\sum_d ((x_d - c_d)/\sigma_d)^2}\), threshold \(2\sqrt{D}\)</li>
+<li>CURE shrink: \(p' = (1-\alpha) p + \alpha c\)</li>
+<li>Silhouette: \((b - a)/\max(a, b)\)</li>
+</ul>
+
+<h3>L10-L11 — SVD/CUR</h3>
+<ul>
+<li>SVD: \(M = U \Sigma V^T\); Frobenius energy \(= \sum \sigma_i^2\); retention \(= \sum_{i\le k}\sigma_i^2 / \sum \sigma_i^2\)</li>
+<li>Rank-k error: \(\|M-M_k\|_F^2 = \sum_{i&gt;k}\sigma_i^2\)</li>
+<li>CUR column prob: \(p_j = \|m_j\|^2 / \|M\|_F^2\); scale by \(1/\sqrt{r p_j}\)</li>
+<li>U = Y Σ⁺ X^T with \(W = X\Sigma Y^T\) SVD of intersection</li>
+</ul>
+
+<h3>L12-L13 — RecSys</h3>
+<ul>
+<li>Pearson: \(\frac{\sum(r_{xi}-\bar r_x)(r_{yi}-\bar r_y)}{\sqrt{\sum(r_{xi}-\bar r_x)^2}\sqrt{\sum(r_{yi}-\bar r_y)^2}}\)</li>
+<li>Item-item prediction: \(\hat r_{xi} = \bar r_x + \frac{\sum_{j \in N(i;x)} \text{sim}(i,j)(r_{xj}-\bar r_x)}{\sum |\text{sim}(i,j)|}\)</li>
+<li>UV SSE: \(\sum_{(x,i) \in \text{obs}}(r_{xi} - u_x^T v_i)^2 + \lambda(\|U\|_F^2 + \|V\|_F^2)\)</li>
+<li>SGD: \(\varepsilon = 2(r - u^T v)\); \(u \leftarrow u + \eta(\varepsilon v - \lambda u)\); \(v \leftarrow v + \eta(\varepsilon u - \lambda v)\)</li>
+<li>Bias: \(\hat r = \mu + b_x + b_i + u^T v\)</li>
+<li>BPR loss: \(\sum -\log \sigma(u^T v_i - u^T v_j)\)</li>
+<li>RMSE: \(\sqrt{\frac{1}{|T|}\sum(r - \hat r)^2}\)</li>
+</ul>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        Pre-Exam Checklist                              -->
+<!-- ====================================================== -->
+<section id="checklist">
+<h2 class="section-title">✅ 시험 전날 체크리스트 (Closed-book)</h2>
+
+<div class="card">
+<h3>공식 없이 손으로 풀 수 있는가?</h3>
+<ul style="list-style:none;padding:0">
+<li>☐ <strong>MapReduce pseudocode</strong> — word count, mutual friends, variance, matrix-vector</li>
+<li>☐ <strong>Spark</strong> — flatMap/map/filter가 narrow인 이유, groupByKey/join/sort가 wide인 이유</li>
+<li>☐ <strong>A-Priori</strong> — 전체 pipeline \(C_k \to L_k\), monotonicity contrapositive</li>
+<li>☐ <strong>PCY</strong> — Pass 1에서 왜 bitmap을 쓰는지, triples 필수인 이유</li>
+<li>☐ <strong>Toivonen</strong> — negative border 정의와 "no false negative" 증명 스케치</li>
+<li>☐ <strong>SON</strong> — pigeonhole 증명, MapReduce 구현 (4개 함수)</li>
+<li>☐ <strong>MinHash</strong> — P(h(C1)=h(C2))=Jaccard 증명 (first active row)</li>
+<li>☐ <strong>LSH banding</strong> — S-curve 유도, threshold ≈ (1/b)^(1/r)</li>
+<li>☐ <strong>거리 axiom 4개</strong>와 각 LSH family 매칭</li>
+<li>☐ <strong>k-means++</strong> 확률 공식 (D² weighted)</li>
+<li>☐ <strong>BFR</strong> — N/SUM/SUMSQ → centroid, σ, Mahalanobis</li>
+<li>☐ <strong>CURE</strong> — 5단계 + shrink 공식</li>
+<li>☐ <strong>SVD</strong> — 차원 (m×r, r×r, r×n), energy 공식, Frobenius 오차</li>
+<li>☐ <strong>CUR</strong> — column prob, scaling, U via pseudoinverse</li>
+<li>☐ <strong>Pearson correlation</strong> — 평균 빼는 이유</li>
+<li>☐ <strong>UV decomposition</strong> — SGD 업데이트 3줄 (ε, u, v)</li>
+<li>☐ <strong>BPR</strong> — pairwise loss 식</li>
+</ul>
+</div>
+
+<div class="card exam">
+<span class="tag tag-exam">Novel Variant 대비</span>
+<h3>각 알고리즘의 parameter 역할을 설명할 수 있는가?</h3>
+<p>2025 A-CURE처럼 시험장에서 정의되는 변형을 풀려면 원본의 철학을 이해해야 합니다.</p>
+<ul>
+<li>☐ A-Priori의 support threshold s를 올리면? — 후보 수 급감, 패스 속도↑, recall↓</li>
+<li>☐ PCY에서 bucket 수 B를 늘리면? — 각 bucket 평균 count↓ → bitmap 희소해짐 → 후보 pair↓</li>
+<li>☐ Toivonen에서 ps → 0.9ps로 낮추면? — negative border 커짐, fail 확률↓</li>
+<li>☐ LSH에서 r 증가 (n 고정)? — threshold↑, precision↑, recall↓</li>
+<li>☐ k-means++에서 D²를 D로 바꾸면? — far outlier 영향↓, 중간 거리 점들 사이 분산</li>
+<li>☐ BFR의 Mahalanobis threshold를 3√D로 늘리면? — DS에 더 포함, CS/RS 수↓</li>
+<li>☐ CURE shrink α가 1이면? — 모든 rep이 centroid에 수렴 → k-means와 동일해짐</li>
+<li>☐ SVD의 k를 rank 미만으로 줄이면? — Frobenius 오차 = Σ_{i>k} σ_i²만큼 발생</li>
+<li>☐ UV의 λ를 0으로 하면? — 정규화 없음 → overfit 가능</li>
+</ul>
+</div>
+
+<div class="card intuition">
+<span class="tag tag-intuition">교수 철학</span>
+<blockquote>"I personally don't like memorizing. I want to ask your understanding skills — how you understood the content and how well you can use the knowledge to solve other problems." — Prof. Yoo</blockquote>
+<p>공식을 외우되, <strong>왜 그 공식이 존재하는지</strong>를 이해하는 게 더 중요.</p>
+</div>
+</section>
+
+<!-- ====================================================== -->
+<!--        DOMContentLoaded                                -->
+<!-- ====================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Render inline items
+  renderInlineItems();
+  // Render T/F trainer
+  if(typeof tfRender === 'function') tfRender();
+
+  // Sidebar scroll-linked active state
+  var links = document.querySelectorAll('#sidebar a');
+  var sections = [];
+  links.forEach(function(a){
+    var id = a.getAttribute('href');
+    if(id && id.startsWith('#')){
+      var el = document.querySelector(id);
+      if(el) sections.push({link:a, el:el});
+    }
+  });
+  function updateActive(){
+    var scrollY = window.scrollY + 120;
+    var active = sections[0];
+    sections.forEach(function(s){
+      if(s.el.offsetTop <= scrollY) active = s;
+    });
+    links.forEach(function(a){a.classList.remove('active')});
+    if(active) active.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive);
+  updateActive();
+});
+</script>
+
+</main>
+</body>
+</html>

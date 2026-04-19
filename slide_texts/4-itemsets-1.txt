@@ -1,0 +1,612 @@
+Frequent Itemsets 1
+   Introduction to Data Mining
+    Seoul National University
+          Spring 2026
+
+
+
+
+             Jaemin Yoo          1
+Recap: Spark
+• Spark generalizes MapReduce with a DAG of operations.
+  • Data abstraction: Resilient distributed datasets (RDDs).
+  • Operations: Transformations (e.g., map) and actions (e.g., reduce).
+  • Two improvements: Lazy evaluation and the lineage of RDDs.
+
+                       R0           R1          R2
+
+         DFS:                                               DFS:
+         mydata                                             output
+
+
+
+
+                                   Jaemin Yoo                             2
+Outline
+1. Frequent Itemsets
+2. Association Rules
+3. Finding Frequent Pairs
+4. A-Priori Algorithm
+
+
+
+
+                            Jaemin Yoo   3
+Managing a Supermarket
+• In a supermarket, the manager wants to find patterns of items.
+• If the dataset is huge, it will take forever to do it manually.
+
+
+
+
+           Source: Wikimedia Commons                Source: Needpix.com
+
+
+
+                                       Jaemin Yoo                         4
+Association Rule Discovery
+• Goal: Identify items that are bought together by many customers.
+• Approach: Process sales data to find dependencies among items.
+• A classic rule:
+  • If someone buys diaper and milk, then he/she is likely to buy beer.
+  • Don’t be surprised if you find six-packs next to diapers!
+• Association rules: People who bought 𝑥, 𝑦 tend to buy 𝑧, 𝑣 .
+
+
+
+
+                                    Jaemin Yoo                            5
+The Market-Basket Model
+• Market-basket model is a many-to-many mapping between:
+  • A large set of items (e.g., things sold in a supermarket)
+  • A large set of baskets (e.g., things a customer buys at one time)
+     • Each basket is a small subset of items.
+
+
+
+
+                                  Source: Stanford CS246 (2022)
+
+
+
+                                           Jaemin Yoo                   6
+Frequent Itemsets
+• Goal: Find sets of items that appear together frequently.
+• Support for itemset 𝐼: # of baskets containing all elements in 𝐼.
+   • Given a support threshold 𝑠,
+   • Itemset 𝐼 is a frequent itemset if it appears at least in 𝑠 baskets.
+
+
+
+
+                                                              Support of {Beer, Bread} is 2
+
+
+
+                 Source: Stanford CS246 (2022)
+
+                                                 Jaemin Yoo                                   7
+Example
+• Items = {milk, coke, pepsi, beer, juice}
+• Support threshold = 3 baskets
+      B1 = {m, c, b}     B2 = {m, p, j}
+      B3 = {m, b}        B4 = {c, j}
+      B5 = {m, p, b}     B6 = {m, c, b, j}
+      B7 = {c, b, j}     B8 = {b, c}
+
+
+
+
+                                 Jaemin Yoo   8
+Example
+• Items = {milk, coke, pepsi, beer, juice}
+• Support threshold = 3 baskets
+      B1 = {m, c, b}        B2 = {m, p, j}
+      B3 = {m, b}           B4 = {c, j}
+      B5 = {m, p, b}        B6 = {m, c, b, j}
+      B7 = {c, b, j}        B8 = {b, c}
+• Frequent itemsets:
+      {m}, {c}, {b}, {j}, {m, b}, {b, c}, {c, j}
+
+
+                                      Jaemin Yoo   9
+Market-Basket Model as Abstract
+• Market-basket model is an abstract of various data.
+   • Topic discovery: items = words; baskets = documents
+• Items do not have to be “in” baskets!
+   • As long as a dataset is a many-to-many mapping.
+   • Plagiarism: items = documents; baskets = sentences
+   • Biomarkers: items = drugs; baskets = patients         Source: Study.com
+
+
+
+
+                                  Jaemin Yoo                               10
+Outline
+1. Frequent Itemsets
+2. Association Rules
+3. Finding Frequent Pairs
+4. A-Priori Algorithm
+
+
+
+
+                            Jaemin Yoo   11
+Association Rules
+• Given Itemsets 𝐼 and 𝐽,
+• Find an association rule 𝐼 → 𝐽 such that if a basket contains all of
+  the items in 𝐼, then it is likely to contain 𝐽 as well.
+   • 𝐼 ∩ 𝐽 = ∅ is assumed by default.
+     B1 = {m, c, b}       B2 = {m, p, j}
+     B3 = {m, b}          B4 = {c, j}
+     B5 = {m, p, b}       B6 = {m, c, b, j}
+     B7 = {c, b, j}       B8 = {b, c}
+
+     Association rule: {m, b} → c
+
+                                     Jaemin Yoo                      12
+Support
+• Q: How can we decide if an association rule is significant?
+• Support of 𝐼 → 𝐽 is defined to be the support of 𝐼 ∪ 𝐽.
+   • support 𝐼 → 𝐽 = support 𝐼 ∪ 𝐽 .
+   • Higher support is better, as in frequent itemsets.
+     B1 = {m, c, b}        B2 = {m, p, j}          Support({m, b, c}): 2
+     B3 = {m, b}           B4 = {c, j}
+     B5 = {m, p, b}        B6 = {m, c, b, j}
+     B7 = {c, b, j}        B8 = {b, c}
+
+     Association rule: {m, b} → c
+
+                                      Jaemin Yoo                           13
+Confidence
+• Q: How can we decide if an association rule is significant?
+• Confidence of 𝐼 → 𝐽 = the probability of 𝐽 given 𝐼 in a basket.
+   • conf 𝐼 → 𝐽 = 𝑃 𝐽 𝐼 = P(𝐼 ∪ 𝐽) / P(𝐼)
+   • conf 𝐼 → 𝐽 = support(𝐼 ∪ 𝐽) / support(𝐼)
+     B1 = {m, c, b}       B2 = {m, p, j}          Support({m, b, c}): 2
+     B3 = {m, b}          B4 = {c, j}             Support({m, b}): 4
+     B5 = {m, p, b}       B6 = {m, c, b, j}       Confidence: 2/4 = 0.5
+     B7 = {c, b, j}       B8 = {b, c}
+
+     Association rule: {m, b} → c
+
+                                     Jaemin Yoo                           14
+Interest
+• Not all high-confidence rules are interesting.
+   • The rule 𝑋 → milk will have high confidence if milk is purchased a lot.
+• Interest of 𝐼 → 𝐽 = conf 𝐼 → 𝐽 − 𝑃 𝐽 = 𝑃 𝐽 𝐼 − 𝑃 𝐽 .
+   • 𝑃 𝐽 : Fraction of baskets containing 𝐽 in the dataset.
+     B1 = {m, c, b}        B2 = {m, p, j}          Support({m, b, c}): 2
+     B3 = {m, b}           B4 = {c, j}             Support({m, b}): 4
+     B5 = {m, p, b}        B6 = {m, c, b, j}       Confidence: 2/4 = 0.5
+     B7 = {c, b, j}        B8 = {b, c}             Interest : 0.5 - 5/8 = -1/8
+                                                   (negative value?)
+     Association rule: {m, b} → c
+
+                                      Jaemin Yoo                                 15
+Mining Association Rules
+• Goal: Find all rules with support ≥ 𝑠 and confidence ≥ 𝑐.
+   • Interest is a relative measure, not very suitable as a threshold.
+• Difficult part: Finding the frequent itemsets.
+   • Identifying association rules is easy if we have frequent itemsets.
+   • We will study the easy part first.
+
+
+
+
+                                      Jaemin Yoo                           16
+Mining Association Rules
+• Step 1: Find all frequent itemsets 𝐼 (will explain this later).
+• Step 2: For every subset 𝐴 ⊂ 𝐼, generate a rule 𝐴 → 𝐼 ∖ 𝐴.
+   • Version 1: Compute the confidence of every possible rule.
+      • conf 𝑎, 𝑏 → 𝑐, 𝑑    = support 𝑎, 𝑏, 𝑐, 𝑑     / support 𝑎, 𝑏 .
+   • Version 2: Eliminate stronger rules by starting from weaker ones.
+      • If 𝑎, 𝑏, 𝑐 → 𝑑 is below confidence, then so is 𝑎, 𝑏 → 𝑐, 𝑑 .
+   • Output the rules above the confidence threshold.
+
+
+
+
+                                        Jaemin Yoo                       17
+Mining Association Rules
+• Example
+  • Support threshold 𝑠 = 3
+  • Confidence threshold 𝑐 = 3/4
+
+     B1 = {m, c, b}      B2 = {m, p, j}         1. Frequent itemsets:
+     B3 = {m, c, b, n}   B4 = {c, j}            {b,m}, {b,c}, {c,m}, {c,j}, {m,c,b}
+     B5 = {m, p, b}      B6 = {m, c, b, j}
+     B7 = {c, b, j}      B8 = {b, c}
+
+
+
+
+                                   Jaemin Yoo                                   18
+Mining Association Rules
+• Example
+  • Support threshold 𝑠 = 3                     1. Frequent itemsets:
+  • Confidence threshold 𝑐 = 3/4                {b,m}, {b,c}, {c,m}, {c,j}, {m,c,b}
+
+     B1 = {m, c, b}      B2 = {m, p, j}         2. Generated rules:
+     B3 = {m, c, b, n}   B4 = {c, j}            {b, c} → m: conf = 3/5
+     B5 = {m, p, b}      B6 = {m, c, b, j}      {b, m} → c: conf = 3/4
+     B7 = {c, b, j}      B8 = {b, c}            {m, c} → b: conf = 3/3
+                                                b → {c, m}: conf = 3/6
+                                                               …
+
+
+                                   Jaemin Yoo                                   19
+Mining Association Rules
+• Example
+  • Support threshold 𝑠 = 3                     1. Frequent itemsets:
+  • Confidence threshold 𝑐 = 3/4                {b,m}, {b,c}, {c,m}, {c,j}, {m,c,b}
+
+     B1 = {m, c, b}      B2 = {m, p, j}         2. Generated rules:
+     B3 = {m, c, b, n}   B4 = {c, j}            {b, c} → m: conf = 3/5
+     B5 = {m, p, b}      B6 = {m, c, b, j}      {b, m} → c: conf = 3/4
+     B7 = {c, b, j}      B8 = {b, c}            {m, c} → b: conf = 3/3
+                                                b → {c, m}: conf = 3/6
+                                                               …
+
+
+                                   Jaemin Yoo                                   20
+Compacting the Output
+• Finding a million rules is not meaningful in practice.
+• Q: What can we do it other than adjusting the thresholds?
+• A: Post-process frequent itemsets before finding rules.
+   • Suppose that support 𝐴, 𝐵, 𝐶 = support 𝐴, 𝐵 .
+   • Then, we can safely remove 𝐴, 𝐵 from our candidates.
+   • conf 𝐴 → 𝐵, 𝐶 = conf 𝐴 → 𝐵
+   • conf 𝐵 → 𝐴, 𝐶 = conf 𝐵 → 𝐴
+
+
+
+
+                                  Jaemin Yoo                  21
+Compacting the Output
+• We can retain only the closed / maximal frequent itemsets.
+• Closed itemsets:
+  • No immediate superset has the same support (> 0).
+  • Pros: Safe way to compact the output.
+  • Cons: Still numerous and complex to compute.
+• Maximal frequent itemsets:
+  • No immediate superset is frequent.
+  • Pros: Gives more pruning while being fast.
+  • Cons: Support details are missing.
+
+
+                                   Jaemin Yoo                  22
+Example: Maximal / Closed Itemsets
+• Q: Why are maximal frequent itemsets not always better?
+• A: If you store only the maximal set {A,B,C}, you lose that:
+   • {A} is extremely common.
+   • {A,B} is moderately common.
+   • {A,B,C} is barely frequent.
+
+
+
+
+                                   Jaemin Yoo                    23
+Example: Maximal / Closed Itemsets
+• Example (𝑠=3)
+
+           Support   Maximal            Closed
+  A        4         No                 No
+  B        5         No                 Yes      BC is freq.
+  C        3         No                 No       support(BC) = 3
+  AB       4         Yes                Yes      ABC is not freq.
+  AC       2         No                 No
+  BC       3         Yes                Yes      support(ABC) < 3
+  ABC      2         No                 Yes
+
+                               Jaemin Yoo                           24
+Pop Quiz
+• We have the following baskets with support threshold 𝑠 = 2:
+   B1 = {apple, butter, milk}
+   B2 = {apple, butter, banana, walnuts, milk}
+   B3 = {butter, milk, banana}
+   B4 = {apple, milk}
+• Q1. Compute the support for itemset {apple, butter}.
+• Q2. Compute the confidence for the rule {apple} -> {butter}.
+• Q3. Compute the interest of {apple} -> {butter}.
+• Q4. Is {apple, butter} maximal and/or closed?
+
+                                    Jaemin Yoo                   25
+Outline
+1. Frequent Itemsets
+2. Association Rules
+3. Finding Frequent Pairs
+4. A-Priori Algorithm
+
+
+
+
+                            Jaemin Yoo   26
+Representation of Market-Basket Data
+• Let’s go back to finding frequent itemsets.
+• Market-basket data is stored on disk basket-by-basket.
+   • Either in a DFS (baskets are objects in files) or as a file.
+• The data can be too large to fit in main memory.
+   • Baskets are small but we have many baskets and items.
+
+
+
+
+                                                                    Source: Stanford CS246 (2022)
+
+                                       Jaemin Yoo                                     27
+Computational Cost
+• The true cost of mining large data is usually # of disk I/Os.
+• In practice, association-rule algorithms read the data in passes.
+• We measure the cost by # of passes that an algorithm makes.
+
+
+
+
+                                Jaemin Yoo                            28
+Main-Memory Bottleneck
+• Main memory is the issue for frequent-itemset algorithms.
+  • As we read baskets, we need to count something, e.g., item occurrences.
+  • The number of different things we can count is limited by main memory.
+  • Swapping counts in/out is a disaster.
+• Minor technique: We represent items simply by numbers.
+  • By consecutive integers from 1 to 𝑛 where 𝑛 is # of distinct items.
+  • We can construct a hash table that translates items to integers.
+
+
+
+
+                                    Jaemin Yoo                            29
+Finding Frequent Pairs
+• The hardest problem is finding frequent pairs of items 𝑖, 𝑗 .
+   • Why? Frequent pairs are common, frequent triples are rare.
+   • Probability of being frequent drops exponentially with size.
+• Let’s first concentrate on pairs, and then extend to larger sets.
+
+
+
+
+                                    Jaemin Yoo                        30
+Counting Pairs in Memory
+• Goal: Count the # of occurrences of each pair of items (𝑖, 𝑗).
+• Triangular-matrix method:
+   • Use a large matrix (i.e., an array) to store all counts.
+• Triples method:
+   • Keep a hash table of triples 𝑖, 𝑗, 𝑐 , storing count 𝑐 for each pair 𝑖, 𝑗 .
+   • If integers are 4 bytes, we need about 12 bytes for each pair with 𝑐 > 0.
+   • Plus some additional overhead for the hash table.
+
+
+
+
+                                       Jaemin Yoo                                  31
+Comparison of Two Approaches
+
+
+
+
+                Source: Stanford CS246 (2022)
+
+
+
+                         Jaemin Yoo             32
+Comparison of Two Approaches
+• Triangular-matrix method:
+   • Counts a pair of items 𝑖, 𝑗 only if 𝑖 < 𝑗.
+   • Pairs are stored in lexicographic order:
+      • {1,2}, {1,3}, …, {1,n}, {2,3}, {2,4}, …,{2,n}, … {n-1,n}
+   • Total bytes = 4 × 𝑛 𝑛 − 1 /2.
+• Triples Method:
+   • Uses 12 bytes per pair only if count > 0.
+   • Total bytes = 12 × 𝑝 × 𝑛 𝑛 − 1 /2.
+• The triples method is better if 𝑝 < 1/3.
+
+
+                                              Jaemin Yoo           33
+Naïve Algorithm
+• Count the occurrence of each pair in main memory.
+   • From each basket 𝑏 of 𝑛! items, generate its 𝑛! 𝑛! − 1 /2 pairs.
+• Fails if (# of items)2 exceeds main memory.
+   • Remember: # of items can be 100K (Wal-Mart) or 10B (Web pages).
+      • If we have 1M items, 2 terabytes of memory is needed.
+      • What if we have 1B items?
+• Q: How can we do better when we have too many items?
+
+
+
+
+                                        Jaemin Yoo                      34
+Outline
+1. Frequent Itemsets
+2. Association Rules
+3. Finding Frequent Pairs
+4. A-Priori Algorithm
+
+
+
+
+                            Jaemin Yoo   35
+A-Priori Algorithm
+• A-Priori is a two-pass approach which limits memory usage.
+• Key idea is monotonicity.
+  • If an itemset 𝐼 appears at least 𝑠 times, so does every subset 𝐽 ⊆ 𝐼.
+• Contrapositive for pairs:
+  • If item 𝑖 does not appear in 𝑠 baskets, then no pair including 𝑖 can.
+
+
+
+
+                                    Jaemin Yoo                              36
+A-Priori Algorithm
+• Pass 1: Read baskets and count # of occurrences of each item.
+   • Requires only memory proportional to # of items.
+• Mark the items that appear ≥ 𝑠 times as frequent items.
+• Pass 2: Read baskets keeping track of only the frequent items.
+   • Count only those pairs where both elements are frequent.
+   • Requires memory proportional to square of # of frequent items.
+   • Plus a list of the frequent items (so you know what must be counted).
+
+
+
+
+                                    Jaemin Yoo                               37
+A-Priori Algorithm (Pass 1)
+• Table 1: Translate item names to 1, … , 𝑛.     Item
+                                                               1
+                                                               2     Item
+                                                 names to
+• Table 2: Initialize an array of counts to 0.   integers
+                                                                     counts
+                                                               n
+
+
+
+
+                                                            Unused
+
+
+                             Baskets
+
+                                                     <main memory>
+
+
+
+                                   Jaemin Yoo                          38
+A-Priori Algorithm (Pass 1)
+• Table 1: Translate item names to 1, … , 𝑛.     milk -> 1
+                                                 bread -> 2
+                                                              1
+                                                              2
+                                                                   100
+                                                                   50
+• Table 2: Initialize an array of counts to 0.   …
+                                                 ccsd -> n    n    2
+
+
+
+
+                                                          Unused
+
+
+                             Baskets
+
+                                                      <main memory>
+
+
+
+                                   Jaemin Yoo                          39
+A-Priori Algorithm (between Pass 1 & 2)
+• Find frequent items with support ≥ 𝑠.           milk -> 1
+                                                  bread -> 2
+                                                               1
+                                                               2
+                                                                    2
+                                                                    1
+• Create new numbering 1, … , 𝑚 for the items.    …
+                                                  ccsd -> n    n    0
+• Create a table whose 𝑖-th entry is an integer
+  in 1, 𝑚 if item 𝑖 is frequent or 0 otherwise.
+                                                           Unused
+
+
+                           Baskets
+
+                                                       <main memory>
+
+
+
+                                 Jaemin Yoo                             40
+A-Priori Algorithm (Pass 2)
+• For each basket, see which items are frequent.    milk -> 1
+                                                    bread -> 2
+                                                                    1
+                                                                    2
+                                                                        2
+                                                                        1
+• Generate all pairs of these frequent items.       …
+                                                    ccsd -> n       n   0
+• For each such pair, increment count in the data
+  structure (triangular matrix or triples).          2
+
+
+                                                             counts
+                                                     m       of pairs
+                          Baskets                        1              m-1
+
+                                                         <main memory>
+
+
+
+                                Jaemin Yoo                                  41
+Frequent Triples
+• Same technique is used for finding larger frequent itemsets.
+• When we move from size 𝑘 − 1 to 𝑘, we use two sets of itemsets:
+   • 𝐶" : Set of candidate 𝑘-tuples that might be frequent sets.
+   • 𝐿" : Set of truly frequent 𝑘-tuples.
+• If no frequent itemsets are found, we are done by monotonicity.
+     C1             L1               C2            L2               C3            L3
+           Filter        Construct        Filter        Construct        Filter        Construct
+                                                                                                   ...
+
+     All       Frequent          Pairs of      Frequent
+   items         items             freq.         pairs
+                                  items
+
+                                                   Jaemin Yoo                                            42
+Example
+• C1 = { {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} }.
+• Count the support of itemsets in C1.
+• Prune non-frequent itemsets: L1 = { {1}, {2}, {3}, {4}, {5} }.
+
+
+
+
+                                   Jaemin Yoo                      43
+Example
+• C1 = { {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} }.
+• Count the support of itemsets in C1.
+• Prune non-frequent itemsets: L1 = { {1}, {2}, {3}, {4}, {5} }.
+• C2 = { {1,2} {1,3} {1,4} {1,5} {2,3} {2,4} {2,5} {3,4} {3,5} {4,5} }.
+• Count the support of itemsets in C2.
+• Prune non-frequent itemsets: L2 = { {1,2} {2,3} {2,4} {3,4} {4,5} }.
+
+
+
+
+                                   Jaemin Yoo                             44
+Example
+• C1 = { {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} }.
+• Count the support of itemsets in C1.
+• Prune non-frequent itemsets: L1 = { {1}, {2}, {3}, {4}, {5} }.
+• C2 = { {1,2} {1,3} {1,4} {1,5} {2,3} {2,4} {2,5} {3,4} {3,5} {4,5} }.
+• Count the support of itemsets in C2.
+• Prune non-frequent itemsets: L2 = { {1,2} {2,3} {2,4} {3,4} {4,5} }.
+• Generate C3 = { {2,3,4} } … No {1, 2, 3} or {2, 4, 5}!
+• ...
+
+                                   Jaemin Yoo                             45
+Pop Quiz
+• Apply the A-Priori algorithm with support threshold 𝑠 = 3:
+   B1 = {apple, butter, milk}
+   B2 = {apple, butter, banana, walnuts, milk}
+   B3 = {butter, milk}
+   B4 = {apple, milk}
+
+
+
+
+                                    Jaemin Yoo                 46
+Summary
+1. Frequent Itemsets
+  • Market-basket model
+2. Association Rules
+  • Confidence, Interest, Maximal or closed itemsets
+3. Finding Frequent Pairs
+  • Triangular-matrix method, Triples method
+4. A-Priori Algorithm
+  • How the two-pass algorithm works
+
+
+
+                                  Jaemin Yoo           47
+

@@ -1,0 +1,522 @@
+Finding Similar Items 2
+     Introduction to Data Mining
+      Seoul National University
+            Spring 2026
+
+
+
+
+               Jaemin Yoo          1
+Announcements
+• Assignments:
+  • HW1 is posted (deadline: April 9).
+
+
+
+
+                                    Jaemin Yoo   2
+Recap: Shingling and Minhashing
+• 𝑘-shingles (document as a set)
+• Jaccard similarity:
+  • sim 𝑆, 𝑇 = 𝑆 ∩ 𝑇 /|𝑆 ∪ 𝑇|
+• Minhashing:
+  • Pick a random permutation of rows.
+  • The minhash value is the first row that has 1.
+  • E.g., ℎ(𝑆!) = 0, ℎ(𝑆") = 2, and ℎ(𝑆#) = 1.
+  • Pr(minhash is same) = Jaccard similarity.
+• How to compute minhash signatures.
+
+                                    Jaemin Yoo       3
+Recap: The Big Picture
+                                                                                  Candidate
+                                                                                  Pairs:
+                                                                      Locality-
+                                       Min                                        Those pairs
+ Document   Shingling                                                 Sensitive
+                                      Hashing                                     of signatures
+                                                                      Hashing
+                                                                                  that we need
+                                                                                  to test for
+                        The set                   Signatures:                     similarity
+                        of strings                Short integer
+                        of length 𝑘               vectors that
+                        that appear               represent the
+                        in the                    sets, and
+                        document                  reflect their
+                                                  similarity
+                                      Source: Stanford CS246 (2018)
+
+
+
+                                               Jaemin Yoo                                         4
+Outline
+1. Locality-Sensitive Hashing (LSH)
+2. S-Curves
+3. LSH Families
+4. LSH with Other Distance Measures
+
+
+
+
+                            Jaemin Yoo   5
+Locality-Sensitive Hashing
+• The number of document pairs is still large after minhashing.
+   • Minhashing does not reduce document pairs to compare.
+   • What if we have 1M documents with 1µs for each comparison?
+   • 6 days to compute all similarities.
+• Locality-sensitive hashing (LSH) reduces # of candidate pairs.
+   • Allows us to focus on pairs that are likely to be similar.
+
+
+
+
+                                      Jaemin Yoo                   6
+From Signatures to Buckets
+• General approach: Hash minhashed signatures several times.
+  • We know similar documents have more shared signatures.
+  • Use only a subset of the signatures for each hash function.
+• Any pair hashed to the same bucket becomes a candidate.
+  • There will be false positives and false negatives though.
+
+
+                                  Magnitude 6.8        Today’s weather
+             Magnitude 6.8        earthquake ...       forecast ...
+             earthquake ...
+
+
+
+
+             [110, 70, 93, 40]   [110, 70, 93, 211]   [50, 47, 111, 25]
+                                                                          7
+Partition into Bands
+• Trick: Divide the signature matrix 𝑀 into 𝑏 bands of 𝑟 rows.
+   • For each band, hash each column to a hash table with 𝑘 buckets.
+      • Make 𝑘 as large as possible to reduce collisions.
+      • Use a different hash table for each band.
+   • Becomes a candidate pair if hashed to the same bucket for ≥ 1 band.
+   • Tune 𝑏 and 𝑟 to catch most similar pairs, but few non-similar pairs.
+
+
+
+
+                                          Jaemin Yoo                        8
+Partition into Bands
+• Trick: Divide the signature matrix 𝑀 into 𝑏 bands of 𝑟 rows.
+
+
+
+
+                            Source: Stanford CS246 (2022)
+                                     Jaemin Yoo                  9
+Hash Functions to One Bucket
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             10
+Example: Bands
+• Suppose a signature matrix of size 100 × 100,000.
+   • 100 minhashed signatures
+   • 100,000 documents to compare
+• Goal: Find all 80%-similar pairs.
+   • 5,000,000,000 pairs of signatures can take a while to compare.
+   • Let’s apply LSH with 𝑏 = 20 bands of size 𝑟 = 5.
+
+
+
+
+                                    Jaemin Yoo                        11
+Example: False Positives
+• Suppose that 𝐶" and 𝐶# are 40% similar (i.e., negative pair).
+• False positives: Less than 1/5th of all 40%-similar pairs.
+   • Probability identical in any one particular band: 0.4 % = 0.01.
+   • Probability identical in ≥ 1 of 20 bands: 1 – 1 − 0.01 "& < 0.2.
+• We can remove more than 80% of all 40%-similar pairs!
+
+
+
+
+                                    Jaemin Yoo                          12
+Example: False Negatives
+• Suppose that 𝐶" and 𝐶# are 80% similar (i.e., positive pair).
+• False negatives: About 1/3000th of all 80%-similar pairs.
+   • Probability identical in any one particular band: 0.8 % = 0.328.
+   • Probability not similar in all 20 bands: 1 − 0.328 "& = 0.00035.
+• We can find almost all positive pairs even with LSH!
+
+
+
+
+                                    Jaemin Yoo                          13
+Outline
+1. Locality-Sensitive Hashing (LSH)
+2. S-Curves
+3. LSH Families
+4. LSH with Other Distance Measures
+
+
+
+
+                            Jaemin Yoo   14
+What We Want from LSH
+• Let 𝑠 be a similarity, and 𝑡 be a similarity threshold for the query.
+• What we want from LSH is:
+
+
+
+
+                                               Source: Stanford CS246 (2022)
+                                 Jaemin Yoo                                    15
+Errors when 𝑟 = 1 and 𝑏 = 1
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             16
+S-Curve
+• LSH makes an S-curve for a document pair with similarity 𝑠.
+     • Pr signatures agree in all rows on one band = 𝑠 '
+     • Pr signatures do not agree in at least one row of one band = 1 − 𝑠 '
+     • Pr signatures do not agree in at least one row of each band = 1 − 𝑠 ' (
+     • Pr signatures agree in all rows of at least one band = 1 − 1 − 𝑠 ' (
+
+                 1                                             s    1-(1-sr)b
+Probability of                                                 .2     .006
+becoming a
+candidate                                                      .4     .186      b = 20, r = 5
+                                                               .6     .802
+                 0
+                                                               .8    .9996
+                     0   Jaccard similarity of documents   1
+                                                                                                17
+S-Curve: Choosing 𝑟 and 𝑏
+• The values of 𝑟 and 𝑏 determine the shape of the S-curve.
+   • Constraint: 𝑟 × 𝑏 equals to the number of signatures 𝑚.
+• Higher 𝑚 makes the curve closer to the step function.
+• The balance between 𝑟 and 𝑏 decide the center of curve.
+
+
+
+
+                                    Jaemin Yoo                 18
+Changing Shape with 𝑚
+• Suppose that we consider 0.8 as
+  the similarity threshold.
+• We visualize three curves with:
+  • Red: 𝑟 = 10 and 𝑏 = 6
+  • Green: 𝑟 = 20 and 𝑏 = 60
+  • Purple: 𝑟 = 40 and 𝑏 = 5500
+• Higher 𝑚 makes higher accuracy.
+
+
+
+
+                                  Jaemin Yoo   19
+Changing Shape with 𝑟 and 𝑏
+• With same 𝑚, the values of 𝑟 and 𝑏
+  determines the center of curve.
+• We visualize three curves with:
+   • Red: 𝑟 = 5 and 𝑏 = 20
+   • Green: 𝑟 = 10 and 𝑏 = 10
+   • Purple: 𝑟 = 20 and 𝑏 = 5
+• No answer; they have different false
+  positives and negatives.
+
+
+
+                                Jaemin Yoo   20
+Finding the Center of Curve
+• We can’t draw the curve for every combination of 𝑟 and 𝑏.
+• Let’s approximate the equation:
+   𝑦 = 1 − 1 − 𝑠' (
+           )(* !
+     ≈1 −𝑒       if 0 < 𝑠 < 1 and 𝑟 is sufficiently large.
+• The curve becomes steepest (i.e., “center”) if 𝑠 ≈ 1/𝑏 "/% .
+   • Let’s use this center to approximate the shape of curve.
+
+
+
+
+                                      Jaemin Yoo                 21
+Finding the Center of Curve
+• Note: The curve passes ( 1/𝑏 "/% , 0.63) regardless of 𝑟 and 𝑏.
+
+                      1
+
+          Probability of
+          becoming a 0.63
+          candidate
+
+
+                      0
+                            0                 (1/b)1/r            1
+                                Jaccard similarity of documents
+
+
+                                     Jaemin Yoo                       22
+Combining the Techniques
+• Pick 𝑘 and construct a set of 𝑘-shingles from each document.
+• Pick length 𝑛 for minhash signatures and compute signatures.
+• Pick similarity threshold 𝑡 and then # of bands 𝑏 and # of rows 𝑟.
+   • If 1/𝑏 !/' > 𝑡, there will be fewer false positives.
+   • If 1/𝑏 !/' < 𝑡, there will be fewer false negatives.
+• Construct candidate pairs and compare their signatures using 𝑡.
+
+
+
+
+                                     Jaemin Yoo                        23
+Outline
+1. Locality-Sensitive Hashing (LSH)
+2. S-Curves
+3. LSH Families
+4. LSH with Other Distance Measures
+
+
+
+
+                            Jaemin Yoo   24
+Distance Measures
+• Generalized LSH is based on the distance between points.
+   • Jaccard similarity is not a distance.
+   • Jaccard distance = 1 – Jaccard similarity is a distance.
+• A function 𝑑 is a distance measure if
+   • It takes two points in the space and returns a real number satisfying:
+      • 𝑑 𝑥, 𝑦 ≥ 0 (non-negative)
+      • 𝑑(𝑥, 𝑦) = 0 iff 𝑥 = 𝑦 (distances are positive except for 𝑥 = 𝑦)
+      • 𝑑 𝑥, 𝑦 = 𝑑(𝑦, 𝑥) (symmetric)
+      • 𝑑 𝑥, 𝑦 ≤ 𝑑(𝑥, 𝑧) + 𝑑(𝑧, 𝑦) (triangle inequality)
+
+
+
+
+                                           Jaemin Yoo                         25
+LSH Families
+• Let 𝑑" < 𝑑# be two distances according to a distance function 𝑑.
+• A family 𝐹 of functions is said to be 𝒅𝟏 , 𝒅𝟐 , 𝒑𝟏 , 𝒑𝟐 -sensitive if
+   • For every 𝑓 ∈ 𝐹 and points 𝑥 and 𝑦:
+      If 𝑑(𝑥, 𝑦) ≤ 𝑑!, then the probability that 𝑓(𝑥) = 𝑓(𝑦) is at least 𝑝!.
+      If 𝑑 𝑥, 𝑦 ≥ 𝑑", then the probability that 𝑓(𝑥) = 𝑓(𝑦) is at most 𝑝".
+• The values 𝑑" , 𝑑# , 𝑝" , 𝑝# are related to the shape of the curve.
+
+
+
+
+                                      Jaemin Yoo                               26
+Meanings of Sensitivity Values
+• If 𝐹 is 𝑑" , 𝑑# , 𝑝" , 𝑝# -sensitive, then
+        𝐹 is better with higher 𝑑" , lower 𝑑# , higher 𝑝" , and lower 𝑝# .
+
+
+                                                    Reflection of the S-curve
+                     p1
+                                                    across the 𝑦-axis.
+      Probability of
+      being declared p2
+      a candidate
+
+                               d1            d2
+                           Distance
+
+                                      Jaemin Yoo                             27
+LSH Families for Jaccard Similarity
+• Minhashing gives a (𝑑" , 𝑑# , 1 − 𝑑" , 1 − 𝑑# )-sensitive family.
+   • For any 𝑑! and 𝑑" such that 0 ≤ 𝑑! < 𝑑" ≤ 1.
+   • Here we do not consider the banding technique (i.e., 𝑏 = 𝑟 = 1).
+• Proof:
+   • Let 𝑑 be the Jaccard distance = 1 − sim 𝑥, 𝑦 .
+   • Then, 𝑑 𝑥, 𝑦 ≤ 𝑑!
+       ⇒ 1 − sim 𝑥, 𝑦 ≤ 𝑑!
+       ⇒ 1 − 𝑑! ≤ sim 𝑥, 𝑦
+       ⇒ 1 − 𝑑! ≤ Pr(minhash 𝑥 = minhash 𝑦 ).
+   • Similar argument applies to 𝑑".
+
+                                    Jaemin Yoo                          28
+Amplifying an LSH Family
+• The banding technique carries over to this general setting.
+• We create a new LSH family 𝐹’ from 𝐹 such that:
+   • Each member of 𝐹’ consists of 𝑛 members of 𝐹.
+   • By an AND construction like “rows in a band.”
+   • And an OR construction like “many bands.”
+• Goal: Improve 𝐹 by making 𝑑" ↑, 𝑑# ↓, 𝑝" ↑, and 𝑝# ↓.
+
+
+
+
+                                  Jaemin Yoo                    29
+AND Construction
+• If the following are true:
+   • 𝑓 , ∈ 𝐹′ is constructed from 𝑓!, 𝑓", … , 𝑓' of 𝐹.
+   • 𝑓 , (𝑥) = 𝑓 , (𝑦) if and only if 𝑓- 𝑥 = 𝑓- 𝑦 for all 𝑖 = 1, 2, … , 𝑟.
+• Then, 𝐹’ is 𝑑" , 𝑑# , 𝑝"% , 𝑝#% -sensitive.
+                                                           0.8
+     F is a (0.2, 0.6, 0.8, 0.4)-sensitive family
+
+     If r = 4,        0.84 = 0.44 =                        0.4
+     F’ is (0.2, 0.6, 0.4096, 0.0256)-sensitive
+
+
+                                                                 0.2     0.6
+
+
+                                                    Jaemin Yoo                 30
+OR Construction
+• If the following are true:
+   • 𝑓 , ∈ 𝐹′ is constructed from 𝑓!, 𝑓", … , 𝑓( of 𝐹.
+   • 𝑓 , (𝑥) = 𝑓 , (𝑦) if and only if 𝑓- 𝑥 = 𝑓- 𝑦 for at least one 𝑖 = 1, 2, … , 𝑏.
+• Then, 𝐹 4 is (𝑑" , 𝑑# , 1 − 1 − 𝑝" 5 , 1 − 1 − 𝑝# 5 )-sensitive.
+
+
+    F is a (0.2, 0.6, 0.8, 0.4)-sensitive family
+                                                   0.8
+    If b = 4,
+    F’ is (0.2, 0.6, 0.9984, 0.8704)-sensitive
+              1-(1-0.8)4 = 1-(1-0.4)4 =            0.4
+
+
+                                                                                      31
+                                                         0.2       0.6
+AND-OR Composition
+• Let’s combine an AND and an OR construction as in minhashing.
+   • In the right order: AND → OR, not the opposite!
+• Each of the two probabilities 𝑝 is transformed into 1 − 1 − 𝑝% 5 .
+   • The S-curve studied before!
+
+ F is a (0.2, 0.6, 0.8, 0.4)-sensitive family
+                                                             0.8
+ If r = b = 4,
+ F’ is (0.2, 0.6, 0.8785, 0.0985)-sensitive
+                                                             0.4
+
+
+                                                                   0.2   0.6
+                                                Jaemin Yoo                     32
+Outline
+1. Locality-Sensitive Hashing (LSH)
+2. S-Curves
+3. LSH Families
+4. LSH with Other Distance Measures
+
+
+
+
+                           Jaemin Yoo   33
+LSH for Other Distance Measures
+• Let’s study the angular distance between real-valued vectors.
+• See textbook for other distance measures:
+  • Euclidean distance, Hamming distance, Edit distance, etc.
+
+
+
+
+                                 Source: Medium
+
+                                   Jaemin Yoo                     34
+Angular Distance
+• Think of a point as a vector from the origin to its location.
+• Two points’ vectors create an angle 𝜃.
+• Then, 𝜃/𝜋 is the angular distance between the vectors.
+• Normally computed from the cosine similarity cos 𝜃 .
+
+                        x
+
+
+
+                    θ       y
+                                               Cosine similarity
+
+
+                                  Jaemin Yoo                       35
+Random Hyperplanes
+• Random hyperplanes: Technique analogous to minhashing.
+• Two vectors 𝑥 and 𝑦 that have an angle 𝜃 define a plane.
+• All hyperplanes through the origin can be categorized into
+  • Red hyperplane where 𝑥 and 𝑦 are on the same side.
+  • Blue hyperplane where 𝑥 and 𝑦 are on different sides .
+
+                     intersections
+                                                  x
+
+
+
+                                        𝜃
+
+
+                                              y
+                                                               36
+Blue Hyperplane Case
+• Consider a vector 𝑣 that is normal to a blue-type hyperplane.
+• Then, 𝑣 ⋅ 𝑥 and 𝑣 ⋅ 𝑦 will have different signs.
+   • Since 𝑥 and 𝑦 are on different sides.
+• Even if 𝑣 extends in opposite direction, signs are still different.
+
+                                                        x
+                                   v
+
+
+                                              𝜃
+
+
+                                                    y
+
+                                       Jaemin Yoo                       37
+Red Hyperplane Case
+• Suppose that 𝑣 is normal to a red-type hyperplane.
+• Then, 𝑣 ⋅ 𝑥 and 𝑣 ⋅ 𝑦 have the same sign.
+
+                                            x
+
+
+
+                             𝜃      v
+
+
+                                        y
+
+
+
+                                 Jaemin Yoo            38
+Blue and Red Probabilities
+• Suppose that 𝑣 is randomly chosen.
+• The probability that a hyperplane will be red-type: 1 − 𝜃/𝜋.
+
+                                                     x
+
+
+
+                                             𝜃
+
+
+                                                 y
+
+
+
+                                Jaemin Yoo                       39
+Random Hyperplanes
+• If the following are true:
+   • Hash function 𝑓 ∈ 𝐹 is built from a randomly-chosen vector 𝑣.
+   • Given vectors 𝑥 and 𝑦, 𝑓(𝑥) = 𝑓(𝑦) iff 𝑣 ⋅ 𝑥 and 𝑣 ⋅ 𝑦 have the same sign.
+      • Red-type hyperplane.
+• Then, 𝐹 is (𝑑" , 𝑑# , 1 − 𝑑" /𝜋, 1 − 𝑑# /𝜋)-sensitive.
+• We can amplify 𝐹 as we wish, just like the minhash-based family.
+
+
+
+
+                                     Jaemin Yoo                                   40
+Summary
+1. Locality-Sensitive Hashing (LSH)
+  • Banding technique
+2. S-Curves
+  • Choosing the values of 𝑟 and 𝑏
+3. LSH Families
+  • 𝑑!, 𝑑", 𝑝!, 𝑝" -sensitivity
+  • AND and OR constructions
+4. LSH with Other Distance Measures
+  • Random hyperplanes
+
+
+                                     Jaemin Yoo   41
+

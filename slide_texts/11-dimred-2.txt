@@ -1,0 +1,734 @@
+Dimensionality Reduction 2
+       Introduction to Data Mining
+        Seoul National University
+              Spring 2026
+
+
+
+
+                 Jaemin Yoo          1
+Announcements (Same as Before)
+• Assignments:
+  • HW1 (deadline: April 9)
+  • HW2 (deadline: April 30)
+• Midterm:
+  • When: April 23 at 9:30 – 10:45
+  • Where: 302-208 and 302-209 (students will be separated)
+  • How: Closed-book; no calculators allowed
+
+
+
+
+                                 Jaemin Yoo                   2
+Recap                                                            T
+
+                                          M’          =   M
+• Dimensionality Reduction
+• Eigenvalues and Eigenpairs
+• Power Iteration
+• Principal Component Analysis
+                                                              First principal
+                                          Second              component
+                                          principal
+                                          component
+
+
+
+
+                             Jaemin Yoo                                    3
+Outline
+1. Singular Value Decomposition
+2. Dimensionality Reduction with SVD
+3. CUR Decomposition
+
+
+
+
+                             Jaemin Yoo   4
+Singular Value Decomposition
+• Singular value decomposition (SVD):
+  • A factorization of 𝑀 ∈ ℝ!×# into the product of three matrices:
+                                  𝑀 ≈ 𝑈Σ𝑉 ! ,
+  • whose sizes are determined by an input 𝑟.
+                        n             r               r   n
+
+                                                          VT   r
+                                                  Σ
+                m       M     =      U
+
+
+
+
+                                     Jaemin Yoo                       5
+Number of Latent Factors
+• 𝑟 determines the number of latent factors to capture.
+• Let’s define the reconstruction error as 𝑀 − 𝑈Σ𝑉 ! " .
+                    '
+  • 𝐴 $ = sqrt ∑%& 𝑎%& is called the Frobenius norm of a matrix.
+• Then, the error reaches zero when 𝑟 ≥ rank 𝑀 .
+                       n           r               r   n
+
+                                                       VT   r
+                                               Σ
+               m       M     =    U
+
+
+
+
+                                  Jaemin Yoo                       6
+Properties of Factor Matrices
+• 𝑈 and 𝑉 are column-orthonormal matrices of singular vectors.
+   • 𝑈 (𝑈 = 𝐼 and 𝑉 (𝑉 = 𝐼, where 𝐼 is the identity matrix.
+• Σ = diag 𝜎# , 𝜎$ , ⋯ , 𝜎% is a diagonal matrix of singular values.
+   • Non-negative and sorted in decreasing order: 𝜎) ≥ 𝜎' ≥ ⋯ ≥ 0.
+
+                          n           r               r   n
+
+                                                          VT   r
+                                                  Σ
+                 m       M      =    U
+
+
+
+
+                                     Jaemin Yoo                        7
+Understanding SVD
+• Property 1: It is possible to apply SVD to any real matrix.
+   • Big difference from eigendecomposition.
+• Property 2: 𝑈, Σ and 𝑉 are unique for each matrix.
+• Property 3: 𝜎& denotes the “strength” of the 𝑖-th latent factor.
+   • Some latent factors are more important than others.
+   • Latent factors are normally sorted by their “strength.”
+      • 𝜎! ≥ 𝜎" ≥ ⋯ ≥ 0.
+
+
+
+
+                                     Jaemin Yoo                      8
+Different View of SVD
+• 𝑀 ≈ 𝑈Σ𝑉 ! = ∑%&+# 𝜎& 𝑢& 𝑣&! (𝜎& : scalar, 𝑢& , 𝑣& : singular vectors).
+   • SVD is the sum of the 𝑟 outer products of 𝑢% and 𝑣% vectors.
+   • Each 𝜎% 𝑢% 𝑣%( represents the effect of the 𝑖-th intermediate concept.
+
+
+
+
+                                Source: Stanford CS246 (2022)
+                                                                              9
+Example: User-Movie Matrix
+• Consider a matrix of ratings from users; what does SVD do?
+
+
+
+                                       Casablanca
+                           Serenity
+
+
+                                                    Amelie
+          Matrix
+                   Alien
+                                                                      n
+           1        1         1           0           0
+     SciFi
+           3        3         3           0           0
+           4        4         4           0           0       S       VT
+           5        5         5           0           0 = m
+           0        2         0           4           4
+    Romnce 0        0         0           5           5
+           0        1         0           2           2     U              “Concepts”
+                                      Source: Stanford CS246 (2014)
+                                                                           AKA Latent dimensions
+                                                                           AKA Latent factors      10
+Example: User-Movie Matrix
+
+
+
+                                    Casablanca
+                         Serenity
+
+
+                                                 Amelie
+        Matrix
+                 Alien
+                                                                             “strength” of the SciFi-concept
+         1        1         1          0           0   0.13 0.02 -0.01
+   SciFi
+         3        3         3          0           0   0.41 0.07 -0.03
+         4        4         4          0           0   0.55 0.09 -0.04           12.4 0 0
+         5        5         5          0           0 = 0.68 0.11 -0.05       x   0    9.5 0           x
+         0        2         0          4           4   0.15 -0.59 0.65           0    0 1.3
+  Romnce 0        0         0          5           5   0.07 -0.73 -0.67
+         0        1         0          2           2   0.07 -0.29 0.32
+                                                                            0.56 0.59 0.56 0.09 0.09
+                                                                            0.12 -0.02 0.12 -0.69 -0.69
+                                                                            0.40 -0.80 0.40 0.09 0.09
+                                                               Jaemin Yoo                                      11
+Example                                                                           U is “user-to-concept”
+                                                                                  similarity matrix
+
+
+
+
+                                    Casablanca
+                         Serenity
+
+
+                                                 Amelie
+        Matrix
+                                                          SciFi-concept Romance-concept
+
+                 Alien
+         1        1         1          0           0   0.13 0.02 -0.01
+   SciFi
+         3        3         3          0           0   0.41 0.07 -0.03
+         4        4         4          0           0   0.55 0.09 -0.04                12.4 0 0
+         5        5         5          0           0 = 0.68 0.11 -0.05            x   0    9.5 0      x
+         0        2         0          4           4   0.15 -0.59 0.65                0    0 1.3
+  Romnce 0        0         0          5           5   0.07 -0.73 -0.67
+         0        1         0          2           2   0.07 -0.29 0.32
+                                                                                 0.56 0.59 0.56 0.09 0.09
+                                                                                 0.12 -0.02 0.12 -0.69 -0.69
+                                                                                 0.40 -0.80 0.40 0.09 0.09
+                                                                    Jaemin Yoo                                 12
+Example: User-Movie Matrix
+
+
+
+                                    Casablanca
+                                                                                  V is “movie-to-concept”
+
+
+                         Serenity
+
+
+                                                 Amelie
+                                                                                  similarity matrix
+        Matrix
+                                                          SciFi-concept
+
+                 Alien
+         1        1         1          0           0   0.13 0.02 -0.01
+   SciFi
+         3        3         3          0           0   0.41 0.07 -0.03
+         4        4         4          0           0   0.55 0.09 -0.04                 12.4 0 0
+         5        5         5          0           0 = 0.68 0.11 -0.05             x   0    9.5 0      x
+         0        2         0          4           4   0.15 -0.59 0.65                 0    0 1.3
+  Romnce 0        0         0          5           5   0.07 -0.73 -0.67
+         0        1         0          2           2   0.07 -0.29 0.32
+                                                                                  0.56 0.59 0.56 0.09 0.09
+                                                           SciFi-concept          0.12 -0.02 0.12 -0.69 -0.69
+                                                                                  0.40 -0.80 0.40 0.09 0.09
+                                                                     Jaemin Yoo                                 13
+Example: User-Movie Matrix
+
+
+
+                                    Casablanca
+                         Serenity
+
+
+                                                 Amelie
+        Matrix
+                                                               What concept?
+
+                 Alien
+         1        1         1          0           0   0.13 0.02 -0.01
+   SciFi
+         3        3         3          0           0   0.41 0.07 -0.03
+         4        4         4          0           0   0.55 0.09 -0.04           12.4 0 0
+         5        5         5          0           0 = 0.68 0.11 -0.05       x   0    9.5 0      x
+         0        2         0          4           4   0.15 -0.59 0.65           0    0 1.3
+  Romnce 0        0         0          5           5   0.07 -0.73 -0.67
+         0        1         0          2           2   0.07 -0.29 0.32
+                                                                            0.56 0.59 0.56 0.09 0.09
+                                                                            0.12 -0.02 0.12 -0.69 -0.69
+                                                                            0.40 -0.80 0.40 0.09 0.09
+                                                               Jaemin Yoo                                 14
+Example: User-Movie Matrix
+• Summary: SVD provides interpretable decomposition.
+  • 𝑈: User (row)-to-concept matrix.
+  • 𝑉: Movie (column)-to-concept matrix.
+  • Σ: Its diagonal elements mean the “strength” of each concept.
+
+
+
+
+                                  Jaemin Yoo                        15
+Computing SVD: Step 1
+• Q: How can we actually find 𝑈, Σ, and 𝑉?
+• We start by assuming 𝑀 = 𝑈Σ𝑉 ! .
+• 𝑀! = 𝑈Σ𝑉 ! ! = 𝑉 ! ! Σ ! 𝑈 ! = 𝑉Σ ! 𝑈 ! .
+• 𝑀! 𝑀 = 𝑉𝛴 ! 𝑈 ! 𝑈Σ𝑉 ! = 𝑉𝛴 ! Σ𝑉 ! = 𝑉Σ $ 𝑉 ! .
+   • 𝑈 is column-orthonormal; 𝑈 (𝑈 = 𝐼.
+   • Σ is diagonal; Σ ( = Σ.
+• 𝑀! 𝑀𝑉 = 𝑉𝛴 $ 𝑉 ! 𝑉 = 𝑉Σ $ .
+   • 𝑉 is also column-orthonormal.
+
+
+                                     Jaemin Yoo    16
+Computing SVD: Step 2
+• From 𝑀! 𝑀𝑉 = 𝑉𝛴 $ , let’s focus on the 𝑖-th column of 𝑉.
+• Then, 𝑣& is an eigenvector of 𝑀! 𝑀, since 𝑀! 𝑀𝑣& = 𝜎 $ 𝑣& .
+   • The corresponding eigenvalue is 𝜎 ' = Σ%%' .
+• Thus, we can find 𝑉 and Σ through the eigenpairs of 𝑀! 𝑀.
+   • Singular values are the square root of the eigenvalues.
+   • Similarly, 𝑀𝑀( gives 𝑈 (and Σ).
+
+
+
+
+                                      Jaemin Yoo                17
+Connecting SVD and PCA
+• Right singular vectors in 𝑉 = Principal components of PCA.
+   • Note: PCA needs column-centering, while SVD doesn’t care.
+• In reality, the full computation of PCA is slow.
+   • Creating 𝑀(𝑀 is very slow If 𝑀 is large (e.g., billions of rows).
+   • Eigendecomposition of 𝑀(𝑀 is even slower.
+• Thus, SVD is a standard way of computing PCA.
+   • Efficient algorithms exist for computing SVD without creating 𝑀(𝑀.
+
+
+
+
+                                      Jaemin Yoo                          18
+Outline
+1. Singular Value Decomposition
+2. Dimensionality Reduction with SVD
+3. CUR Decomposition
+
+
+
+
+                           Jaemin Yoo   19
+SVD for Dimensionality Reduction
+• Let’s use fewer coordinates to describe point positions.
+   • Consider an example of 𝑁 users for 2 movies of 1 concept.
+   • Point’s position can be described as its location along vector 𝑣).
+
+
+
+
+                                Source: Stanford CS246 (2022)
+                                         Jaemin Yoo                       20
+Example: SVD
+
+
+
+
+                                                        Movie 2 rating
+                                                                                          first right
+                                                                                          singular vector
+• 𝑈 is about users, 𝑉 is about movies.
+• Each column of 𝑉 is a new axis.                                        v1
+
+    1   1   1   0   0   0.13 0.02 -0.01                                       Movie 1 rating
+
+    3   3   3   0   0   0.41 0.07 -0.03
+    4   4   4   0   0   0.55 0.09 -0.04             12.4 0 0
+    5   5   5   0   0 = 0.68 0.11 -0.05    x        0    9.5 0                     x
+    0   2   0   4   4   0.15 -0.59 0.65             0    0 1.3
+    0   0   0   5   5   0.07 -0.73 -0.67
+    0   1   0   2   2   0.07 -0.29 0.32             0.56 0.59 0.56 0.09 0.09
+                                                    0.12 -0.02 0.12 -0.69 -0.69
+                𝑀 = 𝑈Σ𝑉 !                           0.40 -0.80 0.40 0.09 0.09
+                                       Jaemin Yoo                                                           21
+Example: SVD
+
+
+
+
+                                                          Movie 2 rating
+                                                                                          first right
+                                                                                          singular
+• First column of 𝑉:           variance (‘spread’)                                        vector
+   • The largest variance.        on the v1 axis
+                                                                           v1
+
+    1   1   1   0   0   0.13 0.02 -0.01                                         Movie 1 rating
+
+    3   3   3   0   0   0.41 0.07 -0.03
+    4   4   4   0   0   0.55 0.09 -0.04               12.4 0 0
+    5   5   5   0   0 = 0.68 0.11 -0.05      x        0    9.5 0                     x
+    0   2   0   4   4   0.15 -0.59 0.65               0    0 1.3
+    0   0   0   5   5   0.07 -0.73 -0.67
+    0   1   0   2   2   0.07 -0.29 0.32               0.56 0.59 0.56 0.09 0.09
+                                                      0.12 -0.02 0.12 -0.69 -0.69
+                𝑀 = 𝑈Σ𝑉 !                             0.40 -0.80 0.40 0.09 0.09
+                                         Jaemin Yoo                                                     22
+Example: SVD
+
+
+
+
+                                                 Movie 2 rating
+                                                                                 first right
+                                                                                 singular
+• 𝑈Σ gives the points coordinates.                                               vector
+   • In the projection axis.
+                                                                  v1
+
+    1   1   1   0   0    Projection of users                           Movie 1 rating
+
+    3   3   3   0   0    on the “Sci-Fi” axis
+    4   4   4   0   0    (U S) T:                         1.61 0.19 -0.01
+    5   5   5   0   0                                     5.08 0.66 -0.03
+    0   2   0   4   4                                     6.82 0.85 -0.05
+    0   0   0   5   5                                     8.43 1.04 -0.06
+    0   1   0   2   2                                     1.86 -5.60 0.84
+                                                          0.86 -6.93 -0.87
+                𝑀 = 𝑈Σ𝑉 !                                 0.86 -2.75 0.41
+                                    Jaemin Yoo                                                 23
+SVD for Dimensionality Reduction
+• Q: How exactly is dimensionality reduction done by SVD?
+• A: Set smallest singular values to zero.
+
+     1   1   1   0   0       0.13 0.02 -0.01
+     3   3   3   0   0       0.41 0.07 -0.03
+     4   4   4   0   0       0.55 0.09 -0.04           12.4 0 0
+     5   5   5   0   0   »   0.68 0.11 -0.05     x     0    9.5 0      x
+     0   2   0   4   4       0.15 -0.59 0.65           0    0 1.3
+     0   0   0   5   5       0.07 -0.73 -0.67
+     0   1   0   2   2       0.07 -0.29 0.32           0.56 0.59 0.56 0.09 0.09
+                                                       0.12 -0.02 0.12 -0.69 -0.69
+                                                       0.40 -0.80 0.40 0.09 0.09
+                                          Jaemin Yoo                                 24
+SVD for Dimensionality Reduction
+• Reconstruction error is quantified by the Frobenius norm:
+  • In this case, we have 𝑀 − 𝐵 '$ = ∑%& 𝑀%& − 𝐵%& '.
+
+
+     1   1   1   0   0        0.92 0.95 0.92 0.01 0.01
+     3   3   3   0   0        2.91 3.01 2.91 -0.01 -0.01
+     4   4   4   0   0        3.90 4.04 3.90 0.01 0.01
+     5   5   5   0   0   »    4.82 5.00 4.82 0.03 0.03
+                                                           Reconstructed
+                                                           data matrix 𝐵.
+     0   2   0   4   4        0.70 0.53 0.70 4.11 4.11
+     0   0   0   5   5       -0.69 1.34 -0.69 4.78 4.78
+     0   1   0   2   2        0.32 0.23 0.32 2.01 2.01
+
+                                     Jaemin Yoo                             25
+Best Low-Rank Approximation
+• Given 𝑟 < rank 𝑀 , SVD gives the best axes to project on.
+   • In other words, it gives the best rank-𝒓 approximation of the matrix.
+   • That minimizes the reconstruction error 𝑀 − 𝐵 $ .
+• Intuitive reason:
+   • 𝜎% represents how much “energy” the matrix has along 𝑣% .
+   • Truncation keeps the top 𝑟 orthogonal “energy directions.”
+   • As a result, SVD can minimize the loss of energy.
+
+
+
+
+                                    Jaemin Yoo                               26
+Determining the Low Rank
+• Q: What is a good value for 𝑟?
+• A: Pick 𝑟 to have at least 90% of the total energy.
+   • We define energy to be the sum of squared singular values.
+• Back to our example:
+   • Singular values are 12.4, 9.5, and 1.3 (total energy = 245.7).
+   • If we drop 1.3, whose square is 1.7, the remaining is energy 244.0.
+   • The remaining energy is over 99% of the total energy.
+
+
+
+
+                                     Jaemin Yoo                            27
+Querying Using Concepts
+• Q: Given the result of SVD, what movies would a new user like?
+
+                                  Casablanca
+                       Serenity
+
+
+                                               Amelie
+      Matrix
+               Alien
+
+
+
+
+       1        1         1          0           0   0.13 0.02 -0.01              12.4 0 0
+       3        3         3          0           0   0.41 0.07 -0.03
+ SciFi                                                                            0    9.5 0    x
+       4        4         4          0           0   0.55 0.09 -0.04              0    0 1.3
+       5        5         5          0           0 = 0.68 0.11 -0.05          x
+       0        2         0          4           4   0.15 -0.59 0.65                 0.56 0.59 0.56 0.09 0.09
+Romnce 0        0         0          5           5   0.07 -0.73 -0.67                0.12 -0.02 0.12 -0.69 -0.69
+       0        1         0          2           2   0.07 -0.29 0.32                 0.40 -0.80 0.40 0.09 0.09
+                                                                 Jaemin Yoo                                    28
+Querying Using Concepts
+• Assume that the new user is represented as 𝑞 = 5 0 0 0 0 .
+   • Rated Matrix with the score 5.
+• Step 1: Multiply by 𝑉 to map 𝑞 into the concept space as 𝑞𝑉:
+                                      Casablanca
+                                                                                    SciFi-concept
+                           Serenity
+
+
+                                                   Amelie       0.56 0.12
+          Matrix
+                   Alien
+
+
+
+
+                                                                0.59 -0.02
+      q= 5 0 0 0 0                                          x   0.56 0.12           = 2.8       0.6
+                                                                0.09 -0.69
+                                                                0.09 -0.69
+                                                                movie-to-concept
+                                                                 similarities (V)
+                                                                     Jaemin Yoo                       29
+Querying Using Concepts
+• Step 2: Multiply by 𝑉 ! back to the movie space to get:
+
+
+
+
+                                                                                        Casablanca
+                                                                             Serenity
+
+
+                                                                                                     Amelie
+       𝑞𝑉𝑉 ! = 1.64 1.64 1.64 -0.162 -0.162
+
+
+
+
+                                                            Matrix
+                                                                     Alien
+                                                            1         1         1          0              0
+• He/she would probably like Alien and Serenity.            3         3         3          0              0
+                                                      SciFi
+   • Sci-Fi movies.                                         4         4         4          0              0
+                                                            5         5         5          0              0
+                                                            0         2         0          4              4
+                                                     Romnce 0         0         0          5              5
+                                                            0         1         0          2              2
+
+                                Jaemin Yoo                                                           30
+Querying Using Concepts
+• Alternate query: Find users who are similar to the target user 𝑞.
+   • User 𝑑 is similar to user 𝑞 even without any ratings in common.
+
+
+
+
+                                               Casablanca
+                                    Serenity
+
+
+                                                            Amelie
+                   Matrix
+                                                                                  SciFi-concept
+                            Alien
+
+           d =      0 4              5          0            0                       5.2     0.4
+
+          q =      5 0              0          0            0                        2.8      0.6
+                 Zero ratings in common                                              Similarity ≠ 0
+
+                                                                     Jaemin Yoo                       31
+Outline
+1. Singular Value Decomposition
+2. Dimensionality Reduction with SVD
+3. CUR Decomposition
+
+
+
+
+                             Jaemin Yoo   32
+Sparsity of a Data Matrix
+• It is common for the data matrix 𝑀 to be highly sparse.
+   • E.g., a matrix of customers and products.
+• However, 𝑈 and 𝑉 from SVD will not be sparse.
+   • Σ is sparse, but much smaller than 𝑈 and 𝑉, so it does not help.
+
+
+
+                               =
+
+
+
+
+                                    Jaemin Yoo                          33
+CUR Decomposition
+• Goal: Express 𝑀 ≈ 𝐶𝑈𝑅 while minimizing 𝑀 − 𝐶𝑈𝑅 " .
+• CUR decomposition leverages the sparsity of 𝑀 by:
+  • Using (sparse) rows and columns of 𝑀 for creating 𝐶 and 𝑅.
+  • Only the matrix 𝑈 (analogous to Σ) is dense, but it is small.
+• CUR is always an approximation unlike SVD.
+  • No matter how large 𝑟 (= number of concepts) is.
+  • Still, there is a theory that CUR converges to 𝑀 as 𝑟 gets larger.
+
+
+
+
+                                     Jaemin Yoo                          34
+Definition of CUR
+• A CUR decomposition of an 𝑚 × 𝑛 matrix 𝑀 is:
+  • 𝑚 × 𝑟 matrix 𝐶, a randomly chosen set of 𝑟 columns of 𝑀.
+  • 𝑟 × 𝑛 matrix 𝑅, a randomly chosen set of 𝑟 rows of 𝑀.
+  • 𝑟 × 𝑟 matrix 𝑈 constructed from 𝐶 and 𝑅 to minimize the error.
+                               C                U                  R
+        Joe
+        Jim
+       John
+       Jack
+         Jill
+      Jenny
+       Jane
+                                                    Sampled rows and columns are scaled.
+
+                                   Jaemin Yoo                                          35
+Weighted Sampling of Rows/Columns
+• Uniform sampling of rows or columns is not optimal.
+  • Some are more important for reducing the reconstruction error.
+• We measure the importance by the Frobenius norm.
+  • Let 𝑓 = 𝑀 '$ be the square of 𝑀’s Frobenius norm.
+                                                  '
+  • Row 𝑖 is selected with a probability 𝑝% = ∑& 𝑚%& / 𝑓.
+                                                       '
+  • Column 𝑘 is selected with a probability 𝑞& = ∑% 𝑚%&   / 𝑓.
+
+
+
+
+                                    Jaemin Yoo                       36
+Scaling of Rows/Columns
+• After selecting each column 𝑘, divide each element by 𝑟𝑞# .
+  •   𝑟 to unify the scale across different choices of 𝑟.
+  •   𝑞& to unify the scale between differently important columns.
+• Do the analogous for each selected row.
+• Same rows or columns can be selected more than once.
+  • Not a big problem though.
+
+
+
+
+                                   Jaemin Yoo                        37
+Example: Choosing a Row
+• The (squared) Frobenius norm of 𝑀 is 243.
+
+
+
+
+                                                                               Casablanca
+                                                                   Star Wars
+
+                                                                                   Titanic
+                                                          Matrix
+• The probability to choose Jack is 75/243 = 0.309.
+
+
+
+
+                                                                       Alien
+  • Jack has the Frobenius norm of 75.
+                                                  Joe
+• The selected row is divided by 𝑟𝑝 = 2 × 0.309. Jim
+                                                 John
+   • If 𝑟 = 2.                                   Jack
+• We have 6.36 6.36 6.36 0 0 as a row of 𝑅.        Jill
+                                                Jenny
+                                                 Jane
+
+
+
+
+                                 Jaemin Yoo                                            38
+Constructing the Middle Matrix
+• Let 𝑊 be the 𝑟 × 𝑟 matrix that is the “intersection” of 𝐶 and 𝑅.
+• Compute the SVD of 𝑊, say, 𝑊 = 𝑋Σ𝑌 ! .
+• Compute Σ $ , the Moore-Penrose pseudoinverse of Σ.
+   • If the 𝑖-th diagonal element of Σ is 𝜎 ≠ 0, replace it by 1/𝜎.
+   • Otherwise, leave it as 0.
+   • Identical to the inverse if the matrix is invertible.
+• Return 𝑈 = 𝑌 Σ $ % 𝑋 ! .
+   • Carefully constructed so that the CUR decomposition approximates 𝑀.
+
+
+
+                                      Jaemin Yoo                           39
+Example: Middle Matrix
+• Construct the intersection matrix 𝑊 as follows:
+   • Columns: Alien & Casablanca.
+   • Rows: Jenny & Jack.
+
+
+
+
+                                                                                Casablanca
+                                                                    Star Wars
+• The order affects the intersection.
+
+
+
+
+                                                                                    Titanic
+                                                           Matrix
+                                                                        Alien
+   • Jenny & Jack ≠ Jack & Jenny.
+                                                   Joe                                             0   5
+                                                   Jim                                        W=
+                                                                                                   5   0
+                                                  John
+                                                  Jack
+                                                    Jill
+                                                 Jenny
+                                                  Jane
+
+                                    Jaemin Yoo                                                             40
+Example: Middle Matrix
+• Construct 𝑈 from 𝑊 as follows:
+                           0 1 5 0 1 0   0 5
+  • SVD for 𝑊 is 𝑋Σ𝑌 ( =               =     .
+                           1 0 0 5 0 1   5 0
+           1/5  0
+  • Σ* =           .
+            0  1/5
+                          '
+         * ' ( 1 0 1/5  0   0 1     0  1/25
+  • 𝑈=𝑌 Σ 𝑋 =                   =           .
+               0 1 0   1/5 1 0    1/25   0
+
+
+
+
+                                Jaemin Yoo       41
+Complete CUR Decomposition                                 Joe
+                                                           Jim
+                                                          John
+                                                          Jack
+• We now have a method to select 𝐶, 𝑈, and 𝑅:               Jill
+  • Note that CUR randomly creates 𝐶 and 𝑅.              Jenny
+  • Then, 𝑈 is created deterministically from 𝐶 and 𝑅.    Jane
+
+
+
+
+                                   Jaemin Yoo                      42
+CUR vs. SVD
+• CUR is like selecting representative points (like clustroids).
+• SVD is like creating new representative directions (like centroids).
+• They work differently if two point clouds exist at different angles.
+
+
+
+
+                                 Jaemin Yoo                              43
+Outline
+1. Singular Vector Decomposition
+  • Singular values and vectors
+  • Relationship to PCA
+2. Dimensionality Reduction with SVD
+  • Best low-rank approximation
+3. CUR Decomposition
+  • Advantage in a sparse data matrix
+
+
+
+
+                                  Jaemin Yoo   44
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDM 2026 Midterm 학습 도구</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;background:linear-gradient(135deg,#0f1117 0%,#1a1a2e 100%);color:#e8eaf0;min-height:100vh;padding:24px 16px;line-height:1.6}
+.container{max-width:720px;margin:0 auto}
+header{text-align:center;padding:24px 0 32px}
+header h1{font-size:28px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#7ecfff,#f78166);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{color:#9ca3af;font-size:14px}
+header .meta{display:inline-block;margin-top:10px;padding:4px 12px;background:rgba(247,129,102,.15);color:#f78166;border-radius:20px;font-size:12px;font-weight:600;border:1px solid rgba(247,129,102,.3)}
+.cards{display:grid;gap:14px;margin-top:20px}
+.card{display:block;background:#1a1d27;border:1px solid #2e3250;border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all .2s;position:relative;overflow:hidden}
+.card:hover{border-color:#4f8ef7;transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,142,247,.15)}
+.card:active{transform:translateY(0)}
+.card .icon{font-size:28px;margin-bottom:10px;display:block}
+.card h2{font-size:17px;font-weight:700;margin-bottom:6px;color:#fff}
+.card p{font-size:13px;color:#9ca3af;line-height:1.5}
+.card .tag{display:inline-block;margin-top:10px;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.card.primary{border-left:4px solid #f78166}
+.card.primary .tag{background:rgba(247,129,102,.15);color:#f78166}
+.card.secondary{border-left:4px solid #58a6ff}
+.card.secondary .tag{background:rgba(88,166,255,.15);color:#58a6ff}
+.card.tertiary{border-left:4px solid #22c55e}
+.card.tertiary .tag{background:rgba(34,197,94,.15);color:#22c55e}
+.resources{margin-top:32px;padding-top:24px;border-top:1px solid #2e3250}
+.resources h3{font-size:13px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.res-link{display:block;background:#161b22;border:1px solid #2e3250;border-radius:8px;padding:10px 14px;text-decoration:none;color:#9ca3af;font-size:13px;transition:all .15s}
+.res-link:hover{border-color:#4f8ef7;color:#58a6ff}
+footer{text-align:center;margin-top:40px;padding:20px 0;color:#6b7280;font-size:11px}
+@media(max-width:480px){
+  header h1{font-size:22px}
+  .card{padding:16px}
+  .card h2{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>IDM 2026 Midterm</h1>
+    <p>Introduction to Data Mining · 중간고사 학습 도구</p>
+    <div class="meta">📅 2026-04-23 · Closed-book</div>
+  </header>
+
+  <div class="cards">
+    <a href="study_guide.html" class="card primary">
+      <span class="icon">📖</span>
+      <h2>Study Guide</h2>
+      <p>L1~L13 전체 정리 + 유형별 기출 풀이 + MMDS 연습문제. 개념부터 공식까지.</p>
+      <span class="tag">메인 가이드</span>
+    </a>
+
+    <a href="master_guide.html" class="card secondary">
+      <span class="icon">🔥</span>
+      <h2>마스터 가이드 v2</h2>
+      <p>인터랙티브 코드 빈칸 + 알고리즘 로직 복원 + 시험 직전 체크리스트.</p>
+      <span class="tag">인터랙티브 연습</span>
+    </a>
+
+    <a href="tf_quiz.html" class="card tertiary">
+      <span class="icon">📝</span>
+      <h2>T/F 퀴즈 v3</h2>
+      <p>2024·2025 기출 + 예상 T/F 문제. 강의별·출처별 필터, 테스트 모드 지원.</p>
+      <span class="tag">퀴즈 트레이너</span>
+    </a>
+  </div>
+
+  <div class="resources">
+    <h3>📚 원본 자료</h3>
+    <div class="res-grid">
+      <a href="lecture notes/" class="res-link">🗂 강의 슬라이드</a>
+      <a href="past_exams/" class="res-link">📄 과거 기출</a>
+      <a href="slide_texts/" class="res-link">📝 슬라이드 텍스트</a>
+      <a href="book_chapters/" class="res-link">📕 MMDS 교재</a>
+    </div>
+  </div>
+
+  <footer>
+    박규동 · SNU 2026-1 · 데이터마이닝개론
+  </footer>
+</div>
+</body>
+</html>

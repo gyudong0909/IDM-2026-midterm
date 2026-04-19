@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>IDM 2026 T/F Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--border:#2e3250;
+  --accent:#4f8ef7;--accent2:#7c3aed;--green:#22c55e;--red:#ef4444;
+  --yellow:#f59e0b;--text:#e8eaf0;--text2:#9ca3af;--text3:#6b7280;
+  --radius:14px;--radius-sm:8px;
+  --true-color:#22c55e;--false-color:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  min-height:100vh;padding-bottom:80px;overscroll-behavior:none;}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 16px;}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.header-title{font-size:17px;font-weight:700;letter-spacing:-.3px;color:var(--text);}
+.score-badge{display:flex;gap:8px;align-items:center;}
+.score-item{font-size:13px;padding:3px 10px;border-radius:20px;font-weight:600;}
+.score-correct{background:rgba(34,197,94,.15);color:var(--green);}
+.score-wrong{background:rgba(239,68,68,.15);color:var(--red);}
+.score-total{background:rgba(79,142,247,.15);color:var(--accent);}
+
+/* Progress bar */
+.progress-wrap{display:flex;align-items:center;gap:8px;}
+.progress-bar{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:2px;transition:width .3s ease;}
+.progress-text{font-size:11px;color:var(--text3);white-space:nowrap;min-width:40px;text-align:right;}
+
+/* ─── FILTERS ─── */
+.filters{padding:12px 16px 8px;display:flex;flex-direction:column;gap:8px;}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.filter-label{font-size:11px;color:var(--text3);min-width:28px;}
+.chip{padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s;user-select:none;}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.chip.src-2024.active{background:#7c3aed;border-color:#7c3aed;}
+.chip.src-2025.active{background:#0891b2;border-color:#0891b2;}
+.chip.src-예상.active{background:#d97706;border-color:#d97706;}
+
+/* Toolbar buttons */
+.toolbar{display:flex;gap:6px;padding:0 16px 10px;align-items:center;flex-wrap:wrap;}
+.btn-sm{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s;user-select:none;}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent);}
+.btn-sm.active{border-color:var(--accent);color:var(--accent);}
+.counter-display{font-size:12px;color:var(--text3);margin-left:auto;}
+.num-input{width:64px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;outline:none;}
+.num-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(79,142,247,.15);}
+
+/* ─── QUIZ AREA ─── */
+.quiz-area{padding:12px 16px;max-width:700px;margin:0 auto;}
+
+/* Question card */
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:12px;transition:border-color .2s;}
+.q-card.answered-correct{border-color:rgba(34,197,94,.4);}
+.q-card.answered-wrong{border-color:rgba(239,68,68,.4);}
+
+.q-header{display:flex;gap:8px;align-items:center;padding:10px 14px 0;flex-wrap:wrap;}
+.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.3px;}
+.badge-src{background:rgba(79,142,247,.15);color:var(--accent);}
+.badge-2024{background:rgba(124,58,237,.15);color:#a78bfa;}
+.badge-2025{background:rgba(8,145,178,.15);color:#67e8f9;}
+.badge-pred{background:rgba(217,119,6,.15);color:#fbbf24;}
+.badge-lec{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2);}
+.q-num{font-size:11px;color:var(--text3);margin-left:auto;}
+
+.q-text{padding:12px 14px;font-size:15px;line-height:1.65;color:var(--text);}
+.q-text .katex{font-size:14px;}
+
+/* Answer buttons */
+.q-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 14px;}
+.btn-tf{padding:11px 0;border-radius:var(--radius-sm);font-size:15px;font-weight:700;
+  border:2px solid transparent;cursor:pointer;transition:all .15s;letter-spacing:.5px;}
+.btn-true{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.3);}
+.btn-true:hover{background:rgba(34,197,94,.2);border-color:var(--green);}
+.btn-false{background:rgba(239,68,68,.1);color:var(--red);border-color:rgba(239,68,68,.3);}
+.btn-false:hover{background:rgba(239,68,68,.2);border-color:var(--red);}
+.btn-tf.selected-correct{background:rgba(34,197,94,.25);border-color:var(--green);color:#fff;}
+.btn-tf.selected-wrong{background:rgba(239,68,68,.25);border-color:var(--red);color:#fff;}
+.btn-tf.selected-pending{background:rgba(79,142,247,.22);border-color:var(--accent);color:#fff;box-shadow:0 0 0 1px rgba(79,142,247,.15) inset;}
+.btn-tf.reveal-correct{background:rgba(34,197,94,.25);border-color:var(--green);color:#fff;}
+.btn-tf:disabled{cursor:default;}
+
+/* Explanation */
+.q-explain{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .3s;}
+.q-explain.open{max-height:600px;opacity:1;}
+.q-explain.closed{opacity:0;}
+.explain-inner{padding:10px 14px 14px;border-top:1px solid var(--border);}
+.explain-result{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:8px;}
+.explain-result.correct{color:var(--green);}
+.explain-result.wrong{color:var(--red);}
+.explain-text{font-size:13px;line-height:1.65;color:var(--text2);}
+.explain-text .katex{font-size:13px;}
+.answer-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:4px;}
+.answer-tag.true{background:rgba(34,197,94,.2);color:var(--green);}
+.answer-tag.false{background:rgba(239,68,68,.2);color:var(--red);}
+
+/* ─── EMPTY STATE ─── */
+.empty{text-align:center;padding:60px 20px;color:var(--text3);}
+.empty-icon{font-size:48px;margin-bottom:12px;}
+.empty-text{font-size:15px;}
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(15,17,23,.97);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);padding:10px 16px;
+  display:flex;gap:8px;align-items:center;max-width:700px;margin:0 auto;}
+.bottom-nav{left:50%;transform:translateX(-50%);width:100%;max-width:700px;}
+.nav-btn{flex:1;padding:10px 0;border-radius:var(--radius-sm);font-size:13px;font-weight:600;
+  border:1px solid var(--border);background:var(--surface);color:var(--text2);
+  cursor:pointer;transition:all .15s;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn:disabled{opacity:.4;cursor:default;}
+.nav-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;flex:1.5;}
+.nav-btn.primary:hover{background:#3b7de8;}
+
+/* ─── RESULT SCREEN ─── */
+.result-screen{display:none;position:fixed;inset:0;z-index:300;
+  background:var(--bg);overflow-y:auto;padding:24px 16px 100px;}
+.result-screen.show{display:block;}
+.result-header{text-align:center;margin-bottom:24px;}
+.result-title{font-size:26px;font-weight:800;margin-bottom:6px;}
+.result-subtitle{font-size:14px;color:var(--text3);}
+.result-circle{width:130px;height:130px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:4px solid var(--accent);background:rgba(79,142,247,.1);}
+.result-pct{font-size:36px;font-weight:800;color:var(--accent);}
+.result-label{font-size:12px;color:var(--text3);}
+.result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
+.result-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px;text-align:center;}
+.result-stat-num{font-size:24px;font-weight:700;}
+.result-stat-label{font-size:11px;color:var(--text3);margin-top:2px;}
+.result-stat.correct .result-stat-num{color:var(--green);}
+.result-stat.wrong .result-stat-num{color:var(--red);}
+.result-stat.skipped .result-stat-num{color:var(--yellow);}
+.result-actions{display:flex;gap:8px;flex-direction:column;}
+.btn-lg{width:100%;padding:13px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;
+  border:none;cursor:pointer;transition:all .15s;}
+.btn-lg.primary{background:var(--accent);color:#fff;}
+.btn-lg.primary:hover{background:#3b7de8;}
+.btn-lg.secondary{background:var(--surface);color:var(--text2);border:1px solid var(--border);}
+.btn-lg.secondary:hover{border-color:var(--accent);color:var(--accent);}
+.review-section{margin-top:20px;}
+.review-title{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:10px;}
+.review-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 12px;margin-bottom:8px;}
+.review-item.wrong-item{border-color:rgba(239,68,68,.3);}
+.review-text{font-size:13px;color:var(--text);margin-bottom:4px;}
+.review-meta{font-size:11px;color:var(--text3);}
+
+/* ─── KATEX OVERRIDES ─── */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0;}
+.katex{font-size:1em !important;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:480px){
+  .q-text{font-size:14px;}
+  .btn-tf{font-size:14px;padding:10px 0;}
+  .result-circle{width:110px;height:110px;}
+  .result-pct{font-size:30px;}
+}
+@media(min-width:701px){
+  .bottom-nav{border-radius:var(--radius) var(--radius) 0 0;}
+}
+
+/* Scroll to top fab */
+.fab{position:fixed;bottom:90px;right:16px;width:40px;height:40px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);color:var(--text2);
+  font-size:18px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .15s;z-index:150;}
+.fab:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="header-title" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <a href="study_guide.html" style="color:#9ca3af;text-decoration:none;font-size:12px;padding:3px 8px;border:1px solid #2e3250;border-radius:6px;font-weight:500">← Study Guide</a>
+      <a href="master_guide.html" style="color:#f59e0b;text-decoration:none;font-size:12px;padding:3px 8px;border:1px solid rgba(245,158,11,.3);border-radius:6px;font-weight:500">🔥 마스터</a>
+      <span>📚 IDM 2026 T/F Quiz</span>
+    </div>
+    <div class="score-badge">
+      <span class="score-item score-correct" id="sc-correct">✓ 0</span>
+      <span class="score-item score-wrong" id="sc-wrong">✗ 0</span>
+      <span class="score-item score-total" id="sc-total">0문</span>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="progress-text" id="prog-text">0 / 0</div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filter-row">
+    <span class="filter-label">출처</span>
+    <span class="chip src-all active" data-filter="src" data-val="all" onclick="setFilter('src','all')">전체</span>
+    <span class="chip src-2024" data-filter="src" data-val="2024" onclick="setFilter('src','2024')">2024기출</span>
+    <span class="chip src-2025" data-filter="src" data-val="2025" onclick="setFilter('src','2025')">2025기출</span>
+    <span class="chip src-예상" data-filter="src" data-val="예상" onclick="setFilter('src','예상')">예상문제</span>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">강의</span>
+    <span class="chip active" data-filter="lec" data-val="all" onclick="setFilter('lec','all')">전체</span>
+    <span class="chip" data-filter="lec" data-val="L1" onclick="setFilter('lec','L1')">L1</span>
+    <span class="chip" data-filter="lec" data-val="L2" onclick="setFilter('lec','L2')">L2</span>
+    <span class="chip" data-filter="lec" data-val="L3" onclick="setFilter('lec','L3')">L3</span>
+    <span class="chip" data-filter="lec" data-val="L4" onclick="setFilter('lec','L4')">L4</span>
+    <span class="chip" data-filter="lec" data-val="L5" onclick="setFilter('lec','L5')">L5</span>
+    <span class="chip" data-filter="lec" data-val="L6" onclick="setFilter('lec','L6')">L6</span>
+    <span class="chip" data-filter="lec" data-val="L7" onclick="setFilter('lec','L7')">L7</span>
+    <span class="chip" data-filter="lec" data-val="L8" onclick="setFilter('lec','L8')">L8</span>
+    <span class="chip" data-filter="lec" data-val="L9" onclick="setFilter('lec','L9')">L9</span>
+    <span class="chip" data-filter="lec" data-val="L10" onclick="setFilter('lec','L10')">L10</span>
+    <span class="chip" data-filter="lec" data-val="L11" onclick="setFilter('lec','L11')">L11</span>
+    <span class="chip" data-filter="lec" data-val="L12" onclick="setFilter('lec','L12')">L12</span>
+    <span class="chip" data-filter="lec" data-val="L13" onclick="setFilter('lec','L13')">L13</span>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="btn-sm" onclick="shuffleCards()" title="순서 섞기">🔀 섞기</button>
+  <button class="btn-sm" onclick="resetAll()" title="전체 초기화">↺ 초기화</button>
+  <button class="btn-sm" id="btn-test-mode" onclick="toggleTestMode()" title="테스트 모드">📝 테스트 모드</button>
+  <input class="num-input" id="rand-count" type="number" min="1" step="1" value="10" title="랜덤 문제 수">
+  <button class="btn-sm" id="btn-random-sample" onclick="applyRandomSample()" title="현재 필터에서 랜덤 n문제">🎯 랜덤 n문제</button>
+  <button class="btn-sm" id="btn-random-clear" onclick="clearRandomSample()" title="랜덤 출제 해제" style="display:none">🎯 해제</button>
+  <button class="btn-sm" id="btn-wrong-only" onclick="toggleWrongOnly()" title="틀린 문제만">✗ 오답만</button>
+  <button class="btn-sm" onclick="revealAll()" title="정답 보기">👁 전체정답</button>
+  <span class="counter-display" id="counter-disp"></span>
+</div>
+
+<!-- QUIZ AREA -->
+<div class="quiz-area" id="quiz-area"></div>
+
+<!-- EMPTY STATE -->
+<div class="empty" id="empty-state" style="display:none">
+  <div class="empty-icon">🔍</div>
+  <div class="empty-text">선택한 조건에 해당하는 문제가 없습니다.</div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn" onclick="jumpToUnanswered(-1)">◀ 이전 미답</button>
+  <button class="nav-btn primary" id="nav-primary" onclick="showPrimaryAction()">📊 결과 보기</button>
+  <button class="nav-btn" onclick="jumpToUnanswered(1)">다음 미답 ▶</button>
+</div>
+
+<!-- SCROLL FAB -->
+<div class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="맨 위로">↑</div>
+
+<!-- RESULT SCREEN -->
+<div class="result-screen" id="result-screen">
+  <div class="result-header">
+    <div class="result-title">📊 결과 분석</div>
+    <div class="result-subtitle">IDM 2026 중간고사 T/F 연습</div>
+  </div>
+  <div class="result-circle">
+    <div class="result-pct" id="res-pct">0%</div>
+    <div class="result-label">정답률</div>
+  </div>
+  <div class="result-grid">
+    <div class="result-stat correct"><div class="result-stat-num" id="res-c">0</div><div class="result-stat-label">정답</div></div>
+    <div class="result-stat wrong"><div class="result-stat-num" id="res-w">0</div><div class="result-stat-label">오답</div></div>
+    <div class="result-stat skipped"><div class="result-stat-num" id="res-s">0</div><div class="result-stat-label">미답</div></div>
+  </div>
+  <div class="result-actions">
+    <button class="btn-lg primary" onclick="closeResult()">← 계속 풀기</button>
+    <button class="btn-lg secondary" onclick="resetAll();closeResult()">↺ 처음부터</button>
+    <button class="btn-lg secondary" onclick="showWrongOnly()">✗ 오답만 다시 풀기</button>
+  </div>
+  <div class="review-section" id="review-section"></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// QUESTION DATA
+// ════════════════════════════════════════════════════════════
+const RAW_QUESTIONS = [
+
+// ── 2024 기출 (20문항) ──────────────────────────────────────
+{id:'24a',src:'2024',lec:'L2',
+ text:'A good MapReduce programmer is recommended to write a GroupByKey function as well as Map and Reduce.',
+ ans:false,
+ exp:'MapReduce에서 프로그래머가 작성하는 함수는 <b>Map과 Reduce 두 개뿐</b>이다. GroupByKey는 Spark의 transformation이다. MapReduce 프레임워크는 내부적으로 shuffle/sort 단계에서 grouping을 자동 처리한다.'},
+
+{id:'24b',src:'2024',lec:'L2',
+ text:'The MapReduce framework explicitly checks whether the Reduce function is commutative and associative before applying a Combiner.',
+ ans:false,
+ exp:'MapReduce 프레임워크는 Combiner 적용 가능성을 <b>자동으로 검증하지 않는다</b>. 결합법칙·교환법칙 만족 여부는 전적으로 프로그래머의 책임이다.'},
+
+{id:'24c',src:'2024',lec:'L3',
+ text:'Spark outperforms MapReduce even when the intermediate data is too large to fit in memory.',
+ ans:false,
+ exp:'Spark의 성능 이점은 <b>in-memory 처리</b>에서 비롯된다. 중간 데이터가 메모리를 초과하면 disk spill이 발생하여 MapReduce와 성능 차이가 없어지거나 오히려 더 느려질 수 있다.'},
+
+{id:'24d',src:'2024',lec:'L3',
+ text:'In Spark, a sort operation that shuffles the order of all elements in several RDDs has a wide dependency.',
+ ans:true,
+ exp:'sort는 전체 파티션을 정렬하기 위해 모든 파티션의 데이터를 shuffle해야 한다. 하나의 output partition이 <b>여러 input partition에 의존</b>하므로 wide dependency이다.'},
+
+{id:'24e',src:'2024',lec:'L4',
+ text:'All maximal frequent itemsets are closed.',
+ ans:true,
+ exp:'Maximal frequent itemset X는 모든 superset이 infrequent하다. Closed의 정의는 "어떤 superset도 X와 동일한 support를 갖지 않음"인데, infrequent superset은 support < threshold이므로 X의 support와 같을 수 없다. 따라서 <b>maximal ⊂ closed</b>.'},
+
+{id:'24f',src:'2024',lec:'L4',
+ text:'A-priori aims to find all interesting rules.',
+ ans:false,
+ exp:'A-priori의 목적은 <b>frequent itemsets를 찾는 것</b>이다. Association rules 발견은 frequent itemsets를 구한 후 별도의 후처리 단계(confidence 계산)에서 이루어진다.'},
+
+{id:'24g',src:'2024',lec:'L5',
+ text:'In the multistage algorithm, we can further reduce false positives by increasing the number of hash tables when finding frequent itemsets.',
+ ans:true,
+ exp:'Hash table 수를 늘릴수록 각 단계마다 추가 AND 필터링이 적용되어 <b>false positive가 줄어든다</b>. 단, true frequent pairs는 항상 통과한다(false negative 없음).'},
+
+{id:'24h',src:'2024',lec:'L5',
+ text:'In Toivonen\'s algorithm, we need to check if the frequent itemsets in the sample are truly frequent in the full data to avoid false negatives.',
+ ans:false,
+ exp:'Toivonen에서 false negative를 감지하는 방법은 <b>negative border</b> 항목이 full data에서 frequent한지 확인하는 것이다. "Sample의 frequent itemsets 검증"이 목적이 아니다.'},
+
+{id:'24i',src:'2024',lec:'L6',
+ text:'The character-level k-shingles are necessary for running LSH for documents.',
+ ans:false,
+ exp:'Character-level shingling은 하나의 방식일 뿐, LSH에 <b>필수가 아니다</b>. Word-level shingling, sentence-level 등도 가능하다.'},
+
+{id:'24j',src:'2024',lec:'L6',
+ text:'We can\'t represent shingles as 4-byte tokens if the number of unique shingles exceeds $2^{32}$.',
+ ans:false,
+ exp:'4-byte = 32-bit이므로 $2^{32}$가지를 표현한다. Unique shingle이 이를 초과하더라도 <b>hash 충돌을 허용하면 4-byte token으로 매핑 가능</b>하다. 실용적으로 충돌이 드물면 사용 가능하다.'},
+
+{id:'24k',src:'2024',lec:'L7',
+ text:'In LSH, we can estimate the shape of an S-curve with the value $1-(1-s^r)^b$.',
+ ans:true,
+ exp:'LSH banding에서 후보 쌍이 될 확률: $P(\\text{candidate}) = 1-(1-s^r)^b$ (s = 유사도, r = band당 row, b = band 수). 이 식이 S-curve를 형성하며 threshold $\\approx (1/b)^{1/r}$이다.'},
+
+{id:'24l',src:'2024',lec:'L7',
+ text:'The random hyperplane technique can also be used directly for Jaccard similarity.',
+ ans:false,
+ exp:'Random hyperplane technique은 <b>cosine similarity</b> 추정을 위한 방법이다. $\\Pr[h(x)=h(y)] = 1-\\theta/\\pi$. Jaccard similarity 추정에는 <b>MinHash</b>를 사용한다.'},
+
+{id:'24m',src:'2024',lec:'L8',
+ text:'The hierarchical clustering is not effective for an Euclidean space.',
+ ans:false,
+ exp:'Hierarchical clustering은 Euclidean space에서도 <b>효과적으로 사용 가능</b>하다. 다만 $O(n^2)$ 이상의 복잡도로 대규모 데이터에 비효율적일 수 있지만, "not effective"는 틀렸다.'},
+
+{id:'24n',src:'2024',lec:'L8',
+ text:'k-means++ is always more effective than k-means.',
+ ans:false,
+ exp:'k-means++는 초기화를 개선하여 <b>평균적으로</b> 더 좋은 결과를 내지만, "<b>항상</b>" 더 효과적이라고 보장할 수 없다. 특정 random seed에서 k-means의 random 초기화가 우연히 더 좋을 수 있다.'},
+
+{id:'24o',src:'2024',lec:'L9',
+ text:'The CURE algorithm can still work if we don\'t move the points 20% inward.',
+ ans:true,
+ exp:'Shrinkage 없이도 CURE는 <b>여전히 작동한다</b>. 다만 shrinkage가 없으면 outlier에 더 취약해진다. 20%는 경험적 최적값이지 필수 조건이 아니다.'},
+
+{id:'24p',src:'2024',lec:'L9',
+ text:'The GRGPF algorithm can be directly used for the other distance measures.',
+ ans:false,
+ exp:'GRGPF는 rowsum 계산에 <b>Euclidean distance를 전제</b>한다. 다른 거리 척도(맨해튼, 코사인 등)에 직접 사용할 수 없다.'},
+
+{id:'24q',src:'2024',lec:'L10',
+ text:'A data matrix of size $m \\times n$, containing $m$ independent data points, can have up to $n$ latent factors.',
+ ans:false,
+ exp:'$m \\times n$ 행렬의 rank는 최대 $\\min(m,n)$이다. $m < n$이면 최대 latent factors는 $n$이 아닌 $m$이다. 예: 3개의 독립 데이터 포인트가 1000차원이면 최대 3개의 latent factors.'},
+
+{id:'24r',src:'2024',lec:'L10',
+ text:'Running PCA with the power iteration is often faster than running it with SVD.',
+ ans:true,
+ exp:'Power iteration은 상위 $k$개 eigenvector만 반복 계산하므로 전체 SVD($O(mn^2)$)보다 <b>빠를 수 있다</b>. 특히 첫 번째 PC 하나만 필요할 때 유용하다.'},
+
+{id:'24s',src:'2024',lec:'L11',
+ text:'SVD can be applied to any real matrix.',
+ ans:true,
+ exp:'SVD($M = U\\Sigma V^T$)는 <b>임의의 실수 행렬</b>($m \\times n$)에 대해 항상 존재한다. 정방 행렬일 필요 없고, rank에 관계없이 적용 가능하다.'},
+
+{id:'24t',src:'2024',lec:'L11',
+ text:'For dimensionality reduction, CUR decomposition can be more accurate than SVD in terms of the reconstruction error in some cases.',
+ ans:false,
+ exp:'Eckart-Young theorem: SVD의 rank-$r$ 근사는 Frobenius norm 기준으로 <b>모든 rank-$r$ 행렬 중 최소 reconstruction error</b>임이 수학적으로 보장된다. CUR은 항상 SVD보다 크거나 같다.'},
+
+// ── 2025 기출 (20문항) ──────────────────────────────────────
+{id:'25a',src:'2025',lec:'L2',
+ text:'In a distributed computing cluster, each node typically shares the same CPU and memory with other nodes on the rack.',
+ ans:false,
+ exp:'각 노드는 <b>독립적인 CPU와 메모리</b>를 가진다. 같은 rack의 노드들은 high-bandwidth 스위치를 공유하지만 CPU/메모리는 독립적이다.'},
+
+{id:'25b',src:'2025',lec:'L2',
+ text:'If a Map Worker fails, all tasks it has completed must be redone, because its output is stored locally and not in the distributed file system.',
+ ans:true,
+ exp:'Map worker의 intermediate output은 <b>local disk에 저장</b>된다. Worker 실패 시 local disk 접근 불가 → 완료된 task도 재실행 필요. Reduce worker의 output은 GFS에 저장되므로 차이가 있다.'},
+
+{id:'25c',src:'2025',lec:'L3',
+ text:'In Spark, the GroupByKey transformation creates a wide dependency because each output partition may depend on multiple input partitions.',
+ ans:true,
+ exp:'GroupByKey는 같은 key의 모든 값을 하나의 파티션으로 모아야 한다. 모든 input partition을 참조해야 하므로 <b>wide dependency</b>(shuffle 발생)이다.'},
+
+{id:'25d',src:'2025',lec:'L3',
+ text:'RDDs in Spark can be updated in place to modify existing records.',
+ ans:false,
+ exp:'RDD는 <b>immutable(불변)</b>이다. 데이터를 변경하려면 transformation으로 새 RDD를 생성해야 한다. 이 불변성이 lineage 기반 fault tolerance를 가능하게 한다.'},
+
+{id:'25e',src:'2025',lec:'L4',
+ text:'The interest of an association rule is always positive.',
+ ans:false,
+ exp:'Interest $= \\text{conf}(I \\Rightarrow j) - \\Pr[j]$. 만약 $\\Pr[j] > \\text{conf}(I \\Rightarrow j)$이면 <b>interest < 0</b>이 될 수 있다(부정적 연관).'},
+
+{id:'25f',src:'2025',lec:'L4',
+ text:'Market-basket analysis can be applied only to retail data and not to other domains such as student-club relationships.',
+ ans:false,
+ exp:'Market-basket analysis는 "items의 집합(basket)" 구조를 가지는 <b>모든 도메인에 적용 가능</b>하다. 학생-클럽, 의료 진단, 웹 클릭 등 다양하게 쓰인다.'},
+
+{id:'25g',src:'2025',lec:'L5',
+ text:'The PCY algorithm can efficiently use the triangular-matrix method to count frequent pairs.',
+ ans:false,
+ exp:'PCY의 목적은 hash table로 candidate를 줄여 메모리를 절약하는 것이다. Triangular matrix는 $N(N-1)/2$ 항목 모두 저장하므로 PCY의 절약 효과를 무력화한다. PCY 2패스는 triples 방식을 사용한다.'},
+
+{id:'25h',src:'2025',lec:'L5',
+ text:'In the multistage algorithm, truly frequent pairs will always hash to frequent buckets across all stages.',
+ ans:true,
+ exp:'Truly frequent pair (count $\\geq s$)는 어떤 bucket에 배정되더라도 해당 bucket의 count가 최소 $s$ 이상이 되므로 <b>항상 frequent bucket에 속한다</b>. 따라서 false negative가 없다.'},
+
+{id:'25i',src:'2025',lec:'L6',
+ text:'The expected similarity between two minhash signatures equals the Euclidean distance between the original sets.',
+ ans:false,
+ exp:'MinHash 핵심 성질: $\\Pr[h_\\pi(S_1)=h_\\pi(S_2)] = |S_1 \\cap S_2|/|S_1 \\cup S_2| = J(S_1,S_2)$ (<b>Jaccard similarity</b>). Euclidean distance가 아니다.'},
+
+{id:'25j',src:'2025',lec:'L6',
+ text:'Longer minhash signatures lead to smaller expected errors when estimating similarity.',
+ ans:true,
+ exp:'Hash function 수 $n$ 증가 → 추정치 분산 $O(1/n)$으로 감소 → <b>expected error 감소</b>. Law of Large Numbers의 적용이다. 다만 계산 비용은 증가한다.'},
+
+{id:'25k',src:'2025',lec:'L7',
+ text:'After minhashing, LSH guarantees that all pairs of similar documents will be identified.',
+ ans:false,
+ exp:'LSH는 <b>확률적 방법</b>이다. 유사한 쌍이 같은 bucket에 들어갈 확률이 높지만 "보장(guarantee)"은 아니다. False negative(유사하지만 bucket이 달라 missed)가 발생할 수 있다.'},
+
+{id:'25l',src:'2025',lec:'L7',
+ text:'In the banding technique, signatures are divided into several bands, and each band is hashed independently to identify candidate pairs.',
+ ans:true,
+ exp:'Banding technique 정의 그대로 참: 1) signature를 $b$개 band로 분리(각 band = $r$개 row), 2) 각 band를 독립적으로 hash, 3) 어느 band에서든 같은 bucket → candidate pair.'},
+
+{id:'25m',src:'2025',lec:'L8',
+ text:'A clustroid represents an existing data point that is closest to all other points within the same cluster.',
+ ans:true,
+ exp:'Clustroid = 클러스터 내 다른 모든 점까지의 거리 합을 최소화하는 <b>실제 데이터 포인트</b>. Centroid(좌표 평균)와 달리 non-Euclidean space에서 사용된다.'},
+
+{id:'25n',src:'2025',lec:'L8',
+ text:'Hierarchical clustering may stop merging clusters when the merged cluster\'s diameter exceeds a predefined threshold.',
+ ans:true,
+ exp:'이것은 hierarchical clustering의 <b>종료 조건 중 하나</b>이다. 병합 시 클러스터 diameter가 임계값을 초과하면 중단한다.'},
+
+{id:'25o',src:'2025',lec:'L9',
+ text:'In the BFR algorithm, the discard set contains points that have not yet been assigned to any cluster.',
+ ans:false,
+ exp:'BFR 집합 정의: <b>DS(Discard Set)</b> = 클러스터에 assign되어 통계(N,SUM,SUMSQ)만 남긴 점들. <b>RS(Retained Set)</b> = 아직 어느 클러스터에도 속하지 않는 고립된 점들. 미할당 = RS.'},
+
+{id:'25p',src:'2025',lec:'L9',
+ text:'In the GRGPF algorithm, a new point cannot be the clustroid immediately when it is added.',
+ ans:false,
+ exp:'GRGPF에서 새 점 $p$가 추가될 때 rowsum을 계산한다. 만약 $p$의 rowsum이 현재 clustroid보다 작으면 <b>즉시 clustroid가 된다</b>.'},
+
+{id:'25q',src:'2025',lec:'L10',
+ text:'The eigenvectors of a symmetric matrix are always orthogonal to each other.',
+ ans:true,
+ exp:'Spectral theorem: 실수 대칭 행렬의 eigenvectors는 항상 서로 <b>직교</b>한다. PCA가 $M^TM$(대칭)의 eigenvectors를 사용하는 이유이다.'},
+
+{id:'25r',src:'2025',lec:'L10',
+ text:'The first principal component corresponds to the eigenvector associated with the smallest eigenvalue of the covariance matrix.',
+ ans:false,
+ exp:'첫 번째 주성분(PC1) = 분산을 최대화하는 방향 = covariance matrix $M^TM$의 <b>가장 큰(largest) eigenvalue</b>에 대응하는 eigenvector. 가장 작은 것은 마지막 PC이다.'},
+
+{id:'25s',src:'2025',lec:'L11',
+ text:'The number of non-zero singular values in SVD equals the number of rows in the data matrix.',
+ ans:false,
+ exp:'$m \\times n$ 행렬 $M$의 non-zero singular value 수 = $\\text{rank}(M) \\leq \\min(m,n)$. 반드시 행의 수 $m$과 같지 않다.'},
+
+{id:'25t',src:'2025',lec:'L11',
+ text:'The low-rank approximation of a matrix obtained through SVD minimizes the reconstruction error among all matrices of the same rank.',
+ ans:true,
+ exp:'Eckart-Young-Mirsky theorem: SVD rank-$r$ 근사 $M_r$은 $$\\|M-M_r\\|_F = \\min_{\\text{rank}(B)=r}\\|M-B\\|_F = \\sqrt{\\sum_{i>r}\\sigma_i^2}$$ 즉 <b>Frobenius norm 기준 최적</b>.'},
+
+// ── 예상 문제 (60문항) ─────────────────────────────────────
+{id:'Q01',src:'예상',lec:'L1',
+ text:'Data mining is essentially the same as machine learning, since both extract patterns from data.',
+ ans:false,
+ exp:'Data mining은 ML보다 <b>넓은 개념</b>이다. 데이터 저장·관리·분석을 모두 포함하며 ML은 DM의 도구 중 하나이다. 예: A-priori는 ML이 아니지만 data mining 기법이다.'},
+
+{id:'Q02',src:'예상',lec:'L1',
+ text:'The TF-IDF weight is defined as $\\text{tf}(t,d) \\times \\log(N / \\text{df}(t))$, where $N$ is the total number of documents and $\\text{df}(t)$ is the number of documents containing $t$.',
+ ans:true,
+ exp:'TF-IDF 표준 정의: tf(t,d) = 단어 빈도, $\\log(N/\\text{df}(t))$ = 역문서 빈도(IDF). IDF가 크다 = 드문 단어 = 더 중요. 자주 나오는 단어("the")는 낮은 IDF.'},
+
+{id:'Q03',src:'예상',lec:'L1',
+ text:'Bonferroni\'s principle states that if the expected number of spurious patterns exceeds 1, we should reject all patterns found.',
+ ans:false,
+ exp:'Bonferroni\'s principle은 spurious 패턴의 기댓값이 실제 발견한 패턴 수에 비해 클 때 신뢰하기 어렵다고 <b>경고</b>하는 것이다. "기댓값 > 1이면 모두 거부"라는 절대적 규칙이 아니다.'},
+
+{id:'Q04',src:'예상',lec:'L2',
+ text:'In the MapReduce word count example, the Map function emits (word, 1) for each word, and the Reduce function sums up the values for each word.',
+ ans:true,
+ exp:'표준 Word Count: Map(docID, text) → for each word w: emit(w, 1). Reduce(word, [1,1,...]) → emit(word, sum(values)). MapReduce의 가장 기본적인 예시이다.'},
+
+{id:'Q05',src:'예상',lec:'L2',
+ text:'A Combiner function can always be applied to any MapReduce job to reduce network traffic.',
+ ans:false,
+ exp:'Combiner는 Reduce 함수가 <b>결합법칙(associative) + 교환법칙(commutative)</b>을 만족할 때만 올바르게 적용 가능하다. 예: 평균(mean) 계산에 단순 합산 Combiner를 쓰면 틀린 결과가 나온다.'},
+
+{id:'Q06',src:'예상',lec:'L2',
+ text:'In MapReduce matrix-vector multiplication $\\mathbf{A}\\mathbf{v}$, the Map function emits $(i,\\ A_{ij}\\cdot v_j)$ where $i$ is the row index.',
+ ans:true,
+ exp:'Map: 각 $(i,j,A_{ij})$와 $v_j$를 읽어 emit($i$, $A_{ij}\\cdot v_j$). Reduce: 같은 $i$를 가진 값들을 합산 → $(\\mathbf{A}\\mathbf{v})_i = \\sum_j A_{ij}v_j$.'},
+
+{id:'Q07',src:'예상',lec:'L2',
+ text:'In MapReduce, if a Reduce worker fails while writing output to the distributed file system, only in-progress tasks need to be re-executed.',
+ ans:true,
+ exp:'Reduce output은 <b>GFS(분산 파일 시스템)</b>에 저장된다. 완료된 Reduce task의 output은 GFS에 안전하게 저장되어 재실행 불필요. 오직 진행 중(in-progress) task만 재실행한다.'},
+
+{id:'Q08',src:'예상',lec:'L2',
+ text:'MapReduce functions must be deterministic to ensure correct recovery from worker failures.',
+ ans:true,
+ exp:'재실행(re-execution) 기반 fault tolerance가 올바르게 작동하려면 Map/Reduce 함수가 <b>결정론적(deterministic)</b>이어야 한다. 비결정론적 함수(random 포함)는 재실행 시 다른 결과를 낼 수 있다.'},
+
+{id:'Q09',src:'예상',lec:'L2',
+ text:'Wide dependencies in Spark occur when each output partition depends on only one input partition.',
+ ans:false,
+ exp:'<b>Wide dependency</b> = 하나의 output partition이 <b>여러 input partition에 의존</b>하는 경우(shuffle 발생). 하나의 input partition에만 의존하면 narrow dependency이다.'},
+
+{id:'Q10',src:'예상',lec:'L3',
+ text:'In Spark, transformations on RDDs are executed lazily, meaning they are not computed until an action is called.',
+ ans:true,
+ exp:'<b>Lazy evaluation</b>: action(collect, count, save 등)이 호출되기 전까지 transformation(map, filter, reduceByKey 등)은 실행되지 않는다. 이를 통해 Spark는 실행 계획을 최적화한다.'},
+
+{id:'Q11',src:'예상',lec:'L3',
+ text:'In Spark, reduceByKey always requires more network transfer than groupByKey because it performs more computation.',
+ ans:false,
+ exp:'오히려 반대: <b>reduceByKey</b>는 각 파티션 내에서 먼저 부분 합산(combiner 효과) 후 shuffle → 네트워크 전송 <b>감소</b>. groupByKey는 모든 (key,value)를 shuffle 후 집계 → 전송량 더 많음.'},
+
+{id:'Q12',src:'예상',lec:'L3',
+ text:'Spark\'s lineage graph allows a failed partition to be recomputed from its parent RDDs without recomputing the entire dataset.',
+ ans:true,
+ exp:'Lineage는 RDD가 어떤 transformation으로 어떤 부모 RDD에서 만들어졌는지 기록한 DAG이다. Partition 하나가 손실되면 해당 partition의 lineage만 따라가 재계산하면 된다.'},
+
+{id:'Q13',src:'예상',lec:'L3',
+ text:'In Spark\'s quantile summary, the compress step removes elements while maintaining an error bound of $\\varepsilon n$.',
+ ans:true,
+ exp:'Quantile summary의 compress 단계: $g + \\Delta \\leq 2\\varepsilon n$ 조건을 이용해 summary 크기를 줄이면서 $\\varepsilon n$ 오차 한계를 유지한다. 2025 기출 Q6의 핵심이다.'},
+
+{id:'Q14',src:'예상',lec:'L3',
+ text:'The filter transformation in Spark creates a wide dependency because it reads elements from all partitions.',
+ ans:false,
+ exp:'filter는 각 input partition을 <b>독립적으로</b> 처리한다 → 하나의 output partition이 정확히 하나의 input partition에 의존 → <b>narrow dependency</b>. shuffle이 전혀 발생하지 않는다.'},
+
+{id:'Q15',src:'예상',lec:'L3',
+ text:'Spark RDDs cannot be cached if the RDD does not fit entirely in memory.',
+ ans:false,
+ exp:'Spark의 persistence level 중 <b>MEMORY_AND_DISK</b>가 있어, 메모리에 맞지 않는 부분을 disk에 spill할 수 있다. 전체가 메모리에 맞지 않아도 캐싱 가능하다.'},
+
+{id:'Q16',src:'예상',lec:'L4',
+ text:'The A-priori algorithm guarantees that no frequent itemset is missed (no false negatives).',
+ ans:true,
+ exp:'A-priori는 monotonicity(downward closure) 성질로 모든 frequent itemsets를 찾는다: infrequent set의 superset은 모두 infrequent. 이 성질로 <b>false negative가 없음</b>이 보장된다.'},
+
+{id:'Q17',src:'예상',lec:'L4',
+ text:'Using triples $(i, j, \\text{count})$ is more memory-efficient than a triangular matrix when the number of frequent pairs $p < N(N-1)/6$.',
+ ans:true,
+ exp:'Triangular matrix: $N(N-1)/2$ 공간. Triples: $3p$ 공간. $3p < N(N-1)/2$ ↔ $p < N(N-1)/6$일 때 triples가 유리하다.'},
+
+{id:'Q18',src:'예상',lec:'L4',
+ text:'The confidence of an association rule $I \\Rightarrow j$ is the fraction of all transactions that contain both $I$ and $j$.',
+ ans:false,
+ exp:'Confidence = "$I$를 포함하는 거래 중 $j$도 포함하는 비율": $$\\text{conf}(I\\Rightarrow j) = \\frac{\\text{support}(I\\cup\\{j\\})}{\\text{support}(I)}$$ "모든 거래 중 비율"은 support($I \\cup \\{j\\}$)이다.'},
+
+{id:'Q19',src:'예상',lec:'L4',
+ text:'If an itemset $S$ is not frequent, then any itemset that contains $S$ as a subset is also not frequent.',
+ ans:true,
+ exp:'Monotonicity의 대우: $S$가 infrequent이면 support($S$) < threshold. $S$의 superset $T \\supseteq S$의 support $\\leq$ support($S$) < threshold → $T$도 infrequent. <b>A-priori의 핵심 원리</b>.'},
+
+{id:'Q20',src:'예상',lec:'L4',
+ text:'All closed frequent itemsets are maximal frequent itemsets.',
+ ans:false,
+ exp:'<b>Maximal ⊂ Closed</b>이며, 역은 성립하지 않는다. 예: {A,B}가 closed이지만 {A,B,C}도 frequent이면 {A,B}는 maximal이 아니다(superset {A,B,C}가 frequent하므로).'},
+
+{id:'Q21',src:'예상',lec:'L4',
+ text:'The support of an itemset is always greater than or equal to the confidence of any association rule derived from it.',
+ ans:false,
+ exp:'Support와 confidence는 다른 척도이다. support($I$)가 작으면 confidence가 훨씬 클 수 있다. 예: support({A,B})=0.1, support({A})=0.1이면 conf(A→B)=1.0 > support({A,B}).'},
+
+{id:'Q22',src:'예상',lec:'L5',
+ text:'In the PCY algorithm, a pair $(i, j)$ is a candidate only if both items are frequent AND the pair hashes to a frequent bucket.',
+ ans:true,
+ exp:'PCY 2패스 candidate 조건(AND): ① 항목 $i$, $j$ 모두 1패스에서 frequent ② 해당 pair가 1패스 hash table에서 frequent bucket으로 hash됨. 두 조건 모두 만족해야 candidate이다.'},
+
+{id:'Q23',src:'예상',lec:'L5',
+ text:'In the SON algorithm, a pair that is not frequent in any single chunk can still be frequent in the entire dataset.',
+ ans:false,
+ exp:'SON theorem: "globally frequent → at least one chunk에서 frequent". 대우: <b>어떤 chunk에서도 frequent하지 않으면 globally infrequent</b>. 따라서 이 문장은 거짓이다.'},
+
+{id:'Q24',src:'예상',lec:'L5',
+ text:'Using a lower support threshold $s\'$ in the sample step of Toivonen\'s algorithm reduces the probability of restarting.',
+ ans:true,
+ exp:'Toivonen에서 낮은 $s\'$를 적용하면 candidate set이 커져 negative border에서 globally frequent한 것이 발견될 가능성이 줄어든다 → <b>restart 확률 감소</b>.'},
+
+{id:'Q25',src:'예상',lec:'L5',
+ text:'In the random sampling approach for finding frequent itemsets, false negatives can occur when globally frequent items are not frequent in the sample.',
+ ans:true,
+ exp:'Random sampling에서 globally frequent itemset이 sample에서 missed될 수 있다 → <b>false negative</b>. Toivonen은 이 문제를 해결하기 위해 negative border를 도입한다.'},
+
+{id:'Q26',src:'예상',lec:'L5',
+ text:'When the hash table size in the PCY algorithm is increased, false positives decrease because frequent buckets become fewer.',
+ ans:true,
+ exp:'Hash table이 클수록 bucket당 평균 충돌 감소 → 각 bucket의 count 낮아짐 → infrequent pairs가 frequent bucket에 들어갈 확률 감소 → <b>false positive 감소</b>.'},
+
+{id:'Q27',src:'예상',lec:'L6',
+ text:'Using a k-shingle with a very small value of $k$ (e.g., $k=1$) causes most documents to appear highly similar to each other.',
+ ans:true,
+ exp:'$k$가 작을수록 shingle 종류가 줄어 거의 모든 문서가 같은 shingles를 공유한다. $k=1$이면 알파벳 26자만 shingle → 모든 영어 문서가 동일한 shingle 집합 → Jaccard similarity가 의미 없이 높아진다.'},
+
+{id:'Q28',src:'예상',lec:'L6',
+ text:'MinHash works by applying multiple permutations $\\pi$ to rows of the characteristic matrix and taking the minimum row index where the column has value 1.',
+ ans:true,
+ exp:'MinHash 정의: $h_\\pi(C) = \\min_\\pi\\{r : M[r,C]=1\\}$. 실제 구현에서는 순열 대신 hash 함수 $h(r)$을 사용하고, 초기값 $\\infty$에서 $M[r,c]=1$인 행에서 업데이트한다.'},
+
+{id:'Q29',src:'예상',lec:'L6',
+ text:'For a random permutation $\\pi$, $\\Pr[h_\\pi(S_1) = h_\\pi(S_2)] = |S_1 \\cap S_2| / |S_1 \\cup S_2|$.',
+ ans:true,
+ exp:'MinHash 핵심 성질. 증명: 행을 type a(둘 다 1), b(한쪽만 1), c(둘 다 0)으로 분류. $\\Pr[h(S_1)=h(S_2)] = |a|/(|a|+|b|) = |S_1\\cap S_2|/|S_1\\cup S_2| = J(S_1,S_2)$.'},
+
+{id:'Q30',src:'예상',lec:'L6',
+ text:'If two sets $S_1$ and $S_2$ have the same MinHash signature for all hash functions, then $S_1$ and $S_2$ must be identical.',
+ ans:false,
+ exp:'MinHash는 <b>확률적 근사</b>이다. Signature가 동일해도 실제 집합이 동일하다고 보장할 수 없다. 유사도가 높을 가능성을 시사할 뿐이다.'},
+
+{id:'Q31',src:'예상',lec:'L6',
+ text:'In the characteristic matrix for shingling, each row represents a shingle and each column represents a document.',
+ ans:true,
+ exp:'Characteristic matrix 구조: 행(row) = 각 고유 shingle, 열(column) = 각 문서, 값 = 해당 문서에 shingle이 있으면 1, 없으면 0.'},
+
+{id:'Q32',src:'예상',lec:'L6',
+ text:'Word-level shingling with $k=2$ (bigrams) produces overlapping windows of consecutive words.',
+ ans:true,
+ exp:'2-word shingle은 연속된 두 단어 쌍이다. 예: "the cat sat" → {"the cat", "cat sat"}. Overlapping window이며, character-level이 아닌 word-level shingling도 유효하다.'},
+
+{id:'Q33',src:'예상',lec:'L7',
+ text:'Increasing $r$ (rows per band) while keeping $b$ (number of bands) fixed increases the threshold similarity for candidate pairs.',
+ ans:true,
+ exp:'Threshold $\\approx (1/b)^{1/r}$. $b$ 고정, $r$ 증가 → $(1/b)^{1/r}$ 증가(exponent $1/r$이 작아지면 전체 값이 1에 가까워짐) → <b>threshold ↑</b>. 더 높은 유사도가 있어야 candidate가 됨.'},
+
+{id:'Q34',src:'예상',lec:'L7',
+ text:'The AND-OR construction in LSH (AND within bands, OR across bands) is equivalent to the banding technique for MinHash.',
+ ans:true,
+ exp:'Banding = band 내에서 $r$개 hash값 모두 같아야(AND), 어느 band에서든 일치하면 candidate(OR). 이것이 AND-OR construction이며 $P = 1-(1-s^r)^b$.'},
+
+{id:'Q35',src:'예상',lec:'L7',
+ text:'The OR-AND construction (OR within hash functions, AND across groups) reduces false negatives compared to a single hash function.',
+ ans:false,
+ exp:'OR-AND: AND 단계가 precision을 높이지만 <b>recall을 낮춘다(false negative 증가)</b>. False negative를 줄이는 것은 AND-OR construction(OR across bands)이다.'},
+
+{id:'Q36',src:'예상',lec:'L7',
+ text:'For cosine similarity, $\\Pr[h(x) = h(y)] = 1 - \\theta/\\pi$ where $\\theta$ is the angle between vectors $x$ and $y$.',
+ ans:true,
+ exp:'Random hyperplane hash $h(v) = \\text{sign}(r\\cdot v)$에서 $\\Pr[h(x)=h(y)] = 1-\\theta(x,y)/\\pi$. $\\theta$가 작을수록(유사할수록) agree 확률 높음.'},
+
+{id:'Q37',src:'예상',lec:'L7',
+ text:'Increasing $b$ while keeping $r$ fixed in LSH banding increases recall but also increases false positives.',
+ ans:true,
+ exp:'$b$ 증가 → OR 조건 완화 → similar pairs가 candidate가 될 확률 ↑ (<b>recall ↑</b>) → 동시에 dissimilar pairs도 candidate가 될 확률 ↑ (<b>false positive ↑, precision ↓</b>).'},
+
+{id:'Q38',src:'예상',lec:'L7',
+ text:'The threshold of the LSH S-curve can be approximated as $(1/b)^{1/r}$.',
+ ans:true,
+ exp:'S-curve $P(s)=1-(1-s^r)^b$의 변곡점(threshold) $\\approx (1/b)^{1/r}$. 예: $r=5, b=20$이면 threshold $\\approx (1/20)^{0.2} \\approx 0.55$.'},
+
+{id:'Q39',src:'예상',lec:'L8',
+ text:'The K-means algorithm is guaranteed to converge to the global optimum of the within-cluster sum of squares (WCSS).',
+ ans:false,
+ exp:'K-means는 항상 수렴하지만 <b>local minimum</b>에 수렴할 수 있다. Global optimum 찾기는 NP-hard이다. 초기 centroid 선택에 따라 결과가 달라진다.'},
+
+{id:'Q40',src:'예상',lec:'L8',
+ text:'In K-means, $\\text{WCSS} = \\sum_k \\sum_{x \\in C_k} \\|x - \\mu_k\\|^2$ monotonically decreases with each iteration.',
+ ans:true,
+ exp:'K-means의 두 단계(assignment, update) 모두 WCSS를 감소시키거나 유지한다. 유한한 상태 수로 <b>수렴이 보장</b>된다. 이것이 WCSS 단조 감소의 근거이다.'},
+
+{id:'Q41',src:'예상',lec:'L8',
+ text:'K-means++ selects each subsequent centroid with probability proportional to $D(x)^2$, where $D(x)$ is the distance to the nearest already-chosen centroid.',
+ ans:true,
+ exp:'K-means++ 초기화: $\\Pr[\\text{choose }x] \\propto D(x)^2$. 이미 선택된 centroid로부터 <b>멀리 있는 점</b>이 선택될 확률이 높아지므로 centroid들이 분산된다.'},
+
+{id:'Q42',src:'예상',lec:'L8',
+ text:'In high-dimensional spaces, K-means becomes ineffective because distances between any two points tend to converge to the same value.',
+ ans:true,
+ exp:'Curse of dimensionality: 차원 $d \\to \\infty$이면 점들 간 max/min 거리 비율이 1에 가까워진다. "가장 가까운 centroid" 개념이 의미를 잃어 K-means 성능이 저하된다.'},
+
+{id:'Q43',src:'예상',lec:'L8',
+ text:'In non-Euclidean spaces, we can always compute a centroid by taking the coordinate-wise average of points in a cluster.',
+ ans:false,
+ exp:'Centroid(좌표 평균)는 <b>Euclidean space에서만 정의</b>된다. Non-Euclidean space(문자열, 그래프 등)에서는 좌표 평균이 집합 밖에 있을 수 있다. 대신 <b>clustroid</b>를 사용한다.'},
+
+{id:'Q44',src:'예상',lec:'L9',
+ text:'In the CURE algorithm, representative points are moved 20% toward the cluster centroid to reduce the effect of outliers.',
+ ans:true,
+ exp:'CURE shrinkage: $P\' = P + 0.2 \\times (c - P)$ (c = centroid). Representative를 centroid 방향으로 <b>20% 이동</b>하여 outlier 영향을 줄인다. 20%는 경험적 최적값이다.'},
+
+{id:'Q45',src:'예상',lec:'L9',
+ text:'The BFR Mahalanobis distance is $\\sqrt{\\sum_i \\left((x_i - \\mu_i)/\\sigma_i\\right)^2}$, where $\\mu_i, \\sigma_i$ are the mean and std of cluster $C$ along dimension $i$.',
+ ans:true,
+ exp:'BFR 핵심 거리 척도: 각 차원별 표준화 거리를 합산한다. $\\sigma_i^2 = \\text{SUMSQ}_i/N - (\\text{SUM}_i/N)^2$으로 계산. 이 값이 임계값 이하이면 DS에 추가한다.'},
+
+{id:'Q46',src:'예상',lec:'L9',
+ text:'In BFR, the Compressed Set (CS) contains points close to a main cluster centroid that are directly added to that cluster\'s statistics.',
+ ans:false,
+ exp:'<b>CS(Compressed Set)</b> = 어느 main cluster에도 속하지 않지만 서로 가까워 mini-cluster로 압축된 점들. <b>DS(Discard Set)</b>가 main cluster에 할당되어 통계에 합산된 점들이다.'},
+
+{id:'Q47',src:'예상',lec:'L9',
+ text:'If the CURE shrinkage ratio is set too high (e.g., 90%), all representative points will converge to the centroid, losing information about cluster shape.',
+ ans:true,
+ exp:'Shrinkage가 너무 크면 모든 representative가 centroid 근처로 모여 클러스터의 <b>비구형 형태 정보가 손실</b>된다. 너무 작으면 outlier에 취약해진다.'},
+
+{id:'Q48',src:'예상',lec:'L9',
+ text:'In GRGPF, $\\text{rowsum}(p) = \\sum_{q \\in C} \\|p-q\\|^2$, and the clustroid is the point that minimizes this value.',
+ ans:true,
+ exp:'GRGPF에서 rowsum = 클러스터 내 다른 모든 점까지의 제곱 거리 합. <b>Clustroid = rowsum 최소화 점</b>. 새 점이 추가될 때 rowsum을 재계산하여 clustroid 갱신 여부를 판단한다.'},
+
+{id:'Q49',src:'예상',lec:'L10',
+ text:'PCA finds the direction $t$ that maximizes $t^T M^T M t$ (subject to $\\|t\\|=1$), which corresponds to the principal eigenvector of $M^T M$.',
+ ans:true,
+ exp:'PCA 목적함수: $\\max_{\\|t\\|=1} t^T M^T M t$. 이를 최대화하는 $t$ = $M^TM$의 <b>principal eigenvector(가장 큰 eigenvalue 대응)</b>. $M$은 column-centered data matrix이다.'},
+
+{id:'Q50',src:'예상',lec:'L10',
+ text:'Mean-centering the data before applying PCA is optional and does not affect the principal components.',
+ ans:false,
+ exp:'Mean centering은 PCA에서 <b>필수적</b>이다. 중심화 없이 PCA를 하면 첫 번째 PC가 분산 방향이 아닌 데이터의 평균 방향(원점 기준)을 가리킬 수 있다.'},
+
+{id:'Q51',src:'예상',lec:'L10',
+ text:'Power iteration for the principal eigenvector works by repeatedly computing $x \\leftarrow Mx / \\|Mx\\|$ until convergence.',
+ ans:true,
+ exp:'Power iteration: 1) $x_0$ 임의 초기화 2) 반복: $x_{k+1} \\leftarrow Mx_k/\\|Mx_k\\|$ 3) 수렴 시 $x$ = principal eigenvector. Eigenvalue gap이 클수록 빠르게 수렴한다.'},
+
+{id:'Q52',src:'예상',lec:'L10',
+ text:'The optimal number of principal components $r$ is always the one that retains at least 90% of the total variance.',
+ ans:false,
+ exp:'90%는 흔히 쓰이는 기준이지만 "<b>항상</b>" 최적은 아니다. 기준은 도메인마다 80%, 95%, 99% 등 다양하며, elbow method나 downstream task 성능 기반으로 선택할 수도 있다.'},
+
+{id:'Q53',src:'예상',lec:'L11',
+ text:'In SVD ($M = U\\Sigma V^T$), the columns of $V$ correspond to the principal components found by PCA on $M$.',
+ ans:true,
+ exp:'$M^TM = V\\Sigma^2 V^T$ → $V$의 열 = $M^TM$의 eigenvectors = <b>PCA의 principal components</b>. 실제로 PCA는 SVD로 구현하는 것이 수치적으로 더 안정적이다.'},
+
+{id:'Q54',src:'예상',lec:'L11',
+ text:'In CUR decomposition, columns are sampled with probability $q_k = \\|M_{\\cdot k}\\|_F^2 / \\|M\\|_F^2$.',
+ ans:true,
+ exp:'CUR 열 샘플링 확률: $q_k = \\sum_i M_{ik}^2 / \\|M\\|_F^2$. 더 큰 Frobenius norm을 가진 열이 더 자주 선택된다. 선택된 열은 $1/\\sqrt{R \\cdot q_k}$로 스케일링한다.'},
+
+{id:'Q55',src:'예상',lec:'L11',
+ text:'CUR decomposition is preferred over SVD when interpretability is important, because C and R consist of actual rows and columns of the original matrix.',
+ ans:true,
+ exp:'CUR의 장점: C(columns)와 R(rows)이 <b>실제 데이터의 열과 행</b>이므로 해석 가능하다. SVD의 U,V는 latent factor 벡터로 직접 해석하기 어렵다. 단, reconstruction error는 SVD보다 크다.'},
+
+{id:'Q56',src:'예상',lec:'L11',
+ text:'The retained energy ratio of a rank-$r$ SVD is $\\sum_{i=1}^r \\sigma_i^2 \\;/\\; \\sum_{i=1}^{\\min(m,n)} \\sigma_i^2$.',
+ ans:true,
+ exp:'총 에너지 = $\\|M\\|_F^2 = \\sum_i \\sigma_i^2$. Rank-$r$ 근사의 retained energy ratio = $\\sum_{i=1}^r \\sigma_i^2 / \\sum_i \\sigma_i^2$. 이 비율이 0.9 이상이 되는 최소 $r$을 선택하는 것이 일반적이다.'},
+
+{id:'Q57',src:'예상',lec:'L12',
+ text:'Collaborative Filtering (CF) requires explicit feature information about items (e.g., genre, director) to make recommendations.',
+ ans:false,
+ exp:'CF의 핵심 장점은 <b>item features가 필요 없다</b>는 것이다. Utility matrix(사용자-아이템 평점)만으로 추천이 가능하다. Item features를 필요로 하는 것은 Content-based filtering이다.'},
+
+{id:'Q58',src:'예상',lec:'L12',
+ text:'Item-Item CF is generally preferred over User-User CF when new items are frequently added to the system.',
+ ans:false,
+ exp:'새 아이템에는 <b>User-User CF가 유리</b>하다. Item-Item CF는 아이템의 평점 이력(history)을 기반으로 유사도를 계산하므로, 새 아이템은 history가 없어 유사도 계산이 불가능하다(cold start).'},
+
+{id:'Q59',src:'예상',lec:'L12',
+ text:'In Pearson correlation similarity for users, only items rated by both users are considered.',
+ ans:true,
+ exp:'Pearson correlation: $\\text{sim}(u,v) = \\frac{\\sum_{i \\in I_{uv}}(r_{ui}-\\bar{r}_u)(r_{vi}-\\bar{r}_v)}{\\|\\cdot\\|\\cdot\\|\\cdot\\|}$ 여기서 $I_{uv}$는 <b>두 사용자의 공통 평가 아이템</b> 집합이다.'},
+
+{id:'Q60',src:'예상',lec:'L13',
+ text:'In UV decomposition, increasing the number of latent factors $k$ always improves performance on unseen test data.',
+ ans:false,
+ exp:'$k$를 늘리면 training error는 감소하지만 <b>overfitting 위험</b>이 있어 test set 성능이 오히려 나빠질 수 있다. 최적 $k$는 validation set 성능 기준으로 선택해야 한다(SVD와 차이점).'},
+
+]; // end of questions array
+
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+const STORAGE_KEY = 'idm_tf_quiz_state_v2';
+let state = {
+  filter: {src:'all', lec:'all'},
+  wrongOnly: false,
+  retryOnlyIds: null,
+  userAnswers: {}, // id -> 'T'|'F'|'REVEAL'|null
+  shuffleOrder: null,
+  testMode: false,
+  testSubmitted: false,
+  randomCount: 10,
+  randomIds: null,
+};
+
+let filteredIds = [];
+
+function persistState(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved && typeof saved === 'object'){
+      state = {
+        ...state,
+        ...saved,
+        filter: {...state.filter, ...(saved.filter||{})},
+        userAnswers: saved.userAnswers || {},
+        randomCount: Number(saved.randomCount) > 0 ? Number(saved.randomCount) : 10,
+        randomIds: Array.isArray(saved.randomIds) ? saved.randomIds : null,
+      };
+      const rc = document.getElementById('rand-count');
+      if(rc) rc.value = state.randomCount;
+    }
+  }catch(e){}
+}
+
+// ════════════════════════════════════════════════════════════
+// FILTER & RENDER
+// ════════════════════════════════════════════════════════════
+function getFilteredQuestions(){
+  let qs = RAW_QUESTIONS;
+  if(state.filter.src !== 'all') qs = qs.filter(q=>q.src===state.filter.src);
+  if(state.filter.lec !== 'all') qs = qs.filter(q=>q.lec===state.filter.lec);
+  if(state.retryOnlyIds && state.retryOnlyIds.length){
+    qs = qs.filter(q=>state.retryOnlyIds.includes(q.id));
+  } else if(state.wrongOnly) {
+    qs = qs.filter(q=>{
+      const a=state.userAnswers[q.id];
+      return a && a !== 'REVEAL' && ((a==='T')!==q.ans);
+    });
+  }
+  if(state.randomIds && state.randomIds.length){
+    const order = {};
+    state.randomIds.forEach((id,i)=>order[id]=i);
+    qs = qs.filter(q=>order[q.id] !== undefined).sort((a,b)=>order[a.id]-order[b.id]);
+  }
+  if(state.shuffleOrder){
+    const idxMap={};
+    state.shuffleOrder.forEach((id,i)=>idxMap[id]=i);
+    qs = [...qs].sort((a,b)=>(idxMap[a.id]??999)-(idxMap[b.id]??999));
+  }
+  return qs;
+}
+
+function syncChipUI(){
+  ['src','lec'].forEach(type=>{
+    document.querySelectorAll(`[data-filter="${type}"]`).forEach(el=>{
+      el.classList.toggle('active', el.dataset.val===state.filter[type]);
+    });
+  });
+  const wrongBtn = document.getElementById('btn-wrong-only');
+  if(wrongBtn) wrongBtn.classList.toggle('active', !!state.wrongOnly);
+  const testBtn = document.getElementById('btn-test-mode');
+  if(testBtn){
+    testBtn.classList.toggle('active', !!state.testMode);
+    testBtn.textContent = state.testMode ? '📝 테스트 모드 ON' : '📝 테스트 모드';
+  }
+  const randInput = document.getElementById('rand-count');
+  if(randInput && document.activeElement !== randInput) randInput.value = state.randomCount || 10;
+  const randBtn = document.getElementById('btn-random-sample');
+  const randClearBtn = document.getElementById('btn-random-clear');
+  if(randBtn) randBtn.classList.toggle('active', !!(state.randomIds && state.randomIds.length));
+  if(randClearBtn) randClearBtn.style.display = (state.randomIds && state.randomIds.length) ? '' : 'none';
+  const navPrimary = document.getElementById('nav-primary');
+  if(navPrimary){
+    navPrimary.textContent = (state.testMode && !state.testSubmitted) ? '📝 제출 / 채점' : '📊 결과 보기';
+  }
+}
+
+function setFilter(type, val){
+  state.filter[type]=val;
+  state.shuffleOrder=null;
+  state.wrongOnly=false;
+  state.retryOnlyIds=null;
+  state.randomIds=null;
+  syncChipUI();
+  persistState();
+  renderAll();
+}
+
+function shuffleCards(){
+  const qs=getFilteredQuestions();
+  const ids=qs.map(q=>q.id);
+  for(let i=ids.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [ids[i],ids[j]]=[ids[j],ids[i]];
+  }
+  state.shuffleOrder=ids;
+  persistState();
+  renderAll();
+}
+
+function resetAll(){
+  state.userAnswers={};
+  state.wrongOnly=false;
+  state.retryOnlyIds=null;
+  state.randomIds=null;
+  state.shuffleOrder=null;
+  state.testSubmitted=false;
+  syncChipUI();
+  persistState();
+  renderAll();
+}
+
+function toggleWrongOnly(){
+  if(state.testMode && !state.testSubmitted){
+    alert('테스트 모드에서는 제출 후에만 오답만 보기를 사용할 수 있습니다.');
+    return;
+  }
+  state.retryOnlyIds=null;
+  state.randomIds=null;
+  state.wrongOnly=!state.wrongOnly;
+  syncChipUI();
+  persistState();
+  renderAll();
+}
+
+function toggleTestMode(){
+  const turningOn = !state.testMode;
+  if(turningOn){
+    if(Object.keys(state.userAnswers).length && !confirm('테스트 모드를 켜면 현재 진행 상태는 유지되지만 즉시 피드백이 숨겨집니다. 계속할까요?')) return;
+    state.testMode = true;
+    state.testSubmitted = false;
+    state.wrongOnly = false;
+    state.retryOnlyIds = null;
+    state.randomIds = null;
+  } else {
+    if(!confirm('테스트 모드를 끄면 즉시 채점 모드로 돌아갑니다. 계속할까요?')) return;
+    state.testMode = false;
+    state.testSubmitted = false;
+    state.wrongOnly = false;
+    state.retryOnlyIds = null;
+  }
+  syncChipUI();
+  persistState();
+  renderAll();
+}
+
+function applyRandomSample(){
+  const input = document.getElementById('rand-count');
+  const raw = Number(input ? input.value : state.randomCount || 10);
+  const n = Number.isFinite(raw) ? Math.max(1, Math.floor(raw)) : 10;
+  state.randomCount = n;
+
+  let qs = RAW_QUESTIONS;
+  if(state.filter.src !== 'all') qs = qs.filter(q=>q.src===state.filter.src);
+  if(state.filter.lec !== 'all') qs = qs.filter(q=>q.lec===state.filter.lec);
+  if(state.retryOnlyIds && state.retryOnlyIds.length){
+    qs = qs.filter(q=>state.retryOnlyIds.includes(q.id));
+  } else if(state.wrongOnly) {
+    qs = qs.filter(q=>{
+      const a=state.userAnswers[q.id];
+      return a && a !== 'REVEAL' && ((a==='T')!==q.ans);
+    });
+  }
+  if(!qs.length){
+    alert('현재 필터에서 뽑을 문제가 없습니다.');
+    return;
+  }
+  const ids = qs.map(q=>q.id);
+  for(let i=ids.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [ids[i],ids[j]]=[ids[j],ids[i]];
+  }
+  state.randomIds = ids.slice(0, Math.min(n, ids.length));
+  state.shuffleOrder = null;
+  persistState();
+  renderAll();
+}
+
+function clearRandomSample(){
+  state.randomIds = null;
+  persistState();
+  renderAll();
+}
+
+function revealAll(){
+  if(state.testMode && !state.testSubmitted){
+    alert('테스트 모드에서는 제출 전 전체 정답 보기를 사용할 수 없습니다.');
+    return;
+  }
+  const qs=getFilteredQuestions();
+  const unrevealed = qs.some(q=>!state.userAnswers[q.id]);
+  if(unrevealed){
+    qs.forEach(q=>{ if(!state.userAnswers[q.id]) state.userAnswers[q.id]='REVEAL'; });
+  } else {
+    qs.forEach(q=>{ if(state.userAnswers[q.id]==='REVEAL') delete state.userAnswers[q.id]; });
+  }
+  persistState();
+  renderAll();
+}
+
+function renderAll(){
+  syncChipUI();
+  const qs=getFilteredQuestions();
+  filteredIds=qs.map(q=>q.id);
+  const area=document.getElementById('quiz-area');
+  const empty=document.getElementById('empty-state');
+  if(qs.length===0){area.innerHTML='';empty.style.display='block';}
+  else{empty.style.display='none';}
+
+  area.innerHTML=qs.map((q,i)=>buildCard(q,i+1,qs.length)).join('');
+
+  setTimeout(()=>{
+    if(typeof renderMathInElement==='function'){
+      renderMathInElement(area,{
+        delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+        throwOnError:false
+      });
+    }
+    updateScoreboard();
+  },50);
+}
+
+function buildCard(q,num,total){
+  const a=state.userAnswers[q.id];
+  const answered=!!a;
+  const isReveal=(a==='REVEAL');
+  const isSubmittedMode = !state.testMode || state.testSubmitted;
+  const wasChosen = answered && !isReveal && (a==='T' || a==='F');
+  const isCorrect = wasChosen ? ((a==='T')===q.ans) : null;
+  const showExplanation = isReveal || (state.testMode ? state.testSubmitted : wasChosen);
+
+  let cardClass='';
+  if(showExplanation && !isReveal){
+    if(wasChosen) cardClass = isCorrect ? 'answered-correct' : 'answered-wrong';
+  }
+
+  const srcBadge=q.src==='2024'?'badge-2024':q.src==='2025'?'badge-2025':'badge-pred';
+  const srcLabel=q.src==='예상'?'예상':q.src+'기출';
+
+  let btnTClass='btn-tf btn-true', btnFClass='btn-tf btn-false';
+  if(state.testMode && !state.testSubmitted){
+    if(a==='T') btnTClass += ' selected-pending';
+    if(a==='F') btnFClass += ' selected-pending';
+  } else if(answered && !isReveal) {
+    if(a==='T') btnTClass += (isCorrect ? ' selected-correct' : ' selected-wrong');
+    if(a==='F') btnFClass += (isCorrect ? ' selected-correct' : ' selected-wrong');
+    if(q.ans===true && a!=='T') btnTClass += ' reveal-correct';
+    if(q.ans===false && a!=='F') btnFClass += ' reveal-correct';
+  } else if(isReveal || (state.testMode && state.testSubmitted)) {
+    if(q.ans===true) btnTClass += ' reveal-correct';
+    else btnFClass += ' reveal-correct';
+  }
+
+  const expOpen = showExplanation ? 'open' : 'closed';
+  let resultLabel = '';
+  let resultClass = 'correct';
+  if(isReveal){
+    resultLabel = '정답 공개';
+    resultClass = 'correct';
+  } else if(state.testMode && !state.testSubmitted) {
+    resultLabel = '선택 중';
+    resultClass = 'correct';
+  } else if(wasChosen) {
+    resultLabel = isCorrect ? '✓ 정답!' : '✗ 오답';
+    resultClass = isCorrect ? 'correct' : 'wrong';
+  } else if(state.testMode && state.testSubmitted) {
+    resultLabel = '미답';
+    resultClass = 'wrong';
+  }
+  const ansTag=`<span class="answer-tag ${q.ans?'true':'false'}">${q.ans?'TRUE':'FALSE'}</span>`;
+
+  return `
+<div class="q-card ${cardClass}" id="card-${q.id}">
+  <div class="q-header">
+    <span class="badge badge-src ${srcBadge}">${srcLabel}</span>
+    <span class="badge badge-lec">${q.lec}</span>
+    <span class="q-num">#${num}</span>
+  </div>
+  <div class="q-text">${q.text}</div>
+  <div class="q-btns">
+    <button class="${btnTClass}" onclick="answer('${q.id}','T')">TRUE</button>
+    <button class="${btnFClass}" onclick="answer('${q.id}','F')">FALSE</button>
+  </div>
+  <div class="q-explain ${expOpen}">
+    <div class="explain-inner">
+      <div class="explain-result ${resultClass}">${resultLabel} ${showExplanation?ansTag:''}</div>
+      <div class="explain-text">${q.exp}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function answer(id, choice){
+  const prev = state.userAnswers[id];
+  if(prev === choice){
+    delete state.userAnswers[id];
+  } else {
+    state.userAnswers[id] = choice;
+  }
+  if(state.testMode){
+    state.testSubmitted = false;
+  }
+  persistState();
+  renderAll();
+}
+
+function updateScoreboard(){
+  const qs=getFilteredQuestions();
+  let correct=0,wrong=0,answered=0;
+  qs.forEach(q=>{
+    const a=state.userAnswers[q.id];
+    if(a && a!=='REVEAL'){
+      answered++;
+      if((!state.testMode || state.testSubmitted) && ((a==='T')===q.ans)) correct++;
+      else if((!state.testMode || state.testSubmitted) && ((a==='T')!==q.ans)) wrong++;
+    }
+  });
+
+  document.getElementById('sc-total').textContent=qs.length+'문';
+  if(state.testMode && !state.testSubmitted){
+    document.getElementById('sc-correct').textContent='✓ ?';
+    document.getElementById('sc-wrong').textContent='✗ ?';
+  } else {
+    document.getElementById('sc-correct').textContent='✓ '+correct;
+    document.getElementById('sc-wrong').textContent='✗ '+wrong;
+  }
+  const pct=qs.length?Math.round(answered/qs.length*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-text').textContent=answered+' / '+qs.length;
+  const suffixes = [];
+  if(state.testMode) suffixes.push(state.testSubmitted ? '제출됨' : '테스트 모드');
+  if(state.randomIds && state.randomIds.length) suffixes.push('랜덤 '+state.randomIds.length+'문제');
+  const suffix = suffixes.length ? ' · ' + suffixes.join(' · ') : '';
+  document.getElementById('counter-disp').textContent=qs.length+'문항 표시 중'+suffix;
+}
+
+// ════════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════════
+function jumpToUnanswered(dir){
+  const qs=getFilteredQuestions();
+  let unanswered=qs.filter(q=>!state.userAnswers[q.id]).map(q=>q.id);
+  if(unanswered.length===0){alert('모든 문제에 답했습니다!');return;}
+  const target=document.getElementById('card-'+unanswered[dir>0?0:unanswered.length-1]);
+  if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ════════════════════════════════════════════════════════════
+// RESULT SCREEN / TEST MODE
+// ════════════════════════════════════════════════════════════
+function showPrimaryAction(){
+  if(state.testMode && !state.testSubmitted) submitTest();
+  else showResult();
+}
+
+function submitTest(){
+  state.testSubmitted = true;
+  persistState();
+  renderAll();
+  showResult();
+}
+
+function showResult(){
+  const qs=getFilteredQuestions();
+  let correct=0,wrong=0,skipped=0;
+  const wrongList=[];
+  qs.forEach(q=>{
+    const a=state.userAnswers[q.id];
+    if(!a||a==='REVEAL'){skipped++;}
+    else if((a==='T')===q.ans){correct++;}
+    else{wrong++;wrongList.push(q);}
+  });
+  const total=qs.length;
+  const pct=total>0?Math.round(correct/total*100):0;
+
+  document.getElementById('res-pct').textContent=pct+'%';
+  document.getElementById('res-c').textContent=correct;
+  document.getElementById('res-w').textContent=wrong;
+  document.getElementById('res-s').textContent=skipped;
+
+  const titles=document.querySelector('.result-title');
+  if(pct>=90) titles.textContent='🏆 훌륭합니다!';
+  else if(pct>=70) titles.textContent='💪 잘 하고 있어요!';
+  else if(pct>=50) titles.textContent='📖 조금 더 복습이 필요해요';
+  else titles.textContent='🔥 다시 도전해봐요!';
+
+  const rev=document.getElementById('review-section');
+  if(wrongList.length>0){
+    rev.innerHTML='<div class="review-title">✗ 틀린 문제 목록 ('+wrongList.length+'개)</div>'+
+      wrongList.map(q=>`
+<div class="review-item wrong-item">
+  <div class="review-text">${q.text.length>80?q.text.slice(0,80)+'…':q.text}</div>
+  <div class="review-meta">${q.src}기출 · ${q.lec} · 정답: <b>${q.ans?'TRUE':'FALSE'}</b></div>
+</div>`).join('');
+  } else if(skipped===0){
+    rev.innerHTML='<div class="review-title" style="color:var(--green)">🎉 전체 정답! 완벽합니다!</div>';
+  } else {
+    rev.innerHTML='';
+  }
+
+  document.getElementById('result-screen').classList.add('show');
+}
+
+function closeResult(){
+  document.getElementById('result-screen').classList.remove('show');
+}
+
+function showWrongOnly(){
+  const qs=getFilteredQuestions();
+  const wrongIds = qs.filter(q=>{
+    const a=state.userAnswers[q.id];
+    return a && a !== 'REVEAL' && ((a==='T')!==q.ans);
+  }).map(q=>q.id);
+  closeResult();
+  if(!wrongIds.length){
+    alert('현재 필터에서 오답이 없습니다.');
+    return;
+  }
+  state.retryOnlyIds = wrongIds;
+  state.randomIds = null;
+  state.wrongOnly = false;
+  wrongIds.forEach(id=>delete state.userAnswers[id]);
+  if(state.testMode) state.testSubmitted = false;
+  syncChipUI();
+  persistState();
+  renderAll();
+}
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  loadState();
+  const randInput = document.getElementById('rand-count');
+  if(randInput){
+    randInput.value = state.randomCount || 10;
+    randInput.addEventListener('change',()=>{
+      const v = Math.max(1, Math.floor(Number(randInput.value)||10));
+      state.randomCount = v;
+      randInput.value = v;
+      persistState();
+    });
+  }
+  syncChipUI();
+  renderAll();
+});
+</script>
+</body>
+</html>

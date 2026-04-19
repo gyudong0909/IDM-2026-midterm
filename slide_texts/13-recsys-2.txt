@@ -1,0 +1,566 @@
+Recommender Systems 2
+     Introduction to Data Mining
+      Seoul National University
+            Spring 2026
+
+
+
+
+               Jaemin Yoo          1
+Announcements (Same as Before)
+• Assignments:
+  • HW2 (deadline: April 30)
+• Midterm:
+  • Announcement is uploaded (see eTL).
+
+
+
+
+                                 Jaemin Yoo   2
+                                                                 Recommend
+Recap
+                                Popularity
+                                                 “Touching the void”         “Into Thin Air”
+• Recommender Systems
+• Content-based Recommendation
+• Collaborative Filtering                               Items
+
+• The Netflix Challenge
+
+            like
+                                                like             like
+
+                      similar
+
+          recommend
+                                                 like            recommend
+
+                                   Jaemin Yoo                                        3
+Outline
+1. UV Decomposition
+2. UV Decomposition as Machine Learning
+3. Variants of UV Decomposition
+4. Dealing with Implicit Feedback
+
+
+
+
+                            Jaemin Yoo    4
+Goal of Recommender Systems
+• Recommendation is to fill in the blank in the utility matrix 𝑅.
+• The core operation is to get user and item representations.
+   • Content-based approach creates user/item profiles.
+   • Collaborative filtering uses the rows and columns of 𝑅.
+
+                  HP1    HP2   HP3      TW        SW1   SW2   SW3
+
+              A    4                      5        1
+              B    5      5     4
+              C                           2        4     5
+              D           3                                    3
+
+
+                                     Jaemin Yoo                     5
+Latent Factor Models
+• We’ll learn latent factor models, which assume:
+   • There are latent factors that represent users and items well.
+   • Such latent factors can be extracted from the utility matrix.
+• Latent factor models are basically collaborative filtering.
+   • Focus on user-item interactions without using external data.
+   • People mostly refer to latent factor models when mentioning CF.
+
+
+
+
+                                    Jaemin Yoo                         6
+Latent Factor Models: Idea
+• Idea: Consider the matrix 𝑅 as the product of factor matrices.
+  • Latent factors represent underlying concepts/topics.
+  • E.g., users react to certain genres, famous actors, or directors.
+• UV decomposition decomposes 𝑅 into 𝑈 and 𝑉.
+  • Each user and movie is summarized as a low-dimensional vector.
+                          n               k            n
+
+                                                   ✖   𝑉!   k
+                  m       R       ≈      U
+
+
+
+
+                                      Jaemin Yoo                        7
+UV Decomposition
+• Given an 𝑚 × 𝑛 utility matrix 𝑅 (i.e., 𝑚 users and 𝑛 items).
+• Find an 𝑚 × 𝑘 matrix 𝑈 and 𝑛 × 𝑘 matrix 𝑉 such that:
+   • 𝑈𝑉 # closely approximates 𝑀 for the non-blank entries.
+• Predict the blank entries in 𝑅 using the elements of 𝑈𝑉 ! .
+              ̂ = 𝑢$#𝑣% to estimate 𝑟$% .
+   • Compute 𝑟$%
+
+
+
+
+                        R          U             𝑉!
+
+                                    Jaemin Yoo                   8
+Error Function
+• Root-mean-square error (RMSE) measures the difference.
+  • Let 𝐸 be the set of non-blank entries.
+                          &
+           /
+  • RMSE 𝑅, 𝑅 = sqrt                  ̂ − 𝑟$% * .
+                            ∑ $,% ∈' 𝑟$%
+                         '
+• Sum of squared errors (SSE) is similar but more convenient.
+        / 𝑅 = 𝐸 ⋅ RMSE* 𝑅,
+  • SSE 𝑅,              / 𝑅 .
+
+
+           RMSE(                         )=
+
+                     R        𝑈𝑉 !
+
+
+
+                                     Jaemin Yoo                 9
+UV Decomposition vs. SVD
+• SVD decomposes 𝑅 into a product of three matrices.
+• Similarities between UV decomposition and SVD:
+  • Both can choose the number 𝑟 of latent factors.
+  • 𝑈Σ and V # from SVD can work as factor matrices.
+                       n           r               r   n
+
+                                                       VT   r
+                                               Σ
+               m       M     =    U
+
+
+
+
+                                  Jaemin Yoo                    10
+Differences from SVD
+• UV decomposition is mainly an empirical approach.
+  • 𝑈 and 𝑉 need not to be orthonormal matrices.
+  • Relies on stochastic optimization, not a closed-form solution.
+• UV decomposition seeks generalization to unseen data.
+  • UV ignores the missing entries, not treating them as zero.
+  • UV minimizes RMSE on only the training portion.
+  • Larger 𝑘 is not necessarily better (may increase test RMSE).
+
+
+
+
+                                   Jaemin Yoo                        11
+Outline
+1. UV Decomposition
+2. UV Decomposition as Machine Learning
+3. Variants of UV Decomposition
+4. Dealing with Implicit Feedback
+
+
+
+
+                          Jaemin Yoo      12
+What is Machine Learning?
+• Given data 𝐷, we want a function 𝑓 to solve a problem 𝑃.
+• Traditional data mining: Engineers design 𝑓 on their own.
+  • E.g., A-priori is designed to find frequent itemsets.
+• Machine learning (ML): Engineers “learn” 𝑓 from 𝐷.
+  • Requires training, which is computationally expensive.
+  • Not necessary if an existing algorithm is already good for 𝑃.
+
+
+
+
+                                     Jaemin Yoo                     13
+UV Decomposition as Machine Learning
+• In traditional CF, we manage the rule to recommend items.
+  • Based on a similarity measure between users/items.
+• In UV decomposition, we just learn factor matrices from 𝑅.
+  • We expect them to be better than the raw rows/columns.
+  • We don’t know exactly how; no closed-form solution exists.
+  • We just want them to minimize the (training) RMSE.
+
+
+
+
+                                  Jaemin Yoo                     14
+Objective Function
+• Goal: Find matrices 𝑈 and 𝑉 such that:
+
+                          𝑈 ∗ , 𝑉 ∗ = argmin#,% 𝐽 𝑅, 𝑈, 𝑉 .
+
+                              #         *
+    • 𝐽 𝑅, 𝑈, 𝑉   = ∑ $,% ∈' 𝑟$% − 𝑢$ 𝑣% measures SSE on training data 𝐸.
+
+        n             k            n
+
+                            ✖     𝑉!       k         • We call 𝑈, 𝑉 parameters.
+m       R         ≈   U                              • Other non-learnable choices
+                                                       are called hyperparameters.
+
+
+                                        Jaemin Yoo                                   15
+Mismatch in the Objective Function
+• Our (true) goal is to minimize SSE for unseen test data.
+• Increasing 𝑘 almost always decreases the value of 𝐽 ⋅ .
+   • Since the error decreases with more factors.
+• However, SSE on test data can begin to rise with large 𝑘.
+   • Since our objective function only considers training data.
+
+
+
+
+                                     Jaemin Yoo                   16
+Overfitting
+• This is a classical example of overfitting:
+   • Model starts fitting noise with too many free parameters.
+   • Model is not generalizing well to unseen test data.
+• We should carefully control the model complexity.
+   • E.g., the number of clusters in 𝑘-means.
+
+
+
+
+                                   Source: Medium
+
+
+
+                                     Jaemin Yoo                  17
+Regularization
+• Regularization is a possible way to prevent overfitting:
+   • Allows a rich model when there is sufficient data.
+   • Shrinks the model aggressively where data is scarce.
+• The new objective function with regularization is
+
+   𝐽 𝑅, 𝑈, 𝑉 = 7 𝑟&' − 𝑢& 𝑣' * + 𝜆+ 7 𝑢& ** + 𝜆* 7 𝑣' **
+                  &,' ∈)                            &                    '
+
+   • 𝜆& and 𝜆* are hyperparameters.                Limit the lengths of 𝑢! and 𝑣"
+
+
+
+                                      Jaemin Yoo                                    18
+                                  serious                Braveheart
+                The Color         Amadeus
+                Purple
+
+
+
+                                                           Lethal
+                 Sense and                                 Weapon
+                 Sensibility                  Ocean’s 11                    Geared
+      Geared
+      towards                                                               towards
+                                                                 Factor 1
+      females                                                               males
+
+
+Effect of regularization:         The Lion King
+                                                                        Dumb and
+• Goes to the center unless                                             Dumber
+
+
+
+                                       Factor 2
+   the signal is really strong.                   Independence
+                                                  Day
+
+                                      funny
+
+                                      Jaemin Yoo                                      19
+Validation Data
+• Introducing validation data is also important.
+   • Split the training data into (new) training and validation data.
+   • Check the performance on validation data during training.
+   • Use the validation performance as a proxy of the test performance.
+
+                                                 Validation dataset
+                                                 Training dataset
+
+
+                                                 Test dataset
+
+
+
+                                    Jaemin Yoo                            20
+Gradient Descent
+• Gradient descent (GD) finds parameters 𝜃 ∗ to minimize 𝐽 𝜃 .
+  • Compute the derivative ∇𝐽.
+  • Start at some point 𝜃, and evaluate ∇𝐽 𝜃, .
+  • Make a step in the reverse direction of the gradient: 𝜃& ← 𝜃, − ∇𝐽 𝜃, .
+  • Repeat until 𝐽 is sufficiently small.
+                                            𝐽
+
+
+                                                                 𝐽 𝜃" + 𝛻𝐽(𝜃" )
+
+
+
+
+                                                            𝜃"
+
+                                    Jaemin Yoo                                    21
+Gradient Descent for UV Decomposition
+• How to use GD to find 𝑈 ∗ and 𝑉 ∗ for UV decomposition:
+• Step 1: Initialize 𝑈 and 𝑉 using SVD, treating the blank as 0.
+   • Generally better than random initialization.
+• Step 2: Update 𝑈 and 𝑉 to minimize the objective function 𝐽.
+   • 𝑈 ← 𝑈 − 𝜂 ⋅ ∇3 𝐽 𝑅, 𝑈, 𝑉 .
+   • 𝑉 ← 𝑉 − 𝜂 ⋅ ∇4 𝐽 𝑅, 𝑈, 𝑉 .
+   • 𝜂 is a hyperparameter (called a step size or a learning rate).
+
+
+
+
+                                      Jaemin Yoo                      22
+Gradient Descent for UV Decomposition
+• Perform the update step on every entry independently.
+   • Since 𝑈 and 𝑉 are matrices.
+• For each entry at row 𝑥, column 𝑐 of matrix 𝑈, we update:
+
+                     𝑢&. = 𝑢&. − 𝜂 ⋅ ∇/!" 𝐽 𝑅, 𝑈, 𝑉
+
+   where ∇5!" 𝐽 𝑅, 𝑈, 𝑉 = ∑%: $,% ∈' −2𝑣%7 𝑟$% − 𝑢$#𝑣% + 2𝜆&𝑢$7 .
+
+
+
+
+                                     Jaemin Yoo                     23
+Stochastic Gradient Descent
+• Observation: Gradient descent is too slow for large data.
+• Stochastic gradient descent (SGD):
+   • We know that ∇𝐽 𝑅, 𝑈, 𝑉 = ∑ $,% ∈' ∇𝐽 𝑟$% , 𝑈, 𝑉 .
+   • Evaluate the gradient on each (not all) rating and make a step.
+   • Needs more steps until convergence but each step is much faster.
+   • GD: 𝑈 ← 𝑈 − 𝜂 ⋅ ∑ $,% ∈' ∇𝐽 𝑟$% , 𝑈, 𝑉 .
+   • SGD: 𝑈 ← 𝑈 − 𝜂 ⋅ ∇𝐽 𝑟$% , 𝑈, 𝑉 for 𝑥, 𝑖 ∈ 𝐸.
+
+
+
+
+                                   Jaemin Yoo                           24
+Convergence of SGD vs. GD
+• GD improves the value of the objective function at every step.
+• SGD improves the value but in a “noisy” way.
+• GD takes fewer steps but each step takes much longer.
+       Objective function
+
+
+
+
+                            Iteration/step
+                                             Jaemin Yoo            25
+                                                          25
+SGD for UV Decomposition
+• How to use SGD to find 𝑈 ∗ and 𝑉 ∗ for UV decomposition:
+• Step 1: Initialize 𝑈 and 𝑉 using SVD, treating the blank as 0.
+   • Generally better than random initialization.
+• Step 2: Iterate over the ratings until convergence:
+
+                        for each 𝑟$% ∈ 𝐸:
+                           𝜖$% ← 2 𝑟$% − 𝑢$#𝑣%
+                           𝑢$ ← 𝑢$ + 𝜂 𝜖$% 𝑣% − 𝜆&𝑢$
+                           𝑣% ← 𝑣% + 𝜂 𝜖$% 𝑢$ − 𝜆*𝑣%
+
+
+                                     Jaemin Yoo                    26
+SGD with Mini-batches
+• In practice, people do not apply SGD for individual samples.
+• Instead, they create (mini-)batches of several samples.
+   • GD: 1 step using 𝑁 samples.
+   • True SGD: 𝑁 steps using 1 sample.
+   • (Batch) SGD: 𝑁/𝐵 steps using a batch of 𝐵 samples.
+• Leads to a better balance between speed and stability.
+   • 𝐵 is a hyperparameter to choose.
+
+
+
+
+                                   Jaemin Yoo                    27
+Outline
+1. UV Decomposition
+2. UV Decomposition as Machine Learning
+3. Variants of UV Decomposition
+4. Dealing with Implicit Feedback
+
+
+
+
+                            Jaemin Yoo    28
+Modeling Biases and Interactions
+• There are global effects (biases) of users and movies.
+   • Rating 𝑟$% is not only about the interaction between 𝑥 and 𝑖.
+   • E.g., a critical reviewer 𝑥& vs. a generous person 𝑥*.
+   • E.g., The Godfather 𝑖& vs. some bad movie 𝑖* on Netflix.
+
+        user bias         movie bias                user-movie interaction
+
+
+
+
+                                       Jaemin Yoo                            29
+Model with Biases
+                             ̂ = 𝜇 + 𝑏& + 𝑏' + 𝑢&! 𝑣' .
+• Let’s predict a rating as 𝑟&'
+   • 𝜇 is the overall mean rating.
+   • 𝑏$ and 𝑏% are biases for user 𝑥 and movie 𝑖, respectively.
+   • 𝑢$#𝑣% is their interaction modeled by factor matrices.
+• Example:
+   • Mean rating of training data is 𝜇 = 3.7.
+   • You are a critical reviewer: 𝑏$ = −1.
+   • Star Wars is favored by many people: 𝑏% = +0.5.
+   • Final score is 3.7 − 1 + 0.5 + 𝑢$#𝑣% .
+
+
+                                     Jaemin Yoo                   30
+Fitting the New Model
+• Update the parameters {𝑈, 𝑉, 𝐵0123 , 𝐵4526 } minimizing 𝐽′:
+
+       7                                               *
+      𝐽 ⋅ = 7 𝑟&' −          𝜇 + 𝑏& + 𝑏' + 𝑢&! 𝑣'          + regularizer
+               &,'∈)
+
+   • There are 4 regularization hyperparameters: 𝜆&, 𝜆*, 𝜆8, 𝜆9.
+   • 𝜇 is the simple average of ratings; it needs not to be learned.
+
+
+
+
+                                      Jaemin Yoo                           31
+Further Improvements
+• Any idea for modifying the three components is okay to try:
+   • Set 𝜃 of learnable parameters.
+   • Objective function 𝐽 to minimize.
+   • (Optional) regularizer on 𝜃 with 𝜆.
+• SGD (or GD) will take care of finding the optimal parameters.
+   • We believe in the power of gradient-based optimization!
+
+
+
+
+                                      Jaemin Yoo                  32
+Hyperparameter Search
+• How can we search for optimal hyperparameters 𝜆+ , 𝜆* , 𝜆8 , 𝜆9 ?
+• We pick the one with the best validation performance.
+• Grid search: Create sets of values and try for each combination.
+   • E.g., 𝜆& in 0.001, 0.01, 0.1, 1, 10 .
+• Random search: Try for each randomly selected combination.
+   • E.g., 𝜆& from 0.001, 10 (but in a log scale).
+
+
+
+
+                                        Jaemin Yoo                    33
+Outline
+1. UV Decomposition
+2. UV Decomposition as Machine Learning
+3. Variants of UV Decomposition
+4. Dealing with Implicit Feedback
+
+
+
+
+                            Jaemin Yoo    34
+Dealing with Implicit Feedback
+• What if the utility matrix 𝑅 contains only implicit feedback?
+   • Each entry is either 0 (not watched) or 1 (watched).
+• Using the same model with RMSE 𝐽 makes some limitations.
+   • Limitation 1: Our prediction can be any number, i.e., 𝑢$#𝑣% > 1.
+   • Limitation 2: We may need a better gradient curve of 𝐽.
+   • Limitation 3: Our loss 𝐽 assumes 0 as a dislike, not “not watched.”
+
+
+
+
+                                     Jaemin Yoo                            35
+Idea 1: Sigmoid Function
+• We want to limit the predictions of our model to be 0, 1 .
+• Simple solution is to use 𝜎 𝑢&! 𝑣' instead of 𝑢&! 𝑣' as output.
+• Sigmoid function 𝜎 is defined as follows:
+                                    1
+                           𝜎 𝑥 =
+                                 1 + 𝑒 :&
+   • Maps −∞, ∞ to 0, 1 with 𝜎 0 = 0.5.
+   • Monotonically increasing for all ranges of 𝑥.
+
+
+
+                                     Jaemin Yoo                     36
+Implication of the Sigmoid
+• Without sigmoid: Signals are mixed regardless of 𝑟&' .
+   • If 𝑟$% = 1 and 𝑢$#𝑣% > 1, the model is updated to decrease 𝑢$#𝑣% .
+   • If 𝑟$% = 1 and 𝑢$#𝑣% < 1, the model is updated to increase 𝑢$#𝑣% .
+   • If 𝑟$% = 0 and 𝑢$#𝑣% > 0, the model is updated to decrease 𝑢$#𝑣% .
+   • If 𝑟$% = 0 and 𝑢$#𝑣% < 0, the model is updated to increase 𝑢$#𝑣% .
+• With sigmoid: Signals are consistent with 𝑟&' .
+   • If 𝑟$% = 1, the model is always updated to increase 𝑢$#𝑣% .
+   • If 𝑟$% = 0, the model is always updated to decrease 𝑢$#𝑣% .
+
+
+
+
+                                     Jaemin Yoo                           37
+Idea 2: Binary Cross Entropy
+• RMSE is used mainly for continuous, unbounded targets.
+• We may use binary cross entropy (BCE) instead of RMSE:
+
+ 𝐽;<= 𝑟&' , 𝑢& , 𝑣' = − 𝑟&' log 𝜎 𝑢&! 𝑣' + 1 − 𝑟&' log(1 − 𝜎 𝑢&! 𝑣' )
+
+  • If 𝑟$% = 1, we minimize − log 𝜎 𝑢$#𝑣% by making 𝜎 𝑢$#𝑣% to 1.
+  • If 𝑟$% = 0, we minimize − log(1 − 𝜎 𝑢$#𝑣% ) by making 𝜎 𝑢$#𝑣% to 0.
+
+
+
+
+                                   Jaemin Yoo                             38
+Gradient Curves
+• BCE has a gradient curve different from that of RMSE.
+• Suppose that 𝑟&' = 0 and 𝑎 = 𝜎 𝑢&! 𝑣' for simplicity.
+   • (RMSE) ∇: 𝑎 * = 2𝑎: Gradient increases linearly with 𝑎.
+   • (BCE) ∇: − log 1 − 𝑎 = 1/ 1 − 𝑎 : Gradient increases rapidly.
+• BCE makes the model focus more on wrong samples.
+   • Not already accurate ones.
+
+
+
+
+                                   Jaemin Yoo                        39
+Idea 3: Ranking Losses
+• Both RMSE and BCE assume 0 as “dislike,” not “unknown.”
+  • Since they are computed for individual elements 𝑟$% .
+• Idea: Consider the task as ranking, not elementwise prediction.
+  • Given a user 𝑥, suppose that 𝑟$% = 1 while 𝑟$; = 0.
+  • Then, we can safely assume that user 𝑥 likes 𝑖 more than 𝑗.
+     • If 𝑥 really likes 𝑗, they would have watched it before 𝑖.
+  • Let’s update the model by comparing items, so that 𝑢$% > 𝑢$; .
+
+
+
+
+                                           Jaemin Yoo                40
+Bayesian Personalized Ranking
+• We may use the Bayesian personalized ranking (BPR) loss:
+
+                𝐽;AB 𝑈, 𝑉 = 7 − log 𝜎 𝑢&! 𝑣' − 𝑢&! 𝑣C
+                                &,',C
+
+   • Item 𝑗 is randomly selected from the negative samples { 𝑗 | 𝑟$; = 0 }.
+• The sigmoid function 𝜎 enables all pairs to contribute fairly.
+• How to sample negative pairs is also important (some ideas?).
+
+
+                                        Jaemin Yoo                            41
+Summary
+1. UV Decomposition
+  • Latent factor models
+2. UV Decomposition as Machine Learning
+  • Overfitting and regularization
+  • Stochastic gradient descent
+3. Variants of UV Decomposition
+  • Modeling biases
+4. UV Decomposition: Variants
+  • BCE and BPR losses
+
+
+                                     Jaemin Yoo   42
+

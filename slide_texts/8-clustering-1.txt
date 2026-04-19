@@ -1,0 +1,583 @@
+Clustering 1
+Introduction to Data Mining
+ Seoul National University
+       Spring 2026
+
+
+
+
+          Jaemin Yoo          1
+Announcements
+• Assignments:
+  • HW1 is posted (deadline: April 9).
+• Languages:
+  • Assignments allow only English.
+  • Exams allow both English and Korean.
+• Using eTL:
+  • You can ask any questions regarding lectures on the Lectures board.
+
+
+
+
+                                    Jaemin Yoo                            2
+Recap: LSH
+• Locality Sensitive Hashing (LSH)
+   • S-curves
+• Theory of LSH:
+   • Locality-sensitive families
+   • AND and OR constructions
+                                                 1
+• Other distance measures:
+                                   Probability of
+   • Random hyperplanes            becoming a 0.63
+                                   candidate
+
+
+                                                 0
+                                                     0   (1/b)1/r       1
+                                    Jaemin Yoo                      3
+Outline
+1. Clustering
+2. Hierarchical Clustering
+3. K-means Clustering
+
+
+
+
+                             Jaemin Yoo   4
+Clustering
+• The process of grouping a collection of points into clusters.
+   • Members of the same cluster are close/similar to each other.
+   • Members of different clusters are dissimilar.
+• We focus on cases when
+   • Data is very large.
+   • Space is high-dimensional.
+   • Space is non-Euclidean.
+   • Similarity can be defined using any distance measure.
+
+
+
+
+                                    Jaemin Yoo                      5
+Distance Measures
+• Distance measure gives a distance between two points.
+  • Recall the 4 requirements for a distance measure.
+• Popular distance measures in a Euclidean space include:
+  • Euclidean (L2) distance: ∑! 𝑥! − 𝑦! ".
+  • Manhattan (L1) distance: ∑! 𝑥! − 𝑦! .
+  • L0 distance: ∑! 1 if 𝑥! ≠ 𝑥# else 0 .
+  • L-Infinity distance: max 𝑥! − 𝑦! .
+                        !
+
+
+
+
+                                  Jaemin Yoo                6
+Example: Clusters and Outliers
+
+
+
+
+                 Source: Stanford CS246 (2022)
+
+                          Jaemin Yoo             7
+Example: Documents
+• Represent a document by a vector (𝑥! , 𝑥" , ⋯ , 𝑥# ).
+   • 𝑥! = 1 iff the 𝑖-th word appears in the document.
+• Idea: Documents with similar words are about the same topic.
+• Task: Find clusters of documents.
+   • Different from finding similar pairs, which returns document pairs.
+
+
+
+
+                                    Jaemin Yoo                             8
+Cosine, Jaccard, and Euclidean
+• We have a choice when we think of documents as sets of words:
+  • Sets as vectors: Measure similarity by the cosine distance.
+  • Sets as sets: Measure similarity by the Jaccard distance.
+  • Sets as points: Measure similarity by the Euclidean distance.
+
+
+
+
+                                   Jaemin Yoo                       9
+Clustering in Low-Dimensional Space
+• Clustering in two dimensions looks easy.
+                                              Jindo
+
+
+
+                  Sapsali
+
+
+
+
+                                                      Pungsan
+     Heigh
+     t
+
+
+                            Weight
+                                 Jaemin Yoo                     10
+The Curse of Dimensionality
+• High-dimensional spaces have the curse of dimensionality.
+  • Almost all pairs of points are equally far away from one another.
+
+
+
+
+                                    Jaemin Yoo                          11
+The Curse of Dimensionality
+• Consider two random points in the 𝑛-dimensional unit hypercube.
+• The variance of their distance goes to a constant when 𝑛 → ∞.
+  • But the possible range is 0, 𝑛 .
+• Suppose that 𝑛 = 2500.
+  • The distance can be anything in 0, 50 .
+  • However, most distances are in 20, 21 .
+
+
+
+
+    Source: https://math.stackexchange.com/questions/1976842/how-is-the-distance-of-two-random-points-in-a-unit-hypercube-distributed
+                                                               Jaemin Yoo                                                               12
+Clustering Strategies
+• Hierarchical:
+  • Agglomerative (bottom up)
+     • Initially, each point is a cluster.                   A   B   C   D   E   F
+     • Repeatedly combine the “nearest” clusters into one.
+  • Divisive (top down)
+     • Start with one cluster and recursively split it.
+• Point assignment:
+  • Maintain a set of clusters.
+  • Points belong to the “nearest” clusters.
+
+
+
+                                           Jaemin Yoo                                13
+Hierarchical vs. Point-Assignment
+• (Left) Point assignment is good when clusters have nice shapes.
+• (Right) Hierarchical methods can win when the shapes are weird.
+  • Note that both clusters have essentially the same centroid.
+
+
+
+
+                              Source: Stanford CS246 (2022)
+
+
+                                       Jaemin Yoo                   14
+Clustering Strategies
+• In Euclidean:
+  • Points are vectors of real numbers, i.e. coordinates.
+  • It is possible to summarize a set of points as a centroid.
+  • Distance measure: L2 norm, L1 norm, etc.
+• In non-Euclidean:
+  • There is no notion of “location” or centroids.
+  • We should summarize a collection of points differently.
+  • Distance measures: Jaccard, Hamming, cosine, etc.
+
+
+
+
+                                    Jaemin Yoo                   15
+Non-Euclidean Space
+• Finding the center of points is difficult in a non-Euclidean space.
+   • E.g., a simple average of three points will not lie on the sphere.
+
+
+
+
+                                    Source: LinkedIn
+
+                                      Jaemin Yoo                          16
+Clustering Strategies
+• In-memory clustering: Easier if the data fit in memory.
+   • Example: K-means
+• Large-data clustering: Load one batch of data at a time.
+   • Cluster them in memory and keep summaries of clusters.
+   • Example: BFR and CURE
+
+
+
+
+                                  Jaemin Yoo                  17
+Outline
+1. Clustering
+2. Hierarchical Clustering
+3. K-means Clustering
+
+
+
+
+                             Jaemin Yoo   18
+Hierarchical Clustering
+• Key operation: Repeatedly merge two “nearest” clusters.
+• Three important questions:
+  1. How to represent a cluster?
+  2. How to determine the nearness of clusters?
+  3. When to stop merging clusters?
+
+
+
+
+                          A   B   C     D      E   F
+
+
+
+                                  Jaemin Yoo                19
+Hierarchical Clustering: Euclidean
+• In the Euclidean case, our answers are straightforward.
+• Q1: How to represent a cluster of many points?
+   • As we merge clusters, we represent the “location” of each cluster by
+      • Its centroid = average of its (data) points.
+• Q2: How to determine the nearness of clusters?
+   • Measure cluster distances by the distances between their centroids.
+   • Merge two clusters with the shortest distance.
+
+
+
+
+                                            Jaemin Yoo                      20
+Example: Hierarchical Clustering
+
+                                                       (5,3)
+
+
+                (1,2)
+
+
+
+                           (2,1)               (4,1)
+
+
+        (0,0)
+                                                               (5,0)
+
+
+
+
+                        Data:
+                         = data point                                  Dendogram
+                         = centroid
+
+                                        Jaemin Yoo                                 21
+Example: Hierarchical Clustering
+
+                                                         (5,3)
+
+
+                (1,2)
+
+                        (1.5,1.5)
+
+                             (2,1)             (4,1)
+
+
+        (0,0)
+                                            (4.5, 0.5)
+                                                                 (5,0)
+
+
+
+
+                        Data:
+                         = data point                                    Dendogram
+                         = centroid
+
+                                        Jaemin Yoo                                   22
+Example: Hierarchical Clustering
+
+                                                         (5,3)
+
+
+                (1,2)
+
+                        (1.5,1.5)
+
+                             (2,1)             (4,1)
+
+
+        (0,0)
+                                            (4.5, 0.5)
+                                                                 (5,0)
+
+
+
+
+                        Data:
+                         = data point                                    Dendogram
+                         = centroid
+
+                                        Jaemin Yoo                                   23
+Example: Hierarchical Clustering
+
+                                                         (5,3)
+
+
+                (1,2)
+
+                        (1.5,1.5)
+
+                             (2,1)             (4,1)
+
+
+        (0,0)
+                                            (4.5, 0.5)
+                                                                 (5,0)
+
+
+
+
+                        Data:
+                         = data point                                    Dendogram
+                         = centroid
+
+                                        Jaemin Yoo                                   24
+Efficiency of Hierarchical Clustering
+• Basic algorithm:
+  • At each step, compute distances between pairs of clusters.
+  • Running time is 𝑂(𝑛$), since 𝑛" + 𝑛 − 1 " + 𝑛 − 2 " + ⋯
+
+
+
+
+                                  Jaemin Yoo                     25
+Efficiency of Hierarchical Clustering
+• More efficient implementation uses a priority queue.
+   • Store a collection of prioritized elements.
+   • The overall algorithm is 𝑂 𝑛" log 𝑛 , which is better than 𝑂 𝑛$ .
+• Why is it better?
+   • We avoid re-computing the distances computed earlier.
+   • See textbook for details.
+
+
+
+
+                                     Jaemin Yoo                          26
+Hierarchical Clustering: Non-Euclidean
+• In a non-Euclidean case:
+  • The only “locations” we can talk about are the points themselves.
+• Three possible approaches regarding the questions:
+  • Q1: How to represent a cluster of many points?
+  • Q2: How to determine the nearness of clusters?
+  • Note: These approaches can also be used in the Euclidean case.
+
+
+
+
+                                   Jaemin Yoo                           27
+Non-Euclidean Approach 1
+• Q1: How to represent a cluster of many points?
+  • Pick a clustroid = (data) point “closest” to all other points.
+  • Possible meanings of “closest”:
+     • Smallest maximum / average distance to all other points.
+• Q2: How to determine the nearness of clusters?
+  • Treat clustroid as if it were centroid.
+
+
+
+
+                                        Jaemin Yoo                   28
+Centroids vs. Clustroids
+• Centroid is the average of all (data) points in the cluster.
+   • This means the centroid is an “artificial” point.
+• Clustroid is an existing point that is “closest” to all other points.
+
+
+
+
+                                 Source: Stanford CS246 (2022)
+
+
+
+
+                                          Jaemin Yoo                      29
+Non-Euclidean Approach 2
+• Q1: How to represent a cluster of many points?
+  • As the collection of points in the cluster.
+• Q2: How to determine the nearness of clusters?
+  • Define inter-cluster distance:
+     • Minimum of the distances between any two points, one from each cluster.
+     • Average distance of all pairs of points, one from each cluster.
+
+
+
+
+                                       Jaemin Yoo                                30
+Non-Euclidean Approach 3
+• Q1: How to represent a cluster of many points?
+  • As the collection of points in the cluster.
+• Q2: How to determine the nearness of clusters?
+  • Merge clusters whose union is most cohesive.
+  • Possible notions of cohesion (the smaller, the more cohesive):
+     • Diameter of the merged cluster = Maximum distance between points.
+     • Average distance between all points.
+     • Inverse density of the cluster = Diameter or average distance / # of points.
+
+
+
+
+                                         Jaemin Yoo                                   31
+When to Stop?
+• When do we stop merging clusters?
+  • If the diameter of the merged cluster exceeds threshold.
+  • If the density of the merged cluster is below threshold.
+  • If there is evidence that the merged cluster yields a bad cluster.
+     • E.g., the average diameter suddenly increases.
+
+
+
+                                                        ?
+
+
+
+
+                                        Jaemin Yoo                       32
+Pop Quiz
+• Perform a hierarchical clustering on the points below.
+   • The distance between two clusters is:
+      the maximum of the distances between any two points.
+• 1, 4, 9, 16, 25, 36
+
+
+
+
+                                  Jaemin Yoo                 33
+Outline
+1. Clustering
+2. Hierarchical Clustering
+3. K-means Clustering
+
+
+
+
+                             Jaemin Yoo   34
+𝑘-means Algorithm
+• Best known family of clustering algorithms for point assignment.
+• Given Euclidean space/distance and 𝑘 = number of clusters.
+   • Possible to deduce 𝑘 by trial and error.
+• Find cluster centers that minimize the sum of squared distances.
+   • From each point to its cluster center.
+
+
+
+
+                                     Jaemin Yoo                      35
+𝑘-means Algorithm
+• Initialize clusters by picking 𝑘 centers.
+• Until convergence:
+   1. For each point, assign it to the cluster whose centroid is the closest.
+   2. After all points are assigned, update the centroids of the 𝑘 clusters.
+      • As the average of data points within each cluster.
+• Convergence means that points don’t move between clusters.
+
+
+
+
+                                          Jaemin Yoo                            36
+Shortcoming of 𝑘-means
+• Convergence of 𝑘-means heavily depends on the initial centroids.
+• It can perform arbitrarily badly in such a case:
+
+
+
+
+                          Source: Stanford CS246 (2022)
+
+
+
+
+                                   Jaemin Yoo                    37
+𝑘-means++
+• Goal: Pick points that are likely to lie in different clusters.
+• Basic idea:
+   • Pick a small sample of points 𝑆, cluster them, and use their centroids.
+      • Any algorithm can be used for the clustering.
+   • Sample size 𝑆 is proportional to 𝑘 × log 𝑛, where 𝑛 is the data size.
+• How to pick sample points:
+   • Visit points in a random order.
+   • Add each point 𝑝 to the sample with a probability proportional to 𝐷 𝑝 ".
+      • 𝐷 𝑝 = Distance between 𝑝 and the nearest already picked point.
+
+
+
+                                         Jaemin Yoo                             38
+Example: Assigning Clusters
+
+
+
+
+                 Source: Stanford CS246 (2022)
+
+
+
+                          Jaemin Yoo             39
+Example: Assigning Clusters
+
+
+
+
+                 Source: Stanford CS246 (2022)
+
+
+
+                          Jaemin Yoo             40
+Example: Assigning Clusters
+
+
+
+
+                 Source: Stanford CS246 (2022)
+
+
+
+                          Jaemin Yoo             41
+Getting the 𝑘 Right
+• How to select 𝒌?
+  • Try different 𝑘.
+  • Look at the change in the average distance to centroid as 𝑘 increases.
+  • Average falls rapidly until right 𝑘, then changes little.
+
+
+
+
+                              Source: Stanford CS246 (2022)
+
+
+                                       Jaemin Yoo                            42
+Example: Picking 𝑘
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             43
+Example: Picking 𝑘
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             44
+Example: Picking 𝑘
+
+
+
+
+                 Source: Stanford CS246 (2022)
+                          Jaemin Yoo             45
+Summary
+1. Clustering
+  • Curse of dimensionality
+  • Clustering strategies
+2. Hierarchical Clustering
+  • Euclidean vs. non-Euclidean
+  • Centroids vs. clustroids
+3. K-means Clustering
+  • 𝑘-means++
+  • Selection of 𝑘
+
+
+                                  Jaemin Yoo   46
+

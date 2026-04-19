@@ -1,0 +1,527 @@
+      Spark
+Introduction to Data Mining
+ Seoul National University
+       Spring 2026
+
+
+
+
+          Jaemin Yoo          1
+Announcements
+• Communications:
+  • We will use eTL for all course communications (no other apps).
+• Assignments:
+  • Please check the announcement for the computing environment.
+  • HW0 will be posted today. No submissions required.
+
+
+
+
+                                   Jaemin Yoo                        2
+Recap: MapReduce
+• MapReduce is suitable for large files rarely updated in place.
+   • User implements two functions: Map and Reduce.
+      • Map: 𝑘, 𝑣 → 𝑘! , 𝑣! !
+      • Reduce: 𝑘, 𝑣" , ⋯ , 𝑣# → 𝑘, 𝑣
+   • System runs the group-by-keys operation.
+   • System automatically handles node failures.
+
+
+
+
+                                        Jaemin Yoo                 3
+Outline
+1. Spark: Overview
+2. Spark: Operations
+3. Spark: Implementation
+
+
+
+
+                           Jaemin Yoo   4
+Hadoop
+• Hadoop is an open-source framework for distributed processing.
+  • MapReduce is tightly coupled with Hadoop.
+• Consists of three key components:
+  • HDFS: Stores large datasets across clusters with replication.
+  • YARN: Manages resources and job scheduling across nodes.
+  • Processing engines: Run computations (e.g., MapReduce and Spark).
+• In modern Hadoop, the master controller mostly means YARN.
+
+
+
+
+                                 Jaemin Yoo                             5
+Data Analytics Software Stack
+
+
+
+
+                  Source: Maleki et al. (2019)
+
+
+
+                          Jaemin Yoo             6
+Limitations of MapReduce (1/2)
+• MapReduce stores intermediate files on disk.
+  • The output of each Map task is stored on the
+    local file system of the worker.
+     • The files are not accessible if the worker fails.
+  • Pros: Can be run with little main memory.
+  • Cons: Disk overhead after each Map task.
+
+
+
+
+                                           Jaemin Yoo      7
+Limitations of MapReduce (2/2)
+• MapReduce incurs substantial overheads for a complex job.
+  • Due to data replication and disk I/O.
+• Many algorithms are not easily described as MapReduce.
+
+
+
+
+                               Source: Stanford CS246 (2022)
+
+                                        Jaemin Yoo             8
+Workflow System
+• MapReduce creates a chain of tasks (Map–Reduce–Map–).
+• Let’s extend it into a directed acyclic graph (DAG) of tasks.
+   • Allow functions that can take more than one input.
+• Master controller is responsible for dividing work among tasks.
+
+
+
+      Map    Reduce   Map   Reduce
+
+
+
+
+                                                                    9
+Blocking Property
+• Blocking property allows a fault-resilient model.
+   • Operation can run only after all its predecessors are completed.
+   • If a task fails, we know that any of its successors didn’t start.
+• Master controller can restart failed tasks at another node.
+   • If 𝑔 fails, then we re-run 𝑓 and then 𝑔 following the graph.
+
+
+
+
+                                                                         10
+Spark: Most Popular Workflow System
+• Spark is a flexible workflow system not limited to MapReduce.
+  • Developed by UCB and Databricks, now maintained by Apache.
+• Additions to MapReduce:
+  • Fast data sharing
+     • Avoid saving intermediate results to disk.
+     • Cache data for repetitive queries (e.g. for ML).
+  • General execution graphs (DAGs)
+  • Richer functions than Map and Reduce
+• Compatible with Hadoop (e.g., HDFS).
+
+                                                          Source: DataBricks
+
+                                          Jaemin Yoo                           11
+Resilient Distributed Dataset (RDD)
+• RDD: Key idea / central data abstraction of Spark.
+   • Partitioned collection of records of one type.
+      • Generalizes key-value pairs in MapReduce.
+   • Spread across the cluster (i.e., chunks) and read-only.
+   • Can be cached in main memory.
+   • Created from DFS or by transforming other RDDs.
+   • Best if the same operation is applied to all elements.
+
+
+
+
+                                                               Source: Stanford CS246 (2022)
+
+
+                                        Jaemin Yoo                                    12
+Spark Program
+• Transformations build RDDs from other RDDs.
+   • Through deterministic, parallelizable operations.
+   • Include map, filter, join, union, distinct, etc.
+   • Lazy evaluation: Nothing is computed until an action.
+• Actions are used to return value or export data.
+   • Include count, collect, reduce, save, etc.
+   • Applied to RDDs, force calculations and return values.
+
+
+
+                                                              Source: Stanford CS246 (2022)
+
+
+                                    Jaemin Yoo                                       13
+Outline
+1. Spark: Overview
+2. Spark: Operations
+3. Spark: Implementation
+
+
+
+
+                           Jaemin Yoo   14
+Example: Average Word Length by Letter
+• Problem:
+  • Given a large text file (stored in the DFS),
+  • For each letter 𝜋 ∈ 𝑎, ⋯ , 𝑧 ,
+  • What is the average length of words that start with 𝜋?
+• How to do it with MapReduce:
+  • Map: line index, line → (𝑤 0 , len 𝑤 ) 𝑤 ∈ line
+  • Reduce: word, lengths → (word, mean lengths )
+
+
+
+
+                                    Jaemin Yoo               15
+Example: Average Word Length by Letter
+> avglens = sc.textFile(file)
+
+
+
+
+                   RDD
+        DFS:
+        mydat
+        a
+
+
+
+                                Jaemin Yoo   16
+Example: Average Word Length by Letter
+> avglens = sc.textFile(file) \
+   .flatMap(lambda line: line.split())
+
+
+
+
+                   RDD       RDD
+        DFS:
+        mydat
+        a
+
+
+
+                                   Jaemin Yoo   17
+Example: Average Word Length by Letter
+> avglens = sc.textFile(file) \
+   .flatMap(lambda line: line.split()) \
+   .map(lambda word: (word[0], len(word)))
+
+
+
+
+                   RDD       RDD                RDD
+        DFS:
+        mydat
+        a
+
+
+
+                                   Jaemin Yoo         18
+Example: Average Word Length by Letter
+> avglens = sc.textFile(file) \
+   .flatMap(lambda line: line.split()) \
+   .map(lambda word: (word[0], len(word))) \
+   .groupByKey()
+
+
+
+
+                   RDD       RDD                RDD
+                                                      RDD
+        DFS:
+        mydat
+        a
+
+
+
+                                   Jaemin Yoo               19
+Example: Average Word Length by Letter
+> avglens = sc.textFile(file) \
+   .flatMap(lambda line: line.split()) \
+   .map(lambda word: (word[0], len(word))) \
+   .groupByKey() \
+   .map(lambda (k, values): \
+     (k, sum(values) / len(values)))
+
+
+                   RDD       RDD                RDD
+                                                      RDD   RDD
+        DFS:
+        mydat
+        a
+
+
+
+                                   Jaemin Yoo                     20
+Example: Average Word Length by Letter
+• Wide dependency (slow; shuffling)
+  • When each partition is depended on by multiple child partitions.
+• Narrow dependency (fast; pipelining)
+  • When each partition is used by at                     Wide      Narrow
+    most one partition of the child RDD.               dependency dependency
+
+
+                   RDD        RDD                RDD
+                                                                RDD       RDD
+       DFS:
+       mydat
+       a
+
+
+
+                                    Jaemin Yoo                                  21
+FlatMap
+• Transformation that applies a function to every element.
+• Same as MapReduce’s Map, but has no restriction on the type.
+   • Maps any object into a list of 0 or more objects.
+• All the lists are flattened into a single RDD of output objects.
+                    > avglens = sc.textFile(file) \
+                       .flatMap(lambda line: line.split()) \
+                       .map(lambda word: (word[0], len(word))) \
+                       .groupByKey() \
+                       .map(lambda (k, values): \
+                         (k, sum(values) / len(values)))
+
+
+
+
+                                       Jaemin Yoo                    22
+Map
+• Stricter version of the FlatMap transformation.
+• Forces to create exactly one object from each input element.
+  • No flattening operation is applied.
+  • System has better control for the resource management.
+
+                  > avglens = sc.textFile(file) \
+                     .flatMap(lambda line: line.split()) \
+                     .map(lambda word: (word[0], len(word))) \
+                     .groupByKey() \
+                     .map(lambda (k, values): \
+                       (k, sum(values) / len(values)))
+
+
+
+
+                                     Jaemin Yoo                  23
+Filter
+• Takes a predicate that applies to the RDD object type.
+• Returns elements that satisfy the predicate.
+• Better be applied as early as possible to reduce the RDD’s size.
+
+                > avglens = sc.textFile(file) \
+                   .flatMap(lambda line: line.split()) \
+                   .filter(lambda word: word not in stoplist) \
+                   .map(lambda word: (word[0], len(word))) \
+                   .groupByKey() \
+                   .map(lambda (k, values): \
+                     (k, sum(values) / len(values)))
+
+
+
+                                     Jaemin Yoo                      24
+Reduce
+• Action (not transformation) that returns a value instead of an RDD.
+• Takes parameter that is a function of type 𝑉, 𝑉 ⇒ 𝑉.
+   • The function is repeatedly applied on pairs of elements in any order.
+   • Each pair reduces to one element, and we are left with only one.
+   • The function should be associative and commutative (e.g., addition).
+
+                   > avglens = sc.textFile(file) \
+                      .flatMap(lambda line: line.split()) \
+                      .map(lambda word: len(word)) \
+                      .reduce(lambda a, b: a + b)
+
+
+
+
+                                      Jaemin Yoo                             25
+Join
+• Transformation that merges two RDDs of key-value pairs.
+  • They should have the same key types.
+  • For each pair 𝑘, 𝑥 and 𝑘, 𝑦 , it creates (𝑘, 𝑥, 𝑦 ).
+• Creates a wide dependency.
+
+                   > x = sc.parallelize([("a", 1), ("b", 4)])
+                   > y = sc.parallelize([("a", 2), ("a", 3)])
+                   > x.join(y).collect()
+                   [('a', (1, 2)), ('a', (1, 3))]
+
+
+
+
+                                      Jaemin Yoo                26
+GroupByKey
+• Transformation that is the same as MapReduce’s group-by-keys.
+  • Takes an RDD of key-value pairs.
+  • Produces an RDD of key-“value list” pairs.
+• Creates a wide dependency.
+                  > avglens = sc.textFile(file) \
+                     .flatMap(lambda line: line.split()) \
+                     .map(lambda word: (word[0], len(word))) \
+                     .groupByKey() \
+                     .map(lambda (k, values): \
+                       (k, sum(values) / len(values)))
+
+
+
+
+                                     Jaemin Yoo                   27
+Wide vs. Narrow Dependencies
+• Q1: Can FlatMap create multiple partitions from one?
+  • A: Yes, it is a one-to-many function.
+• Q2: Then, does it have a wide dependency?
+  • A: No, each partition in R1 still comes from only one partition.
+
+                                      R0           R1
+
+                       DFS:
+                       mydata
+
+
+
+
+                                    Jaemin Yoo                         28
+Pop Quiz
+• There are many other transformations and actions on Spark.
+• E.g., reduceByKey(func) is like groupByKey(), but also applies a
+  reduce function func of the form 𝑉, 𝑉 ⇒ 𝑉 on the values.
+   • Better than groupByKey() + reduce().
+• Problem: Implement word count using reduceByKey().
+
+
+
+
+                                Jaemin Yoo                           29
+Outline
+1. Spark: Overview
+2. Spark: Operations
+3. Spark: Implementation
+
+
+
+
+                           Jaemin Yoo   30
+Spark Implementation
+• Similarities with MapReduce:
+  • RDD is divided into chunks, which are given to different nodes.
+  • Transformation on RDDs can be performed in parallel on chunks.
+• Two key improvements over MapReduce:
+  • Lazy evaluation of RDDs (for efficiency)
+  • Lineage for RDDs (for fault-resilience)
+
+
+
+
+                                    Jaemin Yoo                        31
+Lazy Evaluation
+• Spark does not apply transformations until it is required to do so.
+   • E.g., storing an RDD to file system or returning a result to application.
+• Thanks to lazy evaluation, Spark can optimize execution plans.
+   • Can combine transformations, minimizing the number of passes.
+   • Can pass the result of a transformation in memory without using disk.
+
+                          R0           R1           R2
+
+          DFS:                                                   DFS:
+          mydata                                                 output
+
+
+
+
+                                      Jaemin Yoo                                 32
+Lazy Evaluation Example
+• Count words that are not stop words in a document.
+  • Apply Flatmap to input RDD R0 to create (𝑤, 1) pairs in R1.
+  • Apply Filter to each chunk in R1 to produce R2.
+  • Only if R2 is stored in DFS (by Reduce action) then R1 and R2 are actually
+    produced and subsequently dropped after being used.
+
+                        R0           R1           R2
+
+         DFS:                                                  DFS:
+         mydata                                                output
+
+
+
+
+                                    Jaemin Yoo                                   33
+Resilience of RDDs
+• Spark records the lineage of every RDD for fault-resilience.
+   • Use it to re-create the RDD in case of the node failure.
+   • If R2 is lost, reconstruct from R1.
+   • If R1 is lost, reconstruct from R0.
+   • If R0 is lost, reconstruct from the file system.
+
+                         R0           R1           R2
+
+          DFS:                                                  DFS:
+          mydata                                                output
+
+
+
+
+                                     Jaemin Yoo                          34
+Spark Programming Guide and Paper
+• To learn more about writing Spark applications, please read:
+   • https://spark.apache.org/docs/latest/rdd-programming-guide.html
+• (Optional) More technical details of Spark are in this paper:
+   • https://www.usenix.org/system/files/conference/nsdi12/nsdi12-
+     final138.pdf
+
+
+
+
+                                  Jaemin Yoo                           35
+MapReduce vs. Spark
+                MapReduce                           Spark
+
+Speed           Faster than traditional systems     Much faster (100x) than MapReduce
+
+Written in      Java                                Scala
+
+                                                    Batch / real-time / iterative /
+Data Processing Batch processing
+                                                    interactive / graph
+
+Ease of Use     Complex and lengthy                 Compact and easier than MapReduce
+
+                                                    Caches data in memory, enhancing
+Caching         No caching
+                                                    system performance
+
+
+
+                                       Jaemin Yoo                                       36
+When to Use What
+• MapReduce:
+  • Linear processing of large datasets.
+  • Simple tasks easily written as Map and Reduce.
+  • Offline, large-scale batch jobs
+• Spark:
+  • Fast and interactive data processing.
+  • Iterative and real-time jobs like machine learning.
+  • Especially when each node has sufficient memory.
+
+
+
+
+                                   Jaemin Yoo             37
+Summary
+1. Spark: Overview
+  • Resilient distributed datasets (RDD)
+2. Spark: Operations
+  • Map, FlatMap, Filter, Reduce, Join, etc.
+3. Spark: Implementation
+  • Lazy evaluation
+  • Lineage of RDDs
+
+
+
+
+                                    Jaemin Yoo   38
+

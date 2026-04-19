@@ -1,0 +1,476 @@
+MapReduce
+Introduction to Data Mining
+ Seoul National University
+       Spring 2026
+
+
+
+
+          Jaemin Yoo          1
+Outline
+1. Distributed Computing for Data Mining
+2. MapReduce: Basics
+3. MapReduce: Details
+
+
+
+
+                            Jaemin Yoo     2
+Managing Large Amounts of Data
+• Ranking Web pages by importance:
+   • Iterated matrix-vector multiplication where dimension is many billions.
+• Searching friends in a social network:
+   • Graphs with hundreds of millions of nodes and many billions of edges.
+
+
+
+
+                 Source: Spatial                 Source: Velickovic et al. (2018)
+
+                                    Jaemin Yoo                                      3
+Large-Scale Computing
+• Supercomputers are expensive and cannot scale infinitely.
+• Instead, we have a large collection of commodity hardware.
+  • Connected by Ethernet cables or switches.
+
+
+
+
+                                 Source: UMBC
+
+
+                                  Jaemin Yoo                   4
+Physical Organization of Nodes
+• Parallel-computing architecture:
+  • Compute nodes are stored on racks (perhaps 8 – 64 on a rack).
+  • The nodes on a single rack are typically connected by gigabit Ethernet.
+  • There can be many racks connected by a switch.
+
+
+
+
+                                   Jaemin Yoo                                 5
+Machine Failures
+• Machines fail frequently:
+   • One server may stay up 3 years (≈ 1,000 days).
+   • If you have 1,000 servers, expect to lose 1/day.
+   • With 1M machines, 1,000 machines fail every day!
+• Q: If nodes fail, how to store data persistently?
+   • Loss of a single node (e.g., disk crashes)
+   • Loss of an entire rack (e.g., network fails)
+
+
+
+
+                                       Jaemin Yoo       6
+Storage Infrastructure
+• Distributed File System (DFS) is a solution.
+   • Hadoop Distributed File System (HDFS) or Google File System (GFS).
+• Typical usage pattern:
+   • Huge files (100s of GB to TB).
+   • Reads and appends are common.
+   • Data is rarely updated in place.
+
+
+
+
+                                   Jaemin Yoo                             7
+Distributed File System
+• Chunk nodes (or data nodes):
+  • Store data divided into chunks, which are typically 16 – 64 MB.
+  • Chunks are replicated (usually 2x or 3x) at different nodes.
+     • Try to keep replicas in different racks.
+• Master nodes (or head/name nodes):
+  • Runs a master process that manages the entire file system.
+  • Stores the metadata (i.e., master file) about where files are stored.
+  • Typically has a backup, which takes over when the node fails.
+
+
+
+
+                                           Jaemin Yoo                       8
+Distributed Computation
+• Q: How do you distribute computation?
+  • Copying large data over a network takes time.
+  • We’ll learn MapReduce and Spark as solutions.
+• Idea: Bring computation to data!
+  • Make chunk servers also serve as compute servers.
+  • Run a (distributed) algorithm for each chunk.
+  • Gather the result, typically smaller than the raw data.
+
+
+
+
+                                    Jaemin Yoo                9
+Computing Cluster
+• Q: How exactly does a distributed cluster work?
+                                                                              Compute nodes:
+                                   2. Load data (into DFS).                    Actual computers.
+                                                                               Run workers.
+                                                                               (= chunk servers)
+                                                                               (= compute servers)
+                                                                              Workers:
+   1. Submit a job (SSH).                                                     Virtual processes.
+   4. Receive the result.                                                     Perform jobs (or tasks).
+                                                                    3. Do the job.
+                                                                    Note: Each node has its own
+                                                                    CPU, memory, and disk.
+                            Source: Corredor and Rodriguez (2021)
+
+                                         Jaemin Yoo                                               10
+Outline
+1. Distributed Computing for Data Mining
+2. MapReduce: Basics
+3. MapReduce: Details
+
+
+
+
+                              Jaemin Yoo   11
+MapReduce
+• MapReduce is a style of programming designed for
+   1. Easy parallel programming
+   2. Invisible management of hardware and software failures
+   3. Easy management of very-large-scale data
+• It has several implementations, including Hadoop, Flink, etc.
+• The original Google implementation is called “MapReduce”.
+
+
+
+
+                                  Jaemin Yoo                      12
+Example: Word Counting
+• Suppose we have a huge text document.
+• Goal: Count the number of times each distinct word appears:
+  • E.g., (ball, 30), (basket, 10), (great, 5), and so on.
+• Many applications:
+  • Analyze web server logs to find popular URLs.
+  • Analyze market data to find popular items.
+
+
+
+
+                                       Jaemin Yoo               13
+MapReduce Components
+• Map:
+  • Apply a user-written Map function to each input element.
+  • The output of the Map function is a set of key-value pairs.
+• Group by key:
+  • System organizes all the key-value pairs by key.
+  • Return key-“value list” pairs.
+• Reduce:
+  • Apply a user-written Reduce function to each key-“value list” pair.
+  • The output of the Reduce function is a key-value pair.
+
+
+                                    Jaemin Yoo                            14
+MapReduce Pattern
+
+
+
+
+                    Source: Textbook
+
+                      Jaemin Yoo       15
+Map Task
+• Input:
+   • Chunks consisting of elements, which are key-value pairs.
+      • Why pairs? To allow composition of several MapReduce processes.
+      • Keys of the input (i.e., initial) elements can be ignored.
+• Output:
+   • Zero or more key-value pairs.
+
+
+
+
+                                       Jaemin Yoo                         16
+Group by Key
+• Input:
+   • Key-value pairs from Map tasks.
+• Output:
+   • The master controller knows the number 𝑟 of Reduce tasks.
+   • Apply a hash function to the keys, producing bucket numbers 0 to 𝑟 − 1.
+   • The key-value pairs from each Map task are put into 𝑟 local files:
+      • Each local file is destined for a specific Reduce task.
+   • Merge the files from multiple Map tasks and return 𝑘, 𝑣!, 𝑣", … , 𝑣# .
+
+
+
+
+                                           Jaemin Yoo                          17
+Reduce Task
+• Input:
+   • One or more keys and their associated value lists.
+      • One Reducer can take several keys.
+• Output:
+   • The Reduce function is applied to each key-“value list” pair.
+   • The outputs from all the Reduce tasks are merged into a single file.
+
+
+
+
+                                        Jaemin Yoo                          18
+MapReduce for Word Counting
+// key: line index; value: each line of the document
+map(key, value):
+     for each word w in value:
+           emit(w, 1)
+
+// key: a word; values: an iterator over counts
+reduce(key, values):
+     result = 0
+     for each count v in values:
+           result += v
+     emit(key, result)
+
+                            Jaemin Yoo                 19
+MapReduce for Word Counting
+                                    Provided by programmer                                     Provided by programmer
+
+                                        Map: Read input and                                           Reduce: Collect all
+                                                                     Group by key: Collect
+                                        produce a set of key-                                       values belonging to the
+                                                                     all pairs with same key
+                                            value pairs                                                 key and output
+
+
+
+
+                                                                                                                              Only sequential reads
+ To be, or not to be, that is the
+ question:                                     (to, 1),                        (to, 1),
+ Whether 'tis nobler in the
+                                             (be, 1), ...                      (to, 1),
+ mind to suffer                                                                                           (to, 7)
+ The slings and arrows of
+ outrageous fortune,                         (mind, 1),                      (to, 1), ...                 (be, 2)
+ Or to take Arms against a Sea
+ of troubles,
+                                              (to, 1), ...                  (be, 1),                    (mind, 1)
+ And by opposing end them: to
+                                                (or, 1),                  (mind, 1),                      (or, 2)
+ die, to sleep
+ No more; and by a sleep, to                  (to, 1), ...                 (or, 1), ...                 (them, 1)
+ say we end
+ The heart-ache, …….                         (them, 1),                   (them, 1),                        ...
+                                              (to, 1), ...              (sleep, 1), ...
+
+     Big document                         (key, value)                  (key, value)                   (key, value)
+
+                                                                Jaemin Yoo                                                                            20
+Combiners
+• Suppose the Reduce function is commutative and associative.
+  • Commutative: 𝑎 + 𝑏 = 𝑏 + 𝑎.
+  • Associative: 𝑎 + 𝑏 + 𝑐 = 𝑎 + 𝑏 + 𝑐 .
+  • E.g., word counting, matrix-vector multiplication.
+• Then, values can be combined in any order.
+• → The Reducer’s work can be pushed to the Map tasks.
+  • E.g., instead of producing (𝑤, 1), (𝑤, 1), …, produce (𝑤, 𝑚).
+  • The amount of data shuffling for Group By Key is greatly reduced.
+
+
+
+                                    Jaemin Yoo                          21
+Combiner for Word Counting
+                                    Provided by programmer                                     Provided by programmer
+
+                                        Map: Read input and                                           Reduce: Collect all
+                                                                     Group by key: Collect
+                                        produce a set of key-                                       values belonging to the
+                                                                     all pairs with same key
+                                            value pairs                                                 key and output
+
+
+
+
+                                                                                                                              Only sequential reads
+ To be, or not to be, that is the
+ question:                                     (to, 3),                        (to, 3),
+ Whether 'tis nobler in the
+ mind to suffer
+                                             (be, 2), ...                      (to, 2),                   (to, 7)
+ The slings and arrows of
+                                             (mind, 1),
+                                                                             (to, 1), ...                 (be, 2)
+ outrageous fortune,
+ Or to take Arms against a Sea
+ of troubles,
+                                             (to, 2), ...                  (be, 2),                     (mind, 1)
+ And by opposing end them: to
+                                                (or, 2),                  (mind, 1),                      (or, 2)
+ die, to sleep
+ No more; and by a sleep, to                  (to, 1), ...                (or, 2), ...                  (them, 1)
+ say we end
+ The heart-ache, …….                         (them, 1),                   (them, 1),                        ...
+                                              (to, 1), ...              (sleep, 1), ...
+
+     Big document                         (key, value)                  (key, value)                   (key, value)
+
+                                                                Jaemin Yoo                                                                            22
+Pop Quiz
+• Let’s find common friends of friends on a social network.
+   • E.g., 𝐴 is a friend of 𝐵 and 𝐶 at the same time.
+• What are the map and reduce functions?
+                                                                    Output
+      Input
+                                                                  A,B -> C,D
+   A -> B,C,D                                                     A,C -> B
+   B -> A,C,D        Map tasks   Group by keys     Reduce tasks   A,D -> B
+   C -> A,B                                                       B,C -> A
+   D -> A,B                                                       B,D -> A
+
+
+
+
+                                      Jaemin Yoo                               23
+Outline
+1. Distributed Computing for Data Mining
+2. MapReduce: Basics
+3. MapReduce: Details
+
+
+
+
+                              Jaemin Yoo   24
+MapReduce Program Execution
+• User program forks a Master controller and Worker processes.
+  • A worker handles either Map or Reduce tasks, but not both.
+
+
+
+
+                                                                 25
+Master Controller
+• Master controller:
+  • Schedules Map and Reduce tasks and assigns them to Workers.
+     • One Map task per chunk is reasonable.
+     • Reduce tasks should be fewer than Map tasks.
+         • Otherwise, too many intermediate files per Map task.
+         • Will be discussed later in detail.
+  • Keeps track of task status (idle, executing at a Worker, or completed).
+  • Worker process reports to Master when it finishes a task.
+
+
+
+
+                                           Jaemin Yoo                         26
+Map and Reduce Tasks
+• Map task:
+  • Creates a file for each Reduce task on the Map Worker’s local disk.
+  • The Master is informed of the files and the destination Reduce tasks.
+• Reduce task:
+  • When assigned to a Worker, it is given all the files that form its input.
+  • Executes code written by the user and writes its output to a file.
+
+
+
+
+                                     Jaemin Yoo                                 27
+MapReduce Pipelining
+• Reduce workers start reading data as soon as a Map task finishes.
+• Reduce tasks start after reading all data.
+
+
+
+
+                            Source: Textbook Slides
+
+
+
+
+                                  Jaemin Yoo                      28
+Coping with Node Failures
+• Master failure:
+   • Entire MapReduce job must be restarted.
+• Map worker failure:
+   • Detected by Master because it periodically pings Worker processes.
+   • All Map tasks assigned this worker have to be redone, even if completed.
+      • Output for Reduce tasks reside in compute node and are unavailable.
+   • Master informs each Reduce task that input location has changed.
+• Reduce worker failure:
+   • Only in-progress tasks are reset to idle and the Reduce task is restarted.
+      • Since the output is stored in DFS, not a local disk.
+
+                                           Jaemin Yoo                             29
+Number of Reduce Tasks
+• Pipelining can be optimized by using one Reduce task per key.
+• However, this plan is not usually the best.
+   • Overhead associated with each task is created.
+   • Often there are far more keys than there are compute nodes.
+   • Significant variation in the # of values for different keys.
+      • Reduce tasks will exhibit skew in processing time.
+• Rule of thumb: # of nodes < # of Reduce tasks < # of keys.
+
+
+
+
+                                         Jaemin Yoo                 30
+Algorithms using MapReduce
+• MapReduce is not a solution to every problem.
+  • DFS makes sense only when files are large and rarely updated in place.
+  • MapReduce is not suitable for frequent database changes.
+     • E.g., managing online retails sales (say by Amazon).
+• Original purpose of Google:
+  • To execute large matrix-vector multiplications (for PageRank).
+  • Matrix-vector calculations fit nicely into MapReduce.
+  • Relational algebra (i.e., SQL) can also use MapReduce effectively.
+
+
+
+
+                                        Jaemin Yoo                           31
+Matrix-Vector Multiplication
+• Suppose we have an 𝑛 × 𝑛 matrix 𝑀 and a vector 𝐯 of length 𝑛.
+• Matrix-vector product is vector 𝐱 of length 𝑛 whose 𝑖-th element is:
+
+
+
+• If 𝑛 = 100, we do not need DFS or MapReduce.
+• But in large search engines, e.g., Google, 𝑛 can be tens of billions.
+
+
+
+                                 Jaemin Yoo                           32
+Matrix-Vector Multiplication
+• Assume that 𝑣 fits in main memory:
+                       Map function                         Reduce function
+                        Input: ( 𝑖, 𝑗 , 𝑚𝑖𝑗)                 Input: (𝑖, [𝑚𝑖1𝑣1, 𝑚𝑖2𝑣2, … 𝑚𝑖𝑛𝑣𝑛])
+                        Output: (𝑖, 𝑚𝑖𝑗𝑣𝑗)                   Output: (𝑖, ∑𝑗 𝑚𝑖𝑗𝑣𝑗)
+
+           M       v
+                                       (1, 1*1 = 1)
+       1       2   1                   (1, 2*2 = 4)           (1, [1, 4])           (1, 5)
+                                       (2, 1*1 = 1)           (2, [1, 6])           (2, 7)
+       1       3   2                   (2, 3*2 = 6)
+
+
+
+
+                                               Jaemin Yoo                                          33
+Matrix-Vector Multiplication
+                                                                           𝑀    𝐯
+• What if the vector 𝐯 cannot fit in main memory?
+   • Divide 𝑀 into vertical stripes and divide 𝐯 into horizontal stripes.
+      • The width of vertical strips = the height of horizontal stripes.
+      • Use enough stripes so that one stripe of 𝐯 fits in main memory.
+   • Each Map task is assigned a chunk from corresponding stripes.
+   • The Map and Reduce tasks then run exactly the same as before.
+
+
+
+
+                                          Jaemin Yoo                           34
+Summary
+1. Distributed Computing for Data Mining
+  • Distributed File System
+2. MapReduce: Basics
+  • Map, group by key, reduce, and combiners
+  • Example: Word counting
+3. MapReduce: Details
+  • Coping with node failure
+  • Algorithms using MapReduce
+
+
+
+                                 Jaemin Yoo    35
+

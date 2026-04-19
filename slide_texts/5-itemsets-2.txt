@@ -1,0 +1,498 @@
+Frequent Itemsets 2
+   Introduction to Data Mining
+    Seoul National University
+          Spring 2026
+
+
+
+
+             Jaemin Yoo          1
+Recap: Frequent Itemsets
+• Market-basket model:
+                                                     milk -> 1      1   100
+   • Association rule 𝐼 → 𝐽                          bread -> 2     2   50
+                                                                              milk -> 1
+                                                                              bread -> 2
+                                                                                                  1
+                                                                                                  2
+                                                                                                      2
+                                                                                                      1
+                                                     …                        …
+   • Support, confidence & interest                  ccsd -> n      n   2     ccsd -> n           n   0
+
+
+• A-Priori algorithm:
+   • Counting pairs is the hardest.
+                                                              Unused
+   • Key idea is monotonicity.
+      • We can safely pass infrequent items.                                          counts of
+                                                                                      pairs
+   • Triangular vs triples method
+   • Generalization to larger itemsets
+                                                                  <Pass 1>             <Pass 2>
+
+
+
+                                        Jaemin Yoo                                                        2
+Outline
+1. PCY Algorithm
+2. Extensions of PCY
+3. Limited-pass Algorithms
+
+
+
+
+                             Jaemin Yoo   3
+Handling Larger Data in Memory
+• The A-Priori algorithm is fine as long as:
+   • Counting candidate pairs 𝐶! can be done in main memory.
+• Q: What if the memory is not enough?
+• A: We need algorithms that cut down the size of 𝐶! :
+   1. PCY algorithm
+   2. Multistage algorithm
+   3. Multihash algorithm
+
+
+
+
+                                  Jaemin Yoo                   4
+PCY (Park-Chen-Yu) Algorithm
+                                                                                1
+                                                                  Item
+                                                                                2     Item
+• In Pass 1 of A-Priori, most memory is idle.                     names to
+                                                                                      counts
+                                                                  integers
+
+
+
+
+                                                    main memory
+   • We store only individual item counts.                                      n
+
+• Q: Can we utilize the idle memory?
+   • Probably for Pass 2.
+   • Since we may not be able to store all pairs.                            Unused
+
+
+
+
+                                                                             <Pass 1>
+
+
+
+                                     Jaemin Yoo                                           5
+PCY (Park-Chen-Yu) Algorithm
+                                                                                         1
+                                                                          Item
+                                                                                         2       Item
+• PCY algorithm: Create a hash table of pairs.                            names to
+                                                                                                 counts
+                                                                          integers
+
+
+
+
+                                                            main memory
+  • Make it have as many buckets as fit in memory.                                       n
+     • E.g., 1,000 buckets for 4 KB.
+  • Hash each pair and add 1 to the hashed bucket.                          11       1       7
+                                                                                                   ...
+     • During Pass 1.
+  • It’s natural to have collisions.
+     • # of buckets < # of unique pairs.
+
+
+
+                                                                                     <Pass 1>
+                                                        {bread, milk}
+
+
+
+                                           Jaemin Yoo                                                    6
+Observations about Buckets
+• Q: Why do we do that?
+• A: To eliminate pairs that has no chance to be frequent.
+  • Each bucket 𝐵 has a count of all pairs that hash to 𝐵.
+     • If count ≥ support threshold 𝑠, pairs could all be frequent.
+     • Otherwise, no pair can be frequent!
+  • In Pass 2, define candidate pairs 𝐶! as 𝑖, 𝑗 such that:
+     • Both 𝑖 and 𝑗 are frequent items.
+     • 𝑖, 𝑗 hashes to a frequent bucket → Difference from A-Priori.
+  • Later stages are similar to A-Priori.
+
+
+
+                                         Jaemin Yoo                   7
+Between Passes in PCY
+• Replace the buckets by a bit-vector:
+  • 1 means the bucket count exceeded the support threshold 𝑠.
+  • 0 means it did not.
+• The bitmap reduces the space by 1/32.
+  • Since an integer is (normally) 32 bits.
+
+
+
+
+                                     Jaemin Yoo                  8
+Main Memory: Picture of PCY
+
+
+
+
+                 Source: Stanford CS246 (2022)
+
+
+                          Jaemin Yoo             9
+One Subtlety
+• PCY cannot use the triangular-matrix method for counting pairs.
+  • Because PCY utilizes the sparsity of candidate pairs.
+  • No way to “compact” a triangular matrix removing infrequent pairs.
+• So PCY is always forced to use the triples method.
+
+
+
+
+                                   Jaemin Yoo                            10
+Pop Quiz
+• Here is a collection of baskets: 1,2,3 , 3,4,5 , 2,4,5 .
+• Suppose the support threshold is 𝑠 = 2.
+• On the first pass of PCY, we use a hash table with 3 buckets.
+   • The pair 𝑖, 𝑗 is hashed to the bucket 𝑖 × 𝑗 mod 3 .
+• Q: Which pairs are counted on the second pass of PCY?
+
+
+
+
+                                    Jaemin Yoo                    11
+Outline
+1. PCY Algorithm
+2. Extensions of PCY
+3. Limited-pass Algorithms
+
+
+
+
+                             Jaemin Yoo   12
+Extensions of PCY
+• Two extensions of PCY: Multistage and Multihash algorithms.
+   • Both create multiple hash tables to reduce # of candidate pairs.
+• The way they create multiple tables is different:
+   • Multistage: Create tables through successive passes.
+   • Multihash: Create tables at the same time (i.e., in parallel).
+
+
+
+
+                                     Jaemin Yoo                         13
+The Multistage Algorithm
+• Improves PCY by creating several successive hash tables:
+  • Pass 1: Same as PCY; results in a bitmap.
+  • Pass 2: Create the second hash table to generate another bitmap.
+     • This table has 31/32 of buckets due to the first bitmap.
+     • Here a pair 𝑖, 𝑗 is hashed only if
+         • Both 𝑖 and 𝑗 are frequent.
+         • The pair is hashed to a frequent bucket in Bitmap 1.
+  • Idea: The second table can contain much fewer frequent buckets.
+
+
+
+
+                                            Jaemin Yoo                 14
+Conditions for the Candidates
+• A pair 𝑖, 𝑗 is in 𝐶! if and only if
+   1. Both 𝑖 and 𝑗 are frequent.
+   2. Pair 𝑖, 𝑗 hashed to a frequent bucket in Bitmap 1.
+   3. Pair 𝑖, 𝑗 hashed to a frequent bucket in Bitmap 2.
+
+
+
+
+                                    Jaemin Yoo             15
+Conditions for the Candidates
+• A pair 𝑖, 𝑗 is in 𝐶! if and only if
+   1. Both 𝑖 and 𝑗 are frequent.
+   2. Pair 𝑖, 𝑗 hashed to a frequent bucket in Bitmap 1.
+   3. Pair 𝑖, 𝑗 hashed to a frequent bucket in Bitmap 2.
+• Q: Is Condition 2 necessary? Yes!
+   • Let’s say 𝑖, 𝑗 is hashed to an infrequent bucket in Bitmap 1.
+      • Then, it is not counted in Pass 2.
+   • Doesn’t mean 𝑖, 𝑗 cannot hash to a frequent bucket in Bitmap 2.
+   • An infrequent pair 𝑖, 𝑗 may satisfy Conditions 1 and 3, but not 2.
+
+
+                                             Jaemin Yoo                   16
+The Multistage Algorithm
+
+                             1                          1                          1
+               Item                       Item                       Item
+                             2   Item                   2    Freq.                 2   Freq.
+               names to                   names to                   names to
+                                 counts                      items                     items
+               integers                   integers                   integers
+ main memory
+
+
+
+
+                             n                          n                          n
+                                                 Bitmap 1                   Bitmap 1
+                                                                            Bitmap 2
+                   Hash table for
+                   bucket counts           Second hash table for
+                                              bucket counts             Data structure for
+                                                                         counts of pairs
+
+
+                          <Pass 1>                   <Pass 2>                   <Pass 3>
+
+                                                Jaemin Yoo                                     17
+More Passes in Multistage
+• We can add more passes until there is not enough space.
+• Truly frequent pairs will always hash to frequent buckets.
+   • No matter how many passes we use.
+
+
+
+
+                                 Jaemin Yoo                    18
+The Multihash Algorithm
+• Goal: Get benefits of extra passes in a single pass.
+• Idea: Create two hash tables with different hash functions.
+   • Meaningful if the buckets are not too dense.
+• A pair 𝑖, 𝑗 is in 𝐶! if
+   1. Both 𝑖 and 𝑗 are frequent.
+   2. The pair hashes to a frequent bucket in both hash tables.
+
+
+
+
+                                    Jaemin Yoo                    19
+The Multihash Algorithm
+                                1                                        1
+                  Item names    2   Item                  Item names     2     Freq.
+                  to integers       counts                to integers          items
+    main memory
+
+                                n                                        n
+
+                                                           Bitmap 1          Bitmap 2
+                        Hash table 1
+
+                                                              Data structure for
+                                                               counts of pairs
+                        Hash table 2
+
+
+
+                           <Pass 1>                                   <Pass 2>
+
+
+                                             Jaemin Yoo                                 20
+More Tables in Multihash
+• We can increase the number 𝑛 of tables as much as we want.
+• Q: What is the optimal value of 𝑛?
+• Let’s say 𝑝( is the probability of an infrequent pair being in 𝐶! .
+   • 𝑝: Probability of a pair to be frequent in each table.
+• In limited memory, using more tables increases both 𝑛 and 𝑝.
+   • At some point, increasing # of tables increases the value of 𝑝$ .
+
+
+
+
+                                      Jaemin Yoo                         21
+Outline
+1. PCY Algorithm
+2. Extensions of PCY
+3. Limited-pass Algorithms
+
+
+
+
+                             Jaemin Yoo   22
+Recap: Generalization of A-Priori
+• So far, we used one pass for each size of itemsets.
+   • The creation of 𝐿% requires a new pass (i.e., Filter).
+   • 𝐶% : Set of candidate 𝑘-tuples that might be frequent sets.
+   • 𝐿% : Set of truly frequent 𝑘-tuples.
+
+
+     C1             L1               C2            L2               C3            L3
+           Filter        Construct        Filter        Construct        Filter        Construct
+                                                                                                   ...
+
+     All       Frequent          Pairs of      Frequent
+   items         items             freq.         pairs
+                                  items
+
+
+                                                   Jaemin Yoo                                            23
+Limited-Pass Algorithms
+• Many applications can sacrifice accuracy for speed.
+  • E.g., it’s enough to find most frequent itemsets in a supermarket.
+• We can find all or most frequent itemsets using ≤ 2 passes.
+  • Random sampling: Simplest approach.
+  • Toivonen: Two passes on average, but also may not terminate.
+  • SON: Divide the data into multiple chunks.
+
+
+
+
+                                    Jaemin Yoo                           24
+Random Sampling
+• Idea: Take a random sample of the market baskets.
+• Run A-Priori or one of its improvements in main memory:
+  • If the sample ratio is 𝑝 < 1, adjust support threshold 𝑠 to 𝑝𝑠.
+
+    B1 = {m, c, b}
+    B2 = {m, p, j}      Sample by 𝑝
+                                      B1 = {m, c, b}      A-Priori (or any other
+    B3 = {m, c, b, n}
+                                      B3 = {m, c, b, n}   algorithm) using support
+    B4 = {c, j}
+                                      B4 = {c, j}         threshold 𝑝𝑠.
+    B5 = {m, p, b}
+    B6 = {m, c, b, j}
+
+
+
+
+                                             Jaemin Yoo                              25
+Avoiding Errors in Sampling
+• Sampling introduces both false positives and false negatives.
+   • False positives: Itemsets frequent in sample, but not in the whole.
+   • False negatives: Itemsets frequent in the whole, but not in sample.
+• Eliminate false positives by making another full pass.
+   • Count all frequent itemsets in sample.
+• Reduce false negatives by reducing threshold (say to 0.9𝑝𝑠).
+   • No easy way to eliminate false negatives.
+
+
+
+
+                                    Jaemin Yoo                             26
+Toivonen’s Algorithm
+• Q: Can we eliminate false negatives at all?
+• Idea: Construct negative border for an efficient safety check.
+• Toivonen’s algorithm:
+   • Use one pass over samples and one pass over the full data.
+   • No false negatives or positives.
+   • However, there is a small chance it will not finish by 2 passes.
+      • The average number of passes to produce answer is still a constant.
+
+
+
+
+                                         Jaemin Yoo                           27
+Toivonen’s Algorithm (Pass 1)
+• Find candidates from a small sample.
+  • Use support threshold less than proportional value 𝑝𝑠 (say 0.9𝑝𝑠).
+• Construct the negative border.
+  • Collection of itemsets that are not frequent in sample, but all of their
+    immediate subsets are frequent in sample.
+  • Immediate subsets: Constructed by deleting exactly one item.
+
+
+
+
+                                     Jaemin Yoo                                28
+Negative Border Example
+• 𝐴, 𝐵, 𝐶, 𝐷 is in the negative border if and only if:
+   • It is not frequent in the sample, but
+   • All of 𝐴, 𝐵, 𝐶 , 𝐵, 𝐶, 𝐷 , 𝐴, 𝐶, 𝐷 , and 𝐴, 𝐵, 𝐷 are.
+• 𝐸 is in the negative border if it is not frequent.
+   • Its immediate subset ∅ is considered frequent.
+                                                             {A,B,C,D,E}
+                                 {A,B,C,D}
+
+            …                  {A,C,D}                                  Negative Border
+                         {B,C,D} {A,B,D}
+          tripletons
+                       {A,B,C}
+          doubletons
+
+          singletons         Frequent Itemsets from Sample        {E}
+                                             Jaemin Yoo                                   29
+Toivonen’s Algorithm (Pass 2)
+• Make a pass on the entire dataset.
+   • Count itemsets (a) frequent in sample or (b) existing in negative border.
+• Finish if no member of negative border is frequent in full data:
+   • We have found the correct set of frequent itemsets
+• Otherwise, there may be a larger set that is frequent.
+   • Do not finish, and repeat the algorithm with new random sample.
+
+
+
+
+                                     Jaemin Yoo                                  30
+Why Toivonen’s Algorithm Works
+• No false positives: Clearly because of Pass 2.
+• No false negatives:
+   • Suppose an itemset 𝑆 frequent in whole data, but not in sample.
+   • Then, the border contains at least one itemset frequent in the whole.
+   • Why? One of the following holds:
+      • 𝑆 is in the negative order.
+      • 𝑆 has an immediate subset 𝑇 frequent in whole data, but not in the sample.
+          • This goes recursively until there is a subset in the negative order.
+          • Recall that every singleton is in the negative order.
+
+
+
+
+                                               Jaemin Yoo                            31
+SON (Savasere, Omiecinski, Navathe)
+                           Support = 𝑝𝑠
+
+               Chunk 1                  Freq. itemsets 1
+                                                            Support = 𝑠
+      Input
+     baskets   Chunk 2                  Freq. itemsets 2
+                                                                  Freq. itemsets
+                  ...                        ...
+
+               Chunk 1/p               Freq. itemsets 1/p
+
+
+
+
+                               Jaemin Yoo                                          32
+SON Algorithm
+• Avoids both false negatives and positives with two full passes.
+• Pass 1:
+   • Divide input file into 1/𝑝 chunks.
+   • Run A-Priori with 𝑝𝑠 as support threshold.
+• Pass 2:
+   • Take union of all frequent itemsets and select those with support ≥ 𝑠.
+• There are no false negatives!
+   • A frequent itemset must be frequent in at least one chunk.
+   • If an itemset is not frequent in any chunk, its support is < (1/𝑝)𝑝𝑠 = 𝑠.
+
+
+                                     Jaemin Yoo                                  33
+SON with MapReduce
+• MapReduce (or any other parallel computation) can be used.
+• Pass 1: Find candidate itemsets.
+   • Map: Take a chunk and return 𝐹, 1 for each frequent itemset 𝐹.
+      • Support threshold is 𝑝𝑠.
+   • Reduce: Ignore value and produce itemsets that appear at least once.
+• Pass 2: Find true frequent itemsets.
+   • Map:
+      • Take candidate itemsets from Pass 1 and a portion of the input data.
+      • Return 𝐶, 𝑣 where 𝐶 is a candidate itemset and 𝑣 is the support for this portion.
+   • Reduce: For each itemset, sum the values and output if the sum ≥ 𝑠.
+
+                                         Jaemin Yoo                                         34
+Summary
+1. PCY Algorithm
+2. Extensions of PCY
+  • Multistage algorithm
+  • Multihash algorithm
+3. Limited-pass Algorithms
+  • Random sampling
+  • Toivonen’s algorithm
+  • SON algorithm
+
+
+
+                             Jaemin Yoo   35
+
