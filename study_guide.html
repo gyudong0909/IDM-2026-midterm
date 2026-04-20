@@ -244,6 +244,62 @@ function renderInlineItems(){
 <li><strong>2024/2025 KAIST 기출 범위 주의:</strong> 그 해 midterm은 L1~L9 정도 (itemsets + LSH + clustering). SNU 2026은 L10-L13 (DimRed, RecSys)도 포함 → 이 부분은 기출 선례 없음. Lecture script 중심으로 철저히 학습 필요.</li>
 </ul>
 </div>
+
+<div class="card exam">
+<h3>🚨 T/F 기출 갭 분석 — 예상문제 적중도 평가</h3>
+<span class="tag tag-exam">2019~2025 T/F 전수 분석</span>
+<p style="margin:8px 0 12px;color:#6c757d;font-size:13px">기출 T/F(EE412 Midterm 2019·2022·2024·2025 + Final 2021) 전수 분석 대비 <code>tf_quiz.html</code>의 예상 60문항을 평가. 2019·2022 반복 출제 토픽 중 예상문제에 누락된 5개를 <b>Q61~Q65 갭 보강</b>으로 추가함.</p>
+
+<p style="font-size:14px;margin-bottom:6px"><b>종합 적중도: 약 72%</b></p>
+<table class="compare-table" style="margin-bottom:14px">
+<tr><th>항목</th><th>평가</th></tr>
+<tr><td>2024/2025 기출 반영</td><td>★★★★★ 완벽</td></tr>
+<tr><td>트릭 패턴 7개 분류</td><td>★★★★★ 교수 출제 결 정확히 포착</td></tr>
+<tr><td>2019/2022 반복 토픽 커버</td><td>★★★☆☆ MinHash·power iteration은 잡았으나 Spark reduce() 누락</td></tr>
+<tr><td>주제 분포 균형 (L1~L12)</td><td>★★★★☆ 고른 분포</td></tr>
+</table>
+
+<h4 style="margin:14px 0 6px;font-size:14px;color:#22c55e">✅ 정확히 잡은 토픽</h4>
+<table class="compare-table" style="margin-bottom:10px">
+<tr><th>기출</th><th>내용</th><th>예상문제</th></tr>
+<tr><td>2019-e, 2021F-c</td><td>MinHash 확률 = Jaccard similarity</td><td><b>Q29</b> 완전 일치 (3개 연도 반복)</td></tr>
+<tr><td>2019-i</td><td>Power iteration으로 $MM^T$ 고유쌍 탐색</td><td><b>Q51</b> 완전 일치</td></tr>
+<tr><td>2021F-b</td><td>Multistage + triangular-matrix 불가</td><td>2025-g 기출 + Q22/Q26</td></tr>
+<tr><td>2021F-d</td><td>Non-Euclidean → centroid 비교 불가 (clustroid)</td><td><b>Q43</b> 완전 일치</td></tr>
+<tr><td>2021F-f</td><td>CF는 item feature 불필요</td><td><b>Q57</b> 완전 일치</td></tr>
+<tr><td>2022-e</td><td>Increasing bands = OR-construction</td><td>Q34, Q37 커버</td></tr>
+<tr><td>2019-d</td><td>PCY + triangular-matrix 조건</td><td>Q17, Q22 인근</td></tr>
+<tr><td>2022-g</td><td>BFR compressed set in memory</td><td>Q46 영역</td></tr>
+</table>
+
+<h4 style="margin:14px 0 6px;font-size:14px;color:#d97706">⚠️ 주제는 같지만 각도가 다른 것</h4>
+<table class="compare-table" style="margin-bottom:14px">
+<tr><th>기출</th><th>내용</th><th>갭</th></tr>
+<tr><td>2019-a, 2022-a</td><td>"Combiner가 Reducer의 <b>모든</b> 작업을 할 수 있나?" (FALSE)</td><td>Q05는 "always applicable"로 다른 각도. 역할 자체 묻는 버전 없음</td></tr>
+<tr><td>2022-h</td><td>CUR: 일부 rows/columns가 영원히 미선택될 수 있음 (TRUE)</td><td>Q54는 샘플링 확률 공식 — 귀결 질문은 없음</td></tr>
+<tr><td>2019-g</td><td>Hierarchical이 k-means보다 대규모에서 스케일이 나쁨 (TRUE)</td><td>Clustering 섹션에 이 비교 질문 없음</td></tr>
+<tr><td>2021F-e</td><td>PCA = SVD 결과 동일 (TRUE)</td><td>Q53 관련 있으나 "동일한가?" 직접 질문 없음</td></tr>
+</table>
+
+<h4 style="margin:14px 0 6px;font-size:14px;color:#dc2626">🚨 빠진 고위험 토픽 5개 → <a href="tf_quiz.html" style="color:#7ecfff">T/F 퀴즈 Q61~Q65</a>로 보강됨</h4>
+<p style="font-size:13px;color:#6c757d;margin-bottom:8px">퀴즈에서 <b>"🚨 갭 보강"</b> 칩을 누르면 이 5문항만 필터링됩니다.</p>
+<ol style="margin-left:20px;line-height:1.7;font-size:14px">
+<li><b>[Q61 · L3]</b> Spark <code>reduce()</code> 결합법칙+교환법칙 요구 → <b>TRUE</b><br>
+<span style="color:#6c757d;font-size:12px">2019(b)·2022(b) <b>2년 연속</b> 거의 동일 출제. 예상문제엔 MapReduce Combiner(Q05)만 있고 Spark reduce는 없었음. <code>fold()</code>는 결합법칙만 필요한 것과 대비.</span></li>
+<li><b>[Q62 · L7]</b> LSH Amplification: $p_1'\geq p_1$, $p_2'\leq p_2$ → <b>TRUE</b><br>
+<span style="color:#6c757d;font-size:12px">2019(f) 출제. AND-OR 복합 증폭이 gap을 키운다. L7 예상문제는 S-curve·threshold 공식 위주라 이 성질 누락.</span></li>
+<li><b>[Q63 · L4]</b> 낮은 confidence + 높은 interest 가능 → <b>TRUE</b><br>
+<span style="color:#6c757d;font-size:12px">2019(c) 출제. Interest$=\text{conf}-\Pr[j]$이므로 $\Pr[j]$가 작으면 conf 낮아도 interest는 양수. 2025-e("interest 항상 양수")와 동전의 양면이지만 "low conf + high interest" 방향은 예상문제에 없었음.</span></li>
+<li><b>[Q64 · L9]</b> GRGPF는 저차원 데이터용으로도 잘 설계됨 → <b>FALSE</b><br>
+<span style="color:#6c757d;font-size:12px">2019(h) 출제. GRGPF는 <b>고차원 non-Euclidean</b> 전용. 예상문제 Q48은 rowsum 정의만 묻고 설계 목적 누락.</span></li>
+<li><b>[Q65 · L12]</b> Content-based 정규화 시 평점이 음수가 될 수 있음 → <b>TRUE</b><br>
+<span style="color:#6c757d;font-size:12px">2022(i) 출제. Mean-centering의 당연한 귀결이지만 예상문제에 없음. cosine sim이 음의 상관을 포착하게 하는 전제.</span></li>
+</ol>
+
+<p style="margin-top:14px;padding:10px 12px;background:rgba(220,38,38,.08);border-left:3px solid #dc2626;border-radius:4px;font-size:13px">
+<b>시험 직전 체크:</b> 위 5개 문항은 <code>tf_quiz.html</code> → "🚨 갭 보강" 칩으로 반복 풀이할 것. 2019·2022에서 반복된 패턴이라 2026 SNU Closed-book 첫 해 출제 가능성이 특히 높음.
+</p>
+</div>
 </section>
 
 <!-- ====================================================== -->

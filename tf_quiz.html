@@ -49,6 +49,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 .chip.src-2024.active{background:#7c3aed;border-color:#7c3aed;}
 .chip.src-2025.active{background:#0891b2;border-color:#0891b2;}
 .chip.src-예상.active{background:#d97706;border-color:#d97706;}
+.chip.src-갭.active{background:#dc2626;border-color:#dc2626;}
 
 /* Toolbar buttons */
 .toolbar{display:flex;gap:6px;padding:0 16px 10px;align-items:center;flex-wrap:wrap;}
@@ -216,6 +217,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
     <span class="chip src-2024" data-filter="src" data-val="2024" onclick="setFilter('src','2024')">2024기출</span>
     <span class="chip src-2025" data-filter="src" data-val="2025" onclick="setFilter('src','2025')">2025기출</span>
     <span class="chip src-예상" data-filter="src" data-val="예상" onclick="setFilter('src','예상')">예상문제</span>
+    <span class="chip src-갭" data-filter="src" data-val="갭" onclick="setFilter('src','갭')">🚨 갭 보강</span>
   </div>
   <div class="filter-row">
     <span class="filter-label">강의</span>
@@ -799,6 +801,32 @@ const RAW_QUESTIONS = [
  text:'In UV decomposition, increasing the number of latent factors $k$ always improves performance on unseen test data.',
  ans:false,
  exp:'$k$를 늘리면 training error는 감소하지만 <b>overfitting 위험</b>이 있어 test set 성능이 오히려 나빠질 수 있다. 최적 $k$는 validation set 성능 기준으로 선택해야 한다(SVD와 차이점).'},
+
+// ── 갭 보강 (2019/2022 기출 반복 토픽, 예상문제 누락분 5문항) ──
+{id:'Q61',src:'갭',lec:'L3',
+ text:'In Spark, a function passed to a Reduce action is required to be associative and commutative.',
+ ans:true,
+ exp:'🚨 <b>2019 미드텀(b), 2022 미드텀(b) 2년 연속 출제된 반복 토픽.</b> Spark의 <code>reduce(f)</code> action은 파티션 간 집계 순서가 보장되지 않으므로 $f$가 <b>결합법칙+교환법칙</b>을 모두 만족해야 올바른 결과를 낸다. cf. <code>fold()</code>는 초기값을 주므로 결합법칙만 필요. MapReduce의 Combiner 조건과 동일한 원리.'},
+
+{id:'Q62',src:'갭',lec:'L7',
+ text:'Amplifying a $(d_1,d_2,p_1,p_2)$-sensitive family always results in a $(d_1,d_2,p_1\',p_2\')$-sensitive family such that $p_1\' \\geq p_1$ and $p_2\' \\leq p_2$.',
+ ans:true,
+ exp:'🚨 <b>2019 미드텀(f) 출제.</b> AND-OR 복합 증폭의 핵심 성질: AND-구성은 $p_2$를 줄이고(FP↓) OR-구성은 $p_1$을 높인다(TP↑). 따라서 gap $(p_1\'-p_2\')$이 커져 더 sharp한 S-curve가 된다. 단 OR-only는 둘 다 증가, AND-only는 둘 다 감소 — AND-OR 조합이 본질.'},
+
+{id:'Q63',src:'갭',lec:'L4',
+ text:'An association rule can have a low confidence, but high interest.',
+ ans:true,
+ exp:'🚨 <b>2019 미드텀(c) 출제.</b> Interest$(I\\to j)=\\text{conf}(I\\to j)-\\Pr[j]$. $\\Pr[j]$가 매우 낮은 희귀 아이템이면 confidence가 0.05에 불과해도 $\\Pr[j]=0.01$일 때 interest$=0.04$로 양수. 역으로 2025-e ("interest는 항상 양수다" → FALSE)와 동전의 양면: 양수일 수도, 음수일 수도, 작은 conf에서 큰 interest일 수도 있다.'},
+
+{id:'Q64',src:'갭',lec:'L9',
+ text:'The GRGPF algorithm is designed to also work well on low-dimensional data.',
+ ans:false,
+ exp:'🚨 <b>2019 미드텀(h) 출제.</b> GRGPF는 <b>고차원 non-Euclidean 공간</b>의 대용량 데이터용으로 설계됨. rowsum 기반 clustroid 개념 자체가 고차원에서 "평균이 데이터 포인트일 수 없는" 문제를 해결하기 위함. 저차원에서는 k-means/BFR이 충분. 예상문제 Q48은 rowsum 정의만 물었고 설계 목적은 빠져 있었음.'},
+
+{id:'Q65',src:'갭',lec:'L12',
+ text:'When normalizing user profiles for content-based recommendation, some ratings may become negative.',
+ ans:true,
+ exp:'🚨 <b>2022 미드텀(i) 출제.</b> Content-based filtering의 사용자 프로필 정규화는 평균 차감(mean-centering)을 쓴다. 사용자의 평균 평점보다 낮은 아이템은 정규화 후 <b>음수</b>가 되고 이는 "이 사용자가 평균 이하로 싫어하는 아이템"을 뜻한다 — 정상 과정. cosine similarity가 음의 상관까지 포착할 수 있게 해주는 핵심 단계.'},
 
 ]; // end of questions array
 
